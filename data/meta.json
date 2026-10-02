@@ -1096,6 +1096,16 @@
   "track",
   "path"
  ],
+ "house_styles": [
+  "tube",
+  "block",
+  "gable",
+  "hip",
+  "stilt",
+  "khmer",
+  "hall"
+ ],
+ "house_tiles": 7,
  "credits": [
   "Imagery: contains modified Copernicus Sentinel data 2025-2026 (Sentinel-2 L2A via Element 84 Earth Search on AWS)",
   "Buildings: Overture Maps Foundation (ODbL), incl. OpenStreetMap, Microsoft ML Buildings and Google Open Buildings",

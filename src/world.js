@@ -1,4 +1,4 @@
-// Trees, real buildings (Overture footprints as oriented boxes), roads and landmarks.
+// Trees, roads and landmarks (buildings: houses.js).
 // Everything is stored per 26.9 km group; whole groups are hidden beyond a distance.
 import * as THREE from 'three';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
@@ -6,7 +6,7 @@ import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { treeModels, landmarkModels } from './models.js';
 
-function groupCentre(meta, gx, gy) {
+export function groupCentre(meta, gx, gy) {
   const span = meta.group * meta.grid_res_m;
   const x0 = -meta.width_m / 2 + (gx * meta.group + 0.5) * meta.grid_res_m;
   const y0 = meta.height_m / 2 - (gy * meta.group + 0.5) * meta.grid_res_m;
@@ -14,7 +14,7 @@ function groupCentre(meta, gx, gy) {
 }
 
 /** Base for per-group layers: distance culling by the camera's distance to each group's square. */
-class GroupLayer {
+export class GroupLayer {
   constructor(name, meta) {
     this.meta = meta;
     this.group = new THREE.Group();
@@ -82,52 +82,7 @@ export class TreeLayer extends GroupLayer {
   }
 }
 
-// ---------------------------------------------------------------- real buildings
-// File: int32 n | int16 x[n], y[n] (0.5 m, rel. group centre) | uint16 ground[n] (dm)
-//   | uint8 width[n] (0.25 m) | depth[n] (0.5 m) | angle[n] (0..pi) | height[n] (0.25 m) | uint8 roof rgb[n*3]
-export class BuildingLayer extends GroupLayer {
-  constructor(meta, maxDistance) {
-    super('buildings', meta);
-    this.maxDistance = maxDistance;
-    this.geometry = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0);
-    const mat = new THREE.MeshStandardMaterial({ roughness: 0.8, metalness: 0 });
-    mat.onBeforeCompile = (sh) => {
-      sh.vertexShader = sh.vertexShader
-        .replace('#include <common>', '#include <common>\nvarying float vUp;')
-        .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
-          vUp = normalize((modelMatrix * instanceMatrix * vec4(objectNormal, 0.0)).xyz).y;`);
-      sh.fragmentShader = sh.fragmentShader
-        .replace('#include <common>', '#include <common>\nvarying float vUp;')
-        .replace('#include <color_fragment>', `#include <color_fragment>
-          if (vUp < 0.5) diffuseColor.rgb = mix(vec3(0.62, 0.60, 0.56), diffuseColor.rgb, 0.2);  // plaster walls`);
-    };
-    mat.customProgramCacheKey = () => 'cuulong-buildings';
-    this.material = mat;
-  }
-
-  async loadCell(gx, gy, url) {
-    const buf = await fetch(url).then((r) => r.arrayBuffer());
-    const n = new DataView(buf).getInt32(0, true);
-    let o = 4;
-    const take = (T, b, k = 1) => { const a = new T(buf, o, n * k); o += n * b * k; return a; };
-    const x = take(Int16Array, 2), y = take(Int16Array, 2), g = take(Uint16Array, 2);
-    const w = take(Uint8Array, 1), d = take(Uint8Array, 1), ang = take(Uint8Array, 1), ht = take(Uint8Array, 1);
-    const roof = take(Uint8Array, 1, 3);
-    const [cx, cy] = groupCentre(this.meta, gx, gy), ex = this.meta.vert_exag, bex = this.meta.building_exag;
-    const im = new THREE.InstancedMesh(this.geometry, this.material, n);
-    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), p = new THREE.Vector3(), s = new THREE.Vector3();
-    const up = new THREE.Vector3(0, 1, 0), col = new THREE.Color();
-    for (let i = 0; i < n; i++) {
-      p.set(cx + x[i] / 2, (g[i] / 10) * ex - 0.3, -(cy + y[i] / 2));
-      q.setFromAxisAngle(up, (ang[i] / 255) * Math.PI + Math.PI / 2);   // box depth (local Z) along the long side
-      s.set(w[i] / 4, (ht[i] / 4) * bex, d[i] / 2);
-      im.setMatrixAt(i, m4.compose(p, q, s));
-      im.setColorAt(i, col.setRGB(roof[i * 3] / 255, roof[i * 3 + 1] / 255, roof[i * 3 + 2] / 255, THREE.SRGBColorSpace));
-    }
-    im.computeBoundingSphere();
-    this.addCell(gx, gy, im, this.maxDistance);
-  }
-}
+// (real buildings: see houses.js)
 
 // ---------------------------------------------------------------- roads (screen-width lines, hybrid-map style)
 // File: int32 counts[nClasses] | per class: int16 [ax, ay, ah, bx, by, bh] (m, m, dm) rel. group centre

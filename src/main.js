@@ -4,15 +4,16 @@ import { MapControls } from 'three/addons/controls/MapControls.js';
 import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import { Terrain } from './terrain.js';
 import { StreamedImagery } from './imagery.js';
-import { TreeLayer, BuildingLayer, RoadLayer, buildLandmarks } from './world.js';
+import { TreeLayer, RoadLayer, buildLandmarks } from './world.js';
+import { HouseLayer } from './houses.js';
 import { Overlays } from './overlays.js';
 import { UI } from './ui.js';
 
 const DATA = 'data/';
 const MOBILE = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
 const QUALITY = MOBILE
-  ? { pixelRatio: 1, treeDist: 11000, buildingDist: 7000, roadScale: 0.6, lodBias: 1, maxDetail: 4 }
-  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 22000, buildingDist: 14000, roadScale: 1, lodBias: 0,
+  ? { pixelRatio: 1, treeDist: 11000, buildingDist: 7000, houseNear: 900, roadScale: 0.6, lodBias: 1, maxDetail: 4 }
+  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 22000, buildingDist: 14000, houseNear: 1800, roadScale: 1, lodBias: 0,
       maxDetail: 10 };
 
 const getJSON = (f) => fetch(DATA + f).then((r) => { if (!r.ok) throw new Error(f); return r.json(); });
@@ -153,7 +154,7 @@ async function main() {
 
   // ---------------------------------------------------------------- trees, real buildings, roads (per group)
   const trees = new TreeLayer(meta, QUALITY.treeDist);
-  const buildings = new BuildingLayer(meta, QUALITY.buildingDist);
+  const buildings = new HouseLayer(meta, QUALITY.buildingDist, QUALITY.houseNear);
   const roads = new RoadLayer(meta, QUALITY.roadScale);
   scene.add(trees.group, buildings.group, roads.group);
   const layerOf = { trees, bld: buildings, roads };
