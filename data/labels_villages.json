@@ -1,0 +1,154 @@
+[
+ {
+  "kind": "village",
+  "text": "Cái Tàu Thượng",
+  "x": 40978.8,
+  "y": -15058.6,
+  "z": 1.8,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Chợ Thủ",
+  "x": 31439.9,
+  "y": -3568.5,
+  "z": 3.2,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Mỹ Thới",
+  "x": 31086.9,
+  "y": -24638.1,
+  "z": 3.4,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Bình Đức",
+  "x": 26865.1,
+  "y": -19543.4,
+  "z": 5.0,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Long Xuyên",
+  "x": 27616.6,
+  "y": -20712.2,
+  "z": 3.3,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Tân Châu",
+  "x": 7601.6,
+  "y": 25524.2,
+  "z": 0.4,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Long Phú",
+  "x": 6207.6,
+  "y": 25228.9,
+  "z": 4.0,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Châu Đốc",
+  "x": -5885.0,
+  "y": 15437.1,
+  "z": 0.4,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Vĩnh Tế",
+  "x": -10232.6,
+  "y": 12310.5,
+  "z": 11.4,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Thới Sơn",
+  "x": -19107.5,
+  "y": 5438.8,
+  "z": 34.2,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Tịnh Biên",
+  "x": -24605.8,
+  "y": 3304.3,
+  "z": 6.9,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Phú Hữu",
+  "x": 21590.9,
+  "y": -23712.5,
+  "z": 2.4,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Tây Bình",
+  "x": 20995.5,
+  "y": -29682.5,
+  "z": 1.8,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Đông An",
+  "x": 22207.9,
+  "y": -26900.0,
+  "z": 1.9,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Hòa Đông",
+  "x": 23350.8,
+  "y": -24249.8,
+  "z": 2.3,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Hòa Tây A",
+  "x": 25385.8,
+  "y": -27629.1,
+  "z": 1.9,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Tây Bình C",
+  "x": 22529.2,
+  "y": -33676.4,
+  "z": 1.6,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Hòa Tây B",
+  "x": 26822.5,
+  "y": -33585.6,
+  "z": 0.9,
+  "size": 160
+ },
+ {
+  "kind": "village",
+  "text": "Kênh Đào",
+  "x": 25705.7,
+  "y": -31531.5,
+  "z": 1.8,
+  "size": 160
+ }
+]

@@ -1,0 +1,1838 @@
+[
+ {
+  "name": "Chùa Phước LLộc Thọ",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": 27853.3,
+  "y": -20795.8,
+  "z": 1.98,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Pháp Hoa",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": 27705.2,
+  "y": -21187.0,
+  "z": 5.21,
+  "rot": 0.0
+ },
+ {
+  "name": "Thờ Thành Hoàng Nguyễn Hữu Cảnh",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 32070.6,
+  "y": -24662.3,
+  "z": 1.7,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Tà Pạ",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19963.4,
+  "y": -17140.6,
+  "z": 48.83,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Tà Phôt",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": -23088.3,
+  "y": -18130.9,
+  "z": 27.11,
+  "rot": 0.0
+ },
+ {
+  "name": "Đình thân Bình Thủy",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 15810.1,
+  "y": -5908.0,
+  "z": 0.5,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Bình Phước",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": 15960.6,
+  "y": -6123.6,
+  "z": 1.15,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Trắng",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -6505.4,
+  "y": 16589.9,
+  "z": 0.34,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Núi Nổi",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": -752.0,
+  "y": 28573.6,
+  "z": 3.6,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Tây An",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10328.3,
+  "y": 12293.9,
+  "z": 16.93,
+  "rot": 0.0
+ },
+ {
+  "name": "Lăng Thoại Ngọc Hầu",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10559.4,
+  "y": 12341.0,
+  "z": 27.15,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Thạch An",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10791.2,
+  "y": 12572.4,
+  "z": 19.9,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Cây Mít",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -20025.1,
+  "y": 7274.6,
+  "z": 8.52,
+  "rot": 0.0
+ },
+ {
+  "name": "Đền Đông Hưng",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -20266.8,
+  "y": 7492.6,
+  "z": 6.07,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Bà Bảy",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": -18973.6,
+  "y": 6617.0,
+  "z": 10.45,
+  "rot": 0.0
+ },
+ {
+  "name": "Chuà Liên Hoa",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": -17458.0,
+  "y": 5925.1,
+  "z": 6.38,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phước Điền",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -16316.7,
+  "y": 3296.5,
+  "z": 4.55,
+  "rot": 0.0
+ },
+ {
+  "name": "Nhà thờ Hồi giáo Ehsan",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": -5584.7,
+  "y": 17082.8,
+  "z": 2.34,
+  "rot": 0.0
+ },
+ {
+  "name": "Vồ ông Tà",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -18129.9,
+  "y": 4211.0,
+  "z": 50.69,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -6290.8,
+  "y": 15510.9,
+  "z": 7.5,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Ông Châu Đốc",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -6112.1,
+  "y": 15683.1,
+  "z": 0.62,
+  "rot": 0.0
+ },
+ {
+  "name": "Tam Buu Pagoda",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": 29605.9,
+  "y": -12422.9,
+  "z": 2.82,
+  "rot": 0.0
+ },
+ {
+  "name": "Dinh Thờ Quan Thượng Đẳng Nguyễn Hữu Cảnh",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 30153.6,
+  "y": -13714.2,
+  "z": 2.53,
+  "rot": 0.0
+ },
+ {
+  "name": "Thánh thất Long Kiến",
+  "kind": "caodai",
+  "religion": "",
+  "x": 30914.7,
+  "y": -10729.9,
+  "z": 1.29,
+  "rot": 0.0
+ },
+ {
+  "name": "Nhà Thờ Cái Đôi",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 31739.8,
+  "y": -20318.7,
+  "z": 2.66,
+  "rot": 0.0
+ },
+ {
+  "name": "Hưng Phước Tự",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 27576.9,
+  "y": -19555.1,
+  "z": 4.27,
+  "rot": 0.0
+ },
+ {
+  "name": "Thánh thất Cao Đài",
+  "kind": "caodai",
+  "religion": "",
+  "x": 27476.0,
+  "y": -19612.7,
+  "z": 3.56,
+  "rot": 0.0
+ },
+ {
+  "name": "Điện thờ Phật Mẫu Bình Khánh",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 27387.2,
+  "y": -19615.7,
+  "z": 4.19,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Quan Thánh Đế Quân",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 29281.9,
+  "y": -20711.3,
+  "z": 4.53,
+  "rot": 0.0
+ },
+ {
+  "name": "Masjid Salamat",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": 29463.0,
+  "y": -20769.0,
+  "z": 4.84,
+  "rot": 0.0
+ },
+ {
+  "name": "Nhà thờ Tin Lành",
+  "kind": "church",
+  "religion": "christian",
+  "x": 29064.0,
+  "y": -20946.2,
+  "z": 6.15,
+  "rot": 0.0
+ },
+ {
+  "name": "Tịnh Xa Ngọc Long",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 29267.2,
+  "y": -20919.3,
+  "z": 6.59,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Trúc Lâm",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 27864.0,
+  "y": -21264.0,
+  "z": 5.37,
+  "rot": 0.0
+ },
+ {
+  "name": "Tịnh xá Bửu Viên",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 27836.3,
+  "y": -21521.5,
+  "z": 4.31,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Phuoc Long Vien",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19517.2,
+  "y": 5634.2,
+  "z": 64.05,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Tay Hung",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19412.8,
+  "y": 5373.7,
+  "z": 47.22,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Buu Minh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -18610.8,
+  "y": 5607.3,
+  "z": 26.18,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Nhon Phuoc",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -19500.4,
+  "y": 6755.6,
+  "z": 13.16,
+  "rot": 0.0
+ },
+ {
+  "name": "Thanh that Nhon Hung",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -19742.4,
+  "y": 7148.1,
+  "z": 10.01,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Bo De Dao Trang",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -10183.0,
+  "y": 12381.6,
+  "z": 9.6,
+  "rot": 0.0
+ },
+ {
+  "name": "Tinh xa Giac Ngo",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -16948.6,
+  "y": -8605.6,
+  "z": 27.89,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Ba Xoai",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -23889.7,
+  "y": -5277.9,
+  "z": 13.34,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Cay Duoc",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -23257.9,
+  "y": -3925.6,
+  "z": 12.38,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Po Thi",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -23065.8,
+  "y": -2604.6,
+  "z": 6.49,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Pen Don",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -21737.5,
+  "y": -2027.0,
+  "z": 8.0,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Chon Co",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -21131.1,
+  "y": -2621.2,
+  "z": 13.08,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Soai Chek",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -19544.9,
+  "y": -2198.1,
+  "z": 11.43,
+  "rot": 0.0
+ },
+ {
+  "name": "Wath ChanhLy Wongsa Ram",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19743.3,
+  "y": -3643.1,
+  "z": 26.33,
+  "rot": 0.0
+ },
+ {
+  "name": "Giáo Họ Thới Sơn",
+  "kind": "church",
+  "religion": "christian",
+  "x": -17041.3,
+  "y": 3251.0,
+  "z": 15.48,
+  "rot": 0.0
+ },
+ {
+  "name": "Chua Svai Ta Som",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16241.7,
+  "y": -9483.1,
+  "z": 12.97,
+  "rot": 0.0
+ },
+ {
+  "name": "Rạch chùa",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 29678.5,
+  "y": -17156.5,
+  "z": 1.5,
+  "rot": 0.0
+ },
+ {
+  "name": "Buu Long Co Tu",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 26685.9,
+  "y": -15321.1,
+  "z": 2.26,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Huỳnh Phước",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 26796.5,
+  "y": -19975.3,
+  "z": 0.97,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Năm Căn Cổ Tự",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19596.2,
+  "y": 5228.2,
+  "z": 51.77,
+  "rot": 0.0
+ },
+ {
+  "name": "Miếu thờ Trương Gia Mô",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -10771.6,
+  "y": 11705.7,
+  "z": 191.72,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phước Linh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20453.0,
+  "y": 5233.3,
+  "z": 61.08,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Vạn Linh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21292.1,
+  "y": -7381.4,
+  "z": 529.56,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phật Lớn",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20835.3,
+  "y": -7334.3,
+  "z": 514.95,
+  "rot": 0.0
+ },
+ {
+  "name": "chùa Krăng Krốch",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -22168.8,
+  "y": -13952.0,
+  "z": 5.09,
+  "rot": 0.0
+ },
+ {
+  "name": "Đình bình long",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 7283.7,
+  "y": -32.1,
+  "z": 5.83,
+  "rot": 0.0
+ },
+ {
+  "name": "Thánh Đường Hồi giáo Jamiul-azhar",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -4110.0,
+  "y": 15468.3,
+  "z": 3.04,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Long Sơn",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10688.5,
+  "y": 11370.5,
+  "z": 125.22,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phi Lai",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -29166.6,
+  "y": -7779.2,
+  "z": 14.82,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -26605.1,
+  "y": -13719.0,
+  "z": 4.77,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -23459.0,
+  "y": -14771.1,
+  "z": 16.55,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -24415.1,
+  "y": -19050.8,
+  "z": 8.01,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -5457.6,
+  "y": 17348.7,
+  "z": 2.33,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -1922.1,
+  "y": 12971.8,
+  "z": 3.04,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Châu Long",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -4325.3,
+  "y": 14774.8,
+  "z": 1.11,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Lục Linh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -42047.5,
+  "y": -6861.3,
+  "z": 2.88,
+  "rot": 0.0
+ },
+ {
+  "name": "Đình thần Cầu Dài",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -40398.9,
+  "y": -6908.0,
+  "z": 1.79,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Thanh Lương",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -29317.5,
+  "y": -8064.2,
+  "z": 12.04,
+  "rot": 0.0
+ },
+ {
+  "name": "Đình thần Vĩnh Gia",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -41974.3,
+  "y": -6955.1,
+  "z": 2.32,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phước Quang",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10773.2,
+  "y": 11462.8,
+  "z": 143.23,
+  "rot": 0.0
+ },
+ {
+  "name": "Tiên Sơn tự",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10799.4,
+  "y": 11528.4,
+  "z": 159.09,
+  "rot": 0.0
+ },
+ {
+  "name": "Điện Thần Nông",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -10903.8,
+  "y": 11558.7,
+  "z": 174.43,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Linh Sơn",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10641.3,
+  "y": 11684.3,
+  "z": 182.58,
+  "rot": 0.0
+ },
+ {
+  "name": "Am Kỳ Hương",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10974.3,
+  "y": 11686.8,
+  "z": 172.5,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Phật Quang",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -11226.8,
+  "y": 11639.4,
+  "z": 67.44,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Giác Tâm",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -10130.8,
+  "y": 11958.9,
+  "z": 15.67,
+  "rot": 0.0
+ },
+ {
+  "name": "Điện Phật Mẫu",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -20967.4,
+  "y": -6871.3,
+  "z": 479.84,
+  "rot": 0.0
+ },
+ {
+  "name": "Thiền viện Trúc Lâm Trí Thiền",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21705.3,
+  "y": -7602.0,
+  "z": 548.15,
+  "rot": 0.0
+ },
+ {
+  "name": "Điện Giếng Nước",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -22085.4,
+  "y": -7566.4,
+  "z": 424.61,
+  "rot": 0.0
+ },
+ {
+  "name": "Điện Ngọc Hoàng",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -21439.2,
+  "y": -8089.1,
+  "z": 688.47,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Quan Âm",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21290.4,
+  "y": -8201.6,
+  "z": 672.98,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Châu Viên",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -6450.9,
+  "y": 15128.9,
+  "z": 5.03,
+  "rot": 0.0
+ },
+ {
+  "name": "Tượng Phật Bà Quan Âm",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19973.4,
+  "y": -7384.7,
+  "z": 501.07,
+  "rot": 0.0
+ },
+ {
+  "name": "Tháp Xá Lợi",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20898.2,
+  "y": -7333.8,
+  "z": 511.72,
+  "rot": 0.0
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -4374.4,
+  "y": 15420.6,
+  "z": 1.67,
+  "rot": 0.0
+ },
+ {
+  "name": "Chùa Tro Poáng Trao",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -24483.5,
+  "y": -19585.5,
+  "z": 3.89,
+  "rot": 0.028
+ },
+ {
+  "name": "Chùa Liên Hoa",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 17341.9,
+  "y": -4456.3,
+  "z": 0.89,
+  "rot": -2.779
+ },
+ {
+  "name": "Vĩnh Quang tự",
+  "kind": "viet_pagoda",
+  "religion": "hindu",
+  "x": -3908.5,
+  "y": 16981.3,
+  "z": 2.5,
+  "rot": 1.208
+ },
+ {
+  "name": "Đình thần Châu Phú",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -6046.9,
+  "y": 15568.6,
+  "z": 0.74,
+  "rot": -2.473
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 39062.9,
+  "y": -11936.3,
+  "z": 3.54,
+  "rot": 0.811
+ },
+ {
+  "name": "Bình Đức God Shrine",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 28943.9,
+  "y": -20309.1,
+  "z": 0.58,
+  "rot": -2.566
+ },
+ {
+  "name": "Đình thần Mỹ Phước",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": 29177.2,
+  "y": -20642.2,
+  "z": 3.22,
+  "rot": 0.697
+ },
+ {
+  "name": "Đình thần Bình Mỹ",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": 13970.8,
+  "y": -4258.1,
+  "z": 0.54,
+  "rot": -2.528
+ },
+ {
+  "name": "Đình thần Vĩnh Nguơn",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -6797.1,
+  "y": 16561.3,
+  "z": 0.18,
+  "rot": 2.395
+ },
+ {
+  "name": "Ông Bắc Pagoda",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": 28975.3,
+  "y": -20541.9,
+  "z": 0.29,
+  "rot": 2.19
+ },
+ {
+  "name": "Long Xuyen Cathedral",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 28943.2,
+  "y": -20804.8,
+  "z": 2.74,
+  "rot": 2.214
+ },
+ {
+  "name": "Chua Huynh Phurpc Tu",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -24581.2,
+  "y": 4484.6,
+  "z": 5.15,
+  "rot": -0.232
+ },
+ {
+  "name": "Thánh thất Tịnh Biên",
+  "kind": "caodai",
+  "religion": "",
+  "x": -24372.2,
+  "y": 4342.4,
+  "z": 5.9,
+  "rot": -0.336
+ },
+ {
+  "name": "Chua Ong Muroi",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -24932.8,
+  "y": 3553.3,
+  "z": 4.37,
+  "rot": 3.006
+ },
+ {
+  "name": "Chua Soc Ta Ngao",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -24014.5,
+  "y": 5113.5,
+  "z": 6.2,
+  "rot": -1.333
+ },
+ {
+  "name": "Chua An Bien",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -25050.0,
+  "y": 3536.8,
+  "z": 3.16,
+  "rot": -2.787
+ },
+ {
+  "name": "Chùa Thành Xuân",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -23061.2,
+  "y": 3841.4,
+  "z": 24.4,
+  "rot": 1.086
+ },
+ {
+  "name": "Chùa Phước Lâm",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -23540.9,
+  "y": 4207.2,
+  "z": 14.99,
+  "rot": 1.376
+ },
+ {
+  "name": "Chùa Phước Hải",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -22724.0,
+  "y": 3646.9,
+  "z": 40.66,
+  "rot": 2.21
+ },
+ {
+  "name": "Chua an Phuoc",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -25855.9,
+  "y": 3072.8,
+  "z": 0.99,
+  "rot": -1.9
+ },
+ {
+  "name": "Chùa Phước Hậu",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 27800.1,
+  "y": -20518.7,
+  "z": 0.6,
+  "rot": -2.942
+ },
+ {
+  "name": "Bishop of Long Xuyen",
+  "kind": "church",
+  "religion": "christian",
+  "x": 28807.8,
+  "y": -20847.1,
+  "z": 0.78,
+  "rot": 2.307
+ },
+ {
+  "name": "Guangji Temple",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 29550.9,
+  "y": -20997.1,
+  "z": 5.89,
+  "rot": 0.475
+ },
+ {
+  "name": "Đình Thần Xã Long Kiến",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 30128.6,
+  "y": -12079.8,
+  "z": 0.33,
+  "rot": -0.901
+ },
+ {
+  "name": "Nhà thờ An Châu",
+  "kind": "church",
+  "religion": "christian",
+  "x": 23953.1,
+  "y": -14019.8,
+  "z": 0.22,
+  "rot": -2.057
+ },
+ {
+  "name": "Nhà Dự Tu Têrêxa - Giáo Phận Long Xuyên",
+  "kind": "church",
+  "religion": "christian",
+  "x": 23923.6,
+  "y": -14186.4,
+  "z": 1.56,
+  "rot": 1.263
+ },
+ {
+  "name": "Chua Hung Long",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 29465.0,
+  "y": -16894.3,
+  "z": 2.53,
+  "rot": 0.747
+ },
+ {
+  "name": "Chùa Trúc Lâm",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 28670.5,
+  "y": -21432.0,
+  "z": 5.52,
+  "rot": 1.689
+ },
+ {
+  "name": "Mai Son Pagoda",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -20435.1,
+  "y": 5353.0,
+  "z": 50.52,
+  "rot": -1.943
+ },
+ {
+  "name": "Thiên Môn Nghiêm Tịnh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19212.8,
+  "y": 4763.7,
+  "z": 69.66,
+  "rot": -2.49
+ },
+ {
+  "name": "Chùa Long Sơn",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19261.9,
+  "y": 4627.4,
+  "z": 82.58,
+  "rot": 0.943
+ },
+ {
+  "name": "Chua Bong Lai",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -14696.1,
+  "y": 11581.7,
+  "z": 1.08,
+  "rot": 0.495
+ },
+ {
+  "name": "Tinh Xa Ngoc Chau Tp. Chau Doc",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -4686.5,
+  "y": 14767.9,
+  "z": 4.2,
+  "rot": -2.08
+ },
+ {
+  "name": "Thien Hau Thanh Mau",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -4101.9,
+  "y": 14778.3,
+  "z": 0.51,
+  "rot": -1.968
+ },
+ {
+  "name": "Ve Thuy Than Mieu",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -3769.0,
+  "y": 14653.3,
+  "z": 1.55,
+  "rot": -2.062
+ },
+ {
+  "name": "Chua Phu Thanh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -2847.1,
+  "y": 13678.1,
+  "z": 3.98,
+  "rot": 0.306
+ },
+ {
+  "name": "Thanh duong hoi giao Jamiul Aman",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": -2059.3,
+  "y": 13282.5,
+  "z": 3.12,
+  "rot": 2.829
+ },
+ {
+  "name": "Thanh that Khanh Hoa",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -1023.2,
+  "y": 13529.1,
+  "z": 2.35,
+  "rot": -0.263
+ },
+ {
+  "name": "Chua Long Khanh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 2149.2,
+  "y": 12363.6,
+  "z": 2.88,
+  "rot": 2.782
+ },
+ {
+  "name": "Chua Ong",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -1334.5,
+  "y": 12051.6,
+  "z": 3.07,
+  "rot": -2.24
+ },
+ {
+  "name": "Chua Duc Lam Tu",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 310.3,
+  "y": 10629.3,
+  "z": 4.27,
+  "rot": 1.15
+ },
+ {
+  "name": "Dinh My Duc",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 429.3,
+  "y": 10585.9,
+  "z": 4.02,
+  "rot": -1.938
+ },
+ {
+  "name": "Tổ đình Phi Lai",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -13878.6,
+  "y": -3448.3,
+  "z": 12.49,
+  "rot": -0.494
+ },
+ {
+  "name": "Chau Buru Son",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -16790.6,
+  "y": -9055.0,
+  "z": 22.15,
+  "rot": -0.113
+ },
+ {
+  "name": "Chùa Phật Nhỏ",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19192.1,
+  "y": -9106.2,
+  "z": 418.01,
+  "rot": -2.809
+ },
+ {
+  "name": "Chua Xoc Tuc",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -23853.7,
+  "y": -6414.9,
+  "z": 20.44,
+  "rot": 0.281
+ },
+ {
+  "name": "Chua Bach Co",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -23884.9,
+  "y": -4765.2,
+  "z": 7.39,
+  "rot": -2.884
+ },
+ {
+  "name": "Dinh Thoi Son",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -18598.2,
+  "y": 3405.5,
+  "z": 44.06,
+  "rot": -1.204
+ },
+ {
+  "name": "Chùa Thới Sơn",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -17836.5,
+  "y": 3574.4,
+  "z": 31.79,
+  "rot": 1.549
+ },
+ {
+  "name": "Thanh That Thoi Son",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -18113.0,
+  "y": 4863.7,
+  "z": 37.39,
+  "rot": 0.269
+ },
+ {
+  "name": "Chùa Bạch Vân",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19053.2,
+  "y": 4663.5,
+  "z": 108.72,
+  "rot": 0.789
+ },
+ {
+  "name": "Chua Coc",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16941.5,
+  "y": -10654.0,
+  "z": 6.1,
+  "rot": 0.055
+ },
+ {
+  "name": "Chua Coc",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16931.4,
+  "y": -10593.2,
+  "z": 6.23,
+  "rot": 3.073
+ },
+ {
+  "name": "Giáo Xứ Cần Xây",
+  "kind": "church",
+  "religion": "christian",
+  "x": 25799.9,
+  "y": -16934.4,
+  "z": 1.45,
+  "rot": -2.55
+ },
+ {
+  "name": "Tinh Xa BAT NHA",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 26319.8,
+  "y": -21256.4,
+  "z": 3.61,
+  "rot": -1.575
+ },
+ {
+  "name": "Chùa Reachatuasnaram Sđach Toth",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16981.7,
+  "y": -1476.6,
+  "z": 3.61,
+  "rot": -3.132
+ },
+ {
+  "name": "Chùa Thơm Mít",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16532.5,
+  "y": -2402.5,
+  "z": 6.57,
+  "rot": -2.933
+ },
+ {
+  "name": "Chùa Thơm Mít",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -16604.5,
+  "y": -2390.5,
+  "z": 7.07,
+  "rot": -1.537
+ },
+ {
+  "name": "Chùa Phước Linh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20207.8,
+  "y": 5073.2,
+  "z": 61.89,
+  "rot": -0.947
+ },
+ {
+  "name": "Ngoc Thanh Pagoda",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -20155.1,
+  "y": 5003.0,
+  "z": 63.54,
+  "rot": 3.066
+ },
+ {
+  "name": "chùa Hoa Chua",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -22413.8,
+  "y": -433.6,
+  "z": 11.6,
+  "rot": -2.805
+ },
+ {
+  "name": "Phước Điền Tự",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -11196.5,
+  "y": 11798.3,
+  "z": 65.77,
+  "rot": 0.344
+ },
+ {
+  "name": "Phước Điền Tự",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -11085.7,
+  "y": 11835.5,
+  "z": 102.37,
+  "rot": 1.579
+ },
+ {
+  "name": "Nhà thờ Núi Sam",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -11360.2,
+  "y": 11740.1,
+  "z": 17.97,
+  "rot": -0.239
+ },
+ {
+  "name": "វត្តរ៉ូ (Wat Rove)",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -20937.3,
+  "y": 1758.3,
+  "z": 41.52,
+  "rot": 0.276
+ },
+ {
+  "name": "Chua Van Rau",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -16839.9,
+  "y": 1981.7,
+  "z": 5.71,
+  "rot": 0.188
+ },
+ {
+  "name": "Chùa Tây Sơn",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -18930.3,
+  "y": 4877.3,
+  "z": 60.85,
+  "rot": 0.881
+ },
+ {
+  "name": "Chùa Quan Âm Phật Đài",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -19480.0,
+  "y": 5293.9,
+  "z": 47.47,
+  "rot": 2.033
+ },
+ {
+  "name": "Ngoc Mai Monastic",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20346.1,
+  "y": 5053.1,
+  "z": 68.64,
+  "rot": -0.238
+ },
+ {
+  "name": "Chùa Quỳnh Quang",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -20386.8,
+  "y": 5134.6,
+  "z": 69.49,
+  "rot": -2.892
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21037.9,
+  "y": -7123.3,
+  "z": 524.64,
+  "rot": 1.391
+ },
+ {
+  "name": "Chùa Kim Tiên",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21285.6,
+  "y": 6333.3,
+  "z": 30.3,
+  "rot": -2.752
+ },
+ {
+  "name": "Sân công cổ tự",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -19813.1,
+  "y": 4809.5,
+  "z": 78.96,
+  "rot": -2.113
+ },
+ {
+  "name": "Nhà thờ tổ ông đình tây",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -18315.6,
+  "y": 3462.3,
+  "z": 38.54,
+  "rot": 1.385
+ },
+ {
+  "name": "Chùa Phật Thiền",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 27974.7,
+  "y": -19711.3,
+  "z": 1.27,
+  "rot": 1.955
+ },
+ {
+  "name": "Tịnh thất Thiền Minh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 26269.5,
+  "y": -22782.2,
+  "z": 2.23,
+  "rot": 0.978
+ },
+ {
+  "name": "Chùa Cà Rắc",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -18698.2,
+  "y": -1211.6,
+  "z": 5.05,
+  "rot": -1.587
+ },
+ {
+  "name": "Thánh Đường Đức Mẹ Vô Nhiễm",
+  "kind": "church",
+  "religion": "christian",
+  "x": -1115.0,
+  "y": -34002.5,
+  "z": 2.64,
+  "rot": 2.299
+ },
+ {
+  "name": "Nhà thờ Giáo xứ Chi Lăng",
+  "kind": "church",
+  "religion": "christian",
+  "x": -15503.7,
+  "y": -3789.5,
+  "z": 37.28,
+  "rot": -2.589
+ },
+ {
+  "name": "Nhà thờ Térésa - Giáo xứ Vĩnh Bình",
+  "kind": "church",
+  "religion": "christian",
+  "x": 2064.0,
+  "y": -13788.7,
+  "z": 1.92,
+  "rot": -1.476
+ },
+ {
+  "name": "Nhà thờ Châu Đốc",
+  "kind": "church",
+  "religion": "christian",
+  "x": -5186.2,
+  "y": 14996.4,
+  "z": 1.89,
+  "rot": -1.899
+ },
+ {
+  "name": "Nhà thờ Cồn Én",
+  "kind": "church",
+  "religion": "christian",
+  "x": 35940.9,
+  "y": -3152.3,
+  "z": 3.0,
+  "rot": 1.493
+ },
+ {
+  "name": "Giáo xứ Cù Lao Giêng",
+  "kind": "church",
+  "religion": "christian",
+  "x": 35331.1,
+  "y": -6872.0,
+  "z": 3.91,
+  "rot": 0.518
+ },
+ {
+  "name": "Chùa Vạn Linh",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -21262.5,
+  "y": -7460.3,
+  "z": 531.81,
+  "rot": -3.115
+ },
+ {
+  "name": "Mubarak Mosque",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": -5126.0,
+  "y": 15507.0,
+  "z": 0.46,
+  "rot": 3.074
+ },
+ {
+  "name": "Thánh đường Al-Mukarramah",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": -12690.3,
+  "y": 39891.0,
+  "z": 1.28,
+  "rot": 1.996
+ },
+ {
+  "name": "Chùa Huỳnh Đạo",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -9274.3,
+  "y": 12899.7,
+  "z": 1.57,
+  "rot": -0.908
+ },
+ {
+  "name": "Chùa Huỳnh Đạo",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -9263.9,
+  "y": 12804.1,
+  "z": 2.17,
+  "rot": 2.148
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -6354.3,
+  "y": 15472.9,
+  "z": 7.08,
+  "rot": -2.536
+ },
+ {
+  "name": "Masjid Al Nia' Mah",
+  "kind": "mosque",
+  "religion": "muslim",
+  "x": -4911.0,
+  "y": 16556.2,
+  "z": 2.51,
+  "rot": 3.114
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10404.7,
+  "y": 12404.6,
+  "z": 15.78,
+  "rot": -0.488
+ },
+ {
+  "name": "Miếu Khổng Tử",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10554.4,
+  "y": 12402.2,
+  "z": 20.92,
+  "rot": 2.481
+ },
+ {
+  "name": "Chùa Một Cột Núi Sam",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -10546.0,
+  "y": 12667.9,
+  "z": 2.43,
+  "rot": -1.865
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "khmer_pagoda",
+  "religion": "",
+  "x": -10637.2,
+  "y": 12753.1,
+  "z": 2.38,
+  "rot": 2.778
+ },
+ {
+  "name": "Đình thần An Hòa",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 33637.3,
+  "y": -21950.9,
+  "z": 3.1,
+  "rot": 0.816
+ },
+ {
+  "name": "Dinh Nguyễn Hữu Cảnh",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 23957.3,
+  "y": -2004.2,
+  "z": 0.37,
+  "rot": -1.534
+ },
+ {
+  "name": "An Hòa Tự",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 19626.3,
+  "y": 795.9,
+  "z": 2.99,
+  "rot": -1.277
+ },
+ {
+  "name": "Đình thần Phú Mỹ",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 20390.7,
+  "y": 1005.1,
+  "z": 2.37,
+  "rot": 2.433
+ },
+ {
+  "name": "Đình Chợ Thủ",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 32060.5,
+  "y": -3753.1,
+  "z": 0.47,
+  "rot": -2.359
+ },
+ {
+  "name": "Chùa Ông Đạo Nằm",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 34792.9,
+  "y": -5399.4,
+  "z": 3.97,
+  "rot": -2.884
+ },
+ {
+  "name": "Đình thần Hội An",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 39900.7,
+  "y": -13855.5,
+  "z": 0.38,
+  "rot": -2.435
+ },
+ {
+  "name": "Chùa Tam Bửu",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -29283.1,
+  "y": -7949.1,
+  "z": 14.14,
+  "rot": -1.956
+ },
+ {
+  "name": "Linh Sơn cổ tự",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -2211.7,
+  "y": -35763.9,
+  "z": 24.38,
+  "rot": -0.502
+ },
+ {
+  "name": "Chùa Sơn Tiên",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -3280.7,
+  "y": -35795.3,
+  "z": 214.13,
+  "rot": -0.908
+ },
+ {
+  "name": "Chùa Ba Thê",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": -2412.7,
+  "y": -35014.8,
+  "z": 26.46,
+  "rot": 1.385
+ },
+ {
+  "name": "Bệ đá Bà Ngự",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": -10808.3,
+  "y": 11873.6,
+  "z": 217.39,
+  "rot": -2.356
+ },
+ {
+  "name": "Chùa Bửu Lâm Tự",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 17076.4,
+  "y": 16472.7,
+  "z": 5.86,
+  "rot": 1.486
+ },
+ {
+  "name": "Miếu Bằng Lăng",
+  "kind": "viet_pagoda",
+  "religion": "buddhist",
+  "x": 17980.8,
+  "y": 16500.3,
+  "z": 3.93,
+  "rot": 1.156
+ },
+ {
+  "name": "Chùa Cây Khoa - វត្តគិរីរង្សី \"ខ្លាខ្វា\"",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -20441.3,
+  "y": 99.5,
+  "z": 11.71,
+  "rot": -2.985
+ },
+ {
+  "name": "Chùa Neng Non - វត្តគីរីសូផនសូវាន់ណែងណង",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -19859.0,
+  "y": 1530.8,
+  "z": 43.91,
+  "rot": 1.738
+ },
+ {
+  "name": "Chùa Thiếc - វត្តសិរីវង្សាចេស្តាអណ្តូងព្រូស",
+  "kind": "khmer_pagoda",
+  "religion": "buddhist",
+  "x": -19401.5,
+  "y": 1125.9,
+  "z": 25.23,
+  "rot": -2.934
+ },
+ {
+  "name": "Đình Đa Phước",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": -5918.8,
+  "y": 15926.8,
+  "z": 0.58,
+  "rot": 2.388
+ },
+ {
+  "name": "Thánh thất Châu Đốc",
+  "kind": "caodai",
+  "religion": "caodaism",
+  "x": -6977.1,
+  "y": 16157.2,
+  "z": 3.82,
+  "rot": 2.305
+ },
+ {
+  "name": "(unnamed)",
+  "kind": "viet_pagoda",
+  "religion": "",
+  "x": 29636.1,
+  "y": -18235.5,
+  "z": 1.02,
+  "rot": -1.522
+ },
+ {
+  "name": "Đình thần Long Phú",
+  "kind": "viet_pagoda",
+  "religion": "vietnamese_folk",
+  "x": 7032.0,
+  "y": 25329.3,
+  "z": 7.47,
+  "rot": 2.255
+ }
+]

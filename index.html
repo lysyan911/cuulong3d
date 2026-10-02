@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Cửu Long 3D Map</title>
+<meta name="description" content="Bản đồ 3D An Giang của người hâm mộ, theo các địa điểm trong Cửu Long Quái Sự Ký – Thiên 1: Thất Sơn U Linh.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="viewport"></div>
+
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+    <div class="title">
+      <h1 data-i18n="title">Cửu Long Quái Sự Ký · Bản đồ 3D</h1>
+      <p data-i18n="subtitle">Thiên 1: Thất Sơn U Linh · An Giang (trước 2025)</p>
+    </div>
+    <button id="langBtn" class="chip" aria-label="Language">EN</button>
+  </header>
+
+  <aside id="sidebar" class="panel sidebar">
+    <section>
+      <h2 data-i18n="views">Góc nhìn</h2>
+      <div id="views" class="btn-grid"></div>
+    </section>
+    <section>
+      <h2 data-i18n="places">Địa điểm trong truyện</h2>
+      <ul id="siteList" class="site-list"></ul>
+      <div class="legend">
+        <span><i class="dot real"></i><span data-i18n="m_real">Có thật</span></span>
+        <span><i class="dot embellished"></i><span data-i18n="m_embellished">Có thật + hư cấu</span></span>
+        <span><i class="dot fictional"></i><span data-i18n="m_fictional">Hư cấu</span></span>
+        <span><i class="warn">!</i><span data-i18n="m_conflict">Truyện khác thực tế</span></span>
+      </div>
+    </section>
+    <section>
+      <h2 data-i18n="layers">Lớp hiển thị</h2>
+      <div id="layers" class="layers"></div>
+    </section>
+    <section class="small" id="about">
+      <p data-i18n="about">Dự án của người hâm mộ, phi thương mại. Vị trí theo truyện; chỗ nào truyện khác thực tế đều có ghi chú.</p>
+      <button id="creditsBtn" class="link" data-i18n="credits">Nguồn dữ liệu</button>
+    </section>
+  </aside>
+
+  <aside id="info" class="panel info hidden" aria-live="polite">
+    <button id="infoClose" class="icon-btn close" aria-label="Đóng">✕</button>
+    <div id="infoBody"></div>
+  </aside>
+
+  <div id="imgCredit" class="img-credit hidden">Imagery © Esri, Maxar, Earthstar Geographics</div>
+  <div id="hint" class="hint" data-i18n="hint">Kéo để di chuyển · Chuột phải / hai ngón để xoay · Cuộn để phóng to · Bấm vào địa điểm để đọc</div>
+
+  <div id="loading" class="loading">
+    <div class="loading-card">
+      <div class="loading-title">Cửu Long Quái Sự Ký</div>
+      <div id="loadingText" class="loading-text">Đang tải bản đồ…</div>
+      <div class="bar"><div id="loadingBar"></div></div>
+    </div>
+  </div>
+
+  <dialog id="credits" class="panel credits">
+    <h2 data-i18n="credits">Nguồn dữ liệu</h2>
+    <ul id="creditsList"></ul>
+    <p class="small" data-i18n="scale_note">Độ cao địa hình phóng ×3, nhà cửa ×2, cây cối phóng to để nhìn rõ từ xa. Nhà và cây được sinh tự động theo đường, kênh và địa hình thật — không phải từng ngôi nhà thật.</p>
+    <form method="dialog"><button class="chip" data-i18n="close">Đóng</button></form>
+  </dialog>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
