@@ -8,6 +8,22 @@
    "front": -1.1018,
    "width": 67.31,
    "depth": 24.19
+  },
+  {
+   "model": "long-xuyen-cathedral",
+   "name": "Nhà thờ Chánh tòa Long Xuyên",
+   "replaces": [
+    "Long Xuyen Cathedral"
+   ],
+   "osm_way": 674801676,
+   "x": 28946.18,
+   "y": -20810.42,
+   "front": -0.927102,
+   "width": 32.48,
+   "depth": 64.48,
+   "hideWidth": 37,
+   "hideDepth": 79,
+   "hideFront": 3
   }
  ]
 }

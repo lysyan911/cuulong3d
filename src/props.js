@@ -19,7 +19,10 @@ const HOUSE = {
   'traditional-cham-stilt': { x: 7.2, z: 8.4 },
   'traditional-rural-timber': { x: 12, z: 8.2 },
 };
-const LANDMARK = { 'long-xuyen-civic-office': { x: 36, z: 15 } };
+const LANDMARK = {
+  'long-xuyen-civic-office': { x: 36, z: 15 },
+  'long-xuyen-cathedral': { x: 32.48, z: 64.48, trueScale: true, lod: 'long-xuyen-cathedral-lod' },
+};
 const BOAT = {   // length, beam, speed (m/s)
   'open-cargo-boat': { L: 17, B: 4.8, v: 3.2 },
   'covered-cargo-boat': { L: 21, B: 5.6, v: 3.0 },
@@ -29,7 +32,7 @@ const BOAT = {   // length, beam, speed (m/s)
 
 // ---------------------------------------------------------------- model library
 class Library {
-  constructor() { this.loader = new GLTFLoader(); this.models = new Map(); }
+  constructor() { this.loader = new GLTFLoader(); this.models = new Map(); this.cathedralMaps = new Map(); }
   /** Returns the model if loaded, else starts loading it and returns null. */
   get(id) {
     const m = this.models.get(id);
@@ -42,7 +45,9 @@ class Library {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
         const original = o.geometry.clone().applyMatrix4(o.matrixWorld);
-        const g = metricUVs(original); original.dispose();
+        // Cathedral GLBs have their own baked metric UVs; preserve them and embedded maps.
+        const g = id.startsWith('long-xuyen-cathedral') ? original : metricUVs(original);
+        if (g !== original) original.dispose();
         for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv') g.deleteAttribute(k);
         if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
         const mats = Array.isArray(o.material) ? o.material : [o.material];
@@ -52,6 +57,12 @@ class Library {
       });
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
         mat.side = THREE.FrontSide;
+        // Full and far cathedral exports use identical baked maps: upload each only once.
+        if (id.startsWith('long-xuyen-cathedral') && mat.map) {
+          const shared = this.cathedralMaps.get(mat.name);
+          if (shared) { const redundant = mat.map; mat.map = shared; redundant.dispose(); }
+          else this.cathedralMaps.set(mat.name, mat.map);
+        }
         const geometry = mergeGeometries(geos); geos.forEach(g => g.dispose());
         return { geometry, material: modelPhotoMaterial(mat, id) };
       });
@@ -132,11 +143,12 @@ export class PropsLayer {
       const spec = LANDMARK[L.model];
       if (!spec) continue;
       const x = L.x, z = -L.y, y = this.terrain.heightAt(L.x, L.y) * ex;
-      const sx = L.width / spec.x, sz = L.depth / spec.z, sy = clamp(Math.sqrt(sx * sz) * 0.75, 0.9, 1.25);
+      const sx = L.width / spec.x, sz = L.depth / spec.z, sy = spec.trueScale ? 1 : clamp(Math.sqrt(sx * sz) * 0.75, 0.9, 1.25);
       // the front faces `front`; the long side runs across it
       const along = L.front + Math.PI / 2;
-      this.houses.hideInRect(x, z, -along, L.width / 2 + 6, L.depth / 2 + 6);
-      this.landmarks.push({ id: L.model, x, z, matrix: placed(x, y, z, L.front, sx, sy, sz) });
+      const hx = x + Math.cos(L.front) * (L.hideFront || 0), hz = z - Math.sin(L.front) * (L.hideFront || 0);
+      this.houses.hideInRect(hx, hz, -along, (L.hideWidth || L.width + 12) / 2, (L.hideDepth || L.depth + 12) / 2);
+      this.landmarks.push({ id: L.model, x, z, matrix: placed(x, y, z, L.front, spec.trueScale ? 1 : sx, sy, spec.trueScale ? 1 : sz) });
     }
   }
 
@@ -300,9 +312,21 @@ export class PropsLayer {
       this.lastPick.copy(p);
     }
     for (const L of this.landmarks) {
-      if (L.shown || Math.hypot(L.x - p.x, L.z - p.z, p.y) > 5000) continue;
-      const it = this.instancer(L.id, 1);
-      if (it) { it.set([L.matrix]); L.shown = true; }
+      const spec = LANDMARK[L.id], d = Math.hypot(L.x - p.x, L.z - p.z, p.y - L.matrix.elements[13]);
+      if (!spec.lod) {
+        if (L.shown || d > 5000) continue;
+        const it = this.instancer(L.id, 1);
+        if (it) { it.set([L.matrix]); L.shown = true; }
+        continue;
+      }
+      // Hysteresis avoids repeated swaps near the LOD boundary; hidden versions draw zero instances.
+      const want = d > 5000 ? null : d < 800 ? L.id : d > 1000 ? spec.lod : (L.active || spec.lod);
+      if (want === L.active) continue;
+      const it = want && this.instancer(want, 1);
+      if (want && !it) continue;   // keep the old silhouette while the next GLB loads
+      if (L.active) this.inst.get(L.active)?.set([]);
+      if (it) it.set([L.matrix]);
+      L.active = want;
     }
   }
 }

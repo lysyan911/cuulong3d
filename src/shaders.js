@@ -222,7 +222,8 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
 
         // Lowland rice parcels: raised bunds, young wet rows, green growth and golden ripening.
         // Field layout is illustrative; cropland, buildings and roads come from the cover mask.
-        float riceCover = smoothstep(0.35, 0.85, texture2D(uCrop, vGroupUv).r) * uRice * (1.0 - waterF);
+        vec3 cropS = texture2D(uCrop, vGroupUv).rgb;    // R rice (surface.py), G paved, B town density (urban.py)
+        float riceCover = smoothstep(0.35, 0.85, cropS.r) * uRice * (1.0 - waterF);
         riceCover *= 1.0 - smoothstep(12.0, 40.0, px);
         float paddyWet = 0.0, riceStage = 0.5, riceBund = 0.0;
         if (riceCover > 0.01) {
@@ -244,6 +245,20 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         diffuseColor.rgb = mix(diffuseColor.rgb, riceColour, riceCover * 0.58);
         paddyWet = riceCover * (1.0 - step(0.20, stage)) * (1.0 - bund);
         riceStage = stage; riceBund = bund;
+        }
+
+        // paved ground: concrete between the houses of a town, packed-earth yards around village houses. Replaces the
+        // satellite image there (its roof prints and shadows would lie on the ground under the 3D houses)
+        float paved = cropS.g * (1.0 - waterF) * (1.0 - riceCover) * (1.0 - hillF * 0.8);
+        float townK = smoothstep(0.15, 0.7, cropS.b);
+        if (paved > 0.01) {
+          vec3 sat = diffuseColor.rgb;
+          float gn = vnoise(P / 8.0) * 0.6 + vnoise(P / 2.3) * 0.4;
+          vec3 concrete = vec3(0.30, 0.29, 0.27) * (0.8 + 0.35 * gn);
+          vec3 earth = vec3(0.20, 0.155, 0.11) * (0.8 + 0.4 * gn);
+          vec3 groundC = mix(earth, concrete, townK);
+          float nearK = mix(0.45, 1.0, 1.0 - smoothstep(800.0, 4000.0, camDist));
+          diffuseColor.rgb = mix(sat, mix(groundC, sat, 0.2), smoothstep(0.0, 0.6, paved) * nearK);
         }
 
         // close up: ground photographs by surface, their detail laid over the satellite / rice colour
@@ -283,6 +298,8 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
             vec3 tinted = pc * dot(sat, vec3(0.2126, 0.7152, 0.0722)) / L0;
             float k = groundK * min(W, 1.0);
             diffuseColor.rgb = mix(sat, mix(detailed, tinted, 0.35), k);
+            float grey = paved * townK * 0.75;                                   // town concrete: grey, not brown dirt
+            diffuseColor.rgb = mix(diffuseColor.rgb, vec3(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722))) * vec3(1.0, 0.99, 0.96), grey);
             groundN *= k;
             groundWet = k * w[0] / W;
           }
@@ -373,5 +390,5 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
       `);
     patchCloudShadow(shader, skyUniforms());
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-ground-photos-v8';
+  material.customProgramCacheKey = () => 'cuulong-terrain-paved-v9';
 }

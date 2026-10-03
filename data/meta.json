@@ -1120,32 +1120,6 @@
   "hall"
  ],
  "house_tiles": 7,
- "credits": [
-  "Imagery: contains modified Copernicus Sentinel data 2025-2026 (Sentinel-2 L2A via Element 84 Earth Search on AWS)",
-  "Buildings: Overture Maps Foundation (ODbL), incl. OpenStreetMap, Microsoft ML Buildings and Google Open Buildings",
-  "Terrain: Copernicus GLO-30 DEM © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA (cleaned)",
-  "Tree cover: ESA WorldCover 2021 © ESA (CC BY 4.0); species are estimated by area",
-  "Boat, house and civic-building models: fan-made Blender models (web/models)",
-  "Map data © OpenStreetMap contributors (ODbL)",
-  "District boundaries: geoBoundaries / OCHA ROAP (CC BY 3.0 IGO)",
-  "Story locations: fan interpretation of Cửu Long Quái Sự Ký © Lâm Gia – Thái Bảo",
-  "Rice-field cover: ESA WorldCover 2021 © ESA (CC BY 4.0); plot divisions and crop stages are illustrative",
-  "Photo textures: brown_mud — Poly Haven (https://polyhaven.com/a/brown_mud) — CC0",
-  "Photo textures: mud_cracked_dry_03 — Poly Haven (https://polyhaven.com/a/mud_cracked_dry_03) — CC0",
-  "Photo textures: grass_ground — Poly Haven (https://polyhaven.com/a/grass_ground) — CC0",
-  "Photo textures: dirt — Poly Haven (https://polyhaven.com/a/dirt) — CC0",
-  "Photo textures: tiger_rock — Poly Haven (https://polyhaven.com/a/tiger_rock) — CC0",
-  "Photo textures: bark_willow — Poly Haven (https://polyhaven.com/a/bark_willow) — CC0",
-  "Photo textures: palm_tree_bark — Poly Haven (https://polyhaven.com/a/palm_tree_bark) — CC0",
-  "Photo textures: wooden_rough_planks — Poly Haven (https://polyhaven.com/a/wooden_rough_planks) — CC0",
-  "Photo textures: corrugated_iron — Poly Haven (https://polyhaven.com/a/corrugated_iron) — CC0",
-  "Photo textures: worn_plaster_wall — Poly Haven (https://polyhaven.com/a/worn_plaster_wall) — CC0",
-  "Photo textures: clay_roof_tiles — Poly Haven (https://polyhaven.com/a/clay_roof_tiles) — CC0",
-  "Photo textures: LeafSet024 — ambientCG (https://ambientcg.com/view?id=LeafSet024) — CC0",
-  "Photo textures: LeafSet022 — ambientCG (https://ambientcg.com/view?id=LeafSet022) — CC0",
-  "Photo textures: Foliage008 — ambientCG (https://ambientcg.com/view?id=Foliage008) — CC0",
-  "Foliage/aquatic/rice textures: illustrative adaptations of CC0 LeafSet022, LeafSet024 and Foliage008 photographs; not species-specific photographs."
- ],
  "tree_tiles": [
   [
    0,
@@ -2878,13 +2852,33 @@
   "dirt",
   "wood"
  ],
- "surface": {
-  "res_m": 20,
-  "group_px": 1344,
-  "format": "zlib RGB8: water confidence, rice cover, signed shore distance (B-128)*2 m",
-  "bank_height_m": 1.5,
-  "field_layout": "illustrative 84 x 128 m plots over lowland WorldCover cropland"
- },
+ "credits": [
+  "Imagery: contains modified Copernicus Sentinel data 2025-2026 (Sentinel-2 L2A via Element 84 Earth Search on AWS)",
+  "Buildings: Overture Maps Foundation (ODbL), incl. OpenStreetMap, Microsoft ML Buildings and Google Open Buildings",
+  "Terrain: Copernicus GLO-30 DEM © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA (cleaned)",
+  "Tree cover: ESA WorldCover 2021 © ESA (CC BY 4.0); species are estimated by area",
+  "Boat, house, civic-building and cathedral models: fan-made Blender models (web/models)",
+  "Map data © OpenStreetMap contributors (ODbL)",
+  "District boundaries: geoBoundaries / OCHA ROAP (CC BY 3.0 IGO)",
+  "Story locations: fan interpretation of Cửu Long Quái Sự Ký © Lâm Gia – Thái Bảo",
+  "Photo textures: brown_mud — Poly Haven (https://polyhaven.com/a/brown_mud) — CC0",
+  "Photo textures: mud_cracked_dry_03 — Poly Haven (https://polyhaven.com/a/mud_cracked_dry_03) — CC0",
+  "Photo textures: grass_ground — Poly Haven (https://polyhaven.com/a/grass_ground) — CC0",
+  "Photo textures: dirt — Poly Haven (https://polyhaven.com/a/dirt) — CC0",
+  "Photo textures: tiger_rock — Poly Haven (https://polyhaven.com/a/tiger_rock) — CC0",
+  "Photo textures: bark_willow — Poly Haven (https://polyhaven.com/a/bark_willow) — CC0",
+  "Photo textures: palm_tree_bark — Poly Haven (https://polyhaven.com/a/palm_tree_bark) — CC0",
+  "Photo textures: wooden_rough_planks — Poly Haven (https://polyhaven.com/a/wooden_rough_planks) — CC0",
+  "Photo textures: corrugated_iron — Poly Haven (https://polyhaven.com/a/corrugated_iron) — CC0",
+  "Photo textures: worn_plaster_wall — Poly Haven (https://polyhaven.com/a/worn_plaster_wall) — CC0",
+  "Photo textures: clay_roof_tiles — Poly Haven (https://polyhaven.com/a/clay_roof_tiles) — CC0",
+  "Photo textures: LeafSet024 — ambientCG (https://ambientcg.com/view?id=LeafSet024) — CC0",
+  "Photo textures: LeafSet022 — ambientCG (https://ambientcg.com/view?id=LeafSet022) — CC0",
+  "Photo textures: Foliage008 — ambientCG (https://ambientcg.com/view?id=Foliage008) — CC0",
+  "Foliage/aquatic/rice textures: illustrative adaptations of CC0 LeafSet022, LeafSet024 and Foliage008 photographs; not species-specific photographs.",
+  "Rice-field cover: ESA WorldCover 2021 © ESA (CC BY 4.0); plot divisions and crop stages are illustrative",
+  "Long Xuyen Cathedral: original exterior meshes and baked 1K maps; footprint OSM way 674801676 (https://www.openstreetmap.org/way/674801676, ODbL); proportions: VOV parish interview (https://vovworld.vn/discovery-vietnam/long-xuyen-cathedral-boasts-distinctive-catholic-architecture-2411274.vov5) and Mary Ann Sullivan architectural photographs (https://homepages.bluffton.edu/~sullivanm/vietnam/longxuyen/cathedral/cathedral.html). Reference photographs are not included as textures"
+ ],
  "relief": {
   "res_m": 30,
   "margin": 3,
@@ -3802,5 +3796,13 @@
     136
    ]
   ]
+ },
+ "surface": {
+  "res_m": 20,
+  "group_px": 1344,
+  "format": "zlib RGB8: water confidence, rice cover, signed shore distance (B-128)*2 m",
+  "bank_height_m": 1.5,
+  "field_layout": "illustrative 84 x 128 m plots over lowland WorldCover cropland",
+  "crop_channels": "R rice cover (surface.py), G paved ground, B town density (urban.py)"
  }
 }

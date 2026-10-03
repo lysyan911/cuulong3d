@@ -36,10 +36,14 @@
 
   <aside id="sidebar" class="panel sidebar">
     <section>
+      <h2 data-i18n="mode">Chế độ</h2>
+      <div id="mode" class="seg"></div>
+    </section>
+    <section>
       <h2 data-i18n="views">Góc nhìn</h2>
       <div id="views" class="btn-grid"></div>
     </section>
-    <section>
+    <section id="placesSection">
       <h2 data-i18n="places">Địa điểm trong truyện</h2>
       <ul id="siteList" class="site-list"></ul>
       <div class="legend">
@@ -58,7 +62,7 @@
       <div id="quality" class="seg"></div>
     </section>
     <section class="small" id="about">
-      <p data-i18n="about">Dự án của người hâm mộ, phi thương mại. Vị trí theo truyện; chỗ nào truyện khác thực tế đều có ghi chú.</p>
+      <p id="aboutText">Bản đồ 3D địa lý An Giang (trước 2025). Dự án cá nhân, phi thương mại.</p>
       <button id="creditsBtn" class="link" data-i18n="credits">Nguồn dữ liệu</button>
     </section>
   </aside>
@@ -82,7 +86,7 @@
   <dialog id="credits" class="panel credits">
     <h2 data-i18n="credits">Nguồn dữ liệu</h2>
     <ul id="creditsList"></ul>
-    <p class="small" data-i18n="scale_note">Độ cao địa hình phóng ×3, nhà cửa ×2, cây cối phóng to để nhìn rõ từ xa. Nhà và cây được sinh tự động theo đường, kênh và địa hình thật — không phải từng ngôi nhà thật.</p>
+    <p class="small" data-i18n="scale_note">Độ cao địa hình đúng tỉ lệ thật; nhà và cây ở xa phóng ×2 để nhìn rõ. Nhà và cây được sinh tự động theo đường, kênh và địa hình thật — không phải từng ngôi nhà thật.</p>
     <form method="dialog"><button class="chip" data-i18n="close">Đóng</button></form>
   </dialog>
 </div>

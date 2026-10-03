@@ -1,9 +1,17 @@
 // Sidebar, info panel, language toggle, credits, loading screen.
 import { MATCH_COLORS, escapeHtml } from './overlays.js';
 
+// Study mode (default) hides everything from the novel; Novel mode (for fans) shows the story places and notes.
+export const NOVEL_LAYERS = ['sites', 'route', 'rings'];
+const NOVEL_VIEWS = ['sites'];
+const isStoryCredit = (c) => /novel|fan interpretation|Cửu Long Quái/i.test(c);
+
 const T = {
   vi: {
     title: 'Dự án Cửu Long', subtitle: 'Bản đồ 3D Bảy Núi – An Giang (trước 2025)',
+    mode: 'Chế độ', modes: { study: 'Học tập', novel: 'Truyện' },
+    modeNote: { study: 'Bản đồ địa lý thuần: không có chi tiết từ tiểu thuyết.', novel: 'Dành cho người hâm mộ: hiện các địa điểm trong truyện Cửu Long Quái Sự Ký và ghi chú so với thực tế.' },
+    about_study: 'Bản đồ 3D địa lý An Giang (trước 2025): địa hình, sông kênh, rừng, ruộng lúa, làng và đô thị. Dự án cá nhân, phi thương mại.',
     views: 'Góc nhìn', places: 'Địa điểm trong truyện', layers: 'Lớp hiển thị', quality: 'Chất lượng hình ảnh',
     qualityModes: { fast: 'Nhanh', good: 'Đẹp', cinematic: 'Điện ảnh' },
     qualityNote: 'Điện ảnh: bóng nắng sắc nét, che khuất ánh sáng đầy đủ — dành cho cận cảnh, máy mạnh.', credits: 'Nguồn dữ liệu', close: 'Đóng',
@@ -11,7 +19,7 @@ const T = {
     m_road_note: 'Ghi chú đường', m_conflict: 'Truyện khác thực tế',
     about: 'Dự án của người hâm mộ, phi thương mại. Vị trí đặt theo truyện; chỗ nào truyện khác thực tế đều có ghi chú.',
     hint: 'Kéo để di chuyển · Chuột phải / hai ngón để xoay · Cuộn để phóng to · Bấm vào địa điểm để đọc',
-    scale_note: 'Ảnh vệ tinh Sentinel-2 (10 m) chụp mùa khô 2025. Nhà cửa là dấu chân công trình thật (Overture Maps), kiểu nhà và chiều cao ước tính. Cây mọc đúng nơi có tán cây thật (ESA WorldCover 2021), loài cây ước tính theo vùng. Trà Sư có lớp rừng ngập nước dựng theo ảnh tham khảo; kênh, cầu, mực nước và vị trí động vật chỉ minh họa. Độ cao địa hình phóng ×3; nhà và cây ở xa phóng ×2 để dễ nhìn.',
+    scale_note: 'Ảnh vệ tinh Sentinel-2 (10 m) chụp mùa khô 2025. Nhà cửa là dấu chân công trình thật (Overture Maps), kiểu nhà và chiều cao ước tính. Cây mọc đúng nơi có tán cây thật (ESA WorldCover 2021), loài cây ước tính theo vùng. Trà Sư có lớp rừng ngập nước dựng theo ảnh tham khảo; kênh, cầu, mực nước và vị trí động vật chỉ minh họa. Độ cao địa hình đúng tỉ lệ thật; nhà và cây ở xa phóng ×2 để dễ nhìn.',
     canon: 'Theo truyện', reality: 'Thực tế', invented: 'Chi tiết hư cấu', fly: 'Bay tới', osm: 'Xem trên OpenStreetMap',
     uncertain: (m) => `Vị trí ước đoán, sai số khoảng ±${m >= 1000 ? (m / 1000).toLocaleString('vi') + ' km' : m + ' m'}`,
     lm_note: 'Công trình có thật (theo OpenStreetMap). Mô hình chỉ mang tính minh họa.',
@@ -26,6 +34,9 @@ const T = {
   },
   en: {
     title: 'Cửu Long Project', subtitle: '3D map of Bảy Núi – An Giang (pre-2025)',
+    mode: 'Mode', modes: { study: 'Study', novel: 'Novel' },
+    modeNote: { study: 'Pure geography: nothing from the novel.', novel: 'For fans: shows the places of the novel Cửu Long Quái Sự Ký and how they compare with reality.' },
+    about_study: '3D geography of An Giang (pre-2025): terrain, rivers and canals, forests, rice fields, villages and towns. Personal, non-commercial project.',
     views: 'Views', places: 'Places in the story', layers: 'Layers', quality: 'Picture quality',
     qualityModes: { fast: 'Fast', good: 'Good', cinematic: 'Cinematic' },
     qualityNote: 'Cinematic: sharp sun shadows and full ambient occlusion, for close-ups on a strong computer.', credits: 'Data sources', close: 'Close',
@@ -33,7 +44,7 @@ const T = {
     m_road_note: 'Road note', m_conflict: 'Story differs from reality',
     about: 'Non-commercial fan project. Places sit where the novel puts them; conflicts with reality are noted.',
     hint: 'Drag to pan · Right-drag / two fingers to rotate · Scroll to zoom · Click a place to read about it',
-    scale_note: 'Sentinel-2 satellite imagery (10 m), dry season 2025. Buildings are real footprints (Overture Maps); house types and heights are estimated. Trees stand where real tree cover is (ESA WorldCover 2021); species are estimated by area. Trà Sư has a reference-based flooded forest; internal channels, boardwalk, water level and wildlife positions are illustrative. Terrain heights ×3; distant houses and trees ×2 so they read on the map.',
+    scale_note: 'Sentinel-2 satellite imagery (10 m), dry season 2025. Buildings are real footprints (Overture Maps); house types and heights are estimated. Trees stand where real tree cover is (ESA WorldCover 2021); species are estimated by area. Trà Sư has a reference-based flooded forest; internal channels, boardwalk, water level and wildlife positions are illustrative. Terrain heights at true scale; distant houses and trees ×2 so they read on the map.',
     canon: 'In the novel', reality: 'In reality', invented: 'Invented details', fly: 'Fly here', osm: 'Open in OpenStreetMap',
     uncertain: (m) => `Estimated position, about ±${m >= 1000 ? m / 1000 + ' km' : m + ' m'}`,
     lm_note: 'Real building (from OpenStreetMap). The model is illustrative only.',
@@ -49,9 +60,11 @@ const T = {
 };
 
 export class UI {
-  constructor({ credits, onView, onSite, onLayer, onLang }) {
+  constructor({ credits, onView, onSite, onLayer, onLang, onMode, onQuality }) {
     this.lang = 'vi';
-    this.cb = { onView, onSite, onLayer, onLang };
+    this.cb = { onView, onSite, onLayer, onLang, onMode, onQuality };
+    this.mode = 'study';
+    try { if (localStorage.getItem('cuulong-mode') === 'novel') this.mode = 'novel'; } catch { /* private mode */ }
     this.credits = credits;
     this.$ = (id) => document.getElementById(id);
     this.$('langBtn').onclick = () => this.setLang(this.lang === 'vi' ? 'en' : 'vi');
@@ -85,9 +98,27 @@ export class UI {
     }
     this.$('langBtn').textContent = this.lang === 'vi' ? 'EN' : 'VI';
 
+    const novel = this.mode === 'novel';
+    const mode = this.$('mode');
+    mode.innerHTML = '';
+    for (const id of ['study', 'novel']) {
+      const b = document.createElement('button');
+      b.textContent = T[this.lang].modes[id];
+      b.className = this.mode === id ? 'on' : '';
+      b.onclick = () => this.setMode(id);
+      mode.append(b);
+    }
+    const mnote = document.createElement('p');
+    mnote.className = 'seg-note';
+    mnote.textContent = T[this.lang].modeNote[this.mode];
+    mode.append(mnote);
+    this.$('placesSection').hidden = !novel;
+    this.$('aboutText').textContent = this.t(novel ? 'about' : 'about_study');
+
     const views = this.$('views');
     views.innerHTML = '';
     for (const id of Object.keys(this.views)) {
+      if (!novel && NOVEL_VIEWS.includes(id)) continue;
       const b = document.createElement('button');
       b.textContent = T[this.lang].view[id] || id;
       b.onclick = () => { this.cb.onView(id); this.$('sidebar').classList.remove('open'); };
@@ -109,6 +140,7 @@ export class UI {
     const layers = this.$('layers');
     layers.innerHTML = '';
     for (const l of this.layerNames) {
+      if (!novel && NOVEL_LAYERS.includes(l)) continue;
       const lab = document.createElement('label');
       const cb = document.createElement('input');
       cb.type = 'checkbox';
@@ -134,8 +166,18 @@ export class UI {
       q.append(note);
     }
 
-    this.$('creditsList').innerHTML = this.credits.map((c) => `<li>${escapeHtml(c)}</li>`).join('');
+    this.$('creditsList').innerHTML = this.credits.filter((c) => novel || !isStoryCredit(c)).map((c) => `<li>${escapeHtml(c)}</li>`).join('');
     if (this.current) this.current.kind === 'site' ? this.showSite(this.current.item) : this.showLandmark(this.current.item);
+  }
+
+  /** 'study' (default: no novel content) or 'novel' (story places, route, notes). */
+  setMode(mode) {
+    if (mode === this.mode) return;
+    this.mode = mode;
+    try { localStorage.setItem('cuulong-mode', mode); } catch { /* ignore */ }
+    if (mode === 'study' && this.current && this.current.kind === 'site') this.hideInfo();
+    this.render();
+    this.cb.onMode?.(mode);
   }
 
   setLang(lang) {

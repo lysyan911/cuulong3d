@@ -12,9 +12,10 @@ import { RoadLayer, buildLandmarks } from './world.js';
 import { TreeLayer } from './trees.js';
 import { HouseLayer } from './houses.js';
 import { Road3DLayer } from './roads3d.js';
+import { StreetFurniture } from './streets.js';
 import { PropsLayer } from './props.js';
 import { Overlays } from './overlays.js';
-import { UI } from './ui.js';
+import { UI, NOVEL_LAYERS } from './ui.js';
 import { photoInventory } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
 import { skyMaterial, cloudUniforms, installAerialHaze } from './render/atmosphere.js';
@@ -50,7 +51,7 @@ async function main() {
   const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 5, 700000);
   const controls = new MapControls(camera, renderer.domElement);
   Object.assign(controls, { enableDamping: true, dampingFactor: 0.08, screenSpacePanning: false, maxPolarAngle: 1.54,
-                            minDistance: 120, maxDistance: 320000, zoomToCursor: true });
+                            minDistance: 25, maxDistance: 320000, zoomToCursor: true });
 
   // ---------------------------------------------------------------- sky, sun, haze (render/atmosphere.js)
   // Afternoon sun from the south-west; one drifting cloud layer that both fills the sky and shades the ground.
@@ -89,6 +90,7 @@ async function main() {
     onSite: (s) => { track(`site-${s.id}`); openSite(s, true); },
     onLayer: (name, on) => { track(`layer-${name}-${on ? 'on' : 'off'}`); if (name === 'paddies') shared.uRice.value = on ? 1 : 0; if (layers[name]) for (const o of [].concat(layers[name])) o.visible = on; },
     onLang: (lang) => { track(`lang-${lang}`); overlays.setLanguage(lang); },
+    onMode: (m) => { track(`mode-${m}`); applyMode(); },
     onQuality: (q) => { track(`quality-${q}`); quality = q; try { localStorage.setItem('cuulong-quality', q); } catch { /* ignore */ } pipeline.setMode(q); },
   });
   ui.loading('meta', 0.02);
@@ -163,18 +165,20 @@ async function main() {
   overlays.addLabels(villageLabels, 'villages');
   for (const g of Object.values(overlays.layers)) scene.add(g);
 
-  const lm = buildLandmarks(landmarks, meta);
+  const heroData = await getJSON('props.json').catch(() => ({ heroes: [] }));
+  const lm = buildLandmarks(landmarks, meta, heroData.heroes);
   scene.add(lm);
 
   // ---------------------------------------------------------------- trees, real buildings, roads (per group)
   const trees = new TreeLayer(meta, terrain, shared, { dataUrl: DATA, nearR: QUALITY.treeNear, farR: QUALITY.treeDist });
   const buildings = new HouseLayer(meta, QUALITY.buildingDist, QUALITY.houseNear, terrain);
   const roads = new RoadLayer(meta, QUALITY.roadScale, QUALITY.roadRibbon);
-  const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon });
+  const streets = new StreetFurniture(trees);   // poles, cables, lamps, street trees, motorbikes, food stalls
+  const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon, streets });
   roads.group.add(roads3d.group);          // the Roads layer switch covers both
   const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150 });
   const trasu = wetland ? new TraSuLayer(wetland, terrain, shared, { mobile: MOBILE }) : null;
-  scene.add(trees.group, buildings.group, roads.group, paddies.group);
+  scene.add(trees.group, buildings.group, roads.group, paddies.group, streets.group);
   if (trasu) scene.add(trasu.group);
   const props = new PropsLayer(meta, terrain, buildings, shared, MOBILE ? { heroR: 180, heroCap: 20, boatR: 1500, boatCap: 80 } : {});
   scene.add(props.group, props.boatGroup);
@@ -187,9 +191,9 @@ async function main() {
       ui.loading('houses', 0.65 + 0.33 * (++loaded / keys.length)));
   }));
 
-  props.setLandmarks((await getJSON('props.json').catch(() => ({ heroes: [] }))).heroes);
+  props.setLandmarks(heroData.heroes);
   Object.assign(layers, { sites: overlays.layers.sites, route: overlays.layers.route, rings: overlays.layers.rings,
-                          labels: overlays.layers.labels, villages: overlays.layers.villages, roads: roads.group,
+                          labels: overlays.layers.labels, villages: overlays.layers.villages, roads: [roads.group, streets.group],
                           buildings: [buildings.group, props.group], boats: props.boatGroup, trees: trees.group, landmarks: lm,
                           boundaries: overlays.layers.boundaries, paddies: paddies.group });
 
@@ -220,6 +224,11 @@ async function main() {
     layers.landmarks = [lm, trasu.boardwalk];
   }
   ui.build({ views, sites: sites.sites, layers: Object.keys(layers) });
+  // study mode hides the novel's layers; novel mode restores them to their switches
+  function applyMode() {
+    for (const l of NOVEL_LAYERS) if (layers[l]) for (const o of [].concat(layers[l])) o.visible = ui.mode === 'novel' && ui.layerState[l];
+  }
+  applyMode();
 
   let flight = null;
   // tall (portrait) screens need to stand further back to fit the same area
@@ -273,7 +282,7 @@ async function main() {
   const start = fit(views.overview);
   camera.position.copy(start.pos);
   controls.target.copy(start.target);
-  if (site[startSite]) openSite(site[startSite], true);
+  if (site[startSite]) { ui.setMode('novel'); openSite(site[startSite], true); }   // shared story links open in novel mode
   await pipeline.setMode(quality);
   ui.quality = quality;
   ui.render();
@@ -329,8 +338,8 @@ async function main() {
     scene.fog.density = underCanopy ? 0.0035 : HAZE;
     // stay above the ground
     const inWetland = wetland && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
-    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 40);
-    controls.minDistance = inWetland ? 18 : 120;
+    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 8);   // street-level views allowed
+    controls.minDistance = inWetland ? 18 : 25;
     const nearPlane = inWetland ? .35 : 5;
     if (camera.near !== nearPlane) { camera.near = nearPlane; camera.updateProjectionMatrix(); }
     if (camera.position.y < g) camera.position.y = g;

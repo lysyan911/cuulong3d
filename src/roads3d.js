@@ -1,19 +1,20 @@
 // 3D roads: OSM roads as real-width ribbons draped on the terrain, shaped like Mekong delta roads.
 //
-//   cross-section  sloped grassy embankment | shoulder (towns: paved sidewalk) | road | shoulder | embankment
+//   cross-section  sloped grassy embankment | shoulder (towns: raised tiled sidewalk behind a kerb) | road | ...
 //                  rural roads sit on dykes (higher beside canals), highways on tall embankments, town streets at grade
 //   surfaces       asphalt with white edge lines and a dashed centre line (double yellow + lane lines on 4 lanes);
 //                  rural concrete roads in slabs with joints; dirt tracks with wheel ruts; wooden footbridges
 //   bridges        arched decks over canals (flat-topped for long spans), railings, pier walls down to the water
 // Ribbons are built per 3.84 km terrain tile near the camera (scripts/roads.py writes the polylines); beyond ~4 km
-// the hybrid-map lines (world.js RoadLayer) fade back in.
+// the hybrid-map lines (world.js RoadLayer) fade back in. Town streets also get their street life (streets.js).
 import * as THREE from 'three';
 import { groupCentre } from './world.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const ASPHALT = 0, WOOD = 3;          // surfaces: 0 asphalt, 1 concrete, 2 dirt, 3 wood
 const BRIDGE = 1, TOWN = 2, DYKE = 4;
-const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5 };
+const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6 };
+const KERB = 0.18;                     // town sidewalks stand this much above the street
 
 /** Embankment height (m) above the fields by class (0 motorway .. 8 path) and flags. */
 function embankment(cls, flags) {
@@ -95,8 +96,13 @@ const FRAG_COLOR = /* glsl */`
   } else if (part == 1) {                                                  // grass / dirt shoulder
     col = mix(sRGBr(vec3(0.44, 0.40, 0.29)), sRGBr(vec3(0.33, 0.40, 0.2)), n1) * (0.85 + 0.15 * n2);
   } else if (part == 5) {                                                  // town sidewalk: paving tiles
-    col = sRGBr(vec3(0.62, 0.55, 0.5)) * (0.88 + 0.12 * rHash(floor(vec2(along, ac) / 0.4)));
+    float kind = rHash(vec2(floor(along / 60.0), sign(ac)));               // tile colours change along the street
+    vec3 tileC = kind < 0.4 ? vec3(0.62, 0.42, 0.36) : kind < 0.75 ? vec3(0.62, 0.58, 0.52) : vec3(0.68, 0.6, 0.42);
+    col = sRGBr(tileC) * (0.86 + 0.14 * rHash(floor(vec2(along, ac) / 0.4)));
     col *= 1.0 - 0.3 * max(stripe(fract(along / 0.4) * 0.4, 0.0, 0.01, pa), stripe(fract(ac / 0.4) * 0.4, 0.0, 0.01, pc)) * vis;
+    col *= 0.8 + 0.2 * smoothstep(0.2, 0.7, rNoise(vec2(along, ac) * 0.35));   // grime and wet patches
+  } else if (part == 6) {                                                  // kerb stones
+    col = sRGBr(vec3(0.72, 0.71, 0.68)) * (0.85 + 0.15 * rHash(vec2(floor(along / 1.0), 3.0)));
   } else if (part == 2) {                                                  // grassy embankment
     col = sRGBr(vec3(0.3, 0.4, 0.17)) * (0.72 + 0.35 * n1 + 0.1 * n2);
   } else if (part == 3) {                                                  // railing
@@ -130,8 +136,9 @@ function roadMaterial(uniforms) {
 }
 
 export class Road3DLayer {
-  /** terrain: ground heights; farR: ribbons within this distance (m). */
-  constructor(meta, terrain, { farR = 4000 } = {}) {
+  /** terrain: ground heights; farR: ribbons within this distance (m); streets: optional StreetFurniture. */
+  constructor(meta, terrain, { farR = 4000, streets = null } = {}) {
+    this.streets = streets;
     this.meta = meta;
     this.terrain = terrain;
     this.farR = farR;
@@ -174,7 +181,7 @@ export class Road3DLayer {
 
   build(T) {
     const D = T.data, ex = this.meta.vert_exag;
-    const pos = [], uv = [], info = [], idx = [];
+    const pos = [], uv = [], info = [], idx = [], townRoads = [];
     let v = 0;
     const vert = (x, y, yN, along, across, hw, surf, lanes, part) => {
       pos.push(x, y, -yN); uv.push(along, across); info.push(hw, surf, lanes, part);
@@ -215,7 +222,8 @@ export class Road3DLayer {
         });
       }
       const e = bridge ? 0 : embankment(cl, fl);
-      const sh = bridge ? 0.25 : town ? (cl <= 5 ? 2.0 : 0.3) : cl <= 4 ? 1.0 : 0.4;
+      const street = town && !bridge;
+      const sh = bridge ? 0.25 : street ? (cl <= 3 ? 3.5 : cl <= 5 ? 2.6 : cl <= 6 ? 1.3 : 0.3) : cl <= 4 ? 1.0 : 0.4;
       const run = bridge ? 0 : Math.max(e * 1.7, 0.3);
       const offs = [-(hw + sh + run), -(hw + sh), -hw, hw, hw + sh, hw + sh + run];
       const rise = [0, e, e, e, e, 0];
@@ -228,13 +236,30 @@ export class Road3DLayer {
         for (let k = 0; k < 5; k++) {                // 5 strips, own vertices each so every part keeps its colour
           if (bridge && (k === 0 || k === 4)) continue;
           for (const j of [k, k + 1]) {
-            const yy = bridge ? yTop : yTop + rise[j];
+            // town: street just above the ground, sidewalks a kerb higher, outer edge back down to the ground
+            const yy = bridge ? yTop : !street ? yTop + rise[j] : k === 2 ? yTop + 0.06 : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
             row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, lanes, parts[k]));
           }
         }
         if (prev) for (let k = 0; k < row.length; k += 2) strip([prev[k], prev[k + 1]], [row[k], row[k + 1]]);
         prev = row;
       }
+      if (street) {
+        // kerb faces between the street and the sidewalks
+        for (const sd of [-1, 1]) {
+          let pr = null;
+          for (let i = 0; i < np; i++) {
+            const [x, y] = P[i], [nx, ny] = N[i], o = sd * hw;
+            const r = [vert(x + nx * o, ground[i] + 0.06, y + ny * o, S[i], o, hw, surf, 0, PART.kerb),
+                       vert(x + nx * o, ground[i] + 0.06 + KERB, y + ny * o, S[i], o, hw, surf, 0, PART.kerb)];
+            if (pr) strip(pr, r);
+            pr = r;
+          }
+        }
+        townRoads.push({ P, S, N, hw, sh, cl, y: ground.map((g) => g + 0.06 + KERB) });
+      }
+      // country roads: power lines run along most of them (on the shoulder)
+      if (!town && !bridge && cl >= 3 && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, rural: true, y: ground.map((g) => g + e) });
       if (bridge) {
         // railings both sides, pier walls every ~15 m
         for (const sd of [-1, 1]) {
@@ -277,6 +302,10 @@ export class Road3DLayer {
     g.computeBoundingSphere();
     const m = new THREE.Mesh(g, this.material);
     m.raycast = () => {};
+    if (this.streets && townRoads.length) {
+      T.furn = this.streets.build(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200));
+      if (T.furn) this.streets.group.add(T.furn);
+    }
     return m;
   }
 
@@ -293,7 +322,9 @@ export class Road3DLayer {
         this.group.remove(T.mesh);
         T.mesh.geometry.dispose();
         T.mesh = null;
+        if (T.furn) { this.streets.dispose(T.furn); T.furn = null; }
       }
+      if (T.furn) T.furn.visible = d < 1400;
     }
   }
 }

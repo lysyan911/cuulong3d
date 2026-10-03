@@ -117,13 +117,14 @@ export class RoadLayer extends GroupLayer {
 
 // ---------------------------------------------------------------- landmarks
 /** Places of worship: one InstancedMesh per kind; userData.items maps instanceId -> landmark record. */
-export function buildLandmarks(list, meta) {
+export function buildLandmarks(list, meta, heroes = []) {
   const models = landmarkModels(meta.building_exag);
   const group = new THREE.Group();
   group.name = 'landmarks';
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.8 });
   const byKind = {};
-  for (const L of list) (byKind[L.kind] ||= []).push(L);
+  const replaced = new Set(heroes.flatMap(L => L.replaces || []));
+  for (const L of list) if (!replaced.has(L.name)) (byKind[L.kind] ||= []).push(L);
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), y = new THREE.Vector3(0, 1, 0);
   for (const [kind, items] of Object.entries(byKind)) {
     const im = new THREE.InstancedMesh(models[kind], mat, items.length);

@@ -224,6 +224,11 @@ uniform sampler2D uPhotoTin, uPhotoTiles, uPhotoPlaster, uPhotoWood;
 vec3 photoDetail(sampler2D image, vec2 uv, vec3 average) {
   return mix(vec3(1.), clamp(texture2D(image, uv).rgb / average, vec3(.35), vec3(2.)), vPhotoFade);
 }
+// gentler version for large plain surfaces (painted walls): the stains of the photo would read as camouflage
+vec3 photoDetailSoft(sampler2D image, vec2 uv, vec3 average) {
+  vec3 r = clamp(texture2D(image, uv).rgb / average, vec3(.6), vec3(1.5));
+  return mix(vec3(1.), mix(vec3(dot(r, vec3(.333))), r, .3), vPhotoFade * .28);
+}
 #endif
 
 varying float vFace;
@@ -237,6 +242,16 @@ float hHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453)
 float hNoise(vec2 p) {
   vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
   return mix(mix(hHash(i), hHash(i + vec2(1, 0)), f.x), mix(hHash(i + vec2(0, 1)), hHash(i + vec2(1, 1)), f.x), f.y);
+}
+// window glass: dark room behind, the sky reflected more towards the top, aluminium (or old wooden) frames
+vec3 glassLook(float x, float y, float halfH, float paneW, vec3 tint, float seed, float px, float py) {
+  vec3 g = mix(tint * 0.55, vec3(0.30, 0.37, 0.44), 0.3 + 0.45 * smoothstep(-halfH, halfH, y));
+  float fx = abs(fract(x / paneW) - 0.5) * paneW, fy = abs(y);
+  float frame = max(1.0 - smoothstep(paneW * 0.5 - 0.05 - px, paneW * 0.5 - 0.05, fx),
+                    (1.0 - smoothstep(0.025, 0.025 + py, fy)) * step(0.6, halfH));
+  frame = max(frame, smoothstep(halfH - 0.06 - py, halfH - 0.06, fy));
+  vec3 fc = fract(seed * 4.7) < 0.7 ? vec3(0.62, 0.63, 0.63) : vec3(0.22, 0.15, 0.1);
+  return mix(g, fc, frame);
 }
 // anti-aliased rectangle centred at 0 with half sizes hx, hy
 float hBox(float x, float y, float hx, float hy, float px, float py) {
@@ -310,7 +325,7 @@ const FRAG_COLOR = /* glsl */`
 #ifdef NEAR
     vec2 wallUV = vec2(al, hh) / 2.0 + seed * vec2(17.13,31.7);
     col *= wood ? photoDetail(uPhotoWood, wallUV, vec3(.166,.148,.036))
-                : photoDetail(uPhotoPlaster, wallUV, vec3(.186,.158,.112));
+                : photoDetailSoft(uPhotoPlaster, wallUV * 0.5, vec3(.186,.158,.112));
 #endif
     bool party = isTube && (face == 2 || face == 1);         // tube houses: bare concrete side walls
     if (party) col = mix(col, sRGB(vec3(0.6, 0.58, 0.55)), 0.7) * (0.85 + 0.2 * hNoise(vec2(al, hh) * 0.4));
@@ -320,17 +335,49 @@ const FRAG_COLOR = /* glsl */`
     float m = 0.0;
     vec3 mc = glass;
     if ((face <= 2 || face == 8) && !party && hh > 0.0) {
-      if (face == 0 && isTube) {
+      bool shop = face == 0 && fl < 0.5 && (isTube || (isBlock && fract(seed * 3.3) < 0.5));
+      if (shop) {
+        // ground-floor shop: open front with goods on shelves, a roll-up shutter or a glass front, signboard above
+        float sk = fract(seed * 5.31);
+        m = hBox(al, hh - 1.3, fw * 0.5 - 0.2, 1.3, pa, ph);
+        if (sk < 0.55) {
+          vec2 cell = floor(vec2(al / 0.35, hh / 0.42));
+          float g = hHash(cell + seed * 91.0), shelf = step(0.25, fract(hh / 0.42));
+          vec3 goods = sRGB(vec3(0.35 + 0.55 * g, 0.25 + 0.6 * fract(g * 7.1), 0.15 + 0.7 * fract(g * 13.7)));
+          mc = mix(sRGB(vec3(0.07, 0.065, 0.06)), goods, shelf * step(0.35, g) * (1.0 - smoothstep(0.0, 0.6, hh - 2.0)) * 0.55);
+          mc = mix(mc, sRGB(vec3(0.42, 0.4, 0.37)), 1.0 - smoothstep(0.0, 0.08, hh));             // floor tiles
+        } else if (sk < 0.85) {
+          mc = sRGB(vec3(0.44, 0.46, 0.47)) * (0.82 + 0.18 * step(0.5, fract(hh / 0.1)));      // roll-up shutter
+        } else {
+          mc = mix(sRGB(vec3(0.12, 0.16, 0.19)), sRGB(vec3(0.5, 0.58, 0.62)), 0.25 * smoothstep(0.0, 2.6, hh));   // glass
+        }
+        if (fract(seed * 9.7) < 0.75) {
+          float sy = hh - 3.0, sb = hBox(al, sy, fw * 0.5 - 0.05, 0.32, pa, ph);
+          float pc = fract(seed * 2.17);
+          vec3 board = pc < 0.3 ? vec3(0.78, 0.1, 0.08) : pc < 0.5 ? vec3(0.95, 0.78, 0.15)
+                     : pc < 0.7 ? vec3(0.1, 0.3, 0.68) : pc < 0.85 ? vec3(0.93, 0.93, 0.9) : vec3(0.1, 0.48, 0.25);
+          vec3 ink = pc < 0.3 || pc > 0.85 ? vec3(0.98, 0.95, 0.6) : pc < 0.5 ? vec3(0.75, 0.08, 0.06)
+                   : pc < 0.7 ? vec3(0.97) : vec3(0.8, 0.1, 0.08);
+          float letter = step(0.3, hHash(vec2(floor(al / 0.2), seed * 37.0))) * hBox(mod(al, 0.2) - 0.1, sy + 0.02, 0.07, 0.12, pa, ph)
+                       * step(abs(al), fw * 0.5 - 0.5);
+          vec3 bc = mix(sRGB(board), sRGB(ink), letter);
+          mc = mix(mc, bc, sb);
+          m = max(m, sb);
+        }
+      } else if (face == 0 && isTube) {
         if (fl < 0.5) { m = hBox(al, hh - 1.45, fw * 0.5 - 0.35, 1.45, pa, ph);               // roll-up shutter
                         mc = sRGB(vec3(0.42, 0.44, 0.45)) * (0.85 + 0.15 * step(0.5, fract(hh / 0.12))); }
-        else { m = hBox(al, fy - 1.75, fw * 0.5 - 0.5, 0.75, pa, ph);                          // window band
-               float rail = hBox(al, fy - 0.95, fw * 0.5 - 0.3, 0.05, pa, ph);
-               mc = mix(glass, sRGB(vec3(0.85)), rail); m = max(m, rail); }
+        else { m = hBox(al, fy - 1.6, fw * 0.5 - 0.5, 0.95, pa, ph);                           // glass doors to the balcony
+               mc = glassLook(al, fy - 1.6, 0.95, max((fw - 1.0) / max(floor((fw - 1.0) / 0.9), 1.0), 0.5), glass, seed, pa, ph);
+               float rail = hBox(al, fy - 0.95, fw * 0.5 - 0.3, 0.05, pa, ph)
+                          + hBox(al, fy - 0.55, fw * 0.5 - 0.3, 0.4, pa, ph) * step(0.5, fract(al / 0.12)) * 0.8;
+               mc = mix(mc, sRGB(vec3(0.82, 0.82, 0.8)), min(rail, 1.0)); m = max(m, min(rail, 1.0)); }
       } else if (face != 8) {
         float n = max(1.0, floor(fw / (isBlock ? 2.6 : 3.2)));
         float cell = fw / n;
         float ax = mod(al + fw * 0.5, cell) - cell * 0.5;
         m = hBox(ax, fy - 1.65, isBlock ? 0.8 : 0.55, 0.6, pa, ph);
+        mc = glassLook(ax, fy - 1.65, 0.6, isBlock ? 0.8 : 0.55, glass, seed, pa, ph);
         if (face == 0 && fl < 0.5) {                                                          // front door
           float door = hBox(al, hh - 1.15, isBlock ? 1.4 : 0.85, 1.15, pa, ph);
           mc = mix(mc, seed < 0.5 ? sRGB(vec3(0.3, 0.2, 0.13)) : sRGB(vec3(0.18, 0.3, 0.42)), door);
