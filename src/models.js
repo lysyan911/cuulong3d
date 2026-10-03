@@ -1,5 +1,5 @@
-// Low-poly models built in code (no downloads), flat-shaded with vertex colours.
-// Sizes follow the Blender scene: trees map-scale (height x3, crown ~x2.5), landmarks height x2. Y is up.
+// Low-poly landmark models built in code (no downloads), flat-shaded with vertex colours.
+// Landmarks height x2. Y is up. (Trees: trees.js, houses: houses.js.)
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
@@ -41,20 +41,6 @@ function gable(w, d, rise, y0, overhang = 0.6) {
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   g.setAttribute('uv', new THREE.Float32BufferAttribute(new Array((pos.length / 3) * 2).fill(0), 2));
   return g;
-}
-
-// ---------------------------------------------------------------- trees (ids = species in the data)
-export function treeModels() {
-  const bark = lin(0.09, 0.07, 0.05), paleBark = lin(0.30, 0.27, 0.22);
-  return [
-    /* 0 broadleaf */ finish([part(cyl(1.5, 22, 0), bark), part(blob(10, 31), lin(0.035, 0.085, 0.025), { sy: 1.4 })]),
-    /* 1 tram      */ finish([part(cyl(0.8, 42, 0), paleBark), part(blob(4.5, 47), lin(0.065, 0.10, 0.05), { sy: 3.0 })]),
-    /* 2 coconut   */ finish([part(cyl(0.7, 44, 0), bark), part(cone(11, 1.5, 5, 41.5), lin(0.075, 0.14, 0.03))]),
-    /* 3 areca     */ finish([part(cyl(0.45, 50, 0), bark), part(cone(5, 0.8, 6, 47), lin(0.06, 0.13, 0.03))]),
-    /* 4 fruit     */ finish([part(cyl(1.2, 9, 0), bark), part(blob(9, 16), lin(0.04, 0.11, 0.025), { sy: 0.9 })]),
-    /* 5 bamboo    */ finish([part(cyl(1.0, 6, 0), bark), part(cone(3, 9, 34, 5), lin(0.11, 0.17, 0.04))]),
-    /* 6 thot_not  */ finish([part(cyl(0.9, 62, 0), bark), part(blob(7, 66), lin(0.07, 0.12, 0.035), { sy: 0.85 })]),
-  ];
 }
 
 // ---------------------------------------------------------------- landmarks (places of worship)

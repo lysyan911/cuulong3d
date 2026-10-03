@@ -1,17 +1,39 @@
 // Chunked terrain: 64x64-cell tiles (60 m cells), each tile picks a level of detail from its
 // distance to the camera (step 1, 2, 4, 8, 16 cells). Skirts hide cracks between LODs.
+// Heights are bicubic (no creases along the 60 m grid). Hill tiles (Bảy Núi, Núi Sam, Ba Thê) use the 30 m DEM
+// (relief/*.bin.z) plus fine roughness on steep ground, and get finer meshes (15 m close up) at larger distances.
 // Imagery: 20 m texture per 26.9 km group always; near the camera, 10 m "detail" sub-tiles (imagery + water)
 // are loaded on demand and the least recently used ones are released (GPU memory on integrated graphics).
 import * as THREE from 'three';
 import { patchTerrainMaterial } from './shaders.js';
+import { splitShore } from './shore.js';
 
 const MAX_LOD = 4;
 const REBUILDS_PER_FRAME = 10;
 const DETAIL_LOD = 1;            // tiles at LOD <= this use 10 m detail textures
+const HILL_RANGE = 40;           // metres of relief that make a tile a "hill tile" (finer mesh)
+const HILL_STEP = [1 / 3, 2 / 3, 1, 2, 4];   // hill tile vertex spacing per LOD, in 60 m cells (20 m close up)
+const BUILD_MS = 10;             // terrain rebuild budget per frame
+
+// Catmull-Rom weights: C1-smooth and passes through the samples (keeps peaks)
+function crw(t, w) {
+  const t2 = t * t, t3 = t2 * t;
+  w[0] = (-t3 + 2 * t2 - t) / 2; w[1] = (3 * t3 - 5 * t2 + 2) / 2; w[2] = (-3 * t3 + 4 * t2 + t) / 2; w[3] = (t3 - t2) / 2;
+}
+const WU = new Float64Array(4), WV = new Float64Array(4);
+// value noise for fine roughness (deterministic, so houses and trees sit on the same ground)
+function hash2(x, y) { let h = Math.imul(x, 374761393) ^ Math.imul(y, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vnoise(x, y) {
+  const i = Math.floor(x), j = Math.floor(y), u = x - i, v = y - j, su = u * u * (3 - 2 * u), sv = v * v * (3 - 2 * v);
+  const a = hash2(i, j), b = hash2(i + 1, j), c = hash2(i, j + 1), d = hash2(i + 1, j + 1);
+  return a + (b - a) * su + (c - a) * sv + (a - b - c + d) * su * sv;
+}
+const smooth01 = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t); };
 
 export class Terrain {
-  constructor(meta, heights, textures, shared, { dataUrl, maxDetail = 10, anisotropy = 4, imagery = null } = {}) {
+  constructor(meta, heights, textures, shared, { dataUrl, maxDetail = 10, anisotropy = 4, imagery = null, surface = null } = {}) {
     this.meta = meta;
+    this.surface = surface;
     this.h = heights;                         // Float32Array, metres, row 0 = north
     this.R = meta.rows;
     this.C = meta.cols;
@@ -38,6 +60,7 @@ export class Terrain {
     }
     this.group = new THREE.Group();
     this.group.name = 'terrain';
+    this.bankMaterial = new THREE.MeshStandardMaterial({ color: 0x786b49, roughness: 1, flatShading: true, side: THREE.DoubleSide });
 
     // one material per texture group (same shader program, different textures)
     this.materials = [];
@@ -46,7 +69,7 @@ export class Terrain {
       for (let gx = 0; gx < meta.groups[0]; gx++) {
         const m = new THREE.MeshStandardMaterial({ map: textures.sat[gy][gx], roughness: 0.95, metalness: 0,
                                                    side: THREE.DoubleSide });
-        patchTerrainMaterial(m, textures.water[gy][gx], shared, { texelM: 20 });
+        patchTerrainMaterial(m, textures.water[gy][gx], shared, { texelM: 20, crop: textures.crop?.[gy]?.[gx] });
         this.materials[gy][gx] = m;
       }
     }
@@ -63,12 +86,12 @@ export class Terrain {
           const v = this.h[i * this.C + j]; hmax = Math.max(hmax, v); hsum += v; n++;
         }
         const center = new THREE.Vector3(this.wx((j0 + j1) / 2), (hsum / n) * this.ex, this.wz((i0 + i1) / 2));
-        const mesh = new THREE.Mesh(undefined, this.materials[gy][gx]);
+        const mesh = new THREE.Mesh(undefined, [this.materials[gy][gx], this.bankMaterial]);
         mesh.matrixAutoUpdate = false;
         mesh.visible = false;
         this.group.add(mesh);
-        this.tiles.push({ tx, ty, j0, j1, i0, i1, gx, gy, center, hmax, lod: -1, mesh, base: this.materials[gy][gx],
-                          baseWater: textures.water[gy][gx] });
+        this.tiles.push({ tx, ty, j0, j1, i0, i1, gx, gy, center, hmax, lod: -1, mesh, base: this.materials[gy][gx], hill: false,
+                          baseWater: textures.water[gy][gx], crop: textures.crop?.[gy]?.[gx] });
       }
     }
   }
@@ -77,43 +100,124 @@ export class Terrain {
   wx(j) { return -this.W / 2 + (j + 0.5) * this.res; }
   wz(i) { return -(this.H / 2 - (i + 0.5) * this.res); }
 
-  heightAtGrid(i, j) {
+  rawHeightAtGrid(i, j) {
     i = Math.min(Math.max(i, 0), this.R - 1);
     j = Math.min(Math.max(j, 0), this.C - 1);
     return this.h[i * this.C + j];
   }
 
-  /** Terrain height (metres, unexaggerated) at scene coords (x east, y north), bilinear. */
-  heightAt(x, y) {
+  /** Load the 30 m hill windows (meta.relief); call once before anything samples heights. */
+  async loadRelief() {
+    const R = this.meta.relief;
+    this.relief = new Map();
+    if (!R) return;
+    await Promise.all(R.tiles.map(async ([tx, ty, r0, c0, rows, cols]) => {
+      const res = await fetch(`${this.dataUrl}relief/r_${tx}_${ty}.bin.z`);
+      const buf = await new Response(res.body.pipeThrough(new DecompressionStream('deflate'))).arrayBuffer();
+      const u16 = new Uint16Array(buf), h = new Float32Array(u16.length);
+      let lo = Infinity, hi = -Infinity;
+      for (let q = 0; q < u16.length; q++) { h[q] = u16[q] / 10; lo = Math.min(lo, h[q]); hi = Math.max(hi, h[q]); }
+      this.relief.set(`${tx}_${ty}`, { tx, ty, r0, c0, rows, cols, h, hill: hi - lo > HILL_RANGE });
+    }));
+    this.ntx = Math.ceil((this.C - 1) / this.T);
+    this.reliefAt = new Array(this.ntx * Math.ceil((this.R - 1) / this.T)).fill(null);
+    for (const w of this.relief.values()) {                // which sides blend back to the 60 m grid
+      w.open = [[-1, 0], [1, 0], [0, -1], [0, 1]].map(([dx, dy]) => !this.relief.has(`${w.tx + dx}_${w.ty + dy}`));
+      this.reliefAt[w.ty * this.ntx + w.tx] = w;
+    }
+    for (const t of this.tiles) {
+      const w = this.relief.get(`${t.tx}_${t.ty}`);
+      t.hill = !!(w && w.hill);
+    }
+  }
+
+  /** Terrain height (metres, unexaggerated) at scene coords (x east, y north): bicubic 60 m, or the 30 m hill DEM. */
+  heightAtRaw(x, y) {
     const fj = (x + this.W / 2) / this.res - 0.5, fi = (this.H / 2 - y) / this.res - 0.5;
-    const j = Math.floor(fj), i = Math.floor(fi), u = fj - j, v = fi - i;
-    const a = this.heightAtGrid(i, j), b = this.heightAtGrid(i, j + 1);
-    const c = this.heightAtGrid(i + 1, j), d = this.heightAtGrid(i + 1, j + 1);
-    return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + d * u) * v;
+    const tx = Math.floor(fj / this.T), ty = Math.floor(fi / this.T);
+    const w = this.reliefAt && tx >= 0 && ty >= 0 && tx < this.ntx ? this.reliefAt[ty * this.ntx + tx] : null;
+    if (!w) return this.gridBicubic(fi, fj);
+    // blend towards the 60 m grid near tile sides that have no 30 m neighbour
+    const tm = this.T * this.res, lx = (fj - w.tx * this.T) * this.res, ly = (fi - w.ty * this.T) * this.res;
+    let k = 1;
+    if (w.open[0]) k = Math.min(k, smooth01(0, 240, lx));
+    if (w.open[1]) k = Math.min(k, smooth01(0, 240, tm - lx));
+    if (w.open[2]) k = Math.min(k, smooth01(0, 240, ly));
+    if (w.open[3]) k = Math.min(k, smooth01(0, 240, tm - ly));
+    const fr = (this.H / 2 - y) / 30 - 0.5 - w.r0, fc = (x + this.W / 2) / 30 - 0.5 - w.c0;
+    const H = w.h, cols = w.cols;
+    const i = Math.min(Math.max(Math.floor(fr), 1), w.rows - 3), j = Math.min(Math.max(Math.floor(fc), 1), cols - 3);
+    crw(fc - j, WU); crw(fr - i, WV);
+    let h = 0;
+    for (let a = 0; a < 4; a++) {
+      const o = (i - 1 + a) * cols + j;
+      h += WV[a] * (WU[0] * H[o - 1] + WU[1] * H[o] + WU[2] * H[o + 1] + WU[3] * H[o + 2]);
+    }
+    if (w.hill) {
+      // fine roughness on steep ground only (gullies, rock steps): +-1.8 m, 15-45 m wavelengths
+      const o = i * cols + j;
+      const g = Math.hypot(H[o + 1] - H[o - 1], H[o + cols] - H[o - cols]) / 60;
+      const steep = smooth01(0.08, 0.4, g);
+      if (steep > 0) h += steep * 1.8 * ((vnoise(x / 41, y / 41) - 0.5) * 1.3 + (vnoise(x / 16 + 7.3, y / 16) - 0.5) * 0.7);
+    }
+    return k >= 1 ? h : this.gridBicubic(fi, fj) * (1 - k) + h * k;
+  }
+
+  gridBicubic(fi, fj) {
+    const C = this.C, R = this.R, A = this.h;
+    const i = Math.floor(fi), j = Math.floor(fj);
+    crw(fj - j, WU); crw(fi - i, WV);
+    let h = 0;
+    for (let a = 0; a < 4; a++) {
+      const r = Math.min(Math.max(i - 1 + a, 0), R - 1) * C;
+      for (let b = 0; b < 4; b++) h += WV[a] * WU[b] * A[r + Math.min(Math.max(j - 1 + b, 0), C - 1)];
+    }
+    return h;
+  }
+
+  heightAt(x, y) {
+    const raw = this.heightAtRaw(x, y);
+    const sceneHeight = this.surface ? this.surface.sceneHeight(x, y, raw) : raw * this.ex;
+    return (this.wetland ? this.wetland.sceneHeight(x, y, sceneHeight) : sceneHeight) / this.ex;
+  }
+
+  heightAtGrid(i, j) { return this.heightAt(this.wx(j), -this.wz(i)); }
+  waterHeightAt(x, y) {
+    if (this.wetland && this.wetland.floodAt(x, y) > .8) return this.wetland.level;
+    return this.surface ? this.surface.waterHeight(x, y) : this.heightAt(x, y) * this.ex;
   }
 
   build(t, lod) {
-    const s = 1 << lod, C = this.C, ex = this.ex, res = this.res, G = this.G;
+    const s = t.hill ? HILL_STEP[lod] : lod === 0 && this.surface ? 1 / 3 : 1 << lod;
+    const ex = this.ex, res = this.res, G = this.G;
     const cols = [], rows = [];
-    for (let j = t.j0; j < t.j1; j += s) cols.push(j);
+    for (let q = 0; q < Math.ceil((t.j1 - t.j0) / s); q++) cols.push(t.j0 + q * s);
     cols.push(t.j1);
-    for (let i = t.i0; i < t.i1; i += s) rows.push(i);
+    for (let q = 0; q < Math.ceil((t.i1 - t.i0) / s); q++) rows.push(t.i0 + q * s);
     rows.push(t.i1);
     const nx = cols.length, ny = rows.length;
     const nGrid = nx * ny, nSkirt = 2 * (nx + ny);
-    const pos = new Float32Array((nGrid + nSkirt) * 3);
-    const nor = new Float32Array((nGrid + nSkirt) * 3);
-    const uv = new Float32Array((nGrid + nSkirt) * 2);
+    let pos = new Float32Array((nGrid + nSkirt) * 3);
+    let nor = new Float32Array((nGrid + nSkirt) * 3);
+    let uv = new Float32Array((nGrid + nSkirt) * 2);
+    const confidence = new Float32Array(nGrid);
     const gx = Math.floor(t.j0 / G), gy = Math.floor(t.i0 / G);
-    const dx = 2 * res;
 
+    // heights once per vertex on a grid with a one-vertex ring around it (for the normals), not 5x per vertex
+    const ex1 = [cols[0] - s, ...cols, cols[nx - 1] + s], ey1 = [rows[0] - s, ...rows, rows[ny - 1] + s];
+    const HE = new Float32Array((nx + 2) * (ny + 2));
+    for (let r = 0; r < ny + 2; r++) for (let c = 0; c < nx + 2; c++) HE[r * (nx + 2) + c] = this.heightAtGrid(ey1[r], ex1[c]);
+    const rowOf = new Map(rows.map((v, q) => [v, q])), colOf = new Map(cols.map((v, q) => [v, q]));
     const writeVertex = (k, i, j, drop) => {
-      const h = this.h[i * C + j];
+      const r = rowOf.get(i) + 1, c = colOf.get(j) + 1, W2 = nx + 2;
+      const h = HE[r * W2 + c];
       pos[k * 3] = this.wx(j);
       pos[k * 3 + 1] = h * ex - drop;
       pos[k * 3 + 2] = this.wz(i);
-      const hx = (this.heightAtGrid(i, j + 1) - this.heightAtGrid(i, j - 1)) / dx * ex;
-      const hz = (this.heightAtGrid(i + 1, j) - this.heightAtGrid(i - 1, j)) / dx * ex;  // +i = +z (south)
+      if (k < nGrid && this.surface) confidence[k] = this.wetland && this.wetland.floodAt(pos[k * 3], -pos[k * 3 + 2]) > .8
+        ? 0 : this.surface.waterAt(pos[k * 3], -pos[k * 3 + 2]);
+      const hx = (HE[r * W2 + c + 1] - HE[r * W2 + c - 1]) / ((ex1[c + 1] - ex1[c - 1]) * res) * ex;
+      const hz = (HE[(r + 1) * W2 + c] - HE[(r - 1) * W2 + c]) / ((ey1[r + 1] - ey1[r - 1]) * res) * ex;  // +i = +z (south)
       const l = Math.hypot(hx, 1, hz);
       nor[k * 3] = -hx / l; nor[k * 3 + 1] = 1 / l; nor[k * 3 + 2] = -hz / l;
       uv[k * 2] = (j - gx * G) / G;
@@ -122,7 +226,7 @@ export class Terrain {
 
     let k = 0;
     for (const i of rows) for (const j of cols) writeVertex(k++, i, j, 0);
-    const idx = [];
+    let idx = [];
     for (let r = 0; r < ny - 1; r++) {
       for (let c = 0; c < nx - 1; c++) {
         const a = r * nx + c, b = a + 1, d = a + nx, e = d + 1;
@@ -149,14 +253,33 @@ export class Terrain {
     stitch(rows.map((_, r) => r * nx), edge(left));
     stitch(rows.map((_, r) => r * nx + nx - 1), edge(right));
 
+    let surfaceIndexCount = idx.length, bankIndexCount = 0;
+    if (this.surface && lod <= 1) {
+      const clipped = splitShore(pos, nor, uv, idx, confidence, (nx - 1) * (ny - 1) * 6,
+        (x, y) => this.waterHeightAt(x, y),
+        (x, y) => Math.max(this.heightAt(x, y) * ex, this.waterHeightAt(x, y) + this.meta.surface.bank_height_m * ex));
+      pos = clipped.position; nor = clipped.normal; uv = clipped.uv; idx = clipped.indices;
+      surfaceIndexCount = clipped.surfaceIndexCount; bankIndexCount = clipped.bankIndexCount;
+    }
     const g = new THREE.BufferGeometry();
+    g.addGroup(0, surfaceIndexCount, 0);
+    if (bankIndexCount) g.addGroup(surfaceIndexCount, bankIndexCount, 1);
     g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     g.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
     g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
     if (lod === 0 && this.imagery) {   // second UV set onto the streamed high-res canvas
       this.imagery.frameOf(t, this.wx(t.j0), this.wx(t.j1), this.wz(t.i0), this.wz(t.i1));
-      const uv1 = new Float32Array((nGrid + nSkirt) * 2);
-      for (let q = 0; q < nGrid + nSkirt; q++) uv1.set(this.imagery.uv1(t, pos[q * 3], pos[q * 3 + 2]), q * 2);
+      // UTM -> Web Mercator is practically affine over one 3.84 km tile: exact at the corners, interpolated inside
+      const x0 = this.wx(t.j0), x1 = this.wx(t.j1), z0 = this.wz(t.i0), z1 = this.wz(t.i1);
+      const c00 = this.imagery.uv1(t, x0, z0), c10 = this.imagery.uv1(t, x1, z0);
+      const c01 = this.imagery.uv1(t, x0, z1), c11 = this.imagery.uv1(t, x1, z1);
+      const uv1 = new Float32Array(pos.length / 3 * 2);
+      for (let q = 0; q < pos.length / 3; q++) {
+        const u = (pos[q * 3] - x0) / (x1 - x0), v = (pos[q * 3 + 2] - z0) / (z1 - z0);
+        for (let e = 0; e < 2; e++) {
+          uv1[q * 2 + e] = (c00[e] * (1 - u) + c10[e] * u) * (1 - v) + (c01[e] * (1 - u) + c11[e] * u) * v;
+        }
+      }
       g.setAttribute('uv1', new THREE.BufferAttribute(uv1, 2));
     }
     g.setIndex(idx);
@@ -186,7 +309,7 @@ export class Terrain {
         water.colorSpace = THREE.NoColorSpace;
         const m = new THREE.MeshStandardMaterial({ map: img, roughness: 0.95, metalness: 0, side: THREE.DoubleSide });
         const maskXf = [img.repeat.x, img.repeat.y, img.offset.x, img.offset.y];   // same mapping as the imagery
-        patchTerrainMaterial(m, water, this.shared, { maskXf, texelM: 10 });
+        patchTerrainMaterial(m, water, this.shared, { maskXf, texelM: 10, crop: t.crop });
         Object.assign(d, { state: 'ready', material: m, textures: [img, water], water, maskXf });
       }).catch(() => { d.state = 'failed'; });
     }
@@ -200,7 +323,7 @@ export class Terrain {
     ready.sort((a, b) => a[1].lastUsed - b[1].lastUsed);
     for (const [key, d] of ready.slice(0, ready.length - this.maxDetail)) {
       if (d.lastUsed === this.frame) break;               // still on screen
-      for (const t of this.tiles) if (t.mesh.material === d.material) t.mesh.material = t.base;
+      for (const t of this.tiles) if (t.mesh.material[0] === d.material) t.mesh.material[0] = t.base;
       d.material.dispose();
       for (const tex of d.textures) tex.dispose();
       this.detail.delete(key);
@@ -210,12 +333,15 @@ export class Terrain {
   update(camera) {
     this.frame++;
     let rebuilt = 0;
+    const frameStart = performance.now();
     const tileWorld = this.T * this.res;
     for (const t of this.tiles) {
       const d = camera.position.distanceTo(t.center);
-      let lod = Math.floor(Math.log2(Math.max(d, 1) / (tileWorld * 1.2))) + 1 + this.lodBias;
+      let lod = Math.floor(Math.log2(Math.max(d, 1) / (tileWorld * 1.2))) + 1 + this.lodBias - (t.hill ? 1 : 0);
       lod = Math.min(Math.max(lod, 0), MAX_LOD);
-      if (lod !== t.lod && (t.lod === -1 || rebuilt < REBUILDS_PER_FRAME)) {
+      const overBudget = performance.now() - frameStart > BUILD_MS;
+      if (lod !== t.lod && (t.lod === -1 || (rebuilt < REBUILDS_PER_FRAME && !overBudget))) {
+        if (t.lod === -1 && overBudget) lod = Math.max(lod, 3);      // something cheap now, the real LOD later
         const old = t.mesh.geometry;
         t.mesh.geometry = this.build(t, lod);
         if (old) old.dispose();
@@ -228,10 +354,10 @@ export class Terrain {
       const ready = !!det && det.state === 'ready';
       if (ready) mat = det.material;
       if (t.lod === 0 && this.imagery && t.mesh.geometry.attributes.uv1) {
-        const hi = this.imagery.materialFor(t, this.shared, ready ? det.water : t.baseWater, ready ? det.maskXf : [1, 1, 0, 0]);
+        const hi = this.imagery.materialFor(t, this.shared, ready ? det.water : t.baseWater, ready ? det.maskXf : [1, 1, 0, 0], t.crop);
         if (hi) mat = hi;
       }
-      t.mesh.material = mat;
+      t.mesh.material[0] = mat;
     }
     this.releaseDetail();
     if (this.imagery) this.imagery.release();

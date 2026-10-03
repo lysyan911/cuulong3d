@@ -12,6 +12,9 @@
 //   + offset in metres + flags (roof rise R, stilt lift L, hip inset) — so one model fits every footprint.
 import * as THREE from 'three';
 import { GroupLayer, groupCentre } from './world.js';
+import { photoTexture } from './photo-textures.js';
+import { GLOBALS } from './render/globals.js';
+import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const STYLE = { tube: 0, block: 1, gable: 2, hip: 3, stilt: 4, khmer: 5, hall: 6 };
 // face ids (aK.w): what the fragment shader paints
@@ -163,10 +166,11 @@ attribute vec3 aOff;
 attribute vec4 aK;
 attribute vec4 iA;      // x, ground y, z (scene), front angle
 attribute vec3 iB;      // W (front), D (depth), H (eaves height) in m
-attribute vec4 iC;      // style, roof kind, seed 0..255, -
+attribute vec4 iC;      // style, roof kind, seed 0..255, hidden (1: a detailed model stands here, 2: a landmark)
 attribute vec3 iRoof;
 attribute vec3 iWall;
 uniform float uNearR;
+uniform vec3 uViewPos;     // the viewer's camera (also in the sun's shadow pass)
 uniform float uBex;
 varying float vFace;
 varying vec4 vInfo;     // style, roof kind, seed 0..1, is-hip
@@ -174,6 +178,7 @@ varying vec3 vRoofCol;
 varying vec3 vWallCol;
 varying vec4 vWall;     // along the wall, height above floor, wall length, floor height (m)
 varying vec2 vRoofUV;
+varying float vPhotoFade;
 `;
 
 const VERT_BODY = /* glsl */`
@@ -190,16 +195,18 @@ const VERT_BODY = /* glsl */`
   vec3 lp = vec3(position.x * W + aOff.x,
                  position.y * H + aK.x * R + aK.y * L + aOff.y,
                  position.z * D + aOff.z + aK.z * isHip * min(W, D));
-  float dist = distance(cameraPosition, iA.xyz);
+  float dist = distance(uViewPos, iA.xyz);
 #ifdef FAR
   bool hide = dist <= uNearR;
 #else
   bool hide = dist > uNearR;
 #endif
+  if (iC.w > 0.5) hide = true;
   float ex = mix(1.0, uBex, smoothstep(1500.0, 6000.0, dist));   // true proportions close up
   float c = cos(iA.w), s = sin(iA.w);
   vec3 transformed = iA.xyz + vec3(-s * lp.x + c * lp.z, lp.y * ex, -c * lp.x - s * lp.z);
   if (hide) transformed = vec3(0.0);
+  vPhotoFade = 1.0 - smoothstep(180.0, 650.0, dist);
   vFace = aK.w;
   vInfo = vec4(st, kind, seed, isHip);
   vRoofCol = iRoof;
@@ -211,12 +218,21 @@ const VERT_BODY = /* glsl */`
 `;
 
 const FRAG_HEAD = /* glsl */`
+varying float vPhotoFade;
+#ifdef NEAR
+uniform sampler2D uPhotoTin, uPhotoTiles, uPhotoPlaster, uPhotoWood;
+vec3 photoDetail(sampler2D image, vec2 uv, vec3 average) {
+  return mix(vec3(1.), clamp(texture2D(image, uv).rgb / average, vec3(.35), vec3(2.)), vPhotoFade);
+}
+#endif
+
 varying float vFace;
 varying vec4 vInfo;
 varying vec3 vRoofCol;
 varying vec3 vWallCol;
 varying vec4 vWall;
 varying vec2 vRoofUV;
+
 float hHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float hNoise(vec2 p) {
   vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -244,6 +260,13 @@ const FRAG_COLOR = /* glsl */`
     col = roofC;
     float k = kind;
     if (face == 5 && k > 1.5) k = 0.0;                     // porch roofs are tin
+#ifdef NEAR
+    vec2 photoUV = r / 2.0 + seed * vec2(17.13, 31.7);
+    if (k < .5) { col *= photoDetail(uPhotoTin, photoUV, vec3(.411,.459,.436)); hRough=.75; }
+    else if (k < 1.5 || k > 3.5) col *= photoDetail(uPhotoTiles, photoUV, vec3(.114,.034,.010));
+    else if (k < 2.5) col *= photoDetail(uPhotoPlaster, photoUV, vec3(.186,.158,.112));
+    else col *= photoDetail(uPhotoWood, photoUV, vec3(.166,.148,.036));
+#else
     if (k < 0.5) {                                          // corrugated tin + rust
       float corr = 0.5 + 0.5 * sin(r.y * 6.2832 / 0.26);
       col *= mix(0.94, 0.82 + 0.3 * corr, vis);
@@ -261,8 +284,12 @@ const FRAG_COLOR = /* glsl */`
     } else {                                                // thatch / palm leaf
       col *= 0.78 + 0.3 * mix(0.5, hNoise(vec2(r.x * 4.0, r.y * 0.4) + seed * 9.0), vis);
     }
+#endif
   } else if (face == 4) {
     col = sRGB(vec3(0.36, 0.27, 0.19));
+#ifdef NEAR
+    col *= photoDetail(uPhotoWood, vRoofUV / 2.0 + seed * 13., vec3(.166,.148,.036));
+#endif
   } else if (face == 6) {
     col = sRGB(vec3(0.22, 0.2, 0.18));
   } else if (face == 9) {
@@ -276,7 +303,12 @@ const FRAG_COLOR = /* glsl */`
     float vis = 1.0 - smoothstep(0.2, 0.6, max(pa, ph));
     col = wallC;
     bool wood = dot(vWallCol, vec3(0.33)) < 0.5 && (st > 3.5 && st < 5.5);
-    if (wood) col *= mix(0.92, 0.8 + 0.25 * smoothstep(0.0, 0.25, fract(hh / 0.22)), vis);
+    if (wood && vPhotoFade < .01) col *= mix(0.92, 0.8 + 0.25 * smoothstep(0.0, 0.25, fract(hh / 0.22)), vis);
+#ifdef NEAR
+    vec2 wallUV = vec2(al, hh) / 2.0 + seed * vec2(17.13,31.7);
+    col *= wood ? photoDetail(uPhotoWood, wallUV, vec3(.166,.148,.036))
+                : photoDetail(uPhotoPlaster, wallUV, vec3(.186,.158,.112));
+#endif
     bool party = isTube && (face == 2 || face == 1);         // tube houses: bare concrete side walls
     if (party) col = mix(col, sRGB(vec3(0.6, 0.58, 0.55)), 0.7) * (0.85 + 0.2 * hNoise(vec2(al, hh) * 0.4));
     vec3 glass = seed < 0.45 || isTube || isBlock ? sRGB(vec3(0.16, 0.2, 0.23))
@@ -317,8 +349,12 @@ const FRAG_COLOR = /* glsl */`
 function houseMaterial(lod, uniforms) {
   const mat = new THREE.MeshStandardMaterial({ roughness: 0.85, metalness: 0, flatShading: true });
   mat.defines = { [lod]: '' };
+  const photos = lod === 'NEAR' ? Object.fromEntries([
+    ['uPhotoTin','corrugated_iron'], ['uPhotoTiles','clay_roof_tiles'],
+    ['uPhotoPlaster','worn_plaster_wall'], ['uPhotoWood','wooden_rough_planks'],
+  ].map(([key,id]) => [key,{value:photoTexture(`models/${id}-color.webp`,{repeat:true})}])) : {};
   mat.onBeforeCompile = (sh) => {
-    Object.assign(sh.uniforms, uniforms);
+    Object.assign(sh.uniforms, uniforms, photos);
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', '#include <common>\n' + VERT_HEAD)
       .replace('#include <begin_vertex>', VERT_BODY);
@@ -326,24 +362,38 @@ function houseMaterial(lod, uniforms) {
       .replace('#include <common>', '#include <common>\n' + FRAG_HEAD)
       .replace('#include <color_fragment>', '#include <color_fragment>\n' + FRAG_COLOR)
       .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = hRough;');
+    patchCloudShadow(sh, cloudUniforms());
   };
   mat.customProgramCacheKey = () => 'cuulong-houses-' + lod;
+  // shadow pass: the same houses in the same places
+  const depth = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking });
+  depth.defines = { [lod]: '' };
+  depth.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, uniforms);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\n' + VERT_HEAD)
+      .replace('#include <begin_vertex>', VERT_BODY);
+  };
+  depth.customProgramCacheKey = () => 'cuulong-houses-depth-' + lod;
+  mat.userData.depthMaterial = depth;
   return mat;
 }
 
 // ---------------------------------------------------------------- layer
 export class HouseLayer extends GroupLayer {
   /** maxDistance: far models are hidden beyond it; nearR: detailed models within it (m from the camera). */
-  constructor(meta, maxDistance, nearR = 1800) {
+  constructor(meta, maxDistance, nearR = 1800, terrain = null) {
     super('buildings', meta);
     this.maxDistance = maxDistance;
+    this.terrain = terrain;
+    this.rejectedWater = 0;
     this.nearR = nearR;
     this.nStyles = meta.house_styles.length;
     this.nTiles = meta.house_tiles;
     this.span = meta.group * meta.grid_res_m;
     this.tileM = this.span / this.nTiles;
     this.models = houseModels();
-    this.uniforms = { uNearR: { value: nearR }, uBex: { value: meta.building_exag } };
+    this.uniforms = { uNearR: { value: nearR }, uBex: { value: meta.building_exag }, uViewPos: GLOBALS.uViewPos };
     this.matFar = houseMaterial('FAR', this.uniforms);
     this.matNear = houseMaterial('NEAR', this.uniforms);
     this.tiles = [];            // { cx, cz, yMin, yMax, ranges: [[style, start, count]], data, meshes, used }
@@ -366,10 +416,15 @@ export class HouseLayer extends GroupLayer {
 
     const iA = new Float32Array(n * 4), iB = new Float32Array(n * 3), iC = new Uint8Array(n * 4);
     for (let i = 0; i < n; i++) {
-      const gy_ = (g[i] / 10) * ex - 0.3;
+      const xx = cx + x[i] / 2, yy = cy + y[i] / 2;
+      const theta = (ang[i] / 256) * Math.PI * 2;
+      const flooded = this.terrain?.wetland && this.terrain.wetland.floodAt(xx, yy) > .65;
+      const allowed = !flooded && (!this.terrain?.surface || this.terrain.surface.allowsHouse(xx, yy, w[i] / 4, d[i] / 2, theta, style[i]));
+      const gy_ = (this.terrain ? this.terrain.heightAt(xx, yy) * ex : (g[i] / 10) * ex) - 0.3;
+      if (!allowed) this.rejectedWater++;
       iA.set([cx + x[i] / 2, gy_, -(cy + y[i] / 2), (ang[i] / 256) * Math.PI * 2], i * 4);
       iB.set([w[i] / 4, d[i] / 2, ht[i] / 4], i * 3);
-      iC.set([style[i], kind[i], (Math.imul(i + 1, 2654435761) ^ Math.imul(gx * 7 + gy, 40503)) >>> 24, 0], i * 4);
+      iC.set([style[i], kind[i], (Math.imul(i + 1, 2654435761) ^ Math.imul(gx * 7 + gy, 40503)) >>> 24, allowed ? 0 : 3], i * 4);
     }
     const data = { iA, iB, iC, roof, wall };
 
@@ -394,6 +449,7 @@ export class HouseLayer extends GroupLayer {
       geometry.boundingSphere = T.sphere;
       T.far = new THREE.Mesh(geometry, this.matFar);
       T.far.raycast = () => {};
+      T.far.userData.noShadow = true;            // far houses are hidden where shadows are drawn
       this.group.add(T.far);
       this.tiles.push(T);
     }
@@ -416,12 +472,14 @@ export class HouseLayer extends GroupLayer {
   buildTile(T) {
     const grp = new THREE.Group();
     const sphere = T.sphere;
+    T.byStyle = [];
     for (const [s, start, count] of T.ranges) {
       const { geometry } = this.instanced(this.models.near[s], T.data, start, count);
       geometry.boundingSphere = sphere;
       const m = new THREE.Mesh(geometry, this.matNear);
       m.raycast = () => {};
       grp.add(m);
+      T.byStyle[s] = m;
     }
     this.group.add(grp);
     T.meshes = grp;
@@ -436,7 +494,29 @@ export class HouseLayer extends GroupLayer {
       m.geometry.dispose();
     }
     T.meshes = null;
+    T.byStyle = null;
     this.built--;
+  }
+
+  /** Hide / show house i of tile T (flag: 0 shown, 1 replaced, 2 under a landmark, 3 rejected on water). */
+  setHidden(T, i, flag) {
+    if (T.data.iC[i * 4 + 3] === 3 || T.data.iC[i * 4 + 3] === flag) return;
+    T.data.iC[i * 4 + 3] = flag;
+    T.far.geometry.attributes.iC.needsUpdate = true;
+    const m = T.byStyle && T.byStyle[T.data.iC[i * 4]];
+    if (m) m.geometry.attributes.iC.needsUpdate = true;
+  }
+
+  /** Hide every house whose centre lies in a rotated rectangle (scene x, z; half sizes along / across `ang`). */
+  hideInRect(x, z, ang, halfA, halfB) {
+    const ca = Math.cos(ang), sa = Math.sin(ang), r = Math.hypot(halfA, halfB) + this.tileM;
+    for (const T of this.tiles) {
+      if (Math.hypot(T.cx - x, T.cz - z) > r) continue;
+      for (const [, start, count] of T.ranges) for (let i = start; i < start + count; i++) {
+        const dx = T.data.iA[i * 4] - x, dz = T.data.iA[i * 4 + 2] - z;
+        if (Math.abs(dx * ca + dz * sa) < halfA && Math.abs(-dx * sa + dz * ca) < halfB) this.setHidden(T, i, 2);
+      }
+    }
   }
 
   update(camera) {

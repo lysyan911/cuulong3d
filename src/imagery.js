@@ -90,7 +90,7 @@ export class StreamedImagery {
   }
 
   /** Material with high-res imagery for a LOD-0 tile, or null while loading / if unavailable. */
-  materialFor(t, shared, water, maskXf) {
+  materialFor(t, shared, water, maskXf, crop) {
     if (this.failed || !t.merc) return null;
     const key = `${t.tx}_${t.ty}`;
     let e = this.entries.get(key);
@@ -123,14 +123,14 @@ export class StreamedImagery {
               const m = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, metalness: 0, side: THREE.DoubleSide });
               const lat = utmToLonLat(t.center.x + this.ce, -t.center.z + this.cn, this.zone)[1];
               const texelM = (40075016 * Math.cos((lat * Math.PI) / 180)) / 2 ** ZOOM / 256;
-              patchTerrainMaterial(m, e.water || water, shared, { maskXf: e.maskXf || maskXf, texelM });
+              patchTerrainMaterial(m, e.water || water, shared, { maskXf: e.maskXf || maskXf, texelM, crop: e.crop });
               Object.assign(e, { state: 'ready', material: m, texture: tex });
               this.onCredit?.(true);
             }
           } });
         }
       }
-      Object.assign(e, { water, maskXf });
+      Object.assign(e, { water, maskXf, crop });
       this.pump();
     }
     e.lastUsed = this.frame;

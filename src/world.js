@@ -1,10 +1,10 @@
-// Trees, roads and landmarks (buildings: houses.js).
+// Roads and landmarks (buildings: houses.js, trees: trees.js).
 // Everything is stored per 26.9 km group; whole groups are hidden beyond a distance.
 import * as THREE from 'three';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { treeModels, landmarkModels } from './models.js';
+import { landmarkModels } from './models.js';
 
 export function groupCentre(meta, gx, gy) {
   const span = meta.group * meta.grid_res_m;
@@ -36,52 +36,7 @@ export class GroupLayer {
   }
 }
 
-// ---------------------------------------------------------------- trees
-// File: int32 n | int16 x[n], y[n] (m, rel. group centre) | uint16 ground[n] (dm) | uint8 rot, scale, species
-export class TreeLayer extends GroupLayer {
-  constructor(meta, maxDistance) {
-    super('trees', meta);
-    this.maxDistance = maxDistance;
-    this.models = treeModels();
-    this.material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9, metalness: 0 });
-  }
-
-  async loadCell(gx, gy, url) {
-    const buf = await fetch(url).then((r) => r.arrayBuffer());
-    const n = new DataView(buf).getInt32(0, true);
-    let o = 4;
-    const take = (T, b) => { const a = new T(buf, o, n); o += n * b; return a; };
-    const x = take(Int16Array, 2), y = take(Int16Array, 2), h = take(Uint16Array, 2);
-    const rot = take(Uint8Array, 1), scale = take(Uint8Array, 1), kind = take(Uint8Array, 1);
-    const [cx, cy] = groupCentre(this.meta, gx, gy), ex = this.meta.vert_exag;
-    const counts = new Array(this.models.length).fill(0);
-    for (let i = 0; i < n; i++) counts[kind[i]]++;
-    const cell = new THREE.Group();
-    const meshes = counts.map((c, k) => {
-      if (!c) return null;
-      const m = new THREE.InstancedMesh(this.models[k], this.material, c);
-      cell.add(m);
-      return m;
-    });
-    const fill = new Array(this.models.length).fill(0);
-    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), p = new THREE.Vector3(), s = new THREE.Vector3();
-    const up = new THREE.Vector3(0, 1, 0), col = new THREE.Color();
-    let seed = 1 + gx * 7919 + gy * 104729;
-    const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-    for (let i = 0; i < n; i++) {
-      const m = meshes[kind[i]], slot = fill[kind[i]]++;
-      p.set(cx + x[i], (h[i] / 10) * ex - 3, -(cy + y[i]));
-      q.setFromAxisAngle(up, (rot[i] / 255) * Math.PI * 2);
-      s.setScalar(0.5 + scale[i] / 255);
-      m.setMatrixAt(slot, m4.compose(p, q, s));
-      const b = 0.7 + rand() * 0.6;
-      m.setColorAt(slot, col.setRGB(b, b, b));
-    }
-    for (const m of meshes) if (m) m.computeBoundingSphere();
-    this.addCell(gx, gy, cell, this.maxDistance);
-  }
-}
-
+// (trees: see trees.js)
 // (real buildings: see houses.js)
 
 // ---------------------------------------------------------------- roads (screen-width lines, hybrid-map style)
@@ -99,15 +54,31 @@ export const ROAD_STYLE = {
 };
 
 export class RoadLayer extends GroupLayer {
-  constructor(meta, distScale = 1) {
+  /** ribbonR: within this distance the 3D road ribbons (roads3d.js) take over and the lines fade out. */
+  constructor(meta, distScale = 1, ribbonR = 0) {
     super('roads', meta);
     this.classes = meta.road_classes;
     this.distScale = distScale;
+    this.ribbon = { value: ribbonR };
     this.materials = this.classes.map((c) => {
       const st = ROAD_STYLE[c];
       const m = new LineMaterial({ color: st.color, linewidth: st.width, transparent: true, opacity: st.opacity,
                                    dashed: !!st.dashed, dashSize: 8, gapSize: 6, depthWrite: false });
       m.resolution.set(innerWidth, innerHeight);
+      m.onBeforeCompile = (sh) => {
+        sh.uniforms.uRibbonR = this.ribbon;
+        sh.vertexShader = sh.vertexShader.replace('void main() {', `uniform float uRibbonR;
+          varying float vRibbonFade;
+          void main() {
+            vRibbonFade = uRibbonR > 0.0 ? smoothstep(uRibbonR * 0.75, uRibbonR, distance(cameraPosition, instanceStart)) : 1.0;`);
+        sh.fragmentShader = sh.fragmentShader
+          .replace('void main() {', `varying float vRibbonFade;
+          void main() {`)
+          .replace('#include <fog_fragment>', `#include <fog_fragment>
+            gl_FragColor.a *= vRibbonFade;
+            if (gl_FragColor.a < 0.01) discard;`);
+      };
+      m.customProgramCacheKey = () => 'cuulong-roadline-' + (st.dashed ? 'd' : 's');
       return m;
     });
   }

@@ -1,0 +1,751 @@
+{
+  "version": 1,
+  "license": "CC0",
+  "sources": [
+    {
+      "id": "brown_mud",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/brown_mud",
+      "license": "CC0",
+      "use": "Wet paddy soil and river mud bank"
+    },
+    {
+      "id": "mud_cracked_dry_03",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/mud_cracked_dry_03",
+      "license": "CC0",
+      "use": "Cracked dry paddy soil"
+    },
+    {
+      "id": "grass_ground",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/grass_ground",
+      "license": "CC0",
+      "use": "Village grass"
+    },
+    {
+      "id": "dirt",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/dirt",
+      "license": "CC0",
+      "use": "Dirt paths"
+    },
+    {
+      "id": "tiger_rock",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/tiger_rock",
+      "license": "CC0",
+      "use": "Granite rock"
+    },
+    {
+      "id": "bark_willow",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/bark_willow",
+      "license": "CC0",
+      "use": "Tram bark (willow-bark substitute)"
+    },
+    {
+      "id": "palm_tree_bark",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/palm_tree_bark",
+      "license": "CC0",
+      "use": "Palm trunk"
+    },
+    {
+      "id": "wooden_rough_planks",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/wooden_rough_planks",
+      "license": "CC0",
+      "use": "Boats, boardwalk and timber buildings"
+    },
+    {
+      "id": "corrugated_iron",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/corrugated_iron",
+      "license": "CC0",
+      "use": "Optional corrugated tin roofs"
+    },
+    {
+      "id": "worn_plaster_wall",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/worn_plaster_wall",
+      "license": "CC0",
+      "use": "Optional old plaster walls"
+    },
+    {
+      "id": "clay_roof_tiles",
+      "source": "Poly Haven",
+      "url": "https://polyhaven.com/a/clay_roof_tiles",
+      "license": "CC0",
+      "use": "Optional clay roof tiles"
+    },
+    {
+      "id": "LeafSet024",
+      "source": "ambientCG",
+      "url": "https://ambientcg.com/view?id=LeafSet024",
+      "license": "CC0",
+      "use": "Broadleaf photo donor: generic trees; adapted banana and floating aquatic foliage"
+    },
+    {
+      "id": "LeafSet022",
+      "source": "ambientCG",
+      "url": "https://ambientcg.com/view?id=LeafSet022",
+      "license": "CC0",
+      "use": "Narrow leaf photo donor: adapted tram, palm leaflets, bamboo"
+    },
+    {
+      "id": "Foliage008",
+      "source": "ambientCG",
+      "url": "https://ambientcg.com/view?id=Foliage008",
+      "license": "CC0",
+      "use": "Photographed grass blades: adapted young-rice detail"
+    }
+  ],
+  "files": [
+    {
+      "file": "ground/brown_mud-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 257468,
+      "sha256": "a8721484ac0f3903d6673f4083d208ca88bdda55d2298ff45e63397ac2233265",
+      "sources": [
+        "brown_mud"
+      ],
+      "surface": "Wet paddy soil / exposed river mud bank",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/brown_mud-normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 462688,
+      "sha256": "bdda4cbe3d295751bfdcb3cdb41a366ae6b254bf9b9eed9785649a867383714d",
+      "sources": [
+        "brown_mud"
+      ],
+      "surface": "Wet paddy soil / exposed river mud bank",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/brown_mud-roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 217118,
+      "sha256": "f00204ccb09f9be22263abb03be6b1fcb59d7306c4cce61e15ef244184c178ae",
+      "sources": [
+        "brown_mud"
+      ],
+      "surface": "Wet paddy soil / exposed river mud bank",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/mud_cracked_dry_03-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 329644,
+      "sha256": "580a37a358f0699a760fde9dad5e2382b7e516d26dc0bf9cd0be00697c009981",
+      "sources": [
+        "mud_cracked_dry_03"
+      ],
+      "surface": "Dry cracked paddy soil",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/mud_cracked_dry_03-normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 534700,
+      "sha256": "0e6aaf74f319fb403191a93d731c5c0bd094801d351ebb865212a783b0a22b7a",
+      "sources": [
+        "mud_cracked_dry_03"
+      ],
+      "surface": "Dry cracked paddy soil",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/mud_cracked_dry_03-roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 90648,
+      "sha256": "0f8e2cdfe24e491bed6a729ed81d537e677c4545756c64a990b8a8b6cdc633d4",
+      "sources": [
+        "mud_cracked_dry_03"
+      ],
+      "surface": "Dry cracked paddy soil",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/grass_ground-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 284188,
+      "sha256": "c5593c23fc481a09ea9d040d4aab90fb13d133acaa6b2097969bfc40a24a0f37",
+      "sources": [
+        "grass_ground"
+      ],
+      "surface": "Village grass",
+      "metres_per_tile": 3,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/grass_ground-normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 595586,
+      "sha256": "df6dbe8f363c0a479375647e24a75e4d89f3aca3da80f92374e9ba5e549f0557",
+      "sources": [
+        "grass_ground"
+      ],
+      "surface": "Village grass",
+      "metres_per_tile": 3,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/grass_ground-roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 13992,
+      "sha256": "8cb3987146fd02689d0ec31cb7d45e139e24e715537f3e8b410c67827926bab5",
+      "sources": [
+        "grass_ground"
+      ],
+      "surface": "Village grass",
+      "metres_per_tile": 3,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/dirt-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 185428,
+      "sha256": "1a592cc2a590500e2b103a9f120eb75d5abeef868dada1f249145f505df3b6a0",
+      "sources": [
+        "dirt"
+      ],
+      "surface": "Dirt path",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/dirt-normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 529362,
+      "sha256": "09b2a508c450cf26d49e0e933dca20bb4df4cfb743e5d74c9b3f6331ddd9cc0c",
+      "sources": [
+        "dirt"
+      ],
+      "surface": "Dirt path",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/dirt-roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 25292,
+      "sha256": "ae889ab9995523a5a062b5441527051274fa33625a7e7d86f79e9d7607279186",
+      "sources": [
+        "dirt"
+      ],
+      "surface": "Dirt path",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/tiger_rock-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 421230,
+      "sha256": "9ba64dee95ff2fcda2a49d0e6af0cff01ff66cd30e3a5ca90fe867125a957b4b",
+      "sources": [
+        "tiger_rock"
+      ],
+      "surface": "Granite rock",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/tiger_rock-normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 473464,
+      "sha256": "7cf53b8930e28eed110eb9d80f9ac4119c7f4955745eb6ee7c3b9108b8f87ddf",
+      "sources": [
+        "tiger_rock"
+      ],
+      "surface": "Granite rock",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "ground/tiger_rock-roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 69070,
+      "sha256": "72d09dd93419ebdbf1e069d8fe82ea6287d5749e5f3a37fe195bde16bb12853f",
+      "sources": [
+        "tiger_rock"
+      ],
+      "surface": "Granite rock",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "foliage/bark_willow-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 139756,
+      "sha256": "df8617cfe3043cf63632503a8c430dbbdbace160e7c898bd444a16c50acd70d1",
+      "sources": [
+        "bark_willow"
+      ],
+      "surface": "Willow bark adapted to pale melaleuca trunks",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "foliage/bark_willow-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 159324,
+      "sha256": "bf147f3d59280f2d9e4659975862936dcd61757853a5f85483587e004081c9a6",
+      "sources": [
+        "bark_willow"
+      ],
+      "surface": "Willow bark adapted to pale melaleuca trunks",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "foliage/bark_willow-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 7832,
+      "sha256": "bab0e92beb102016df3c1a763a80bc9ae4c5834597b494465f8482124d903061",
+      "sources": [
+        "bark_willow"
+      ],
+      "surface": "Willow bark adapted to pale melaleuca trunks",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "foliage/palm_tree_bark-color.webp",
+      "width": 1024,
+      "height": 2048,
+      "bytes": 742318,
+      "sha256": "c9c14c926d0d4fc278236f0a5d69aaae27cd47ee64c1b297fe40652346881986",
+      "sources": [
+        "palm_tree_bark"
+      ],
+      "surface": "Palm trunks",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "foliage/palm_tree_bark-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 33250,
+      "sha256": "9a14c28e05c91eab2c50f00d6d738490ceacfa7d7757536ced4b44dc32e69299",
+      "sources": [
+        "palm_tree_bark"
+      ],
+      "surface": "Palm trunks",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "foliage/palm_tree_bark-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 84774,
+      "sha256": "72e5f84a631e3001fc71e926e2a871c986f7ac9cfcf3b885955c5929b15ac4be",
+      "sources": [
+        "palm_tree_bark"
+      ],
+      "surface": "Palm trunks",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/wooden_rough_planks-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 368340,
+      "sha256": "3cc90f1f417601fd6dd62e6b4142274191fbb9925d2d1890ade4177b6cf0c8be",
+      "sources": [
+        "wooden_rough_planks"
+      ],
+      "surface": "Boat hulls / boardwalk / timber walls",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "models/wooden_rough_planks-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 34822,
+      "sha256": "04b004254c06610bf9528d2c85d920da41b8c8f148712334fecf1dd2c0e4f933",
+      "sources": [
+        "wooden_rough_planks"
+      ],
+      "surface": "Boat hulls / boardwalk / timber walls",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/wooden_rough_planks-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 94168,
+      "sha256": "f61cc82e42ca7daa57c6efed9844df6c7cf83375241a0c667cea0170c19cddd9",
+      "sources": [
+        "wooden_rough_planks"
+      ],
+      "surface": "Boat hulls / boardwalk / timber walls",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/corrugated_iron-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 213590,
+      "sha256": "e9f76f36a7f514375515fd910a07b1135bad8de978ed2708ea46639c995a070d",
+      "sources": [
+        "corrugated_iron"
+      ],
+      "surface": "Corrugated tin roofs",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "models/corrugated_iron-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 22936,
+      "sha256": "ab303e9bbd351507d1493d53ec9ecff4ebc8cf0d73890d5dd21f1880383f1c8b",
+      "sources": [
+        "corrugated_iron"
+      ],
+      "surface": "Corrugated tin roofs",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/corrugated_iron-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 32330,
+      "sha256": "7c3f2e228bc3a20aa63c912dda5035e3f3e61d2777072166f970a35b410b085e",
+      "sources": [
+        "corrugated_iron"
+      ],
+      "surface": "Corrugated tin roofs",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/worn_plaster_wall-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 222696,
+      "sha256": "ce7e12e0c512ccc374791d9a01b21fa0d7d0f6a924adb9bf5eff12a93e2adfcd",
+      "sources": [
+        "worn_plaster_wall"
+      ],
+      "surface": "Old plaster walls",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "models/worn_plaster_wall-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 32124,
+      "sha256": "c65fbcaefcb4a9d2b2418d99655af2f10d6d153238ea94b52c558152eaf9ecd5",
+      "sources": [
+        "worn_plaster_wall"
+      ],
+      "surface": "Old plaster walls",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/worn_plaster_wall-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 4488,
+      "sha256": "09640c5adfcc75e35d3b0bfe0fb5d0ac6121806f12a3c9d25d6daae2cd198e93",
+      "sources": [
+        "worn_plaster_wall"
+      ],
+      "surface": "Old plaster walls",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/clay_roof_tiles-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 241826,
+      "sha256": "efca35c0d099093f4f2ca08316b2827e39c1c7a8a41ac7c81ab2fcc2184c8a7a",
+      "sources": [
+        "clay_roof_tiles"
+      ],
+      "surface": "Clay roof tiles",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "models/clay_roof_tiles-normal.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 112628,
+      "sha256": "4730188f4c58f09c8605aa0106a0799b62765ddc526188b90a3bd1c32b85f551",
+      "sources": [
+        "clay_roof_tiles"
+      ],
+      "surface": "Clay roof tiles",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "models/clay_roof_tiles-roughness.webp",
+      "width": 512,
+      "height": 512,
+      "bytes": 14546,
+      "sha256": "ba81006ef530425fd8db7f5e0c09be2a20bdf8706a2684539c21a346c3182ad7",
+      "sources": [
+        "clay_roof_tiles"
+      ],
+      "surface": "Clay roof tiles",
+      "metres_per_tile": 2,
+      "colour_space": "linear",
+      "alpha": false
+    },
+    {
+      "file": "foliage/young-rice-cards.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 189652,
+      "sha256": "8effaaa1f4c6fdb579170ffc67acbcec0e11adc8eec3fc31af9acf1832615606",
+      "sources": [
+        "Foliage008"
+      ],
+      "surface": "Grass-blade photo donor for young rice / reeds",
+      "metres_per_tile": 0,
+      "colour_space": "sRGB",
+      "alpha": true
+    },
+    {
+      "file": "wetland/rosette-leaf.webp",
+      "width": 256,
+      "height": 512,
+      "bytes": 112190,
+      "sha256": "fe265d7728c9f144313e28cf52b30ffd5cb5ae7c795043b84915a96e35f81ce1",
+      "sources": [
+        "LeafSet024"
+      ],
+      "surface": "Water-lettuce leaf adaptation",
+      "metres_per_tile": 0,
+      "colour_space": "sRGB",
+      "alpha": true
+    },
+    {
+      "file": "foliage/tree-atlas.webp",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1738064,
+      "sha256": "cf4ba30724b3682caacb44e9acce9a31f93b83d652172f00f1a09f8813ae510e",
+      "sources": [
+        "LeafSet022",
+        "LeafSet024",
+        "palm_tree_bark",
+        "tiger_rock"
+      ],
+      "surface": "2K multi-species photo atlas; leaf and palm silhouettes are illustrative adaptations",
+      "metres_per_tile": 0,
+      "colour_space": "sRGB",
+      "alpha": true
+    },
+    {
+      "file": "wetland/melaleuca-crown.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 1220316,
+      "sha256": "aef6a5fb97fd7d550a7aa4a17c12eb66bf3ffe32bb9cece610c89a09882963b4",
+      "sources": [
+        "LeafSet022"
+      ],
+      "surface": "Photo leaves narrowed and assembled as melaleuca crown cards",
+      "metres_per_tile": 0,
+      "colour_space": "sRGB",
+      "alpha": true
+    },
+    {
+      "file": "wetland/duckweed-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 393202,
+      "sha256": "8744b370d0c5a7abbf4d0c926d21f09da6a5a1405cabc60f6bd123f5cb3f9011",
+      "sources": [
+        "LeafSet024"
+      ],
+      "surface": "Seamless duckweed adaptation from reduced leaf photographs",
+      "metres_per_tile": 1,
+      "colour_space": "sRGB",
+      "alpha": false
+    },
+    {
+      "file": "ground/young-rice-color.webp",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 273238,
+      "sha256": "f7835e5daf8f2deb1f4542e479c65388a1055c19167c1213deb087deb7053c2c",
+      "sources": [
+        "Foliage008",
+        "brown_mud"
+      ],
+      "surface": "Illustrative young rice rows on muddy paddy soil",
+      "metres_per_tile": 2,
+      "colour_space": "sRGB",
+      "alpha": false
+    }
+  ],
+  "atlas_cells": {
+    "white": [
+      0,
+      0,
+      8,
+      8
+    ],
+    "broadSide": [
+      16,
+      16,
+      480,
+      480
+    ],
+    "broadTop": [
+      512,
+      16,
+      480,
+      480
+    ],
+    "tramSide": [
+      1008,
+      16,
+      224,
+      480
+    ],
+    "bambooSide": [
+      1248,
+      16,
+      384,
+      480
+    ],
+    "fan": [
+      1648,
+      16,
+      384,
+      384
+    ],
+    "frond": [
+      16,
+      512,
+      1008,
+      224
+    ],
+    "banana": [
+      1040,
+      512,
+      640,
+      224
+    ],
+    "palmSprite": [
+      16,
+      752,
+      480,
+      480
+    ],
+    "palmTop": [
+      512,
+      752,
+      480,
+      480
+    ],
+    "thotnotSprite": [
+      1008,
+      752,
+      320,
+      480
+    ],
+    "bananaSprite": [
+      1344,
+      752,
+      320,
+      320
+    ],
+    "nipaSprite": [
+      1680,
+      752,
+      352,
+      320
+    ],
+    "arecaSprite": [
+      1680,
+      1088,
+      224,
+      480
+    ],
+    "rockSprite": [
+      16,
+      1248,
+      256,
+      192
+    ]
+  },
+  "adaptation_note": "LeafSet022/024 and Foliage008 are photo donors. Melaleuca, palm, bamboo, banana, duckweed, water lettuce and young rice are illustrative adaptations, not species-specific photographs.",
+  "shipping_bytes": 10978288,
+  "gpu_note": "RGBA8 decoded GPU upper bound per loaded image: width*height*4*4/3 (mipmaps); disk size is not GPU memory."
+}

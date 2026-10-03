@@ -3,13 +3,15 @@ import { MATCH_COLORS, escapeHtml } from './overlays.js';
 
 const T = {
   vi: {
-    title: 'Cửu Long Quái Sự Ký · Bản đồ 3D', subtitle: 'Thiên 1: Thất Sơn U Linh · An Giang (trước 2025)',
-    views: 'Góc nhìn', places: 'Địa điểm trong truyện', layers: 'Lớp hiển thị', credits: 'Nguồn dữ liệu', close: 'Đóng',
+    title: 'Dự án Cửu Long', subtitle: 'Bản đồ 3D Bảy Núi – An Giang (trước 2025)',
+    views: 'Góc nhìn', places: 'Địa điểm trong truyện', layers: 'Lớp hiển thị', quality: 'Chất lượng hình ảnh',
+    qualityModes: { fast: 'Nhanh', good: 'Đẹp', cinematic: 'Điện ảnh' },
+    qualityNote: 'Điện ảnh: bóng nắng sắc nét, che khuất ánh sáng đầy đủ — dành cho cận cảnh, máy mạnh.', credits: 'Nguồn dữ liệu', close: 'Đóng',
     m_real: 'Có thật', m_embellished: 'Có thật + hư cấu', m_fictional: 'Hư cấu', m_reference: 'Tham khảo',
     m_road_note: 'Ghi chú đường', m_conflict: 'Truyện khác thực tế',
     about: 'Dự án của người hâm mộ, phi thương mại. Vị trí đặt theo truyện; chỗ nào truyện khác thực tế đều có ghi chú.',
     hint: 'Kéo để di chuyển · Chuột phải / hai ngón để xoay · Cuộn để phóng to · Bấm vào địa điểm để đọc',
-    scale_note: 'Ảnh vệ tinh Sentinel-2 (10 m) chụp mùa khô 2025. Nhà cửa là dấu chân công trình thật (Overture Maps), chiều cao ước tính. Độ cao địa hình phóng ×3, nhà ×2, cây cối phóng to để nhìn rõ từ xa; vị trí cây là ước tính.',
+    scale_note: 'Ảnh vệ tinh Sentinel-2 (10 m) chụp mùa khô 2025. Nhà cửa là dấu chân công trình thật (Overture Maps), kiểu nhà và chiều cao ước tính. Cây mọc đúng nơi có tán cây thật (ESA WorldCover 2021), loài cây ước tính theo vùng. Trà Sư có lớp rừng ngập nước dựng theo ảnh tham khảo; kênh, cầu, mực nước và vị trí động vật chỉ minh họa. Độ cao địa hình phóng ×3; nhà và cây ở xa phóng ×2 để dễ nhìn.',
     canon: 'Theo truyện', reality: 'Thực tế', invented: 'Chi tiết hư cấu', fly: 'Bay tới', osm: 'Xem trên OpenStreetMap',
     uncertain: (m) => `Vị trí ước đoán, sai số khoảng ±${m >= 1000 ? (m / 1000).toLocaleString('vi') + ' km' : m + ' m'}`,
     lm_note: 'Công trình có thật (theo OpenStreetMap). Mô hình chỉ mang tính minh họa.',
@@ -17,19 +19,21 @@ const T = {
     loading: { meta: 'Đang đọc thông tin…', terrain: 'Đang tải địa hình…', tex: 'Đang tải bản đồ màu…', data: 'Đang tải địa điểm…',
                trees: 'Đang trồng cây…', houses: 'Đang dựng nhà…', ready: 'Sẵn sàng' },
     layer: { sites: 'Địa điểm truyện', route: 'Lộ trình nhân vật', rings: 'Vùng ước đoán', labels: 'Địa danh',
-             villages: 'Tên làng, ấp', roads: 'Đường sá', buildings: 'Nhà cửa', trees: 'Cây cối', landmarks: 'Chùa, nhà thờ…',
-             boundaries: 'Ranh giới' },
-    view: { overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két',
-            river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
+             villages: 'Tên làng, ấp', roads: 'Đường sá', buildings: 'Nhà cửa', boats: 'Ghe thuyền', trees: 'Cây cối', landmarks: 'Chùa, nhà thờ…',
+             boundaries: 'Ranh giới', paddies: 'Ruộng lúa', trasu: 'Rừng ngập nước Trà Sư' },
+    view: { overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két', paddies: 'Ruộng lúa – Tri Tôn',
+            trasu: 'Trà Sư – toàn cảnh', trasuCanal: 'Trà Sư – dưới tán tràm', trasuBirds: 'Trà Sư – chim nước', river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
   },
   en: {
-    title: 'Cửu Long Quái Sự Ký · 3D Map', subtitle: 'Book 1: Thất Sơn U Linh · An Giang (pre-2025)',
-    views: 'Views', places: 'Places in the story', layers: 'Layers', credits: 'Data sources', close: 'Close',
+    title: 'Cửu Long Project', subtitle: '3D map of Bảy Núi – An Giang (pre-2025)',
+    views: 'Views', places: 'Places in the story', layers: 'Layers', quality: 'Picture quality',
+    qualityModes: { fast: 'Fast', good: 'Good', cinematic: 'Cinematic' },
+    qualityNote: 'Cinematic: sharp sun shadows and full ambient occlusion, for close-ups on a strong computer.', credits: 'Data sources', close: 'Close',
     m_real: 'Real place', m_embellished: 'Real + invented', m_fictional: 'Invented', m_reference: 'Reference',
     m_road_note: 'Road note', m_conflict: 'Story differs from reality',
     about: 'Non-commercial fan project. Places sit where the novel puts them; conflicts with reality are noted.',
     hint: 'Drag to pan · Right-drag / two fingers to rotate · Scroll to zoom · Click a place to read about it',
-    scale_note: 'Sentinel-2 satellite imagery (10 m), dry season 2025. Buildings are real footprints (Overture Maps) with estimated heights. Terrain heights ×3, buildings ×2, trees enlarged to read from afar; tree positions are estimated.',
+    scale_note: 'Sentinel-2 satellite imagery (10 m), dry season 2025. Buildings are real footprints (Overture Maps); house types and heights are estimated. Trees stand where real tree cover is (ESA WorldCover 2021); species are estimated by area. Trà Sư has a reference-based flooded forest; internal channels, boardwalk, water level and wildlife positions are illustrative. Terrain heights ×3; distant houses and trees ×2 so they read on the map.',
     canon: 'In the novel', reality: 'In reality', invented: 'Invented details', fly: 'Fly here', osm: 'Open in OpenStreetMap',
     uncertain: (m) => `Estimated position, about ±${m >= 1000 ? m / 1000 + ' km' : m + ' m'}`,
     lm_note: 'Real building (from OpenStreetMap). The model is illustrative only.',
@@ -38,9 +42,9 @@ const T = {
                trees: 'Planting trees…', houses: 'Building houses…', ready: 'Ready' },
     layer: { sites: 'Story places', route: "Narrator's route", rings: 'Uncertainty', labels: 'Place names',
              villages: 'Village names', roads: 'Roads & paths', buildings: 'Buildings', trees: 'Trees',
-             landmarks: 'Pagodas, churches…', boundaries: 'Boundaries' },
+             landmarks: 'Pagodas, churches…', boundaries: 'Boundaries', boats: 'Boats', paddies: 'Rice fields', trasu: 'Trà Sư flooded forest' },
     view: { overview: 'Whole province', baynui: 'Seven Mountains', sites: 'Story places', tapa: 'Tà Pạ – Tri Tôn',
-            nuiket: 'From Núi Két summit', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
+            nuiket: 'From Núi Két summit', paddies: 'Tri Tôn rice fields', trasu: 'Trà Sư – aerial', trasuCanal: 'Trà Sư – forest canal', trasuBirds: 'Trà Sư – waterbirds', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
   },
 };
 
@@ -112,6 +116,22 @@ export class UI {
       cb.onchange = () => { this.layerState[l] = cb.checked; this.cb.onLayer(l, cb.checked); };
       lab.append(cb, document.createTextNode(T[this.lang].layer[l] || l));
       layers.append(lab);
+    }
+
+    const q = this.$('quality');
+    if (q) {
+      q.innerHTML = '';
+      for (const id of ['fast', 'good', 'cinematic']) {
+        const b = document.createElement('button');
+        b.textContent = T[this.lang].qualityModes[id];
+        b.className = this.quality === id ? 'on' : '';
+        b.onclick = () => { this.quality = id; this.cb.onQuality?.(id); this.render(); };
+        q.append(b);
+      }
+      const note = document.createElement('p');
+      note.className = 'seg-note';
+      note.textContent = T[this.lang].qualityNote;
+      q.append(note);
     }
 
     this.$('creditsList').innerHTML = this.credits.map((c) => `<li>${escapeHtml(c)}</li>`).join('');

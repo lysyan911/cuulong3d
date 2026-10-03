@@ -111,8 +111,9 @@ export class Overlays {
 
   setLanguage(lang) { this.lang = lang; this.renderSiteLabels(); }
 
-  update(camera) {
-    for (const it of this.labelItems) it.o.visible = camera.position.distanceTo(it.o.position) < it.range;
+  update(camera, underCanopy = false) {
+    for (const name of ['sites', 'route', 'rings']) for (const item of this.layers[name].children) item.visible = !underCanopy;
+    for (const it of this.labelItems) it.o.visible = !underCanopy && camera.position.distanceTo(it.o.position) < it.range;
   }
 }
 

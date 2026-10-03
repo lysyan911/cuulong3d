@@ -3,17 +3,32 @@ import * as THREE from 'three';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import { Terrain } from './terrain.js';
+import { SurfaceMap } from './surface.js';
+import { PaddyLayer } from './paddies.js';
+import { WetlandMap } from './wetland-map.js';
+import { TraSuLayer } from './trasu.js';
 import { StreamedImagery } from './imagery.js';
-import { TreeLayer, RoadLayer, buildLandmarks } from './world.js';
+import { RoadLayer, buildLandmarks } from './world.js';
+import { TreeLayer } from './trees.js';
 import { HouseLayer } from './houses.js';
+import { Road3DLayer } from './roads3d.js';
+import { PropsLayer } from './props.js';
 import { Overlays } from './overlays.js';
 import { UI } from './ui.js';
+import { photoInventory } from './photo-textures.js';
+import { GLOBALS } from './render/globals.js';
+import { skyMaterial, cloudUniforms } from './render/atmosphere.js';
+import { SunShadows } from './render/shadows.js';
+import { RenderPipeline } from './render/pipeline.js';
+import { WaterReflection } from './render/reflection.js';
+import { loadGround } from './render/ground.js';
+import { initAnalytics, track } from './analytics.js';
 
 const DATA = 'data/';
 const MOBILE = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
 const QUALITY = MOBILE
-  ? { pixelRatio: 1, treeDist: 11000, buildingDist: 7000, houseNear: 900, roadScale: 0.6, lodBias: 1, maxDetail: 4 }
-  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 22000, buildingDist: 14000, houseNear: 1800, roadScale: 1, lodBias: 0,
+  ? { pixelRatio: 1, treeDist: 3500, treeNear: 500, roadRibbon: 2000, buildingDist: 7000, houseNear: 900, roadScale: 0.6, lodBias: 1, maxDetail: 4 }
+  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 8000, treeNear: 1000, roadRibbon: 4000, buildingDist: 14000, houseNear: 1800, roadScale: 1, lodBias: 0,
       maxDetail: 10 };
 
 const getJSON = (f) => fetch(DATA + f).then((r) => { if (!r.ok) throw new Error(f); return r.json(); });
@@ -24,8 +39,6 @@ async function main() {
   const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
   renderer.setPixelRatio(QUALITY.pixelRatio);
   renderer.setSize(innerWidth, innerHeight);
-  renderer.toneMapping = THREE.NeutralToneMapping;
-  renderer.toneMappingExposure = 1.0;
   container.append(renderer.domElement);
   const labelRenderer = new CSS2DRenderer();
   labelRenderer.setSize(innerWidth, innerHeight);
@@ -38,55 +51,43 @@ async function main() {
   Object.assign(controls, { enableDamping: true, dampingFactor: 0.08, screenSpacePanning: false, maxPolarAngle: 1.47,
                             minDistance: 120, maxDistance: 320000, zoomToCursor: true });
 
-  // ---------------------------------------------------------------- sky, sun, haze
-  // Gradient sky dome with soft clouds (follows the camera); the same dome lights the scene via PMREM.
-  const HORIZON = new THREE.Color(0.74, 0.80, 0.86), ZENITH = new THREE.Color(0.22, 0.42, 0.78);
-  const skyMaterial = () => new THREE.ShaderMaterial({
-    side: THREE.BackSide, depthWrite: false, depthTest: false, fog: false,
-    uniforms: { uHorizon: { value: HORIZON }, uZenith: { value: ZENITH }, uSun: { value: sunDir } },
-    vertexShader: `varying vec3 vDir; void main() { vDir = normalize(position);
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
-    fragmentShader: `varying vec3 vDir; uniform vec3 uHorizon, uZenith, uSun;
-      float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-      float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
-        return mix(mix(h(i), h(i+vec2(1,0)), f.x), mix(h(i+vec2(0,1)), h(i+vec2(1,1)), f.x), f.y); }
-      void main() {
-        float e = vDir.y;
-        vec3 col = mix(uHorizon, uZenith, pow(clamp(e, 0.0, 1.0), 0.55));
-        col = mix(col, uHorizon * 0.85, smoothstep(0.0, -0.2, e));            // below horizon: haze
-        vec2 p = vDir.xz / max(e + 0.12, 0.05) * 1.6;                          // clouds on a flat ceiling
-        float c = n(p) * 0.6 + n(p * 2.3) * 0.3 + n(p * 5.1) * 0.1;
-        c = smoothstep(0.55, 0.78, c) * smoothstep(0.02, 0.2, e);
-        col = mix(col, vec3(0.97), c * 0.85);
-        col += vec3(1.0, 0.9, 0.7) * pow(max(dot(vDir, uSun), 0.0), 400.0) * 2.0;  // sun disc
-        gl_FragColor = vec4(col, 1.0);
-        #include <colorspace_fragment>
-      }`,
-  });
-  const sunDir = new THREE.Vector3().setFromSphericalCoords(1, THREE.MathUtils.degToRad(52), THREE.MathUtils.degToRad(225));
-  const sky = new THREE.Mesh(new THREE.SphereGeometry(400000, 48, 24), skyMaterial());
+  // ---------------------------------------------------------------- sky, sun, haze (render/atmosphere.js)
+  // Afternoon sun from the south-west; one drifting cloud layer that both fills the sky and shades the ground.
+  const HORIZON = GLOBALS.uHorizon.value, ZENITH = GLOBALS.uZenith.value;
+  const sunDir = GLOBALS.uSunDir.value;
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(400000, 48, 24), skyMaterial(cloudUniforms(), { horizon: HORIZON, zenith: ZENITH }));
   sky.renderOrder = -10;
   sky.frustumCulled = false;
+  sky.userData.noShadow = true;
   scene.add(sky);
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envScene = new THREE.Scene();
-  envScene.add(new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), skyMaterial()));
+  const envSky = skyMaterial(cloudUniforms(), { horizon: HORIZON, zenith: ZENITH });
+  envSky.uniforms.uClouds.value = 0;                       // smooth sky light for the environment
+  envScene.add(new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), envSky));
   scene.environment = pmrem.fromScene(envScene, 0, 1, 2000).texture;
-  scene.environmentIntensity = 0.75;
-  const sun = new THREE.DirectionalLight(0xfff1dc, 2.4);
+  scene.environmentIntensity = 0.42;
+  const sun = new THREE.DirectionalLight(0xffeedd, 3.4);
   sun.position.copy(sunDir).multiplyScalar(100000);
-  scene.add(sun, new THREE.HemisphereLight(0xcfe3ff, 0x5b6a3a, 0.9));
+  scene.add(sun, sun.target, new THREE.HemisphereLight(0xc4dcff, 0x6a6146, 0.42));
   scene.fog = new THREE.Fog(HORIZON.clone(), 35000, 330000);
+  const shadows = new SunShadows(renderer, sun, sunDir);
+  const reflection = new WaterReflection(renderer, scene);
+  const pipeline = new RenderPipeline(renderer, scene, camera, shadows, { mobile: MOBILE, reflection });
+  let quality = MOBILE ? 'fast' : 'good';
+  try { quality = localStorage.getItem('cuulong-quality') || quality; } catch { /* private mode */ }
+  const fogSun = new THREE.Color(0.86, 0.80, 0.70), viewDir = new THREE.Vector3();
 
   // ---------------------------------------------------------------- UI + loading
   let meta;
   const layers = {};
   const ui = new UI({
     credits: [],
-    onView: (id) => flyTo(views[id]),
-    onSite: (s) => openSite(s, true),
-    onLayer: (name, on) => { if (layers[name]) for (const o of [].concat(layers[name])) o.visible = on; },
-    onLang: (lang) => overlays.setLanguage(lang),
+    onView: (id) => { track(`view-${id}`); flyTo(views[id]); },
+    onSite: (s) => { track(`site-${s.id}`); openSite(s, true); },
+    onLayer: (name, on) => { track(`layer-${name}-${on ? 'on' : 'off'}`); if (name === 'paddies') shared.uRice.value = on ? 1 : 0; if (layers[name]) for (const o of [].concat(layers[name])) o.visible = on; },
+    onLang: (lang) => { track(`lang-${lang}`); overlays.setLanguage(lang); },
+    onQuality: (q) => { track(`quality-${q}`); quality = q; try { localStorage.setItem('cuulong-quality', q); } catch { /* ignore */ } pipeline.setMode(q); },
   });
   ui.loading('meta', 0.02);
   meta = await getJSON('meta.json');
@@ -101,26 +102,27 @@ async function main() {
   const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
   const [ngx, ngy] = meta.groups;
-  const textures = { sat: [], water: [] };
+  const textures = { sat: [], water: [], crop: [] };
+  const texKinds = meta.surface ? ['sat', 'water', 'crop'] : ['sat', 'water'];
   let done = 0;
   const texJobs = [];
   for (let gy = 0; gy < ngy; gy++) {
-    textures.sat[gy] = []; textures.water[gy] = [];
+    textures.sat[gy] = []; textures.water[gy] = []; textures.crop[gy] = [];
     for (let gx = 0; gx < ngx; gx++) {
-      for (const kind of ['sat', 'water']) {
-        texJobs.push(loader.loadAsync(`${DATA}tex/${kind}_${gx}_${gy}.${kind === 'sat' ? 'jpg' : 'png'}`).then((t) => {
+      for (const kind of texKinds) {
+        texJobs.push(loader.loadAsync(`${DATA}${kind === 'crop' ? 'surface' : 'tex'}/${kind}_${gx}_${gy}.${kind === 'sat' ? 'jpg' : 'png'}`).then((t) => {
           t.colorSpace = kind === 'sat' ? THREE.SRGBColorSpace : THREE.NoColorSpace;
           t.anisotropy = maxAniso;
           t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
           textures[kind][gy][gx] = t;
-          ui.loading('tex', 0.25 + 0.3 * (++done / (ngx * ngy * 2)));
+          ui.loading('tex', 0.25 + 0.3 * (++done / (ngx * ngy * texKinds.length)));
         }));
       }
     }
   }
   await Promise.all(texJobs);
 
-  const shared = { uTime: { value: 0 }, uExag: { value: meta.vert_exag }, uDetail: { value: 0.45 } };
+  const shared = { uTime: { value: 0 }, uExag: { value: meta.vert_exag }, uDetail: { value: 0.45 }, uRice: { value: 1 } };
   // optional live high-res imagery near the camera (needs an Esri key in web/config.js)
   let cfg = {};
   let cfgFile = new URLSearchParams(location.search).get('config') || 'config';   // ?config=config.test for checks
@@ -134,8 +136,15 @@ async function main() {
     onError: () => console.warn('High-res imagery unavailable (key, quota or network); using Sentinel-2 only.'),
   }) : null;
   if (imagery) ui.credits = [...meta.credits, `Close-up imagery (streamed live): ${cfg.credit || 'Esri World Imagery — Esri, Maxar, Earthstar Geographics'}`];
+  // anonymous visit statistics on the public site only (see analytics.js)
+  if (initAnalytics(cfg.goatcounter)) ui.credits = [...ui.credits, 'Anonymous visit statistics: GoatCounter (no cookies, no personal data)'];
+  const surface = meta.surface ? await SurfaceMap.load(meta, DATA) : null;
+  const wetland = await WetlandMap.load(DATA, meta.vert_exag);
+  if (wetland) ui.credits = [...ui.credits, wetland.data.credit];
   const terrain = new Terrain(meta, heights, textures, shared,
-                              { dataUrl: DATA, maxDetail: QUALITY.maxDetail, anisotropy: maxAniso, imagery });
+                              { dataUrl: DATA, maxDetail: QUALITY.maxDetail, anisotropy: maxAniso, imagery, surface });
+  terrain.wetland = wetland;
+  await terrain.loadRelief();                  // 30 m hills: before anything places houses, trees or roads
   terrain.lodBias = QUALITY.lodBias;
   scene.add(terrain.group);
 
@@ -153,23 +162,31 @@ async function main() {
   scene.add(lm);
 
   // ---------------------------------------------------------------- trees, real buildings, roads (per group)
-  const trees = new TreeLayer(meta, QUALITY.treeDist);
-  const buildings = new HouseLayer(meta, QUALITY.buildingDist, QUALITY.houseNear);
-  const roads = new RoadLayer(meta, QUALITY.roadScale);
-  scene.add(trees.group, buildings.group, roads.group);
-  const layerOf = { trees, bld: buildings, roads };
+  const trees = new TreeLayer(meta, terrain, shared, { dataUrl: DATA, nearR: QUALITY.treeNear, farR: QUALITY.treeDist });
+  const buildings = new HouseLayer(meta, QUALITY.buildingDist, QUALITY.houseNear, terrain);
+  const roads = new RoadLayer(meta, QUALITY.roadScale, QUALITY.roadRibbon);
+  const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon });
+  roads.group.add(roads3d.group);          // the Roads layer switch covers both
+  const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150 });
+  const trasu = wetland ? new TraSuLayer(wetland, terrain, shared, { mobile: MOBILE }) : null;
+  scene.add(trees.group, buildings.group, roads.group, paddies.group);
+  if (trasu) scene.add(trasu.group);
+  const props = new PropsLayer(meta, terrain, buildings, shared, MOBILE ? { heroR: 180, heroCap: 20, boatR: 1500, boatCap: 80 } : {});
+  scene.add(props.group, props.boatGroup);
+  const layerOf = { bld: buildings, roads, ways: roads3d, water: props };
   const keys = Object.keys(meta.instance_counts);
   let loaded = 0;
   await Promise.all(keys.map((key) => {
     const [kind, gx, gy] = key.split('_');
     return layerOf[kind].loadCell(+gx, +gy, `${DATA}inst/${key}.bin`).then(() =>
-      ui.loading(kind === 'trees' ? 'trees' : 'houses', 0.65 + 0.33 * (++loaded / keys.length)));
+      ui.loading('houses', 0.65 + 0.33 * (++loaded / keys.length)));
   }));
 
+  props.setLandmarks((await getJSON('props.json').catch(() => ({ heroes: [] }))).heroes);
   Object.assign(layers, { sites: overlays.layers.sites, route: overlays.layers.route, rings: overlays.layers.rings,
                           labels: overlays.layers.labels, villages: overlays.layers.villages, roads: roads.group,
-                          buildings: buildings.group, trees: trees.group, landmarks: lm,
-                          boundaries: overlays.layers.boundaries });
+                          buildings: [buildings.group, props.group], boats: props.boatGroup, trees: trees.group, landmarks: lm,
+                          boundaries: overlays.layers.boundaries, paddies: paddies.group });
 
   // ---------------------------------------------------------------- camera views
   const ex = meta.vert_exag;
@@ -185,10 +202,18 @@ async function main() {
     sites: { target: V(mx - 1500, 0, -(my + 1500)), pos: V(mx + 13000, 15000, -(my - 24000)) },
     tapa: near(site.B.x, site.B.y, site.B.z, 2200, 1100, -2600),
     nuiket: { pos: V(site.C.x - 250, site.C.z * ex + 60, -(site.C.y + 250)), target: V(site.F.x, 25 * ex, -site.F.y) },
+    paddies: { target: V(-26000, 9, 4400), pos: V(-25300, 360, 5050) },
     river: { target: V(-3417, 0, -14963), pos: V(-217, 1100, -11163) },
     chaudoc: near(lbl['Châu Đốc'].x, lbl['Châu Đốc'].y, lbl['Châu Đốc'].z, 1500, 650, -1700),
     longxuyen: near(lbl['Long Xuyên'].x, lbl['Long Xuyên'].y, lbl['Long Xuyên'].z, 1700, 750, -1900),
   };
+  if (trasu) {
+    Object.assign(views, trasu.views);
+    layers.trasu = trasu.group;
+    layers.trees = [trees.group, trasu.treeGroup];
+    layers.boats = [props.boatGroup, trasu.boatGroup];
+    layers.landmarks = [lm, trasu.boardwalk];
+  }
   ui.build({ views, sites: sites.sites, layers: Object.keys(layers) });
 
   let flight = null;
@@ -204,7 +229,7 @@ async function main() {
   function openSite(s, fly) {
     ui.showSite(s);
     history.replaceState(null, '', '#site=' + encodeURIComponent(s.id));
-    if (fly) flyTo(near(s.x, s.y, s.z, 1600, 1400, -2400));
+    if (fly) flyTo(s.id === 'D' && trasu ? views.trasu : near(s.x, s.y, s.z, 1600, 1400, -2400));
   }
 
   // ---------------------------------------------------------------- picking (landmarks, site dots)
@@ -230,6 +255,7 @@ async function main() {
     if (w > 760) camera.setViewOffset(w, h, -158, 0, w, h); else camera.clearViewOffset();
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
+    pipeline.setSize(w, h);
     labelRenderer.setSize(w, h);
     overlays.setResolution(w, h);
     roads.setResolution(w, h);
@@ -243,11 +269,34 @@ async function main() {
   camera.position.copy(start.pos);
   controls.target.copy(start.target);
   if (site[startSite]) openSite(site[startSite], true);
+  await pipeline.setMode(quality);
+  ui.quality = quality;
+  ui.render();
   ui.loading('ready', 1);
-  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, roads, views, shared };  // debugging handle
+  if (!MOBILE) loadGround().catch((e) => console.warn('Ground photos unavailable:', e.message));
+  // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
+  const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
+    .map((n) => scene.getObjectByName(n)).filter(Boolean)];
+  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, roads, roads3d, props, paddies, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
 
+  // Optional local QA counter; absent from the normal map UI.
+  const stats = new URLSearchParams(location.search).get('stats') === '1' ? document.createElement('output') : null;
+  let statStart = performance.now(), statFrames = 0, sceneTriangles = 0;
+  // Read the main scene's count before fullscreen post passes reset renderer.info.
+  if (stats) scene.onAfterRender = (r, _scene, view) => {
+    if (view === camera) sceneTriangles = Math.max(sceneTriangles, r.info.render.triangles);
+  };
+  if (stats) {
+    stats.id = 'perfStats';
+    Object.assign(stats.style, { position: 'absolute', right: '12px', bottom: '38px', padding: '8px', color: '#fff',
+                                background: '#182820dd', font: '12px monospace', pointerEvents: 'none' });
+    container.append(stats);
+  }
+
+  const forestHaze = new THREE.Color(.36, .44, .30);
   const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   renderer.setAnimationLoop((now) => {
+    if (stats) sceneTriangles = 0;
     shared.uTime.value = now / 1000;
     if (flight) {
       const k = Math.min((now - flight.t0) / flight.ms, 1), e = ease(k);
@@ -256,19 +305,63 @@ async function main() {
       if (k >= 1) flight = null;
     }
     controls.update();
+    // a hidden pane (0 x 0 view) can leave the camera at NaN: put it back on the overview
+    if (!Number.isFinite(camera.position.x + camera.position.y + camera.position.z)) {
+      const o = fit(views.overview);
+      camera.position.copy(o.pos);
+      controls.target.copy(o.target);
+    }
     sky.position.copy(camera.position);
-    scene.fog.near = 30000 + camera.position.y * 1.3;   // haze scales with altitude: clear overviews,
-    scene.fog.far = 330000 + camera.position.y * 2.5;   // hazy horizons when low
+    sky.material.uniforms.uCam.value.copy(camera.position);
+    GLOBALS.uViewPos.value.copy(camera.position);
+    GLOBALS.uCloudTime.value = now / 1000;
+    const underCanopy = wetland && camera.position.y < wetland.level + 80 && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
+    pipeline.limitPixelRatio(underCanopy ? 1 : null);
+    // haze: warmer looking towards the sun, cooler away from it
+    camera.getWorldDirection(viewDir);
+    const toSun = Math.max(0, viewDir.x * sunDir.x + viewDir.z * sunDir.z) / Math.hypot(sunDir.x, sunDir.z);
+    scene.fog.color.copy(underCanopy ? forestHaze : HORIZON).lerp(fogSun, underCanopy ? 0 : toSun * toSun * 0.6);
+    scene.fog.near = underCanopy ? 65 : 30000 + camera.position.y * 1.3;   // haze scales with altitude: clear overviews,
+    scene.fog.far = underCanopy ? 650 : 330000 + camera.position.y * 2.5;   // hazy horizons when low
     // stay above the ground
-    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + 40;
+    const inWetland = wetland && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
+    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 40);
+    controls.minDistance = inWetland ? 18 : 120;
+    const nearPlane = inWetland ? .35 : 5;
+    if (camera.near !== nearPlane) { camera.near = nearPlane; camera.updateProjectionMatrix(); }
     if (camera.position.y < g) camera.position.y = g;
+    terrain.lodBias = underCanopy ? Math.max(1, QUALITY.lodBias) : QUALITY.lodBias;
     terrain.update(camera);
+    paddies.update(camera);
+    if (trasu) trasu.update(camera);
     trees.update(camera);
     buildings.update(camera);
     roads.update(camera);
-    overlays.update(camera);
-    renderer.render(scene, camera);
+    roads3d.update(camera);
+    props.update(camera);
+    overlays.update(camera, underCanopy);
+    shadows.update(camera, controls.target, scene);
+    if (!underCanopy && surface) reflection.update(camera, surface.waterHeight(controls.target.x, -controls.target.z), reflSkip);
+    else GLOBALS.uRefl.value.x = 0;
+    pipeline.render();
     labelRenderer.render(scene, camera);
+    if (stats && ++statFrames && now - statStart >= 2000) {
+      const fps = statFrames * 1000 / (now - statStart);
+      stats.textContent = `${fps.toFixed(1)} fps · ${sceneTriangles.toLocaleString()} triangles · ${renderer.info.memory.textures} textures · ${(photoInventory.mipBytes / 1048576).toFixed(1)} MiB photo · ${buildings.rejectedWater} water conflicts hidden`;
+      stats.dataset.fps = fps.toFixed(1);
+      stats.dataset.triangles = sceneTriangles;
+      stats.dataset.textures = renderer.info.memory.textures;
+      stats.dataset.photoMiB = (photoInventory.mipBytes / 1048576).toFixed(1);
+      stats.dataset.photoImages = photoInventory.images;
+      stats.dataset.quality = pipeline.mode;
+      stats.dataset.view = camera.position.toArray().map(n => n.toFixed(2)).join(',');
+      stats.dataset.detailInstances = trasu?.nearMeshes?.reduce((n,m) => n + m.count,0) || 0;
+      stats.dataset.rejected = buildings.rejectedWater;
+      stats.dataset.paddyTiles = paddies.tiles.size;
+      stats.dataset.trasuTrees = trasu?.records?.length || 0;
+      stats.dataset.pixelRatio = renderer.getPixelRatio();
+      statStart = now; statFrames = 0;
+    }
   });
 }
 
