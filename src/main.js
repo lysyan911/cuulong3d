@@ -17,7 +17,7 @@ import { Overlays } from './overlays.js';
 import { UI } from './ui.js';
 import { photoInventory } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
-import { skyMaterial, cloudUniforms } from './render/atmosphere.js';
+import { skyMaterial, cloudUniforms, installAerialHaze } from './render/atmosphere.js';
 import { SunShadows } from './render/shadows.js';
 import { RenderPipeline } from './render/pipeline.js';
 import { WaterReflection } from './render/reflection.js';
@@ -34,6 +34,7 @@ const QUALITY = MOBILE
 const getJSON = (f) => fetch(DATA + f).then((r) => { if (!r.ok) throw new Error(f); return r.json(); });
 
 async function main() {
+  installAerialHaze();
   // ---------------------------------------------------------------- renderer, scene, camera
   const container = document.getElementById('viewport');
   const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
@@ -48,7 +49,7 @@ async function main() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, 5, 700000);
   const controls = new MapControls(camera, renderer.domElement);
-  Object.assign(controls, { enableDamping: true, dampingFactor: 0.08, screenSpacePanning: false, maxPolarAngle: 1.47,
+  Object.assign(controls, { enableDamping: true, dampingFactor: 0.08, screenSpacePanning: false, maxPolarAngle: 1.54,
                             minDistance: 120, maxDistance: 320000, zoomToCursor: true });
 
   // ---------------------------------------------------------------- sky, sun, haze (render/atmosphere.js)
@@ -70,7 +71,8 @@ async function main() {
   const sun = new THREE.DirectionalLight(0xffeedd, 3.4);
   sun.position.copy(sunDir).multiplyScalar(100000);
   scene.add(sun, sun.target, new THREE.HemisphereLight(0xc4dcff, 0x6a6146, 0.42));
-  scene.fog = new THREE.Fog(HORIZON.clone(), 35000, 330000);
+  const HAZE = 0.85e-4;   // humid delta air: sea-level haze extinction per m (render/atmosphere.js installAerialHaze)
+  scene.fog = new THREE.FogExp2(HORIZON.clone(), HAZE);
   const shadows = new SunShadows(renderer, sun, sunDir);
   const reflection = new WaterReflection(renderer, scene);
   const pipeline = new RenderPipeline(renderer, scene, camera, shadows, { mobile: MOBILE, reflection });
@@ -91,6 +93,9 @@ async function main() {
   });
   ui.loading('meta', 0.02);
   meta = await getJSON('meta.json');
+  // Heights at true scale (the data was prepared with x3, which made Bảy Núi look alpine); ?exag=3 for the old look
+  const exagParam = parseFloat(new URLSearchParams(location.search).get('exag'));
+  meta.vert_exag = exagParam > 0 && exagParam <= 5 ? exagParam : 1;
   ui.credits = meta.credits;
 
   ui.loading('terrain', 0.08);
@@ -321,8 +326,7 @@ async function main() {
     camera.getWorldDirection(viewDir);
     const toSun = Math.max(0, viewDir.x * sunDir.x + viewDir.z * sunDir.z) / Math.hypot(sunDir.x, sunDir.z);
     scene.fog.color.copy(underCanopy ? forestHaze : HORIZON).lerp(fogSun, underCanopy ? 0 : toSun * toSun * 0.6);
-    scene.fog.near = underCanopy ? 65 : 30000 + camera.position.y * 1.3;   // haze scales with altitude: clear overviews,
-    scene.fog.far = underCanopy ? 650 : 330000 + camera.position.y * 2.5;   // hazy horizons when low
+    scene.fog.density = underCanopy ? 0.0035 : HAZE;
     // stay above the ground
     const inWetland = wetland && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
     const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 40);

@@ -113,3 +113,45 @@ export function skyMaterial(uniforms, { horizon, zenith }) {
       }`,
   });
 }
+
+/**
+ * Aerial perspective for every built-in material: replaces three's fog chunks. With scene.fog = FogExp2, fogDensity
+ * is the haze extinction at sea level (per m) and it thins out with height (scale height HAZE_H), so low views over
+ * the delta fade to the haze colour within ~10-20 km while views from high above stay clear. Linear Fog still works
+ * as before (used under the Trà Sư canopy). Call once, before any material compiles.
+ */
+export const HAZE_H = 1100;
+export function installAerialHaze() {
+  if (THREE.ShaderChunk.fog_fragment.includes('vFogWorld')) return;
+  THREE.ShaderChunk.fog_pars_vertex = '#ifdef USE_FOG\n  varying float vFogDepth;\n  varying vec3 vFogWorld;\n#endif';
+  THREE.ShaderChunk.fog_vertex = `#ifdef USE_FOG
+    vFogDepth = - mvPosition.z;
+    vFogWorld = transpose(mat3(viewMatrix)) * (mvPosition.xyz - viewMatrix[3].xyz);
+  #endif`;
+  THREE.ShaderChunk.fog_pars_fragment = `#ifdef USE_FOG
+    uniform vec3 fogColor;
+    varying float vFogDepth;
+    varying vec3 vFogWorld;
+    #ifdef FOG_EXP2
+      uniform float fogDensity;
+    #else
+      uniform float fogNear;
+      uniform float fogFar;
+    #endif
+  #endif`;
+  THREE.ShaderChunk.fog_fragment = `#ifdef USE_FOG
+    #ifdef FOG_EXP2
+      // optical depth through haze of density fogDensity * exp(-y / H) along the view ray
+      vec3 fogRay = vFogWorld - cameraPosition;
+      float fogLen = length(fogRay), fogB = 1.0 / ${HAZE_H.toFixed(1)};
+      float fogK = fogRay.y * fogB;
+      float fogOd = fogDensity * exp(-max(cameraPosition.y, 0.0) * fogB) * fogLen
+                  * (abs(fogK) > 1e-3 ? (1.0 - exp(-fogK)) / fogK : 1.0);
+      float fogFactor = 1.0 - exp(-fogOd);
+    #else
+      float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );
+    #endif
+    gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+  #endif`;
+}
+

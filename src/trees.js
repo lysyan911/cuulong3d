@@ -278,6 +278,10 @@ function treeMaterial(atlas, lod, uniforms) {
       .replace('#include <common>', '#include <common>\nvarying vec3 vTint; varying float vPart; varying float vRingY; varying float iSeedR;')
       .replace('#include <color_fragment>', `#include <color_fragment>
         diffuseColor.rgb *= vTint;
+        #ifdef MID
+          // a sprite crown is lit like its sunny top: darken for the shade inside it, more as crowns merge into forest
+          diffuseColor.rgb *= vec3(0.60, 0.64, 0.66) * mix(1.0, 0.72, smoothstep(1200.0, 4000.0, length(vViewPosition)));
+        #endif
         if (vPart < 0.5) diffuseColor.rgb *= 0.82 + 0.18 * step(0.5, fract(vRingY * 1.6));   // trunk rings
         if (vPart > 1.5) diffuseColor.rgb *= mix(vec3(0.75, 0.82, 0.62), vec3(1.15), smoothstep(0.1, 0.6, vRingY)) * (0.85 + 0.3 * fract(iSeedR * 7.3));`)
       .replace('#include <alphatest_fragment>', `

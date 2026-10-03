@@ -65,6 +65,7 @@ export class RoadLayer extends GroupLayer {
       const m = new LineMaterial({ color: st.color, linewidth: st.width, transparent: true, opacity: st.opacity,
                                    dashed: !!st.dashed, dashSize: 8, gapSize: 6, depthWrite: false });
       m.resolution.set(innerWidth, innerHeight);
+      m.fog = true;                          // lines fade into the aerial haze like everything else
       m.onBeforeCompile = (sh) => {
         sh.uniforms.uRibbonR = this.ribbon;
         sh.vertexShader = sh.vertexShader.replace('void main() {', `uniform float uRibbonR;
@@ -76,9 +77,12 @@ export class RoadLayer extends GroupLayer {
           void main() {`)
           .replace('#include <fog_fragment>', `#include <fog_fragment>
             gl_FragColor.a *= vRibbonFade;
+            #ifdef USE_FOG
+              gl_FragColor.a *= 1.0 - fogFactor;
+            #endif
             if (gl_FragColor.a < 0.01) discard;`);
       };
-      m.customProgramCacheKey = () => 'cuulong-roadline-' + (st.dashed ? 'd' : 's');
+      m.customProgramCacheKey = () => 'cuulong-roadline-haze-' + (st.dashed ? 'd' : 's');
       return m;
     });
   }

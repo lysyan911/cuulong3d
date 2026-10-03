@@ -250,6 +250,9 @@ const FRAG_COLOR = /* glsl */`
   int face = int(vFace + 0.5);
   if (face == 11) face = vInfo.w > 0.5 ? 3 : 7;          // far model: hip end or gable wall
   vec3 roofC = sRGB(vRoofCol), wallC = sRGB(vWallCol);
+  // weathering: tropical sun bleaches paint and tin, rain streaks and grime darken it (less candy-coloured towns)
+  wallC = mix(vec3(dot(wallC, vec3(0.2126, 0.7152, 0.0722))), wallC, 0.55) * 0.88;
+  roofC = mix(vec3(dot(roofC, vec3(0.2126, 0.7152, 0.0722))), roofC, 0.62) * 0.85;
   float hRough = 0.85;
   vec3 col;
   bool isTube = st < 0.5, isBlock = st > 0.5 && st < 1.5;
@@ -271,8 +274,8 @@ const FRAG_COLOR = /* glsl */`
       float corr = 0.5 + 0.5 * sin(r.y * 6.2832 / 0.26);
       col *= mix(0.94, 0.82 + 0.3 * corr, vis);
       float rn = 0.6 * hNoise(r * 0.12 + seed * 40.0) + 0.4 * hNoise(r * 0.5 + seed * 17.0);
-      float rust = smoothstep(0.45, 0.95, rn) * step(0.55, fract(seed * 3.7));     // older roofs only
-      col = mix(col, sRGB(vec3(0.48, 0.30, 0.20)), rust * 0.3);
+      float rust = smoothstep(0.4, 0.9, rn) * step(0.4, fract(seed * 3.7));       // older roofs only
+      col = mix(col, sRGB(vec3(0.45, 0.29, 0.20)), rust * 0.45);
       hRough = 0.5;
     } else if (k < 1.5 || k > 3.5) {                        // clay / glazed tiles: rows across the slope
       float row = fract(r.x / 0.32);
