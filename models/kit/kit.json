@@ -1,0 +1,6279 @@
+{
+  "schema_version": 1,
+  "units": "metres",
+  "up_axis": "+Y",
+  "front_axis": "+Z",
+  "origin": "ground at centre of body reference footprint",
+  "atlas": {
+    "file": "mekong-atlas.jpg",
+    "resolution": [
+      2048,
+      1024
+    ],
+    "bytes": 457794,
+    "gpu_rgba_mip_bytes": 11184811,
+    "normal_map": null
+  },
+  "material_contract": {
+    "max_materials": 2,
+    "names": [
+      "mekong_kit_opaque",
+      "mekong_kit_glass"
+    ],
+    "glass": "Opaque, no transparency or transmission; cheaper depth/shadow treatment.",
+    "atlas_uvs": "Keep authored UVs. Never run metricUVs on this kit. Cache one shared THREE.Texture and shared material pair across every GLB."
+  },
+  "reflow": "README.md describes span scale, fixed anchors and repeating bays for both LODs. Reflow nodes before merging/instancing; do not scale an entire model.",
+  "credits": [
+    {
+      "title": "Mekong kit atlas and geometry",
+      "licence": "Original project artwork; no copied photos, logos or external texture pixels.",
+      "source": "blender/kit/bake_atlas.py and build.py"
+    },
+    {
+      "title": "An Giang official tourism guide (domestic Khmer / regional context)",
+      "source": "https://media.angiang.gov.vn/SoVHTTDL-Portal/File-Dinh-Kem/thong_tin_du_lich_an_giang.pdf",
+      "use": "Architecture context only; no image pixels copied"
+    },
+    {
+      "title": "Reference architecture",
+      "source": "User-supplied An Giang house / canal / Long Xuyen photographs in project conversation",
+      "use": "Shape, palette and detailing context only; no photo pixels copied"
+    }
+  ],
+  "models": [
+    {
+      "id": "tube-01-shop",
+      "type": "shophouse",
+      "floors": 1,
+      "reference": {
+        "width": 4.6,
+        "depth": 16.0,
+        "height": 6.07
+      },
+      "stretchable_axes": [
+        "x",
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          4,
+          5
+        ],
+        "depth": [
+          10,
+          25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "tube-01-shop.near.glb",
+        "triangles": 256,
+        "materials": 2
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_stair_hut"
+          ],
+          "role": "fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front",
+            "fixed_front_glass"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_2"
+          ],
+          "role": "side_window_-1_2",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_2"
+          ],
+          "role": "side_window_1_2",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        }
+      ],
+      "far": {
+        "file": "tube-01-shop.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_stair_hut"
+          ],
+          "role": "far_fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "tube-02-balcony",
+      "type": "shophouse",
+      "floors": 2,
+      "reference": {
+        "width": 4.6,
+        "depth": 16.0,
+        "height": 9.22
+      },
+      "stretchable_axes": [
+        "x",
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          4,
+          5
+        ],
+        "depth": [
+          10,
+          25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "tube-02-balcony.near.glb",
+        "triangles": 714,
+        "materials": 2
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.001"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.001"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_stair_hut.001"
+          ],
+          "role": "fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.001",
+            "fixed_front_glass.001"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.001"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.001"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.001"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_2.001"
+          ],
+          "role": "side_window_-1_2",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.001"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.001"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_2.001"
+          ],
+          "role": "side_window_1_2",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        }
+      ],
+      "far": {
+        "file": "tube-02-balcony.far.glb",
+        "triangles": 72,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.001"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.001"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_stair_hut.001"
+          ],
+          "role": "far_fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.001"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "tube-03-tiled",
+      "type": "shophouse",
+      "floors": 3,
+      "reference": {
+        "width": 4.6,
+        "depth": 16.0,
+        "height": 10.4
+      },
+      "stretchable_axes": [
+        "x",
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          4,
+          5
+        ],
+        "depth": [
+          10,
+          25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "tube-03-tiled.near.glb",
+        "triangles": 1170,
+        "materials": 2
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.002"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.002"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.002",
+            "fixed_front_glass.002"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.002"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.002"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.002"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_2.002"
+          ],
+          "role": "side_window_-1_2",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.002"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.002"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_2.002"
+          ],
+          "role": "side_window_1_2",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        }
+      ],
+      "far": {
+        "file": "tube-03-tiled.far.glb",
+        "triangles": 50,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.002"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.002"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.002"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "tube-04-terrace",
+      "type": "shophouse",
+      "floors": 4,
+      "reference": {
+        "width": 4.6,
+        "depth": 16.0,
+        "height": 15.52
+      },
+      "stretchable_axes": [
+        "x",
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          4,
+          5
+        ],
+        "depth": [
+          10,
+          25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "tube-04-terrace.near.glb",
+        "triangles": 1786,
+        "materials": 2
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.003"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.003"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_stair_hut.002"
+          ],
+          "role": "fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.003",
+            "fixed_front_glass.003"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.003"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.003"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.003"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_2.003"
+          ],
+          "role": "side_window_-1_2",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.003"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.003"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_2.003"
+          ],
+          "role": "side_window_1_2",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 2,
+            "pitch": 3.8,
+            "front_inset": 2.2,
+            "back_inset": 1.2,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.2
+          }
+        }
+      ],
+      "far": {
+        "file": "tube-04-terrace.far.glb",
+        "triangles": 100,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.003"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 16.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 4.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.003"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 16.5,
+              "front_inset": -0.25,
+              "back_inset": -0.25
+            },
+            "x": {
+              "reference": 5.1,
+              "left_inset": -0.25,
+              "right_inset": -0.25
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_stair_hut.002"
+          ],
+          "role": "far_fixed_stair_hut",
+          "anchor": {
+            "x_fraction": 0.23,
+            "z_fraction": -0.31
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.003"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rural-tin-01",
+      "type": "rural",
+      "reference": {
+        "width": 7.4,
+        "depth": 12.0,
+        "height": 4.94
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          7.4,
+          7.4
+        ],
+        "depth": [
+          9.6,
+          18.0
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "rural-tin-01.near.glb",
+        "triangles": 316,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.004"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.4,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.4,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.004"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 8.36,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.004"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.004"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.004"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.004"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.004"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.004"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        }
+      ],
+      "far": {
+        "file": "rural-tin-01.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.004"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.004"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.004"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rural-tin-02",
+      "type": "rural",
+      "reference": {
+        "width": 8.1,
+        "depth": 13.5,
+        "height": 4.94
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          8.1,
+          8.1
+        ],
+        "depth": [
+          10.8,
+          20.25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "rural-tin-02.near.glb",
+        "triangles": 342,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.005"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.1,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.001"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.1,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.005"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 9.059999999999999,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.005"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.005"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.005"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.005"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.005"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.005"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "fixed_side_kitchen"
+          ],
+          "role": "fixed_side_kitchen",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": -0.25
+          }
+        }
+      ],
+      "far": {
+        "file": "rural-tin-02.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.005"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.001"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.005"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.005"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rural-tile-01",
+      "type": "rural",
+      "reference": {
+        "width": 8.4,
+        "depth": 12.0,
+        "height": 4.94
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          8.4,
+          8.4
+        ],
+        "depth": [
+          9.6,
+          18.0
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "rural-tile-01.near.glb",
+        "triangles": 412,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.006"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.4,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.002"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.4,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.006"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 9.36,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.006"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.006"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.006"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.006"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.006"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.006"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        }
+      ],
+      "far": {
+        "file": "rural-tile-01.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.006"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.002"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.006"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.006"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rural-tile-02",
+      "type": "rural",
+      "reference": {
+        "width": 9.1,
+        "depth": 13.5,
+        "height": 4.94
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          9.1,
+          9.1
+        ],
+        "depth": [
+          10.8,
+          20.25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "rural-tile-02.near.glb",
+        "triangles": 432,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.007"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 9.1,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.003"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 9.1,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.007"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 10.059999999999999,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.007"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.007"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.007"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.007"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.007"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.007"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        }
+      ],
+      "far": {
+        "file": "rural-tile-02.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.007"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.003"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.007"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.007"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "traditional-3gian-01",
+      "type": "rural",
+      "reference": {
+        "width": 11.8,
+        "depth": 12.0,
+        "height": 6.14
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          11.8,
+          11.8
+        ],
+        "depth": [
+          9.6,
+          18.0
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "traditional-3gian-01.near.glb",
+        "triangles": 636,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.008"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.35,
+              "front_inset": 2.65,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 11.8,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.004"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 11.8,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.008"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 12.760000000000002,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.008"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.008"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.008"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.675
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.008"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.675
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.008"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.675
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.008"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.675
+          }
+        }
+      ],
+      "far": {
+        "file": "traditional-3gian-01.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.008"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.35,
+              "front_inset": 2.65,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.004"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.008"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.008"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "traditional-3gian-02",
+      "type": "rural",
+      "reference": {
+        "width": 12.5,
+        "depth": 13.5,
+        "height": 6.14
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          12.5,
+          12.5
+        ],
+        "depth": [
+          10.8,
+          20.25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "traditional-3gian-02.near.glb",
+        "triangles": 960,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.009"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 10.85,
+              "front_inset": 2.65,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 12.5,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.005"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 12.5,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.009"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 13.46,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.009"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.009"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.009"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.425
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.009"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.425
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.009"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.425
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.009"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.65,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.425
+          }
+        }
+      ],
+      "far": {
+        "file": "traditional-3gian-02.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.009"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 10.85,
+              "front_inset": 2.65,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.005"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.009"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.009"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "canal-stilt-01",
+      "type": "rural",
+      "reference": {
+        "width": 7.0,
+        "depth": 12.0,
+        "height": 6.8
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          7.0,
+          7.0
+        ],
+        "depth": [
+          9.6,
+          18.0
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "canal-stilt-01.near.glb",
+        "triangles": 1096,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.010"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.0,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.006"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.0,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.010"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 7.96,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.010"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.010"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.010"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.010"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.010"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.010"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_0"
+          ],
+          "role": "stilt_bay_0",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 0,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.0
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_1"
+          ],
+          "role": "stilt_bay_1",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 1,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.0
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_2"
+          ],
+          "role": "stilt_bay_2",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 2,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.0
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_3"
+          ],
+          "role": "stilt_bay_3",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 3,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.0
+          }
+        }
+      ],
+      "far": {
+        "file": "canal-stilt-01.far.glb",
+        "triangles": 130,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.010"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.006"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.010"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.010"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_0"
+          ],
+          "role": "far_stilt_bay_0",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.0
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_1"
+          ],
+          "role": "far_stilt_bay_1",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.0
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_2"
+          ],
+          "role": "far_stilt_bay_2",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 2,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "canal-stilt-02",
+      "type": "rural",
+      "reference": {
+        "width": 7.7,
+        "depth": 13.5,
+        "height": 7.15
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          7.7,
+          7.7
+        ],
+        "depth": [
+          10.8,
+          20.25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "canal-stilt-02.near.glb",
+        "triangles": 1200,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.011"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.7,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.007"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.7,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.011"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 8.66,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.011"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.011"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.011"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.011"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.011"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.011"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_0.001"
+          ],
+          "role": "stilt_bay_0",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 0,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.375
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_1.001"
+          ],
+          "role": "stilt_bay_1",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 1,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.375
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_2.001"
+          ],
+          "role": "stilt_bay_2",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 2,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.375
+          }
+        },
+        {
+          "nodes": [
+            "stilt_bay_3.001"
+          ],
+          "role": "stilt_bay_3",
+          "repeat": {
+            "group": "stilt_bay",
+            "index": 3,
+            "pitch": 3.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 3.375
+          }
+        }
+      ],
+      "far": {
+        "file": "canal-stilt-02.far.glb",
+        "triangles": 130,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.011"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.007"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.011"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.011"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_0.001"
+          ],
+          "role": "far_stilt_bay_0",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.5
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_1.001"
+          ],
+          "role": "far_stilt_bay_1",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.5
+          }
+        },
+        {
+          "nodes": [
+            "far_stilt_bay_2.001"
+          ],
+          "role": "far_stilt_bay_2",
+          "repeat": {
+            "group": "far_stilt_bay",
+            "index": 2,
+            "pitch": 4.2,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 4.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "khmer-house-01",
+      "type": "rural",
+      "reference": {
+        "width": 7.6,
+        "depth": 12.0,
+        "height": 6.05
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          7.6,
+          7.6
+        ],
+        "depth": [
+          9.6,
+          18.0
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "khmer-house-01.near.glb",
+        "triangles": 572,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.012"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.008"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 7.6,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.012"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 8.559999999999999,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.012"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.012"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.012"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.012"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.012"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.012"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 3.9000000000000004
+          }
+        }
+      ],
+      "far": {
+        "file": "khmer-house-01.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.012"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 9.8,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.008"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 12.0,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.012"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 12.899999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.012"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "khmer-house-02",
+      "type": "rural",
+      "reference": {
+        "width": 8.3,
+        "depth": 13.5,
+        "height": 6.05
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          8.299999999999999,
+          8.299999999999999
+        ],
+        "depth": [
+          10.8,
+          20.25
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "khmer-house-02.near.glb",
+        "triangles": 346,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_body.013"
+          ],
+          "role": "continuous_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.299999999999999,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "continuous_floor.009"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            },
+            "x": {
+              "reference": 8.299999999999999,
+              "left_inset": 0,
+              "right_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.013"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            },
+            "x": {
+              "reference": 9.259999999999998,
+              "left_inset": -0.48,
+              "right_inset": -0.48
+            }
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.013"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.013"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_0.013"
+          ],
+          "role": "side_window_-1_0",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_-1_1.013"
+          ],
+          "role": "side_window_-1_1",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_-1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": -1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_0.013"
+          ],
+          "role": "side_window_1_0",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 0,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        },
+        {
+          "nodes": [
+            "side_window_1_1.013"
+          ],
+          "role": "side_window_1_1",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0
+          },
+          "repeat": {
+            "group": "side_window_1",
+            "index": 1,
+            "pitch": 4.2,
+            "front_inset": 3.2,
+            "back_inset": 1,
+            "axis": "z",
+            "side": 1,
+            "reference_spacing": 4.65
+          }
+        }
+      ],
+      "far": {
+        "file": "khmer-house-02.far.glb",
+        "triangles": 58,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.013"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 11.3,
+              "front_inset": 2.2,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_floor.009"
+          ],
+          "role": "far_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 13.5,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.013"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 14.399999999999999,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.013"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "factory-portal-01",
+      "type": "factory",
+      "reference": {
+        "width": 20,
+        "depth": 36,
+        "height": 9.0
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          20,
+          20
+        ],
+        "depth": [
+          30,
+          150
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "factory-portal-01.near.glb",
+        "triangles": 1212,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_floor.010"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 36,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.014"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 36.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_0"
+          ],
+          "role": "portal_bay_0",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_0"
+          ],
+          "role": "cladding_-1_0",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_0"
+          ],
+          "role": "bay_vent_-1_0",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_0"
+          ],
+          "role": "cladding_1_0",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_0"
+          ],
+          "role": "bay_vent_1_0",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_1"
+          ],
+          "role": "portal_bay_1",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_1"
+          ],
+          "role": "cladding_-1_1",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_1"
+          ],
+          "role": "bay_vent_-1_1",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_1"
+          ],
+          "role": "cladding_1_1",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_1"
+          ],
+          "role": "bay_vent_1_1",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_2"
+          ],
+          "role": "portal_bay_2",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_2"
+          ],
+          "role": "cladding_-1_2",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_2"
+          ],
+          "role": "bay_vent_-1_2",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_2"
+          ],
+          "role": "cladding_1_2",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_2"
+          ],
+          "role": "bay_vent_1_2",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_3"
+          ],
+          "role": "portal_bay_3",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_3"
+          ],
+          "role": "cladding_-1_3",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_3"
+          ],
+          "role": "bay_vent_-1_3",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_3"
+          ],
+          "role": "cladding_1_3",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_3"
+          ],
+          "role": "bay_vent_1_3",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_4"
+          ],
+          "role": "portal_bay_4",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_4"
+          ],
+          "role": "cladding_-1_4",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_4"
+          ],
+          "role": "bay_vent_-1_4",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_4"
+          ],
+          "role": "cladding_1_4",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_4"
+          ],
+          "role": "bay_vent_1_4",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_5"
+          ],
+          "role": "portal_bay_5",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_5"
+          ],
+          "role": "cladding_-1_5",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_5"
+          ],
+          "role": "bay_vent_-1_5",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_5"
+          ],
+          "role": "cladding_1_5",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_5"
+          ],
+          "role": "bay_vent_1_5",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.014"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.014"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_office"
+          ],
+          "role": "fixed_office",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0.5
+          }
+        }
+      ],
+      "far": {
+        "file": "factory-portal-01.far.glb",
+        "triangles": 22,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.014"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 36,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.014"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 36.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.014"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "warehouse-rice-01",
+      "type": "warehouse",
+      "reference": {
+        "width": 16,
+        "depth": 30,
+        "height": 8.0
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          16,
+          16
+        ],
+        "depth": [
+          21.0,
+          90
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "warehouse-rice-01.near.glb",
+        "triangles": 1074,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_floor.011"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 30,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.015"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 30.9,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_0.001"
+          ],
+          "role": "portal_bay_0",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_0.001"
+          ],
+          "role": "cladding_-1_0",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_0.001"
+          ],
+          "role": "bay_vent_-1_0",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_0.001"
+          ],
+          "role": "cladding_1_0",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_0.001"
+          ],
+          "role": "bay_vent_1_0",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_1.001"
+          ],
+          "role": "portal_bay_1",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_1.001"
+          ],
+          "role": "cladding_-1_1",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_1.001"
+          ],
+          "role": "bay_vent_-1_1",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_1.001"
+          ],
+          "role": "cladding_1_1",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_1.001"
+          ],
+          "role": "bay_vent_1_1",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_2.001"
+          ],
+          "role": "portal_bay_2",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_2.001"
+          ],
+          "role": "cladding_-1_2",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_2.001"
+          ],
+          "role": "bay_vent_-1_2",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_2.001"
+          ],
+          "role": "cladding_1_2",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_2.001"
+          ],
+          "role": "bay_vent_1_2",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_3.001"
+          ],
+          "role": "portal_bay_3",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_3.001"
+          ],
+          "role": "cladding_-1_3",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_3.001"
+          ],
+          "role": "bay_vent_-1_3",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_3.001"
+          ],
+          "role": "cladding_1_3",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_3.001"
+          ],
+          "role": "bay_vent_1_3",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_4.001"
+          ],
+          "role": "portal_bay_4",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_4.001"
+          ],
+          "role": "cladding_-1_4",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_4.001"
+          ],
+          "role": "bay_vent_-1_4",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_4.001"
+          ],
+          "role": "cladding_1_4",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_4.001"
+          ],
+          "role": "bay_vent_1_4",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.015"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.015"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_loading_bay"
+          ],
+          "role": "fixed_loading_bay",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ],
+      "far": {
+        "file": "warehouse-rice-01.far.glb",
+        "triangles": 22,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.015"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 30,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.015"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 30.9,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.015"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "warehouse-canal-01",
+      "type": "warehouse",
+      "reference": {
+        "width": 14,
+        "depth": 28,
+        "height": 8.0
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          14,
+          14
+        ],
+        "depth": [
+          19.6,
+          84
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "warehouse-canal-01.near.glb",
+        "triangles": 1250,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_floor.012"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 28,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.016"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 28.9,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_0.002"
+          ],
+          "role": "portal_bay_0",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_0.002"
+          ],
+          "role": "cladding_-1_0",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_0.002"
+          ],
+          "role": "bay_vent_-1_0",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_0.002"
+          ],
+          "role": "cladding_1_0",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_0.002"
+          ],
+          "role": "bay_vent_1_0",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_1.002"
+          ],
+          "role": "portal_bay_1",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_1.002"
+          ],
+          "role": "cladding_-1_1",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_1.002"
+          ],
+          "role": "bay_vent_-1_1",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_1.002"
+          ],
+          "role": "cladding_1_1",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_1.002"
+          ],
+          "role": "bay_vent_1_1",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_2.002"
+          ],
+          "role": "portal_bay_2",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_2.002"
+          ],
+          "role": "cladding_-1_2",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_2.002"
+          ],
+          "role": "bay_vent_-1_2",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_2.002"
+          ],
+          "role": "cladding_1_2",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_2.002"
+          ],
+          "role": "bay_vent_1_2",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_3.002"
+          ],
+          "role": "portal_bay_3",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_3.002"
+          ],
+          "role": "cladding_-1_3",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_3.002"
+          ],
+          "role": "bay_vent_-1_3",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_3.002"
+          ],
+          "role": "cladding_1_3",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_3.002"
+          ],
+          "role": "bay_vent_1_3",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_4.002"
+          ],
+          "role": "portal_bay_4",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_4.002"
+          ],
+          "role": "cladding_-1_4",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_4.002"
+          ],
+          "role": "bay_vent_-1_4",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_4.002"
+          ],
+          "role": "cladding_1_4",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_4.002"
+          ],
+          "role": "bay_vent_1_4",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 5.6
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.016"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.016"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_loading_bay.001"
+          ],
+          "role": "fixed_loading_bay",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_optional_jetty"
+          ],
+          "role": "fixed_optional_jetty",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ],
+      "far": {
+        "file": "warehouse-canal-01.far.glb",
+        "triangles": 34,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.016"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 28,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.016"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 28.9,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.016"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_optional_jetty"
+          ],
+          "role": "far_fixed_optional_jetty",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rice-mill-01",
+      "type": "rice-mill",
+      "reference": {
+        "width": 18,
+        "depth": 36,
+        "height": 13.5
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          18,
+          18
+        ],
+        "depth": [
+          25.2,
+          78
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "rice-mill-01.near.glb",
+        "triangles": 1530,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_floor.013"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 36,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.017"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 36.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_0.003"
+          ],
+          "role": "portal_bay_0",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_0.003"
+          ],
+          "role": "cladding_-1_0",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_0.003"
+          ],
+          "role": "bay_vent_-1_0",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_0.003"
+          ],
+          "role": "cladding_1_0",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_0.003"
+          ],
+          "role": "bay_vent_1_0",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_1.003"
+          ],
+          "role": "portal_bay_1",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_1.003"
+          ],
+          "role": "cladding_-1_1",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_1.003"
+          ],
+          "role": "bay_vent_-1_1",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_1.003"
+          ],
+          "role": "cladding_1_1",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_1.003"
+          ],
+          "role": "bay_vent_1_1",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_2.003"
+          ],
+          "role": "portal_bay_2",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_2.003"
+          ],
+          "role": "cladding_-1_2",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_2.003"
+          ],
+          "role": "bay_vent_-1_2",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_2.003"
+          ],
+          "role": "cladding_1_2",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_2.003"
+          ],
+          "role": "bay_vent_1_2",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_3.003"
+          ],
+          "role": "portal_bay_3",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_3.003"
+          ],
+          "role": "cladding_-1_3",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_3.003"
+          ],
+          "role": "bay_vent_-1_3",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_3.003"
+          ],
+          "role": "cladding_1_3",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_3.003"
+          ],
+          "role": "bay_vent_1_3",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_4.003"
+          ],
+          "role": "portal_bay_4",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_4.003"
+          ],
+          "role": "cladding_-1_4",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_4.003"
+          ],
+          "role": "bay_vent_-1_4",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_4.003"
+          ],
+          "role": "cladding_1_4",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_4.003"
+          ],
+          "role": "bay_vent_1_4",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_5.001"
+          ],
+          "role": "portal_bay_5",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_-1_5.001"
+          ],
+          "role": "cladding_-1_5",
+          "repeat": {
+            "group": "cladding_-1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_-1_5.001"
+          ],
+          "role": "bay_vent_-1_5",
+          "repeat": {
+            "group": "bay_vent_-1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "cladding_1_5.001"
+          ],
+          "role": "cladding_1_5",
+          "repeat": {
+            "group": "cladding_1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0,
+            "scale_to_spacing": true
+          }
+        },
+        {
+          "nodes": [
+            "bay_vent_1_5.001"
+          ],
+          "role": "bay_vent_1_5",
+          "repeat": {
+            "group": "bay_vent_1",
+            "index": 5,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.0
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.017"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.017"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_office.001"
+          ],
+          "role": "fixed_office",
+          "anchor": {
+            "x_fraction": 0.5,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_milling_plant"
+          ],
+          "role": "fixed_milling_plant",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": -0.1
+          }
+        }
+      ],
+      "far": {
+        "file": "rice-mill-01.far.glb",
+        "triangles": 70,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.017"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 36,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.017"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 36.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_front.017"
+          ],
+          "role": "far_fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "far_fixed_milling_plant"
+          ],
+          "role": "far_fixed_milling_plant",
+          "anchor": {
+            "x_fraction": -0.5,
+            "z_fraction": -0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "market-hall-01",
+      "type": "market",
+      "reference": {
+        "width": 18,
+        "depth": 32,
+        "height": 7.6
+      },
+      "stretchable_axes": [
+        "z"
+      ],
+      "stretch_range": {
+        "width": [
+          18,
+          18
+        ],
+        "depth": [
+          22.4,
+          60
+        ]
+      },
+      "protrusions": "Roof eaves and fixed front details extend outside body; exclude them from footprint fitting. Check optional side office, milling plant, kitchen and jetty separately.",
+      "near": {
+        "file": "market-hall-01.near.glb",
+        "triangles": 1552,
+        "materials": 1
+      },
+      "components": [
+        {
+          "nodes": [
+            "continuous_floor.014"
+          ],
+          "role": "continuous_floor",
+          "scale_spans": {
+            "z": {
+              "reference": 32,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "roof.018"
+          ],
+          "role": "roof",
+          "scale_spans": {
+            "z": {
+              "reference": 32.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "monitor_roof"
+          ],
+          "role": "monitor_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 28,
+              "front_inset": 2,
+              "back_inset": 2
+            }
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_0.004"
+          ],
+          "role": "portal_bay_0",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 0,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.4
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_1.004"
+          ],
+          "role": "portal_bay_1",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 1,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.4
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_2.004"
+          ],
+          "role": "portal_bay_2",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 2,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.4
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_3.004"
+          ],
+          "role": "portal_bay_3",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 3,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.4
+          }
+        },
+        {
+          "nodes": [
+            "portal_bay_4.004"
+          ],
+          "role": "portal_bay_4",
+          "repeat": {
+            "group": "portal_bay",
+            "index": 4,
+            "pitch": 6.0,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 6.4
+          }
+        },
+        {
+          "nodes": [
+            "fixed_front.018"
+          ],
+          "role": "fixed_front",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": 0.5
+          }
+        },
+        {
+          "nodes": [
+            "fixed_rear.018"
+          ],
+          "role": "fixed_rear",
+          "anchor": {
+            "x_fraction": 0,
+            "z_fraction": -0.5
+          }
+        }
+      ],
+      "far": {
+        "file": "market-hall-01.far.glb",
+        "triangles": 100,
+        "materials": 1
+      },
+      "far_components": [
+        {
+          "nodes": [
+            "far_body.018"
+          ],
+          "role": "far_body",
+          "scale_spans": {
+            "z": {
+              "reference": 32,
+              "front_inset": 0,
+              "back_inset": 0
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_roof.018"
+          ],
+          "role": "far_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 32.900000000000006,
+              "front_inset": -0.45,
+              "back_inset": -0.45
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_monitor_roof"
+          ],
+          "role": "far_monitor_roof",
+          "scale_spans": {
+            "z": {
+              "reference": 28,
+              "front_inset": 2,
+              "back_inset": 2
+            }
+          }
+        },
+        {
+          "nodes": [
+            "far_column_bay_0"
+          ],
+          "role": "far_column_bay_0",
+          "repeat": {
+            "group": "far_column_bay",
+            "index": 0,
+            "pitch": 12,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 10.666666666666666
+          }
+        },
+        {
+          "nodes": [
+            "far_column_bay_1"
+          ],
+          "role": "far_column_bay_1",
+          "repeat": {
+            "group": "far_column_bay",
+            "index": 1,
+            "pitch": 12,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 10.666666666666666
+          }
+        },
+        {
+          "nodes": [
+            "far_column_bay_2"
+          ],
+          "role": "far_column_bay_2",
+          "repeat": {
+            "group": "far_column_bay",
+            "index": 2,
+            "pitch": 12,
+            "front_inset": 0,
+            "back_inset": 0,
+            "axis": "z",
+            "reference_spacing": 10.666666666666666
+          }
+        }
+      ]
+    }
+  ]
+}

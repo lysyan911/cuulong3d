@@ -2,14 +2,18 @@
 //   concrete power poles (cột điện) with sagging power lines and bundles of telecom cables (also along country
 //   roads), street lamps on main roads,
 //   street trees (the shade-tree models of trees.js), parked motorbikes in front of the shops, and pavement food stalls
-//   (cart, umbrella, plastic stools). Placement is rule-based and stable (hashed from the road geometry), not surveyed.
-// Everything is instanced; instances beyond SHOW_R of the viewer collapse in the vertex shader.
+//   (cart, umbrella, plastic stools); traffic lights at main-road junctions (crossings: roads3d.js); traffic: motorbike
+//   riders, cars, 16-seat vans, small trucks and coaches (keeping right), cars parked at the kerb of wide streets.
+// Placement is rule-based and stable (hashed from the road geometry), not surveyed; the traffic stands still.
+// Everything is instanced; instances beyond their show range collapse in the vertex shader.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const SHOW_R = 900;
+const CAR_R = 550, RIDER_R = 380;                       // traffic: smaller, so shown less far
+const CELL = 300;                                        // m, culling cells
 const TREE_SPECIES = 1;                                  // 'shade' in trees.js
 
 // ---------------------------------------------------------------- models (x across the road, y up, z along it)
@@ -27,6 +31,9 @@ function part(geo, color, x = 0, y = 0, z = 0, rx = 0, rz = 0) {
 const box = (w, h, d) => new THREE.BoxGeometry(w, h, d);
 const cyl = (r0, r1, h, s = 6) => new THREE.CylinderGeometry(r0, r1, h, s, 1);
 const CONCRETE = [0.55, 0.54, 0.51], DARK = [0.05, 0.05, 0.055], WHITE = [1, 1, 1], STEEL = [0.45, 0.46, 0.47];
+const GLASS = [0.07, 0.09, 0.11], TYRE = [0.04, 0.04, 0.04];
+const SHIRT = [1, 0, 1], HELMET = [0, 1, 1];            // marker colours, replaced per instance in the shader
+const tyres = (r, x, zs, w = 0.22) => zs.flatMap((z) => [-x, x].map((xx) => part(cyl(r, r, w, 6), TYRE, xx, r, z, 0, Math.PI / 2)));
 
 function models() {
   const pole = mergeGeometries([
@@ -59,33 +66,109 @@ function models() {
     part(box(0.62, 0.45, 0.62), [0.85, 0.85, 0.82], 0, 0.22, 0),
     ...stools,
   ]);
-  return { pole, lamp, bike, stall };
+  // traffic (front +z). White parts take the instance colour (paint).
+  const car = mergeGeometries([
+    part(box(1.76, 0.6, 4.35), WHITE, 0, 0.62, 0),
+    part(box(1.58, 0.52, 2.15), GLASS, 0, 1.17, -0.25),
+    part(box(1.5, 0.07, 1.85), WHITE, 0, 1.46, -0.3),
+    part(box(1.4, 0.12, 0.05), [0.95, 0.93, 0.85], 0, 0.78, 2.18),
+    part(box(1.5, 0.12, 0.05), [0.55, 0.04, 0.03], 0, 0.82, -2.18),
+    ...tyres(0.31, 0.76, [-1.35, 1.35]),
+  ]);
+  const van = mergeGeometries([                             // 16-seat minibus (xe 16 chỗ)
+    part(box(1.95, 1.75, 5.6), WHITE, 0, 1.25, 0),
+    part(box(1.97, 0.55, 4.0), GLASS, 0, 1.62, -0.45),
+    part(box(1.8, 0.62, 0.05), GLASS, 0, 1.55, 2.81),
+    part(box(1.6, 0.12, 0.05), [0.95, 0.93, 0.85], 0, 0.75, 2.82),
+    ...tyres(0.36, 0.86, [-1.75, 1.85]),
+  ]);
+  const truck = mergeGeometries([                           // small cargo truck: cab + box body
+    part(box(1.95, 1.55, 1.6), WHITE, 0, 1.3, 2.3),
+    part(box(1.8, 0.65, 0.05), GLASS, 0, 1.68, 3.11),
+    part(box(2.1, 2.0, 4.3), [0.72, 0.72, 0.7], 0, 1.65, -0.85),
+    part(box(1.0, 0.3, 6.2), DARK, 0, 0.55, 0),
+    ...tyres(0.42, 0.85, [-2.1, 2.2], 0.3),
+  ]);
+  const bus = mergeGeometries([                             // coach (xe khách)
+    part(box(2.5, 2.7, 11.6), WHITE, 0, 1.85, 0),
+    part(box(2.52, 0.95, 9.6), GLASS, 0, 2.3, -0.5),
+    part(box(2.3, 1.35, 0.05), GLASS, 0, 2.1, 5.81),
+    part(box(2.0, 0.15, 0.05), [0.95, 0.93, 0.85], 0, 0.85, 5.82),
+    part(box(2.52, 0.2, 11.62), [0.15, 0.15, 0.16], 0, 0.6, 0),
+    ...tyres(0.5, 1.05, [-3.6, 3.9], 0.32),
+  ]);
+  // motorbike rider: bike paint = instance colour, shirt and helmet colours picked per rider in the shader
+  const rWheel = (z) => part(cyl(0.29, 0.29, 0.1, 6), DARK, 0, 0.29, z, 0, Math.PI / 2);
+  const rider = mergeGeometries([
+    rWheel(-0.66), rWheel(0.66),
+    part(box(0.3, 0.32, 0.95), WHITE, 0, 0.56, -0.05),
+    part(box(0.4, 0.55, 0.1), WHITE, 0, 0.66, 0.5),
+    part(box(0.34, 0.24, 0.62), [0.13, 0.13, 0.17], 0, 0.86, -0.1),           // legs
+    part(box(0.4, 0.56, 0.26), SHIRT, 0, 1.24, -0.22),
+    part(box(0.5, 0.1, 0.42), SHIRT, 0, 1.25, 0.12),                          // arms to the handlebar
+    part(box(0.27, 0.27, 0.3), HELMET, 0, 1.66, -0.16),
+  ]);
+  // traffic light: pole on the kerb, mast over the road (local +x), lights facing the oncoming traffic (+z)
+  const head = (x, y, z = 0) => [part(box(0.36, 1.0, 0.26), DARK, x, y, z),
+    part(box(0.2, 0.2, 0.04), [0.95, 0.12, 0.06], x, y + 0.31, z + 0.14),
+    part(box(0.2, 0.2, 0.04), [0.3, 0.22, 0.04], x, y, z + 0.14),
+    part(box(0.2, 0.2, 0.04), [0.04, 0.2, 0.08], x, y - 0.31, z + 0.14)];
+  const signal = mergeGeometries([
+    part(cyl(0.09, 0.12, 6.0, 6), [0.6, 0.6, 0.58], 0, 3.0),
+    part(box(4.2, 0.1, 0.1), [0.6, 0.6, 0.58], 2.1, 5.8),
+    ...head(3.4, 5.25), ...head(0, 2.9, 0.18),
+    part(box(0.5, 0.36, 0.08), DARK, 2.3, 5.45, 0.06),                      // countdown display
+  ]);
+  return { pole, lamp, bike, stall, car, van, truck, bus, rider, signal };
 }
+const RANGE = { car: CAR_R, van: CAR_R, truck: CAR_R, bus: CAR_R, rider: RIDER_R };
 
-function material() {
+function material(showR = SHOW_R) {
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.75, metalness: 0, side: THREE.DoubleSide });
   mat.onBeforeCompile = (sh) => {
     sh.uniforms.uViewPos = GLOBALS.uViewPos;
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', `#include <common>\nuniform vec3 uViewPos;`)
+      // white parts take the instance colour (paint); marker colours: shirt / helmet picked per instance; rest as is
+      .replace('#include <color_vertex>', `#include <color_vertex>
+        #ifdef USE_INSTANCING_COLOR
+          vColor.xyz = color.xyz;
+          if (min(color.r, min(color.g, color.b)) > 0.99) vColor.xyz = instanceColor.xyz;
+          else if (color.r > 0.99 && color.b > 0.99 && color.g < 0.01) {
+            float k = fract(sin(dot(instanceMatrix[3].xz, vec2(12.9898, 78.233))) * 43758.5453);
+            vColor.xyz = k < 0.2 ? vec3(0.92, 0.92, 0.9) : k < 0.35 ? vec3(0.45, 0.6, 0.85) : k < 0.48 ? vec3(0.85, 0.5, 0.58)
+                       : k < 0.6 ? vec3(0.62, 0.55, 0.38) : k < 0.75 ? vec3(0.16, 0.2, 0.32) : k < 0.87 ? vec3(0.45, 0.46, 0.48) : vec3(0.8, 0.66, 0.3);
+          } else if (color.r < 0.01 && color.g > 0.99 && color.b > 0.99) {
+            float k = fract(sin(dot(instanceMatrix[3].xz, vec2(39.346, 11.135))) * 24634.6345);
+            vColor.xyz = k < 0.3 ? vec3(0.9, 0.9, 0.88) : k < 0.5 ? vec3(0.65, 0.1, 0.08) : k < 0.7 ? vec3(0.1, 0.18, 0.45) : k < 0.85 ? vec3(0.08) : vec3(0.85, 0.7, 0.15);
+          }
+        #endif`)
       .replace('#include <project_vertex>', `
-        if (distance(uViewPos, (modelMatrix * instanceMatrix[3]).xyz) > ${SHOW_R.toFixed(1)}) transformed = vec3(0.0);
+        if (distance(uViewPos, (modelMatrix * instanceMatrix[3]).xyz) > ${showR.toFixed(1)}) transformed = vec3(0.0);
         #include <project_vertex>`);
     patchCloudShadow(sh, cloudUniforms());
   };
-  mat.customProgramCacheKey = () => 'cuulong-streets';
+  mat.customProgramCacheKey = () => 'cuulong-streets-' + showR;
   return mat;
 }
 
 const hashOf = (a, b) => { let h = Math.imul(a | 0, 374761393) ^ Math.imul(b | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
 const BIKE_COLOURS = [[0.75, 0.08, 0.07], [0.08, 0.08, 0.09], [0.85, 0.85, 0.85], [0.15, 0.25, 0.6], [0.5, 0.5, 0.52], [0.6, 0.12, 0.1]];
 const UMBRELLA_COLOURS = [[0.8, 0.12, 0.1], [0.15, 0.35, 0.75], [0.2, 0.55, 0.3], [0.9, 0.75, 0.2], [0.9, 0.9, 0.88]];
+const CAR_COLOURS = [[0.85, 0.85, 0.84], [0.85, 0.85, 0.84], [0.55, 0.56, 0.57], [0.06, 0.06, 0.07], [0.5, 0.07, 0.06],
+                     [0.12, 0.2, 0.42], [0.3, 0.31, 0.32]];
+const VAN_COLOURS = [[0.86, 0.86, 0.85], [0.86, 0.86, 0.85], [0.6, 0.61, 0.62]];
+const CAB_COLOURS = [[0.15, 0.3, 0.65], [0.85, 0.85, 0.84], [0.8, 0.62, 0.12], [0.55, 0.1, 0.08]];
+const BUS_COLOURS = [[0.85, 0.42, 0.1], [0.86, 0.86, 0.85], [0.15, 0.45, 0.3], [0.2, 0.35, 0.7]];
+const BIKE_PAINT = [[0.62, 0.08, 0.07], [0.07, 0.07, 0.08], [0.7, 0.7, 0.72], [0.12, 0.22, 0.55], [0.85, 0.85, 0.85], [0.35, 0.36, 0.38]];
 
 export class StreetFurniture {
-  constructor(trees) {
+  constructor(trees, { traffic = true } = {}) {
+    this.traffic = traffic;                                // phones: no traffic
     this.trees = trees;
     this.models = models();
     this.material = material();
+    this.mats = { [SHOW_R]: this.material, [CAR_R]: material(CAR_R), [RIDER_R]: material(RIDER_R) };
     this.wireMat = new THREE.LineBasicMaterial({ color: 0x0b0b0c, transparent: true, opacity: 0.85 });
     this.group = new THREE.Group();
     this.group.name = 'streets';
@@ -95,15 +178,18 @@ export class StreetFurniture {
    * roads: town streets of one tile, each { P: [[x, north]...], S: along (m), N: unit normals, hw, sh (sidewalk m),
    * cl (class), y: sidewalk heights }. Returns a Group (or null).
    */
-  build(roads, sphere) {
-    const M = { pole: [], lamp: [], bike: [], stall: [] }, C = { bike: [], stall: [] }, trees = [], wire = [];
+  build(roads, sphere, signals = []) {
+    const M = { pole: [], lamp: [], bike: [], stall: [], signal: [], car: [], van: [], truck: [], bus: [], rider: [] };
+    const C = { bike: [], stall: [], car: [], van: [], truck: [], bus: [], rider: [] }, trees = [], wire = [];
     const at = (R, s) => {                                   // point, normal, height at distance s along a road
       let i = 1;
       while (i < R.S.length - 1 && R.S[i] < s) i++;
       const t = (s - R.S[i - 1]) / Math.max(R.S[i] - R.S[i - 1], 1e-6);
       const a = R.P[i - 1], b = R.P[i];
       const d = [b[0] - a[0], b[1] - a[1]], l = Math.hypot(...d) || 1;
+      const ry = R.ry || R.y;
       return { x: a[0] + d[0] * t, yN: a[1] + d[1] * t, y: R.y[i - 1] + (R.y[i] - R.y[i - 1]) * t,
+               ry: ry[i - 1] + (ry[i] - ry[i - 1]) * t,
                nx: -d[1] / l, ny: d[0] / l, dx: d[0] / l, dy: d[1] / l };
     };
     // matrix with local x across the road (towards side sd), z along it; scene z = -north
@@ -115,6 +201,19 @@ export class StreetFurniture {
       m.setPosition(x, q.y + lift, -yN);
       return m;
     };
+    // a vehicle on the road surface: sd -1 = right of the road direction (driving along it), +1 = the opposite lane
+    const PAL = { car: CAR_COLOURS, van: VAN_COLOURS, truck: CAB_COLOURS, bus: BUS_COLOURS, rider: BIKE_PAINT };
+    const vehicle = (kind, q, off, sd, jit, r) => {
+      const m = place(q, off, sd, (sd > 0 ? Math.PI : 0) + jit);
+      m.elements[13] = q.ry;
+      M[kind].push(m);
+      C[kind].push(PAL[kind][Math.floor(r * PAL[kind].length)]);
+    };
+    for (const S of signals) {
+      const m = new THREE.Matrix4().makeBasis(new THREE.Vector3(-S.nx, 0, S.ny), new THREE.Vector3(0, 1, 0), new THREE.Vector3(S.ux, 0, -S.uy));
+      m.setPosition(S.x, S.y, -S.yN);
+      M.signal.push(m);
+    }
     for (const R of roads) {
       const L = R.S[R.S.length - 1];
       if (L < 18 || R.cl > 6) continue;
@@ -123,7 +222,47 @@ export class StreetFurniture {
       const main = R.cl <= 4, wide = R.sh >= 2;
       // power poles on one side, cables between them (country roads: on the shoulder, further apart)
       const ps = h(1, 1) < 0.5 ? 1 : -1, sp = R.rural ? 42 + h(1, 2) * 10 : 34 + h(1, 2) * 8;
-      if (R.rural && h(1, 4) < 0.25) continue;                                  // some country roads have none
+      const nearJ = (s) => R.J && R.J.some(([js, rr]) => Math.abs(s - js) < rr);
+      // traffic, keeping right: riders in swarms, cars, vans, trucks, coaches; parked cars at the kerb of wide streets
+      const town = !R.rural, paved = R.surf === 0 || R.surf === 1;
+      if (this.traffic && paved && R.hw >= 1.4) for (const sd of [-1, 1]) {
+        if (R.hw < 2.2 && sd > 0 && h(21, 1) < 0.5) continue;                    // narrow lanes: one way only here
+        // parked cars at the kerb of wide town streets (one side, both on the widest); moving traffic keeps clear
+        const parks = town && R.surf === 0 && R.hw >= 4 && (R.hw >= 5.5 || (sd > 0) === (h(39, 1) < 0.5));
+        const edge = parks ? R.hw - 2.3 : R.hw - 0.3, lane = R.hw * (R.hw < 2.2 ? 0.45 : 0.55);
+        const busy = town ? (main ? 0.7 : 0.3) : (R.cl <= 4 ? 0.15 : 0.05), step = 7 / busy;
+        let free = -1e9;                                                         // no overlaps along the lane
+        for (let s = 3 + h(22, sd + 2) * step, j = 0; s < L - 3; s += step * (0.5 + h(23, j * 3 + sd + 2)), j++) {
+          if (s < free || nearJ(s)) continue;
+          const r = h(24, j * 7 + sd + 2);
+          const big = R.hw >= 2.4 && (R.cl <= 4 || town), cut = town ? 0.72 : 0.55;
+          if (!big || r < cut) {                                                  // a few riders side by side
+            const n = 1 + Math.floor(h(25, j) * (town ? 2.5 : 1.6));
+            let sb = s;
+            for (let b = 0; b < n && sb < L - 1; b++, sb += 1.6 + h(27, j + b) * 2) {
+              const o = Math.min(edge - 0.1, Math.max(0.4, lane + (h(26, j * 5 + b) - 0.5) * R.hw * 0.6));
+              vehicle('rider', at(R, sb), o, sd, (h(29, j + b) - 0.5) * 0.12, h(30, j * 5 + b));
+            }
+            free = sb + 1.2;
+          } else {
+            const t = (r - cut) / (1 - cut);
+            const kind = t < 0.55 ? 'car' : t < 0.72 ? 'van' : t < 0.88 || R.cl > 3 ? 'truck' : 'bus';
+            const len = { car: 4.4, van: 5.6, truck: 6.4, bus: 11.6 }[kind];
+            if (s + len > L - 2 || nearJ(s + len)) continue;
+            vehicle(kind, at(R, s + len / 2), Math.max(0.9, Math.min(lane, edge - 1.0)), sd, 0, h(31, j));
+            free = s + len + 2;
+          }
+        }
+        if (parks) for (let s = 6 + h(32, sd + 2) * 20, j = 0; s < L - 6; s += 25 + h(33, j) * 45, j++) {
+          const n = 1 + Math.floor(h(34, j * 3 + sd + 2) * (main ? 4 : 2.5));
+          for (let b = 0; b < n; b++) {
+            const sb = s + b * (5.4 + h(35, j + b) * 1.2);
+            if (sb > L - 4 || nearJ(sb)) break;
+            vehicle(h(36, j * 9 + b) < 0.85 ? 'car' : 'van', at(R, sb), R.hw - 1.05, sd, (h(37, j + b) - 0.5) * 0.04, h(38, j * 9 + b));
+          }
+        }
+      }
+      if (R.noPoles || (R.rural && h(1, 4) < 0.25)) continue;                  // some country roads have no power line
       let prevTop = null;
       for (let s = 5 + h(1, 3) * 8; s < L - 4; s += sp) {
         const q = at(R, s), m = place(q, R.hw + (R.rural ? R.sh * 0.7 : 0.45), ps, 0, 1);
@@ -139,7 +278,7 @@ export class StreetFurniture {
       if (main) for (let s = 12 + h(2, 1) * 10; s < L - 4; s += 30) M.lamp.push(place(at(R, s), R.hw + 0.35, -ps));
       // street trees along the outer edge of wide sidewalks
       if (wide) for (const sd of [-1, 1]) for (let s = 6 + h(3, sd + 2) * 6, j = 0; s < L - 4; s += 9 + h(3, j) * 7, j++) {
-        if (h(4, j * 3 + sd + 2) < (main ? 0.35 : 0.75)) continue;              // lanes: only a few trees
+        if (h(4, j * 3 + sd + 2) < (main ? 0.2 : 0.65)) continue;              // lanes: only a few trees
         const q = at(R, s), x = q.x + q.nx * (R.hw + R.sh - 0.8) * sd, yN = q.yN + q.ny * (R.hw + R.sh - 0.8) * sd;
         trees.push([x, q.y - 0.2, -yN, h(5, j) * 6.283, (main ? 0.32 : 0.24) + h(6, j) * 0.14, 0.85 + h(7, j) * 0.3, h(8, j), TREE_SPECIES]);
       }
@@ -161,30 +300,72 @@ export class StreetFurniture {
         C.stall.push(UMBRELLA_COLOURS[Math.floor(h(20, j) * UMBRELLA_COLOURS.length)]);
       }
     }
+    // bucket everything into CELL m cells: far cells are not drawn at all (see update), near ones are frustum-culled
+    const cells = new Map();
+    const cellOf = (x, z) => {
+      const key = `${Math.floor(x / CELL)},${Math.floor(z / CELL)}`;
+      let c = cells.get(key);
+      if (!c) { c = { x: (Math.floor(x / CELL) + 0.5) * CELL, z: (Math.floor(z / CELL) + 0.5) * CELL, M: {}, C: {}, wire: [], trees: [], y0: Infinity, y1: -Infinity }; cells.set(key, c); }
+      return c;
+    };
+    for (const k of Object.keys(M)) M[k].forEach((m, i) => {
+      const c = cellOf(m.elements[12], m.elements[14]);
+      c.y0 = Math.min(c.y0, m.elements[13]); c.y1 = Math.max(c.y1, m.elements[13]);
+      (c.M[k] ||= []).push(m);
+      if (C[k]) (c.C[k] ||= []).push(C[k][i]);
+    });
+    for (let i = 0; i < wire.length; i += 6) {
+      const c = cellOf(wire[i], wire[i + 2]);
+      c.wire.push(...wire.slice(i, i + 6));
+      c.y0 = Math.min(c.y0, wire[i + 1] - 10, wire[i + 4] - 10); c.y1 = Math.max(c.y1, wire[i + 1], wire[i + 4]);
+    }
+    for (const t of trees) { const c = cellOf(t[0], t[2]); c.trees.push(t); c.y0 = Math.min(c.y0, t[1]); c.y1 = Math.max(c.y1, t[1]); }
     const g = new THREE.Group();
-    for (const k of Object.keys(M)) {
-      if (!M[k].length) continue;
-      const mesh = new THREE.InstancedMesh(this.models[k], this.material, M[k].length);
-      M[k].forEach((m, i) => mesh.setMatrixAt(i, m));
-      if (C[k]) C[k].forEach((c, i) => mesh.setColorAt(i, new THREE.Color(...c)));
-      mesh.boundingSphere = sphere.clone();
-      mesh.computeBoundingSphere = () => {};
-      mesh.raycast = () => {};
-      g.add(mesh);
-    }
-    if (wire.length) {
-      const wg = new THREE.BufferGeometry();
-      wg.setAttribute('position', new THREE.Float32BufferAttribute(wire, 3));
-      wg.boundingSphere = sphere.clone();
-      const lines = new THREE.LineSegments(wg, this.wireMat);
-      lines.userData.noShadow = true;
-      g.add(lines);
-    }
-    if (trees.length && this.trees) {
-      const T = { cx: sphere.center.x, ground: sphere.center.y, cz: sphere.center.z };
-      g.add(this.trees.mesh(this.trees.models[TREE_SPECIES], trees, this.trees.matNear, T, sphere.clone()));
+    for (const c of cells.values()) {
+      const cg = new THREE.Group();
+      const y = sphere.center.y;
+      const cs = new THREE.Sphere(new THREE.Vector3(c.x, y, c.z), CELL * 0.75 + 30);
+      cg.userData.cell = cs;
+      const m = CELL / 2 + 25;                              // (wires and tree crowns reach a little out of the cell)
+      cg.userData.occBox = new THREE.Box3(new THREE.Vector3(c.x - m, c.y0 - 2, c.z - m), new THREE.Vector3(c.x + m, c.y1 + 20, c.z + m));
+      const subs = {};                                     // traffic: own groups, hidden sooner
+      for (const k of Object.keys(c.M)) {
+        const mesh = new THREE.InstancedMesh(this.models[k], this.mats[RANGE[k] || SHOW_R], c.M[k].length);
+        c.M[k].forEach((m, i) => mesh.setMatrixAt(i, m));
+        if (c.C[k]) c.C[k].forEach((col, i) => mesh.setColorAt(i, new THREE.Color(...col)));
+        mesh.boundingSphere = cs.clone();
+        mesh.computeBoundingSphere = () => {};
+        mesh.raycast = () => {};
+        const r = RANGE[k];
+        if (r) { if (!subs[r]) { subs[r] = new THREE.Group(); subs[r].userData.range = r; cg.add(subs[r]); } subs[r].add(mesh); }
+        else cg.add(mesh);
+      }
+      cg.userData.subs = Object.values(subs);
+      if (c.wire.length) {
+        const wg = new THREE.BufferGeometry();
+        wg.setAttribute('position', new THREE.Float32BufferAttribute(c.wire, 3));
+        wg.boundingSphere = cs.clone();
+        const lines = new THREE.LineSegments(wg, this.wireMat);
+        lines.userData.noShadow = true;
+        cg.add(lines);
+      }
+      if (c.trees.length && this.trees) {
+        const T = { cx: c.x, ground: y, cz: c.z };
+        cg.add(this.trees.mesh(this.trees.models[TREE_SPECIES], c.trees, this.trees.matNear, T, cs.clone()));
+      }
+      g.add(cg);
     }
     return g.children.length ? g : null;
+  }
+
+  /** Show only the cells near the viewer (call every frame or so). */
+  update(g, p) {
+    for (const cg of g.children) {
+      const c = cg.userData.cell.center;
+      const d = Math.hypot(c.x - p.x, c.z - p.z, Math.max(p.y - c.y, 0));
+      cg.visible = d < SHOW_R + CELL * 0.7;
+      if (cg.visible) for (const sg of cg.userData.subs) sg.visible = d < sg.userData.range + CELL * 0.7;
+    }
   }
 
   dispose(g) {

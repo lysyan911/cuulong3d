@@ -1,0 +1,19 @@
+{
+  "scope": "Standalone asset throughput; no terrain, shadows/reflections or footprint placement. Not verified full-map FPS.",
+  "viewport": [
+    1920,
+    911
+  ],
+  "pixel_ratio": 1,
+  "near_instances": 190,
+  "far_instances": 950,
+  "triangles": 231160,
+  "draw_calls": 42,
+  "gpu_textures": 1,
+  "atlas_rgba_mip_MiB": 10.67,
+  "samples": 120,
+  "synchronized_render_readback_mean_ms": 2.01,
+  "p95_ms": 2.3,
+  "raf_fps": 1.0,
+  "page_errors": []
+}

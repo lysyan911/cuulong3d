@@ -7,6 +7,7 @@
 // assign() walks the scene now and then and decides who casts / receives: layers that place their instances in the
 // vertex shader (houses, trees) provide material.userData.depthMaterial so their shadows match what is drawn.
 import * as THREE from 'three';
+import { HIDDEN_LAYER } from './occlusion.js';
 
 const smooth = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t); };
 
@@ -19,6 +20,7 @@ export class SunShadows {
     this.depthCache = new WeakMap();
     sun.shadow.camera.near = 50;
     sun.shadow.camera.far = 20000;
+    sun.shadow.camera.layers.enable(HIDDEN_LAYER);    // occluded objects still cast their shadows
     sun.shadow.bias = -0.0003;
     this.right = new THREE.Vector3();
     this.up = new THREE.Vector3();

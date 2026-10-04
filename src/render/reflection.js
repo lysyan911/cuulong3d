@@ -6,13 +6,16 @@
 // where something was drawn (alpha 1); empty pixels keep the shader's sky + cloud reflection.
 // Trees, houses, boats and banks therefore show upside down in rivers and canals. Off in the fast mode.
 // Distant level-of-detail layers (userData.noShadow: far houses, tree sprites) are left out of the pass.
+// So are meshes with userData.noReflect; hooks (f(true) before, f(false) after) can swap in lighter versions.
 import * as THREE from 'three';
+import { HIDDEN_LAYER } from './occlusion.js';
 import { GLOBALS } from './globals.js';
 
 const BIAS = new THREE.Matrix4().set(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1);
 
 export class WaterReflection {
   constructor(renderer, scene, { range = 4000, maxHeight = 1500 } = {}) {
+    this.hooks = [];
     this.renderer = renderer;
     this.scene = scene;
     this.range = range;              // how far the reflection camera sees (scene m)
@@ -58,6 +61,7 @@ export class WaterReflection {
     // mirror the camera in the plane y = waterY
     const cam = this.cam;
     cam.copy(camera, false);
+    cam.layers.enable(HIDDEN_LAYER);                                  // objects hidden from the camera by occlusion
     cam.far = Math.min(camera.far, this.range + h * 2);
     cam.position.set(camera.position.x, 2 * waterY - camera.position.y, camera.position.z);
     const m = camera.matrixWorld.elements;
@@ -87,9 +91,10 @@ export class WaterReflection {
     r.shadowMap.autoUpdate = false;
     if (!this.bulk || this.frame % 60 === 0) {
       this.bulk = [];
-      this.scene.traverse((o) => { if (o.isMesh && o.userData.noShadow) this.bulk.push(o); });
+      this.scene.traverse((o) => { if (o.isMesh && (o.userData.noShadow || o.userData.noReflect)) this.bulk.push(o); });
     }
     hide = hide.concat(this.bulk);
+    for (const f of this.hooks) f(true);              // e.g. detailed models swap to their light versions
     const vis = hide.map((o) => o.visible);
     hide.forEach((o) => { o.visible = false; });
     const prevTarget = r.getRenderTarget(), prevAlpha = r.getClearAlpha();
@@ -101,6 +106,7 @@ export class WaterReflection {
     r.setRenderTarget(prevTarget);
     r.setClearColor(this.clear, prevAlpha);
     hide.forEach((o, i) => { o.visible = vis[i]; });
+    for (const f of this.hooks) f(false);
     r.shadowMap.autoUpdate = shadowAuto;
     GLOBALS.uReflMap.value = this.target.texture;
     R.x = 1;

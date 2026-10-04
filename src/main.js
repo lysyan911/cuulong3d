@@ -13,6 +13,8 @@ import { TreeLayer } from './trees.js';
 import { HouseLayer } from './houses.js';
 import { Road3DLayer } from './roads3d.js';
 import { StreetFurniture } from './streets.js';
+import { BuildingKit } from './kit.js';
+import { OcclusionCuller } from './render/occlusion.js';
 import { PropsLayer } from './props.js';
 import { Overlays } from './overlays.js';
 import { UI, NOVEL_LAYERS } from './ui.js';
@@ -29,7 +31,7 @@ const DATA = 'data/';
 const MOBILE = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
 const QUALITY = MOBILE
   ? { pixelRatio: 1, treeDist: 3500, treeNear: 500, roadRibbon: 2000, buildingDist: 7000, houseNear: 900, roadScale: 0.6, lodBias: 1, maxDetail: 4 }
-  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 8000, treeNear: 1000, roadRibbon: 4000, buildingDist: 14000, houseNear: 1800, roadScale: 1, lodBias: 0,
+  : { pixelRatio: Math.min(devicePixelRatio, 1.5), treeDist: 8000, treeNear: 1000, roadRibbon: 4000, buildingDist: 14000, houseNear: 1200, roadScale: 1, lodBias: 0,
       maxDetail: 10 };
 
 const getJSON = (f) => fetch(DATA + f).then((r) => { if (!r.ok) throw new Error(f); return r.json(); });
@@ -72,10 +74,13 @@ async function main() {
   const sun = new THREE.DirectionalLight(0xffeedd, 3.4);
   sun.position.copy(sunDir).multiplyScalar(100000);
   scene.add(sun, sun.target, new THREE.HemisphereLight(0xc4dcff, 0x6a6146, 0.42));
-  const HAZE = 0.85e-4;   // humid delta air: sea-level haze extinction per m (render/atmosphere.js installAerialHaze)
+  const HAZE = 0.65e-4;   // humid delta air: sea-level haze extinction per m (render/atmosphere.js installAerialHaze)
   scene.fog = new THREE.FogExp2(HORIZON.clone(), HAZE);
   const shadows = new SunShadows(renderer, sun, sunDir);
   const reflection = new WaterReflection(renderer, scene);
+  // hide blocks, far house tiles and street cells that nearer things cover (render/occlusion.js); ?occlusion=0 turns it off
+  const occlusion = new OcclusionCuller(renderer, scene, camera, () => pipeline.depthTarget());
+  if (new URLSearchParams(location.search).get('occlusion') === '0') occlusion.enabled = false;
   const pipeline = new RenderPipeline(renderer, scene, camera, shadows, { mobile: MOBILE, reflection });
   let quality = MOBILE ? 'fast' : 'good';
   try { quality = localStorage.getItem('cuulong-quality') || quality; } catch { /* private mode */ }
@@ -166,21 +171,30 @@ async function main() {
   for (const g of Object.values(overlays.layers)) scene.add(g);
 
   const heroData = await getJSON('props.json').catch(() => ({ heroes: [] }));
-  const lm = buildLandmarks(landmarks, meta, heroData.heroes);
+  const lm = buildLandmarks(landmarks, meta, heroData.heroes, heroData.suppressedLandmarks);
   scene.add(lm);
 
   // ---------------------------------------------------------------- trees, real buildings, roads (per group)
   const trees = new TreeLayer(meta, terrain, shared, { dataUrl: DATA, nearR: QUALITY.treeNear, farR: QUALITY.treeDist });
   const buildings = new HouseLayer(meta, QUALITY.buildingDist, QUALITY.houseNear, terrain);
+  // Codex's Mekong building kit replaces the generated near houses that fit one of its models (loads in the background)
+  const buildingKit = new BuildingKit(buildings.uniforms, MOBILE ? 160 : 230);
+  buildingKit.load(surface).then(() => {
+    buildings.setBuildingKit(buildingKit);
+    let kn = 0;                                // water reflections: the light versions all the way in
+    reflection?.hooks.push((on) => { const u = buildingKit.uniforms.uKitNear; if (on) { kn = u.value; u.value = 0; } else u.value = kn; });
+  }).catch((e) => console.warn('Building kit unavailable', e));
   const roads = new RoadLayer(meta, QUALITY.roadScale, QUALITY.roadRibbon);
-  const streets = new StreetFurniture(trees);   // poles, cables, lamps, street trees, motorbikes, food stalls
+  const streets = new StreetFurniture(trees, { traffic: !MOBILE });   // poles, cables, lamps, trees, stalls, traffic
   const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon, streets });
   roads.group.add(roads3d.group);          // the Roads layer switch covers both
   const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150 });
   const trasu = wetland ? new TraSuLayer(wetland, terrain, shared, { mobile: MOBILE }) : null;
   scene.add(trees.group, buildings.group, roads.group, paddies.group, streets.group);
   if (trasu) scene.add(trasu.group);
-  const props = new PropsLayer(meta, terrain, buildings, shared, MOBILE ? { heroR: 180, heroCap: 20, boatR: 1500, boatCap: 80 } : {});
+  // hero houses (the owner's Blender models, ~36k triangles each) replace generated houses only right around the camera
+  const props = new PropsLayer(meta, terrain, buildings, shared, MOBILE ? { heroR: 150, heroCap: 6, boatR: 1500, boatCap: 80 }
+                                                                        : { heroR: 220, heroCap: 12 });
   scene.add(props.group, props.boatGroup);
   const layerOf = { bld: buildings, roads, ways: roads3d, water: props };
   const keys = Object.keys(meta.instance_counts);
@@ -216,10 +230,15 @@ async function main() {
     chaudoc: near(lbl['Châu Đốc'].x, lbl['Châu Đốc'].y, lbl['Châu Đốc'].z, 1500, 650, -1700),
     longxuyen: near(lbl['Long Xuyên'].x, lbl['Long Xuyên'].y, lbl['Long Xuyên'].z, 1700, 750, -1900),
   };
+  // hand-placed trees (Codex: Long Xuyên medians, canal banks and courtyards)
+  const placedTrees = new THREE.Group();
+  scene.add(placedTrees);
+  layers.trees = [].concat(layers.trees, placedTrees);
+  getJSON('long-xuyen-greenery.json').then((d) => placedTrees.add(trees.placed(d.trees || []))).catch(() => {});
   if (trasu) {
     Object.assign(views, trasu.views);
     layers.trasu = trasu.group;
-    layers.trees = [trees.group, trasu.treeGroup];
+    layers.trees = [trees.group, trasu.treeGroup, placedTrees];
     layers.boats = [props.boatGroup, trasu.boatGroup];
     layers.landmarks = [lm, trasu.boardwalk];
   }
@@ -291,7 +310,7 @@ async function main() {
   // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
   const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
     .map((n) => scene.getObjectByName(n)).filter(Boolean)];
-  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, roads, roads3d, props, paddies, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
+  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
 
   // Optional local QA counter; absent from the normal map UI.
   const stats = new URLSearchParams(location.search).get('stats') === '1' ? document.createElement('output') : null;
@@ -356,7 +375,9 @@ async function main() {
     shadows.update(camera, controls.target, scene);
     if (!underCanopy && surface) reflection.update(camera, surface.waterHeight(controls.target.x, -controls.target.z), reflSkip);
     else GLOBALS.uRefl.value.x = 0;
+    occlusion.apply();
     pipeline.render();
+    occlusion.query();
     labelRenderer.render(scene, camera);
     if (stats && ++statFrames && now - statStart >= 2000) {
       const fps = statFrames * 1000 / (now - statStart);

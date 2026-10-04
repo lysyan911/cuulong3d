@@ -4,6 +4,9 @@
 //   far  — one mesh per 3.8 km terrain tile: walls + gable/hip/flat roof (30 vertices a house)
 //   near — per 3.8 km tile and house type, built when the camera comes close: porches on posts, stilts,
 //          shop awnings, rooftop stair huts, eaves overhangs, hip roofs
+//   roof kit — flat roofs within KIT_R: stainless / plastic water tanks, solar water heaters, air-conditioner units
+//   building kit — within the near range, houses that fit a model of Codex's Mekong kit (kit.js) are drawn with it
+//          instead of the generated near model (iC.w = 4: hidden in the near model, still drawn far away)
 // The vertex shader hides each house in exactly one of the two (by its distance to the camera), so there is
 // no double drawing and no gap. Windows, doors, shutters, planks, corrugated tin and roof tiles are drawn in
 // the fragment shader and fade to their average colour when they get smaller than a pixel.
@@ -19,7 +22,19 @@ import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 const STYLE = { tube: 0, block: 1, gable: 2, hip: 3, stilt: 4, khmer: 5, hall: 6 };
 // face ids (aK.w): what the fragment shader paints
 const F = { front: 0, back: 1, side: 2, roof: 3, wood: 4, porch: 5, under: 6, gable: 7, hut: 8, awning: 9,
-            parapet: 10, end: 11 };
+            parapet: 10, end: 11, steel: 12, solar: 13, ac: 14, tank: 15 };
+// roof kit parts: which ones a flat-roofed house has is picked from its seed, W and D (only those are drawn)
+const KIT = { tankLying: 1, tankUp: 2, solar: 3, acA: 4, acB: 5 };
+const fract = (x) => x - Math.floor(x);
+const KIT_PARTS = {
+  tankLying: [[KIT.tankLying], (s) => fract(s * 5.7) < 0.5],
+  tankUp: [[KIT.tankUp], (s) => fract(s * 5.7) > 0.5 && fract(s * 5.7) < 0.88],
+  solar: [[KIT.solar], (s, W, D) => fract(s * 8.3) < 0.4 && D > 9],
+  ac1: [[KIT.acA], (s, W) => fract(s * 2.9) < 0.6 && !(fract(s * 2.9) < 0.3 && W > 4.5)],
+  ac2: [[KIT.acA, KIT.acB], (s, W) => fract(s * 2.9) < 0.3 && W > 4.5],
+};
+const KIT_R = 200;
+const KIT_SUB = 3;                   // building-kit near models: 160 m sub-blocks                   // m beyond a block's edge
 
 // ---------------------------------------------------------------- parametric geometry builder
 // vertex spec: [ux, uy, uz, ox, oy, oz, r, l, hz]
@@ -114,6 +129,52 @@ function hut(B) {
   B.poly([P(-1, 0.4, 2.5), P(1, 0.4, 2.5), P(1, 3.4, 2.5), P(-1, 3.4, 2.5)], F.roof, [0, 1, 0]);
 }
 
+// roof kit: n-sided prism between two points (metres around an anchor on the roof: ux, uz unit, y above the eaves)
+function prism(B, ux, uz, a, b, r, n, face, kit, caps = true) {
+  if (!B.only.includes(kit)) return;
+  const ax = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], len = Math.hypot(...ax), d = ax.map((c) => c / len);
+  const e1 = Math.abs(d[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+  const cr = (u, w) => [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]];
+  const p1 = cr(d, e1), l1 = Math.hypot(...p1), q1 = p1.map((c) => c / l1), q2 = cr(d, q1);
+  const ring = (c) => Array.from({ length: n }, (_, i) => {
+    const t = (i / n) * Math.PI * 2, ct = Math.cos(t) * r, st = Math.sin(t) * r;
+    return [c[0] + q1[0] * ct + q2[0] * st, c[1] + q1[1] * ct + q2[1] * st, c[2] + q1[2] * ct + q2[2] * st];
+  });
+  const A = ring(a), Bq = ring(b), P = (q) => v(ux, 1, uz, q[0], q[1], q[2], 0, 0, kit);
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n, mid = [(A[i][0] + A[j][0]) / 2 - a[0], (A[i][1] + A[j][1]) / 2 - a[1], (A[i][2] + A[j][2]) / 2 - a[2]];
+    B.poly([P(A[i]), P(A[j]), P(Bq[j]), P(Bq[i])], face, mid);
+  }
+  if (caps) for (const [R, out] of [[A, d.map((c) => -c)], [Bq, d]]) for (let i = 1; i < n - 1; i += 2)
+    B.poly(i + 2 < n ? [P(R[0]), P(R[i]), P(R[i + 1]), P(R[i + 2])] : [P(R[0]), P(R[i]), P(R[i + 1])], face, out);
+}
+// box from corner a to corner b (metres around the anchor); no bottom
+function kitBox(B, ux, uz, a, b, face, kit) {
+  if (!B.only.includes(kit)) return;
+  const P = (x, y, z) => v(ux, 1, uz, x, y, z, 0, 0, kit);
+  const [x0, y0, z0] = a, [x1, y1, z1] = b;
+  B.poly([P(x0, y1, z0), P(x1, y1, z0), P(x1, y1, z1), P(x0, y1, z1)], face, [0, 1, 0]);
+  B.poly([P(x0, y0, z1), P(x1, y0, z1), P(x1, y1, z1), P(x0, y1, z1)], face, [0, 0, 1]);
+  B.poly([P(x0, y0, z0), P(x1, y0, z0), P(x1, y1, z0), P(x0, y1, z0)], face, [0, 0, -1]);
+  B.poly([P(x1, y0, z0), P(x1, y0, z1), P(x1, y1, z1), P(x1, y1, z0)], face, [1, 0, 0]);
+  B.poly([P(x0, y0, z0), P(x0, y0, z1), P(x0, y1, z1), P(x0, y1, z0)], face, [-1, 0, 0]);
+}
+function roofKit(B) {
+  // on the stair hut (x +-1.2, z 0.4..3.4 m from the back, roof 2.5 m up): a lying stainless tank or an upright one
+  prism(B, 0, -0.5, [-0.85, 3.05, 1.9], [0.85, 3.05, 1.9], 0.52, 6, F.steel, KIT.tankLying);
+  kitBox(B, 0, -0.5, [-0.7, 2.5, 1.55], [0.7, 2.55, 2.25], F.steel, KIT.tankLying);
+  prism(B, 0, -0.5, [-0.35, 2.5, 1.9], [-0.35, 3.75, 1.9], 0.55, 6, F.tank, KIT.tankUp);
+  // solar water heater in front of the hut: tilted tube panel, its tank along the top
+  const z0 = 3.9, z1 = 5.2, xa = -0.95, xb = 0.85;
+  if (B.only.includes(KIT.solar)) B.poly([v(0, 1, -0.5, xa, 0.95, z0, 0, 0, KIT.solar), v(0, 1, -0.5, xb, 0.95, z0, 0, 0, KIT.solar),
+          v(0, 1, -0.5, xb, 0.25, z1, 0, 0, KIT.solar), v(0, 1, -0.5, xa, 0.25, z1, 0, 0, KIT.solar)], F.solar, [0, 1, 1]);
+  if (B.only.includes(KIT.solar)) B.poly([v(0, 1, -0.5, xa, 0.95, z0, 0, 0, KIT.solar), v(0, 1, -0.5, xb, 0.95, z0, 0, 0, KIT.solar),
+          v(0, 1, -0.5, xb, 0.0, z0, 0, 0, KIT.solar), v(0, 1, -0.5, xa, 0.0, z0, 0, 0, KIT.solar)], F.steel, [0, 0, -1]);
+  prism(B, 0, -0.5, [xa, 1.12, z0 - 0.1], [xb, 1.12, z0 - 0.1], 0.22, 6, F.steel, KIT.solar, false);
+  // air-conditioner outdoor units near the front parapet
+  for (const [sx, kit] of [[-1, KIT.acA], [1, KIT.acB]]) kitBox(B, sx * 0.25, 0.5, [-0.42, 0.0, -0.75], [0.42, 0.6, -0.45], F.ac, kit);
+}
+
 // shophouse awning over the pavement (tarp / tin sheet), at ~3 m
 function awning(B) {
   const A = (sx, oz, y) => v(sx * 0.5, 0, 0.5, -sx * 0.15, y, oz);
@@ -157,10 +218,15 @@ function houseModels() {
   near[STYLE.hall] = make((B) => { walls(B); gableRoof(B, 0.4, 0.3); });
   // far: plain walls + one roof that the shader turns into gable / hip / flat
   const far = make((B) => { walls(B); hipRoof(B, 0, 0, 0, F.end); });
-  return { near, far };
+  const kit = Object.fromEntries(Object.entries(KIT_PARTS).map(([k, [only, test]]) => {
+    const B = new Builder(); B.only = only; roofKit(B); return [k, { geo: B.geometry(), test }];
+  }));
+  return { near, far, kit };
 }
 
 // ---------------------------------------------------------------- material
+const CELLS = 8;                     // detailed houses: blocks of tileM / 8 (480 m) per tile side
+
 const VERT_HEAD = /* glsl */`
 attribute vec3 aOff;
 attribute vec4 aK;
@@ -201,7 +267,11 @@ const VERT_BODY = /* glsl */`
 #else
   bool hide = dist > uNearR;
 #endif
+#ifdef FAR
+  if (iC.w > 0.5 && iC.w < 3.5) hide = true;           // 4: drawn by the building kit near by, by this far away
+#else
   if (iC.w > 0.5) hide = true;
+#endif
   float ex = mix(1.0, uBex, smoothstep(1500.0, 6000.0, dist));   // true proportions close up
   float c = cos(iA.w), s = sin(iA.w);
   vec3 transformed = iA.xyz + vec3(-s * lp.x + c * lp.z, lp.y * ex, -c * lp.x - s * lp.z);
@@ -303,6 +373,20 @@ const FRAG_COLOR = /* glsl */`
       col *= 0.78 + 0.3 * mix(0.5, hNoise(vec2(r.x * 4.0, r.y * 0.4) + seed * 9.0), vis);
     }
 #endif
+  } else if (face >= 12) {                                 // roof kit
+    float a = fract(seed * 3.1);
+    if (face == 12 || (face == 15 && a < 0.65)) {           // stainless steel (inox) with streaks
+      col = sRGB(vec3(0.7, 0.71, 0.72)) * (0.8 + 0.25 * hNoise(vRoofUV * vec2(1.0, 6.0) + seed * 5.0));
+      hRough = 0.3;
+    } else if (face == 15) {
+      col = a < 0.85 ? sRGB(vec3(0.12, 0.32, 0.62)) : sRGB(vec3(0.85, 0.85, 0.82));     // blue / white plastic tank
+      hRough = 0.5;
+    } else if (face == 13) {                                // vacuum tubes
+      col = sRGB(vec3(0.06, 0.08, 0.11)) * (0.75 + 0.5 * smoothstep(0.3, 0.5, abs(fract(vRoofUV.x / 0.075) - 0.5)));
+      hRough = 0.2;
+    } else {                                                // AC unit: off-white case
+      col = sRGB(vec3(0.8, 0.8, 0.77)) * (0.9 + 0.1 * hNoise(vRoofUV * 3.0 + seed * 9.0));
+    }
   } else if (face == 4) {
     col = sRGB(vec3(0.36, 0.27, 0.19));
 #ifdef NEAR
@@ -443,6 +527,7 @@ export class HouseLayer extends GroupLayer {
     this.span = meta.group * meta.grid_res_m;
     this.tileM = this.span / this.nTiles;
     this.models = houseModels();
+    this.buildingKit = null;     // kit.js, once loaded
     this.uniforms = { uNearR: { value: nearR }, uBex: { value: meta.building_exag }, uViewPos: GLOBALS.uViewPos };
     this.matFar = houseMaterial('FAR', this.uniforms);
     this.matNear = houseMaterial('NEAR', this.uniforms);
@@ -493,16 +578,52 @@ export class HouseLayer extends GroupLayer {
       const tx = t % NT, ty = Math.floor(t / NT);
       const T = { cx: cx - this.span / 2 + (tx + 0.5) * this.tileM, cz: -(cy + this.span / 2 - (ty + 0.5) * this.tileM),
                   yMin: tMin, yMax: tMax, ranges, data, meshes: null, used: 0 };
+      T.cells = this.sortIntoCells(T, data, first, start - first, (tMin + tMax) / 2);
+      T.ranges = [[-1, first, start - first]];                 // (by style no longer: by block, then style)
       T.sphere = new THREE.Sphere(new THREE.Vector3(T.cx, (tMin + tMax) / 2, T.cz),
                                   this.tileM * 0.75 + (tMax - tMin) / 2 + 60);
       const { geometry } = this.instanced(this.models.far, data, first, start - first);
       geometry.boundingSphere = T.sphere;
       T.far = new THREE.Mesh(geometry, this.matFar);
       T.far.raycast = () => {};
+      T.far.userData.occBox = this.box(T.cx, T.cz, this.tileM / 2, T);        // occlusion culling (render/occlusion.js)
       T.far.userData.noShadow = true;            // far houses are hidden where shadows are drawn
       this.group.add(T.far);
       this.tiles.push(T);
     }
+  }
+
+  /**
+   * Houses near the camera are drawn per CELLS x CELLS block of a tile, so blocks out of reach are not sent to the GPU
+   * at all. Reorders the tile's data by (block, style) before anything refers to house indices and returns the
+   * blocks: { sphere, start, count, parts: [[style, start, count]...] }.
+   */
+  sortIntoCells(T, data, first, total, yMid) {
+    const cw = this.tileM / CELLS, x0 = T.cx - this.tileM / 2, z0 = T.cz - this.tileM / 2;
+    const cellOf = (i) => Math.min(CELLS - 1, Math.max(0, Math.floor((data.iA[i * 4] - x0) / cw)))
+                        + CELLS * Math.min(CELLS - 1, Math.max(0, Math.floor((data.iA[i * 4 + 2] - z0) / cw)));
+    const key = Array.from({ length: total }, (_, j) => cellOf(first + j) * 16 + data.iC[(first + j) * 4]);
+    const order = key.map((_, j) => j).sort((a, b) => key[a] - key[b]);
+    for (const [a, k] of [[data.iA, 4], [data.iB, 3], [data.iC, 4], [data.roof, 3], [data.wall, 3]]) {
+      const copy = a.slice(first * k, (first + total) * k);
+      order.forEach((j, n) => a.set(copy.subarray(j * k, j * k + k), (first + n) * k));
+    }
+    const cells = [];
+    let n = 0;
+    while (n < total) {
+      const c = key[order[n]] >> 4, cell = { start: first + n, parts: [],
+        sphere: new THREE.Sphere(new THREE.Vector3(x0 + (c % CELLS + 0.5) * cw, yMid, z0 + (Math.floor(c / CELLS) + 0.5) * cw), cw * 0.75 + 60) };
+      while (n < total && key[order[n]] >> 4 === c) {
+        const st = key[order[n]] & 15;
+        let m = n;
+        while (m < total && key[order[m]] === key[order[n]]) m++;
+        cell.parts.push([st, first + n, m - n]);
+        n = m;
+      }
+      cell.count = first + n - cell.start;
+      cells.push(cell);
+    }
+    return cells;
   }
 
   instanced(model, data, start, count) {
@@ -519,17 +640,130 @@ export class HouseLayer extends GroupLayer {
     return { geometry: geo };
   }
 
+  /**
+   * A box surely containing the houses centred within half-size `half` of (x, z): houses reach out of their cell by up
+   * to half a long hall, and up to 130 m above the tile's highest ground (60 m blocks, x2 far away).
+   */
+  box(x, z, half, T) {
+    const m = half + 80;
+    return new THREE.Box3(new THREE.Vector3(x - m, T.yMin - 3, z - m), new THREE.Vector3(x + m, T.yMax + 130, z + m));
+  }
+
+  /** Like instanced(), for a list of houses (copies of their data; setHidden keeps them in step). */
+  gathered(model, data, list, kitSel = null) {
+    const geo = new THREE.InstancedBufferGeometry();
+    geo.index = model.index;
+    for (const [k, a] of Object.entries(model.attributes)) geo.setAttribute(k, a);
+    const pick = (a, k) => { const out = new a.constructor(list.length * k); list.forEach((i, j) => out.set(a.subarray(i * k, i * k + k), j * k)); return out; };
+    geo.setAttribute('iA', new THREE.InstancedBufferAttribute(pick(data.iA, 4), 4));
+    const iB = pick(data.iB, 3);
+    if (kitSel) list.forEach((i, j) => { const sel = kitSel.get(i); iB[j * 3] = sel[1]; iB[j * 3 + 1] = sel[2]; });  // kit size
+    geo.setAttribute('iB', new THREE.InstancedBufferAttribute(iB, 3));
+    geo.setAttribute('iC', new THREE.InstancedBufferAttribute(pick(data.iC, 4), 4));
+    geo.setAttribute('iRoof', new THREE.InstancedBufferAttribute(pick(data.roof, 3), 3, true));
+    geo.setAttribute('iWall', new THREE.InstancedBufferAttribute(pick(data.wall, 3), 3, true));
+    geo.instanceCount = list.length;
+    geo.userData.list = list;
+    return geo;
+  }
+
+  /** Pick building-kit models for the houses of tile T (once; marks them iC.w = 4). */
+  assignKit(T) {
+    const K = this.buildingKit, D = T.data;
+    T.kitSel = new Map();
+    for (const [, start, count] of T.ranges) for (let i = start; i < start + count; i++) {
+      if (D.iC[i * 4 + 3] !== 0) continue;
+      const sel = K.choose(D.iC[i * 4], D.iC[i * 4 + 1], D.iB[i * 3], D.iB[i * 3 + 1], D.iB[i * 3 + 2], D.iC[i * 4 + 2] / 255,
+                           D.iA[i * 4], -D.iA[i * 4 + 2]);
+      if (sel) { T.kitSel.set(i, sel); D.iC[i * 4 + 3] = 4; }
+    }
+    T.far.geometry.attributes.iC.needsUpdate = true;
+  }
+
+  /** The building kit has loaded: rebuild the detailed tiles with it. */
+  setBuildingKit(kit) {
+    this.buildingKit = kit;
+    for (const T of this.tiles) if (T.meshes) this.disposeTile(T);
+  }
+
   buildTile(T) {
+    if (this.buildingKit?.ready && !T.kitSel) this.assignKit(T);
     const grp = new THREE.Group();
-    const sphere = T.sphere;
-    T.byStyle = [];
-    for (const [s, start, count] of T.ranges) {
-      const { geometry } = this.instanced(this.models.near[s], T.data, start, count);
-      geometry.boundingSphere = sphere;
-      const m = new THREE.Mesh(geometry, this.matNear);
-      m.raycast = () => {};
-      grp.add(m);
-      T.byStyle[s] = m;
+    const cw = this.tileM / CELLS;
+    for (const c of T.cells) {
+      const cg = new THREE.Group();
+      cg.userData.sphere = c.sphere;
+      cg.userData.occBox = this.box(c.sphere.center.x, c.sphere.center.z, cw / 2, T);
+      for (const [s, start, count] of c.parts) {
+        const { geometry } = this.instanced(this.models.near[s], T.data, start, count);
+        geometry.boundingSphere = c.sphere;
+        const m = new THREE.Mesh(geometry, this.matNear);
+        m.raycast = () => {};
+        cg.add(m);
+      }
+      // roof kit for the flat roofs of the block (tube houses, blocks), shown closer in
+      const kit = new THREE.Group(), D = T.data;
+      const flat = c.parts.filter(([s]) => s === STYLE.tube || s === STYLE.block).flatMap(([, start, count]) =>
+        Array.from({ length: count }, (_, j) => start + j)).filter((i) => D.iB[i * 3 + 1] >= 6 && D.iC[i * 4 + 3] !== 4);
+      for (const { geo, test } of Object.values(this.models.kit)) {
+        const list = flat.filter((i) => test(D.iC[i * 4 + 2] / 255, D.iB[i * 3], D.iB[i * 3 + 1]));
+        if (!list.length) continue;
+        const geometry = this.gathered(geo, D, list);
+        geometry.boundingSphere = c.sphere;
+        const m = new THREE.Mesh(geometry, this.matNear);
+        m.raycast = () => {};
+        kit.add(m);
+      }
+      if (kit.children.length) { cg.add(kit); cg.userData.kit = kit; }
+      // building kit models: far ones with the block, near ones per KIT_SUB x KIT_SUB sub-block (they are heavier)
+      if (T.kitSel) {
+        const cw = this.tileM / CELLS, sw = cw / KIT_SUB, x0 = c.sphere.center.x - cw / 2, z0 = c.sphere.center.z - cw / 2;
+        const subs = new Map();                            // sub-block -> model -> houses
+        for (let i = c.start; i < c.start + c.count; i++) {
+          const sel = T.kitSel.get(i);
+          if (!sel) continue;
+          const sx = Math.min(KIT_SUB - 1, Math.max(0, Math.floor((D.iA[i * 4] - x0) / sw)));
+          const sz = Math.min(KIT_SUB - 1, Math.max(0, Math.floor((D.iA[i * 4 + 2] - z0) / sw)));
+          const key = sz * KIT_SUB + sx;
+          if (!subs.has(key)) subs.set(key, new Map());
+          const byModel = subs.get(key);
+          if (!byModel.has(sel[0])) byModel.set(sel[0], []);
+          byModel.get(sel[0]).push(i);
+        }
+        const K = this.buildingKit, mesh = (geometry, mat, parent, sphere) => {
+          geometry.boundingSphere = sphere;
+          const m = new THREE.Mesh(geometry, mat);
+          m.raycast = () => {};
+          parent.add(m);
+        };
+        const farLists = new Map();
+        cg.userData.kitNear = [];
+        for (const [key, byModel] of subs) {
+          const sg = new THREE.Group();
+          sg.userData.sphere = new THREE.Sphere(new THREE.Vector3(x0 + (key % KIT_SUB + 0.5) * sw, c.sphere.center.y,
+                                                                  z0 + (Math.floor(key / KIT_SUB) + 0.5) * sw), sw * 0.75 + 40);
+          sg.userData.occBox = this.box(sg.userData.sphere.center.x, sg.userData.sphere.center.z, sw / 2, T);
+          for (const [k, list] of byModel) {
+            mesh(this.gathered(K.models[k - 1].near, D, list, T.kitSel), K.matNear, sg, sg.userData.sphere);
+            sg.children[sg.children.length - 1].userData.noReflect = true;           // the water mirrors the light versions
+            if (!farLists.has(k)) farLists.set(k, []);
+            farLists.get(k).push(...list);
+          }
+          cg.add(sg);
+          cg.userData.kitNear.push(sg);
+        }
+        for (const [k, list] of farLists) mesh(this.gathered(K.models[k - 1].far, D, list, T.kitSel), K.matFar, cg, c.sphere);
+      }
+      // the same block as simple far models, for when it is only partly within reach
+      const { geometry } = this.instanced(this.models.far, T.data, c.start, c.count);
+      geometry.boundingSphere = c.sphere;
+      const f = new THREE.Mesh(geometry, this.matFar);
+      f.raycast = () => {};
+      f.userData.noShadow = true;
+      f.userData.far = true;
+      f.userData.occBox = cg.userData.occBox.clone();
+      cg.userData.far = f;
+      grp.add(cg, f);
     }
     this.group.add(grp);
     T.meshes = grp;
@@ -538,23 +772,28 @@ export class HouseLayer extends GroupLayer {
 
   disposeTile(T) {
     this.group.remove(T.meshes);
-    for (const m of T.meshes.children) {        // detach the shared model buffers so only per-house buffers are freed
-      for (const k of ['position', 'aOff', 'aK']) m.geometry.deleteAttribute(k);
+    T.meshes.traverse((m) => {                   // detach the shared model buffers so only per-house buffers are freed
+      if (!m.isMesh) return;
+      for (const [k, a] of Object.entries(m.geometry.attributes)) if (!a.isInstancedBufferAttribute) m.geometry.deleteAttribute(k);
       m.geometry.index = null;
       m.geometry.dispose();
-    }
+    });
     T.meshes = null;
-    T.byStyle = null;
     this.built--;
   }
 
-  /** Hide / show house i of tile T (flag: 0 shown, 1 replaced, 2 under a landmark, 3 rejected on water). */
+  /** Hide / show house i of tile T (flag: 0 shown, 1 replaced, 2 under a landmark, 3 rejected on water; 4 kit). */
   setHidden(T, i, flag) {
+    if (flag === 0 && T.kitSel?.has(i)) flag = 4;
     if (T.data.iC[i * 4 + 3] === 3 || T.data.iC[i * 4 + 3] === flag) return;
     T.data.iC[i * 4 + 3] = flag;
     T.far.geometry.attributes.iC.needsUpdate = true;
-    const m = T.byStyle && T.byStyle[T.data.iC[i * 4]];
-    if (m) m.geometry.attributes.iC.needsUpdate = true;
+    if (T.meshes) T.meshes.traverse((m) => {
+      if (!m.isMesh) return;
+      const list = m.geometry.userData.list, a = m.geometry.attributes.iC;
+      if (list) { const j = list.indexOf(i); if (j < 0) return; a.array[j * 4 + 3] = flag; }
+      a.needsUpdate = true;
+    });
   }
 
   /** Hide every house whose centre lies in a rotated rectangle (scene x, z; half sizes along / across `ang`). */
@@ -577,10 +816,23 @@ export class HouseLayer extends GroupLayer {
       const dy = p.y > T.yMax ? p.y - T.yMax : p.y < T.yMin ? T.yMin - p.y : 0;
       const dist = Math.hypot(dx, dy, dz);
       T.far.visible = dist < this.maxDistance;
-      const near = dist < reach;
+      const near = dist < reach + this.tileM * 0.1;
       if (near) {
         if (!T.meshes) this.buildTile(T);
         T.meshes.visible = true;
+        T.far.visible = false;                    // drawn per block instead
+        for (const cg of T.meshes.children) {     // detailed blocks within reach; simple ones unless fully within it
+          if (!cg.userData.sphere) continue;
+          const c = cg.userData.sphere.center, r = cg.userData.sphere.radius;
+          const d = Math.hypot(c.x - p.x, c.z - p.z, Math.max(p.y - T.yMax, 0));
+          cg.visible = d < reach + r;
+          if (cg.userData.kit) cg.userData.kit.visible = d < KIT_R + r;
+          if (cg.userData.kitNear) for (const sg of cg.userData.kitNear) {
+            const sc = sg.userData.sphere.center;
+            sg.visible = Math.hypot(sc.x - p.x, sc.z - p.z, Math.max(p.y - T.yMax, 0)) < this.buildingKit.uniforms.uKitNear.value + sg.userData.sphere.radius;
+          }
+          cg.userData.far.visible = d > this.nearR - r && d < this.maxDistance + r;
+        }
         T.used = this.frame;
       } else if (T.meshes) {
         T.meshes.visible = false;

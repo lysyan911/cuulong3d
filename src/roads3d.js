@@ -5,6 +5,7 @@
 //   surfaces       asphalt with white edge lines and a dashed centre line (double yellow + lane lines on 4 lanes);
 //                  rural concrete roads in slabs with joints; dirt tracks with wheel ruts; wooden footbridges
 //   bridges        arched decks over canals (flat-topped for long spans), railings, pier walls down to the water
+//   junctions      town junctions on main roads get zebra crossings and stop lines (traffic lights: streets.js)
 // Ribbons are built per 3.84 km terrain tile near the camera (scripts/roads.py writes the polylines); beyond ~4 km
 // the hybrid-map lines (world.js RoadLayer) fade back in. Town streets also get their street life (streets.js).
 import * as THREE from 'three';
@@ -13,7 +14,7 @@ import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const ASPHALT = 0, WOOD = 3;          // surfaces: 0 asphalt, 1 concrete, 2 dirt, 3 wood
 const BRIDGE = 1, TOWN = 2, DYKE = 4;
-const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6 };
+const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6, mark: 7 };
 const KERB = 0.18;                     // town sidewalks stand this much above the street
 
 /** Embankment height (m) above the fields by class (0 motorway .. 8 path) and flags. */
@@ -103,6 +104,13 @@ const FRAG_COLOR = /* glsl */`
     col *= 0.8 + 0.2 * smoothstep(0.2, 0.7, rNoise(vec2(along, ac) * 0.35));   // grime and wet patches
   } else if (part == 6) {                                                  // kerb stones
     col = sRGBr(vec3(0.72, 0.71, 0.68)) * (0.85 + 0.15 * rHash(vec2(floor(along / 1.0), 3.0)));
+  } else if (part == 7) {                                                  // zebra crossing + stop line, worn paint
+    float zebra = step(along, 3.6) * (1.0 - smoothstep(0.27 - pc, 0.27 + pc, abs(fract(ac / 1.0) - 0.5)));
+    float stop = stripe(along, 4.15, 0.17, pa) * step(0.0, ac);           // only across the lanes coming in
+    float m = max(zebra, stop) * vis * (0.75 + 0.35 * n2) * (0.8 + 0.3 * n1);
+    if (m < 0.45) discard;
+    col = sRGBr(vec3(0.82, 0.82, 0.8)) * (0.88 + 0.12 * n2);
+    rough = 0.6;
   } else if (part == 2) {                                                  // grassy embankment
     col = sRGBr(vec3(0.3, 0.4, 0.17)) * (0.72 + 0.35 * n1 + 0.1 * n2);
   } else if (part == 3) {                                                  // railing
@@ -179,9 +187,28 @@ export class Road3DLayer {
     }
   }
 
+  /** Road junctions of a group: shared OSM nodes where 3+ road arms meet. key(point) -> { roads: [chunk...] } */
+  junctions(D) {
+    if (D.junc) return D.junc;
+    const all = new Map();
+    for (let c = 0; c < D.npts.length; c++) {
+      if (D.flags[c] & BRIDGE) continue;
+      const np = D.npts[c], s0 = D.starts[c];
+      for (let i = 0; i < np; i++) {
+        const k = ptKey(D, s0 + i), arms = i === 0 || i === np - 1 ? 1 : 2;   // chunk ends: one arm
+        const e = all.get(k);
+        if (e) { e.arms += arms; e.roads.push(c); } else all.set(k, { arms, roads: [c] });
+      }
+    }
+    D.junc = new Map();
+    for (const [k, e] of all) if (e.arms >= 3 && e.roads.length >= 2) D.junc.set(k, e);
+    return D.junc;
+  }
+
   build(T) {
     const D = T.data, ex = this.meta.vert_exag;
-    const pos = [], uv = [], info = [], idx = [], townRoads = [];
+    const pos = [], uv = [], info = [], idx = [], townRoads = [], signals = [];
+    const J = this.junctions(D);
     let v = 0;
     const vert = (x, y, yN, along, across, hw, surf, lanes, part) => {
       pos.push(x, y, -yN); uv.push(along, across); info.push(hw, surf, lanes, part);
@@ -256,10 +283,43 @@ export class Road3DLayer {
             pr = r;
           }
         }
-        townRoads.push({ P, S, N, hw, sh, cl, y: ground.map((g) => g + 0.06 + KERB) });
+        // junctions: crossings on the arms of main-road junctions (just beyond the side road), lights where main roads cross
+        const jS = [];
+        for (let i = 0; i < np; i++) {
+          const jn = J.get(ptKey(D, s0 + i));
+          if (!jn) continue;
+          let oHw = 0, major = 0, mid = 0;
+          for (const o of new Set(jn.roads)) {
+            if (o !== c) oHw = Math.max(oHw, D.width[o] / 8);
+            if (D.cls[o] <= 4) major++;
+            if (D.cls[o] <= 5) mid++;
+          }
+          if (!oHw) continue;
+          const r0 = oHw + 0.6;
+          jS.push([S[i], r0 + 6]);
+          const marked = surf === ASPHALT && hw >= 2.4 && major >= 1 && mid >= 2, signal = marked && major >= 2;
+          if (!marked) continue;
+          for (const k of [i + 1, i - 1]) {
+            if (k < 0 || k >= np) continue;
+            const segL = Math.abs(S[k] - S[i]);
+            if (segL < r0 + 6) continue;
+            const ux = (P[k][0] - P[i][0]) / segL, uy = (P[k][1] - P[i][1]) / segL, nx = -uy, ny = ux;
+            const at = (a, b, lift) => [P[i][0] + ux * a + nx * b, ground[i] + (ground[k] - ground[i]) * a / segL + lift, P[i][1] + uy * a + ny * b];
+            const q = [r0, r0 + 4.4].map((a) => [-1, 1].map((sd) => {
+              const [x, y, yN] = at(a, sd * (hw - 0.15), 0.09);
+              return vert(x, y, yN, a - r0, sd * (hw - 0.15), hw, surf, lanes, PART.mark);
+            }));
+            idx.push(q[0][0], q[0][1], q[1][1], q[0][0], q[1][1], q[1][0]);
+            if (signal) {
+              const [x, y, yN] = at(r0 + 4.8, hw + 0.45, 0.06 + KERB);
+              signals.push({ x, y, yN, ux, uy, nx, ny });
+            }
+          }
+        }
+        townRoads.push({ P, S, N, hw, sh, cl, surf, J: jS, y: ground.map((g) => g + 0.06 + KERB), ry: ground.map((g) => g + 0.06) });
       }
-      // country roads: power lines run along most of them (on the shoulder)
-      if (!town && !bridge && cl >= 3 && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, rural: true, y: ground.map((g) => g + e) });
+      // country roads: power lines run along most of them (on the shoulder), traffic on all but tracks and paths
+      if (!town && !bridge && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, surf, rural: true, noPoles: cl < 3, y: ground.map((g) => g + e) });
       if (bridge) {
         // railings both sides, pier walls every ~15 m
         for (const sd of [-1, 1]) {
@@ -303,7 +363,7 @@ export class Road3DLayer {
     const m = new THREE.Mesh(g, this.material);
     m.raycast = () => {};
     if (this.streets && townRoads.length) {
-      T.furn = this.streets.build(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200));
+      T.furn = this.streets.build(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200), signals);
       if (T.furn) this.streets.group.add(T.furn);
     }
     return m;
@@ -324,10 +384,11 @@ export class Road3DLayer {
         T.mesh = null;
         if (T.furn) { this.streets.dispose(T.furn); T.furn = null; }
       }
-      if (T.furn) T.furn.visible = d < 1400;
+      if (T.furn) { T.furn.visible = d < 1400; if (T.furn.visible) this.streets.update(T.furn, p); }
     }
   }
 }
 
+const ptKey = (D, j) => (D.xy[j * 2] + 32768) * 65536 + (D.xy[j * 2 + 1] + 32768);
 const norm2 = (x, y) => { const l = Math.hypot(x, y) || 1; return [x / l, y / l]; };
 const smooth = (a, b, t) => { const u = Math.min(Math.max((t - a) / (b - a), 0), 1); return u * u * (3 - 2 * u); };

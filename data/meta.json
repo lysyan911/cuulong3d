@@ -56,7 +56,7 @@
   "ways_2_2": 4592,
   "ways_2_3": 1364,
   "ways_3_1": 237,
-  "ways_3_2": 3694,
+  "ways_3_2": 3692,
   "ways_3_3": 83,
   "water_0_0": 1,
   "water_0_1": 12,
@@ -2858,6 +2858,8 @@
   "Terrain: Copernicus GLO-30 DEM © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA (cleaned)",
   "Tree cover: ESA WorldCover 2021 © ESA (CC BY 4.0); species are estimated by area",
   "Boat, house, civic-building and cathedral models: fan-made Blender models (web/models)",
+  "Long Xuyen Cathedral: original exterior meshes and baked 1K maps; footprint OSM way 674801676 (https://www.openstreetmap.org/way/674801676, ODbL); proportions: VOV parish interview (https://vovworld.vn/discovery-vietnam/long-xuyen-cathedral-boasts-distinctive-catholic-architecture-2411274.vov5) and Mary Ann Sullivan architectural photographs (https://homepages.bluffton.edu/~sullivanm/vietnam/longxuyen/cathedral/cathedral.html). Reference photographs are not included as textures",
+  "Central Long Xuyen detail: original round annex, Hoang Dieu twin bridge, Nguyen Hue garden and north canal courtyard meshes with original baked 1K maps; OSM footprints/alignments (ODbL), https://www.openstreetmap.org/way/683146277 and https://www.openstreetmap.org/way/566005151. Building appearance estimates use privately supplied aerial references (not redistributed); Co.opmart identity: https://media.angiang.gov.vn/pictures/2021/06/11/777-danh%20sach%20dia%20diem%20tham%20gia%20ban%20hang_bott.pdf; Dong Xuyen vicinity: https://www.dongxuyenhotel.vn/. Tree positions and garden island are approximate",
   "Map data © OpenStreetMap contributors (ODbL)",
   "District boundaries: geoBoundaries / OCHA ROAP (CC BY 3.0 IGO)",
   "Story locations: fan interpretation of Cửu Long Quái Sự Ký © Lâm Gia – Thái Bảo",
@@ -2877,7 +2879,7 @@
   "Photo textures: Foliage008 — ambientCG (https://ambientcg.com/view?id=Foliage008) — CC0",
   "Foliage/aquatic/rice textures: illustrative adaptations of CC0 LeafSet022, LeafSet024 and Foliage008 photographs; not species-specific photographs.",
   "Rice-field cover: ESA WorldCover 2021 © ESA (CC BY 4.0); plot divisions and crop stages are illustrative",
-  "Long Xuyen Cathedral: original exterior meshes and baked 1K maps; footprint OSM way 674801676 (https://www.openstreetmap.org/way/674801676, ODbL); proportions: VOV parish interview (https://vovworld.vn/discovery-vietnam/long-xuyen-cathedral-boasts-distinctive-catholic-architecture-2411274.vov5) and Mary Ann Sullivan architectural photographs (https://homepages.bluffton.edu/~sullivanm/vietnam/longxuyen/cathedral/cathedral.html). Reference photographs are not included as textures"
+  "Co.opmart Long Xuyen: original Blender exterior and original 1K baked sign atlas; cached Overture footprint matched to supplied reference photos (reference only, not redistributed). Store identity/address: https://co-opmart.com.vn/he-thong-sieu-thi/co-opmart-long-xuyen; facade and 14.2 x 9.5 m advertising panel: https://billboardquangcao.com/san-pham/trung-tam-thuong-mai-coopmart-long-xuyen. Reference photos are not included as textures. Proportions and unseen parts estimated; brand names identify the landmark"
  ],
  "relief": {
   "res_m": 30,

@@ -310,8 +310,9 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         vec2 qq = vec2(dot(P, FLOW), dot(P, vec2(-FLOW.y, FLOW.x)));   // along / across the flow
         float streak = smoothstep(0.38, 0.66, fbm(vec2(qq.x / 700.0 - uTime * 0.01, qq.y / 60.0)));
         vec3 photo = diffuseColor.rgb;
-        vec3 tone = mix(vec3(0.16, 0.135, 0.083), vec3(0.025, 0.12, 0.105), lake);
-        vec3 wcol = mix(photo, tone, 0.72 - 0.08 * shallowF) * mix(0.96, 1.05, streak);
+        // Mekong water is silt-laden: milky brown ("nước phù sa"); hill lakes stay clear green
+        vec3 tone = mix(vec3(0.30, 0.20, 0.11), vec3(0.025, 0.12, 0.105), lake);
+        vec3 wcol = mix(photo, tone, 0.8 - 0.08 * shallowF) * mix(0.95, 1.06, streak);
         diffuseColor.rgb = mix(photo, wcol, waterF);
         // clear river bank: darken the water edge slightly
         float bankVis = bank * (1.0 - smoothstep(4000.0, 20000.0, camDist));

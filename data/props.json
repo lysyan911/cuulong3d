@@ -24,6 +24,140 @@
    "hideWidth": 37,
    "hideDepth": 79,
    "hideFront": 3
+  },
+  {
+   "model": "long-xuyen-round-annex",
+   "name": "Nhà tròn cạnh nhà thờ Long Xuyên",
+   "lon": 105.43962796108694,
+   "lat": 10.381226901987095,
+   "x": 28941.47,
+   "y": -20856.96,
+   "front": -0.927102,
+   "width": 32,
+   "depth": 40,
+   "hideWidth": 32,
+   "hideDepth": 40,
+   "osm_ways": [
+    683146277
+   ],
+   "position_note": "OSM footprint/bridge centroid"
+  },
+  {
+   "model": "long-xuyen-hoang-dieu-bridge",
+   "name": "Cầu Hoàng Diệu",
+   "lon": 105.43828463370289,
+   "lat": 10.3833834008844,
+   "x": 28794.09,
+   "y": -20618.72,
+   "front": -0.715316,
+   "width": 23,
+   "depth": 188.45,
+   "hideWidth": 23,
+   "hideDepth": 188.4518731431013,
+   "osm_ways": [
+    566005151,
+    1133685880
+   ],
+   "position_note": "OSM footprint/bridge centroid",
+   "groundAt": [
+    [
+     28719.54,
+     -20560.12
+    ],
+    [
+     28861.8,
+     -20683.72
+    ]
+   ]
+  },
+  {
+   "model": "long-xuyen-nguyen-hue-island",
+   "name": "Đảo vườn Nguyễn Huệ",
+   "lon": 105.44012783859199,
+   "lat": 10.38111938785268,
+   "x": 28996.21,
+   "y": -20868.77,
+   "front": 0.683191,
+   "width": 19,
+   "depth": 30,
+   "hideWidth": 19,
+   "hideDepth": 30,
+   "osm_ways": [],
+   "position_note": "Estimated within OSM street junction; not separately mapped"
+  },
+  {
+   "model": "long-xuyen-canal-courtyard",
+   "name": "Khối nhà mái đỏ bờ bắc kênh Long Xuyên",
+   "lon": 105.4372058295793,
+   "lat": 10.38436781301653,
+   "x": 28675.85,
+   "y": -20510.04,
+   "front": -0.98,
+   "width": 217.16,
+   "depth": 175.7,
+   "hideWidth": 222.16,
+   "hideDepth": 180.7,
+   "osm_ways": [
+    1035238632,
+    674540366,
+    674540367,
+    1035238638
+   ],
+   "position_note": "OSM footprint cluster; identity unverified; photo-estimated appearance",
+   "hideRects": [
+    {
+     "x": 28716.34,
+     "y": -20426.62,
+     "front": 2.512165906326101,
+     "width": 75.47,
+     "depth": 62.77
+    },
+    {
+     "x": 28716.03,
+     "y": -20498.95,
+     "front": 0.9290278535076262,
+     "width": 30.65,
+     "depth": 30.37
+    },
+    {
+     "x": 28653.54,
+     "y": -20589.43,
+     "front": 2.727835414800945,
+     "width": 74.56,
+     "depth": 58.7
+    },
+    {
+     "x": 28622.2,
+     "y": -20545.99,
+     "front": 2.738928267720109,
+     "width": 80.66,
+     "depth": 36.39
+    },
+    {
+     "x": 28677.86,
+     "y": -20463.63,
+     "front": 0.914868644927582,
+     "width": 38.48,
+     "depth": 33.14
+    }
+   ]
+  },
+  {
+   "model": "long-xuyen-coopmart",
+   "name": "Co.opmart Long Xuyên",
+   "lon": 105.44024926619007,
+   "lat": 10.3819294492524,
+   "x": 29009.38,
+   "y": -20779.19,
+   "front": -0.920933,
+   "width": 34.837,
+   "depth": 44.066,
+   "hideWidth": 36.837,
+   "hideDepth": 46.066,
+   "position_note": "Overture cached footprint matched to owner aerial and official 12 Nguyen Hue address; no named Co.opmart polygon in cached OSM"
   }
+ ],
+ "suppressedLandmarks": [
+  "Bishop of Long Xuyen"
  ]
 }

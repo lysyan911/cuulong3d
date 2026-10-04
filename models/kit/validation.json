@@ -1,0 +1,1587 @@
+{
+  "models": 19,
+  "glbs": 38,
+  "shared_atlas_bytes": 457794,
+  "gpu_atlas_mip_bytes": 11184811,
+  "total_glb_bytes": 1596692,
+  "checks": "Finite geometry, unit normals, nondegenerate triangles, index bounds, valid UVs, one external image and material budgets; endpoint reflow keeps fixed parts rigid and repeats modules within triangle budget.",
+  "assets": [
+    {
+      "id": "tube-01-shop",
+      "near": {
+        "triangles": 256,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          6.07,
+          9.0
+        ],
+        "bytes": 29080
+      },
+      "stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 228,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 340,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 228,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 340,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          6.07,
+          8.25
+        ],
+        "bytes": 7912
+      },
+      "far_stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "tube-02-balcony",
+      "near": {
+        "triangles": 714,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          9.22,
+          9.102
+        ],
+        "bytes": 60796
+      },
+      "stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 658,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 882,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 658,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 882,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 72,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          9.22,
+          8.95
+        ],
+        "bytes": 8888
+      },
+      "far_stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 72,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 72,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 72,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 72,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "tube-03-tiled",
+      "near": {
+        "triangles": 1170,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          10.4,
+          9.102
+        ],
+        "bytes": 92124
+      },
+      "stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 1086,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 1422,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 1086,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 1422,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 50,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          10.4,
+          8.95
+        ],
+        "bytes": 6900
+      },
+      "far_stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 50,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 50,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 50,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 50,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "tube-04-terrace",
+      "near": {
+        "triangles": 1786,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          15.52,
+          9.102
+        ],
+        "bytes": 135124
+      },
+      "stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 1674,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 2122,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 1674,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 2122,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 100,
+        "bounds_min": [
+          -2.55,
+          0.0,
+          -8.25
+        ],
+        "bounds_max": [
+          2.55,
+          15.52,
+          8.95
+        ],
+        "bytes": 10860
+      },
+      "far_stretch_checks": [
+        {
+          "width": 4,
+          "depth": 10,
+          "triangles": 100,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 4,
+          "depth": 25,
+          "triangles": 100,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 10,
+          "triangles": 100,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 5,
+          "depth": 25,
+          "triangles": 100,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "rural-tin-01",
+      "near": {
+        "triangles": 316,
+        "bounds_min": [
+          -4.18,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          4.18,
+          4.94,
+          6.84
+        ],
+        "bytes": 31376
+      },
+      "stretch_checks": [
+        {
+          "width": 7.4,
+          "depth": 9.6,
+          "triangles": 288,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 18.0,
+          "triangles": 344,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 9.6,
+          "triangles": 288,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 18.0,
+          "triangles": 344,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -4.18,
+          0.06,
+          -6.45
+        ],
+        "bounds_max": [
+          4.18,
+          4.94,
+          6.45
+        ],
+        "bytes": 8172
+      },
+      "far_stretch_checks": [
+        {
+          "width": 7.4,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.4,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "rural-tin-02",
+      "near": {
+        "triangles": 342,
+        "bounds_min": [
+          -4.53,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          5.65,
+          4.94,
+          7.59
+        ],
+        "bytes": 34140
+      },
+      "stretch_checks": [
+        {
+          "width": 8.1,
+          "depth": 10.8,
+          "triangles": 342,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 20.25,
+          "triangles": 398,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 10.8,
+          "triangles": 342,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 20.25,
+          "triangles": 398,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -4.53,
+          0.06,
+          -7.2
+        ],
+        "bounds_max": [
+          4.53,
+          4.94,
+          7.2
+        ],
+        "bytes": 8184
+      },
+      "far_stretch_checks": [
+        {
+          "width": 8.1,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.1,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "rural-tile-01",
+      "near": {
+        "triangles": 412,
+        "bounds_min": [
+          -4.68,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          4.68,
+          4.94,
+          6.84
+        ],
+        "bytes": 38112
+      },
+      "stretch_checks": [
+        {
+          "width": 8.4,
+          "depth": 9.6,
+          "triangles": 384,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 18.0,
+          "triangles": 440,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 9.6,
+          "triangles": 384,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 18.0,
+          "triangles": 440,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -4.68,
+          0.06,
+          -6.45
+        ],
+        "bounds_max": [
+          4.68,
+          4.94,
+          6.45
+        ],
+        "bytes": 8176
+      },
+      "far_stretch_checks": [
+        {
+          "width": 8.4,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.4,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "rural-tile-02",
+      "near": {
+        "triangles": 432,
+        "bounds_min": [
+          -5.03,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          5.03,
+          4.94,
+          7.59
+        ],
+        "bytes": 39480
+      },
+      "stretch_checks": [
+        {
+          "width": 9.1,
+          "depth": 10.8,
+          "triangles": 432,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 20.25,
+          "triangles": 488,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 10.8,
+          "triangles": 432,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 20.25,
+          "triangles": 488,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -5.03,
+          0.06,
+          -7.2
+        ],
+        "bounds_max": [
+          5.03,
+          4.94,
+          7.2
+        ],
+        "bytes": 8184
+      },
+      "far_stretch_checks": [
+        {
+          "width": 9.1,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 9.1,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "traditional-3gian-01",
+      "near": {
+        "triangles": 636,
+        "bounds_min": [
+          -6.38,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          6.38,
+          6.14,
+          6.84
+        ],
+        "bytes": 53920
+      },
+      "stretch_checks": [
+        {
+          "width": 11.8,
+          "depth": 9.6,
+          "triangles": 608,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 18.0,
+          "triangles": 664,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 9.6,
+          "triangles": 608,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 18.0,
+          "triangles": 664,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -6.38,
+          0.06,
+          -6.45
+        ],
+        "bounds_max": [
+          6.38,
+          6.14,
+          6.45
+        ],
+        "bytes": 8184
+      },
+      "far_stretch_checks": [
+        {
+          "width": 11.8,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 11.8,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "traditional-3gian-02",
+      "near": {
+        "triangles": 960,
+        "bounds_min": [
+          -6.73,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          6.73,
+          6.14,
+          7.6
+        ],
+        "bytes": 76532
+      },
+      "stretch_checks": [
+        {
+          "width": 12.5,
+          "depth": 10.8,
+          "triangles": 932,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 20.25,
+          "triangles": 1016,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 10.8,
+          "triangles": 932,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 20.25,
+          "triangles": 1016,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -6.73,
+          0.06,
+          -7.2
+        ],
+        "bounds_max": [
+          6.73,
+          6.14,
+          7.2
+        ],
+        "bytes": 8140
+      },
+      "far_stretch_checks": [
+        {
+          "width": 12.5,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 12.5,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "canal-stilt-01",
+      "near": {
+        "triangles": 1096,
+        "bounds_min": [
+          -3.98,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          3.98,
+          6.8,
+          8.8804
+        ],
+        "bytes": 88840
+      },
+      "stretch_checks": [
+        {
+          "width": 7.0,
+          "depth": 9.6,
+          "triangles": 1020,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 18.0,
+          "triangles": 1220,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 9.6,
+          "triangles": 1020,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 18.0,
+          "triangles": 1220,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 130,
+        "bounds_min": [
+          -3.98,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          3.98,
+          6.8,
+          6.45
+        ],
+        "bytes": 15476
+      },
+      "far_stretch_checks": [
+        {
+          "width": 7.0,
+          "depth": 9.6,
+          "triangles": 106,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 18.0,
+          "triangles": 154,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 9.6,
+          "triangles": 106,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.0,
+          "depth": 18.0,
+          "triangles": 154,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "canal-stilt-02",
+      "near": {
+        "triangles": 1200,
+        "bounds_min": [
+          -4.33,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          4.33,
+          7.15,
+          9.6325
+        ],
+        "bytes": 96252
+      },
+      "stretch_checks": [
+        {
+          "width": 7.7,
+          "depth": 10.8,
+          "triangles": 1152,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 20.25,
+          "triangles": 1352,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 10.8,
+          "triangles": 1152,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 20.25,
+          "triangles": 1352,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 130,
+        "bounds_min": [
+          -4.33,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          4.33,
+          7.15,
+          7.2
+        ],
+        "bytes": 15592
+      },
+      "far_stretch_checks": [
+        {
+          "width": 7.7,
+          "depth": 10.8,
+          "triangles": 130,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 20.25,
+          "triangles": 178,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 10.8,
+          "triangles": 130,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.7,
+          "depth": 20.25,
+          "triangles": 178,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "khmer-house-01",
+      "near": {
+        "triangles": 572,
+        "bounds_min": [
+          -4.2939,
+          0.0,
+          -6.45
+        ],
+        "bounds_max": [
+          4.2939,
+          6.1055,
+          6.84
+        ],
+        "bytes": 49520
+      },
+      "stretch_checks": [
+        {
+          "width": 7.6,
+          "depth": 9.6,
+          "triangles": 544,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 18.0,
+          "triangles": 600,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 9.6,
+          "triangles": 544,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 18.0,
+          "triangles": 600,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -4.28,
+          0.37,
+          -6.45
+        ],
+        "bounds_max": [
+          4.28,
+          6.05,
+          6.45
+        ],
+        "bytes": 8168
+      },
+      "far_stretch_checks": [
+        {
+          "width": 7.6,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 9.6,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 7.6,
+          "depth": 18.0,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "khmer-house-02",
+      "near": {
+        "triangles": 346,
+        "bounds_min": [
+          -4.6419,
+          0.0,
+          -7.2
+        ],
+        "bounds_max": [
+          4.6419,
+          6.1066,
+          7.59
+        ],
+        "bytes": 33464
+      },
+      "stretch_checks": [
+        {
+          "width": 8.299999999999999,
+          "depth": 10.8,
+          "triangles": 346,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 20.25,
+          "triangles": 402,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 10.8,
+          "triangles": 346,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 20.25,
+          "triangles": 402,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 58,
+        "bounds_min": [
+          -4.63,
+          0.37,
+          -7.2
+        ],
+        "bounds_max": [
+          4.63,
+          6.05,
+          7.2
+        ],
+        "bytes": 8180
+      },
+      "far_stretch_checks": [
+        {
+          "width": 8.299999999999999,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 10.8,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 8.299999999999999,
+          "depth": 20.25,
+          "triangles": 58,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "factory-portal-01",
+      "near": {
+        "triangles": 1212,
+        "bounds_min": [
+          -10.5,
+          0.0,
+          -18.45
+        ],
+        "bounds_max": [
+          15.2,
+          9.0,
+          18.45
+        ],
+        "bytes": 112076
+      },
+      "stretch_checks": [
+        {
+          "width": 20,
+          "depth": 30,
+          "triangles": 1080,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 150,
+          "triangles": 3720,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 30,
+          "triangles": 1080,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 150,
+          "triangles": 3720,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 22,
+        "bounds_min": [
+          -10.5,
+          0.0,
+          -18.45
+        ],
+        "bounds_max": [
+          10.5,
+          9.0,
+          18.45
+        ],
+        "bytes": 4764
+      },
+      "far_stretch_checks": [
+        {
+          "width": 20,
+          "depth": 30,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 150,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 30,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 20,
+          "depth": 150,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "warehouse-rice-01",
+      "near": {
+        "triangles": 1074,
+        "bounds_min": [
+          -8.5,
+          0.0,
+          -15.45
+        ],
+        "bounds_max": [
+          8.5,
+          8.0,
+          17.5
+        ],
+        "bytes": 98972
+      },
+      "stretch_checks": [
+        {
+          "width": 16,
+          "depth": 21.0,
+          "triangles": 942,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 90,
+          "triangles": 2394,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 21.0,
+          "triangles": 942,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 90,
+          "triangles": 2394,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 22,
+        "bounds_min": [
+          -8.5,
+          0.0,
+          -15.45
+        ],
+        "bounds_max": [
+          8.5,
+          8.0,
+          15.45
+        ],
+        "bytes": 4748
+      },
+      "far_stretch_checks": [
+        {
+          "width": 16,
+          "depth": 21.0,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 90,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 21.0,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 16,
+          "depth": 90,
+          "triangles": 22,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "warehouse-canal-01",
+      "near": {
+        "triangles": 1250,
+        "bounds_min": [
+          -7.5,
+          0.0,
+          -14.45
+        ],
+        "bounds_max": [
+          7.5,
+          8.0,
+          21.4
+        ],
+        "bytes": 112876
+      },
+      "stretch_checks": [
+        {
+          "width": 14,
+          "depth": 19.6,
+          "triangles": 986,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 84,
+          "triangles": 2438,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 19.6,
+          "triangles": 986,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 84,
+          "triangles": 2438,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 34,
+        "bounds_min": [
+          -7.5,
+          0.0,
+          -14.45
+        ],
+        "bounds_max": [
+          7.5,
+          8.0,
+          21.4
+        ],
+        "bytes": 6340
+      },
+      "far_stretch_checks": [
+        {
+          "width": 14,
+          "depth": 19.6,
+          "triangles": 34,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 84,
+          "triangles": 34,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 19.6,
+          "triangles": 34,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 14,
+          "depth": 84,
+          "triangles": 34,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "rice-mill-01",
+      "near": {
+        "triangles": 1530,
+        "bounds_min": [
+          -13.45,
+          0.0,
+          -18.45
+        ],
+        "bounds_max": [
+          14.2,
+          13.5,
+          18.45
+        ],
+        "bytes": 131900
+      },
+      "stretch_checks": [
+        {
+          "width": 18,
+          "depth": 25.2,
+          "triangles": 1266,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 78,
+          "triangles": 2454,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 25.2,
+          "triangles": 1266,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 78,
+          "triangles": 2454,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 70,
+        "bounds_min": [
+          -13.45,
+          0.0,
+          -18.45
+        ],
+        "bounds_max": [
+          9.5,
+          13.5,
+          18.45
+        ],
+        "bytes": 8412
+      },
+      "far_stretch_checks": [
+        {
+          "width": 18,
+          "depth": 25.2,
+          "triangles": 70,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 78,
+          "triangles": 70,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 25.2,
+          "triangles": 70,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 78,
+          "triangles": 70,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "market-hall-01",
+      "near": {
+        "triangles": 1552,
+        "bounds_min": [
+          -9.5,
+          0.0,
+          -16.45
+        ],
+        "bounds_max": [
+          9.5,
+          7.6,
+          16.45
+        ],
+        "bytes": 114280
+      },
+      "stretch_checks": [
+        {
+          "width": 18,
+          "depth": 22.4,
+          "triangles": 1388,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 60,
+          "triangles": 2372,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 22.4,
+          "triangles": 1388,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 60,
+          "triangles": 2372,
+          "rigid_dimensions_unchanged": true
+        }
+      ],
+      "far": {
+        "triangles": 100,
+        "bounds_min": [
+          -9.5,
+          0.0,
+          -16.45
+        ],
+        "bounds_max": [
+          9.5,
+          7.6,
+          16.45
+        ],
+        "bytes": 12548
+      },
+      "far_stretch_checks": [
+        {
+          "width": 18,
+          "depth": 22.4,
+          "triangles": 76,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 60,
+          "triangles": 148,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 22.4,
+          "triangles": 76,
+          "rigid_dimensions_unchanged": true
+        },
+        {
+          "width": 18,
+          "depth": 60,
+          "triangles": 148,
+          "rigid_dimensions_unchanged": true
+        }
+      ]
+    }
+  ]
+}

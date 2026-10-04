@@ -161,6 +161,12 @@ export class RenderPipeline {
     }
   }
 
+  /** Render target holding the frame's scene depth (null: the canvas; undefined: not available). */
+  depthTarget() {
+    if (!this.composer) return null;
+    return this.ao ? this.ao.beautyRenderTarget : undefined;
+  }
+
   render() {
     if (this.composer) this.composer.render();
     else this.renderer.render(this.scene, this.camera);

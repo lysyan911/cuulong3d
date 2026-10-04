@@ -7,6 +7,7 @@
 // Models load the first time they are needed. Each model is merged per material and drawn instanced.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OCC_SOURCES } from './render/occlusion.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 import { metricUVs, modelPhotoMaterial } from './photo-textures.js';
@@ -22,7 +23,13 @@ const HOUSE = {
 const LANDMARK = {
   'long-xuyen-civic-office': { x: 36, z: 15 },
   'long-xuyen-cathedral': { x: 32.48, z: 64.48, trueScale: true, lod: 'long-xuyen-cathedral-lod' },
+  'long-xuyen-round-annex': { x: 32, z: 40, trueScale: true, authoredUV: true, lod: 'long-xuyen-round-annex-lod' },
+  'long-xuyen-hoang-dieu-bridge': { x: 23, z: 188.45, trueScale: true, authoredUV: true, lod: 'long-xuyen-hoang-dieu-bridge-lod' },
+  'long-xuyen-nguyen-hue-island': { x: 19, z: 30, trueScale: true, authoredUV: true, lod: 'long-xuyen-nguyen-hue-island-lod' },
+  'long-xuyen-coopmart': { x: 34.837, z: 44.066, trueScale: true, authoredUV: true, lod: 'long-xuyen-coopmart-lod' },
+  'long-xuyen-canal-courtyard': { x: 217.16, z: 175.70, trueScale: true, authoredUV: true, lod: 'long-xuyen-canal-courtyard-lod' },
 };
+const authoredMaps = id => id.startsWith('long-xuyen-cathedral') || LANDMARK[id.replace(/-lod$/, '')]?.authoredUV;
 const BOAT = {   // length, beam, speed (m/s)
   'open-cargo-boat': { L: 17, B: 4.8, v: 3.2 },
   'covered-cargo-boat': { L: 21, B: 5.6, v: 3.0 },
@@ -32,7 +39,7 @@ const BOAT = {   // length, beam, speed (m/s)
 
 // ---------------------------------------------------------------- model library
 class Library {
-  constructor() { this.loader = new GLTFLoader(); this.models = new Map(); this.cathedralMaps = new Map(); }
+  constructor() { this.loader = new GLTFLoader(); this.models = new Map(); this.surfaceMaps = new Map(); }
   /** Returns the model if loaded, else starts loading it and returns null. */
   get(id) {
     const m = this.models.get(id);
@@ -45,8 +52,8 @@ class Library {
       gltf.scene.traverse((o) => {
         if (!o.isMesh) return;
         const original = o.geometry.clone().applyMatrix4(o.matrixWorld);
-        // Cathedral GLBs have their own baked metric UVs; preserve them and embedded maps.
-        const g = id.startsWith('long-xuyen-cathedral') ? original : metricUVs(original);
+        // Authored landmarks have baked metric UVs; preserve them and embedded maps.
+        const g = authoredMaps(id) ? original : metricUVs(original);
         if (g !== original) original.dispose();
         for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv') g.deleteAttribute(k);
         if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
@@ -57,11 +64,11 @@ class Library {
       });
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
         mat.side = THREE.FrontSide;
-        // Full and far cathedral exports use identical baked maps: upload each only once.
-        if (id.startsWith('long-xuyen-cathedral') && mat.map) {
-          const shared = this.cathedralMaps.get(mat.name);
+        // Full and far authored exports use identical baked maps: upload each only once.
+        if (authoredMaps(id) && mat.map) {
+          const shared = this.surfaceMaps.get(mat.name);
           if (shared) { const redundant = mat.map; mat.map = shared; redundant.dispose(); }
-          else this.cathedralMaps.set(mat.name, mat.map);
+          else this.surfaceMaps.set(mat.name, mat.map);
         }
         const geometry = mergeGeometries(geos); geos.forEach(g => g.dispose());
         return { geometry, material: modelPhotoMaterial(mat, id) };
@@ -72,9 +79,9 @@ class Library {
   }
 }
 
-/** One model drawn many times: an InstancedMesh per material. */
+/** One model drawn many times: an InstancedMesh per material. occlude: each copy may be hidden by occlusion culling. */
 class Instanced {
-  constructor(model, cap, parent) {
+  constructor(model, cap, parent, occlude = false) {
     this.meshes = model.parts.map(({ geometry, material }) => {
       const m = new THREE.InstancedMesh(geometry, material, cap);
       m.frustumCulled = false;
@@ -84,6 +91,12 @@ class Instanced {
       return m;
     });
     this.cap = cap;
+    if (occlude) {
+      this.occ = { version: 0, items: [] };
+      OCC_SOURCES.push(this.occ);
+      this.box = new THREE.Box3();
+      for (const m of this.meshes) { m.geometry.computeBoundingBox(); this.box.union(m.geometry.boundingBox); }
+    }
   }
   set(matrices) {
     const n = Math.min(matrices.length, this.cap);
@@ -92,6 +105,22 @@ class Instanced {
       m.count = n;
       m.instanceMatrix.needsUpdate = true;
     }
+    if (!this.occ) return;
+    const ver = ++this.occ.version, shown = () => { for (let o = this.meshes[0]; o; o = o.parent) if (!o.visible) return false; return true; };
+    const list = matrices.slice(0, n), off = list.map(() => false);
+    this.occ.items = list.map((mx, i) => ({
+      box: this.box.clone().applyMatrix4(mx).expandByScalar(1.5), shown,   // (padded: a box flush with a flat deck fails its own depth test)
+      setHidden: (h) => {
+        if (this.occ.version !== ver || off[i] === h) return;      // the copies have been re-placed since
+        off[i] = h;
+        const keep = list.filter((_, k) => !off[k]);               // occluded copies are not drawn at all
+        for (const m of this.meshes) {
+          keep.forEach((x, k) => m.setMatrixAt(k, x));
+          m.count = keep.length;
+          m.instanceMatrix.needsUpdate = true;
+        }
+      },
+    }));
   }
 }
 
@@ -131,7 +160,7 @@ export class PropsLayer {
     if (it) return it;
     const model = this.lib.get(id);
     if (!model) return null;
-    it = new Instanced(model, cap, BOAT[id] ? this.boatGroup : this.group);
+    it = new Instanced(model, cap, BOAT[id] ? this.boatGroup : this.group, !BOAT[id]);
     this.inst.set(id, it);
     return it;
   }
@@ -142,12 +171,17 @@ export class PropsLayer {
     for (const L of list) {
       const spec = LANDMARK[L.model];
       if (!spec) continue;
-      const x = L.x, z = -L.y, y = this.terrain.heightAt(L.x, L.y) * ex;
+      const x = L.x, z = -L.y;
+      // Bridge origin uses bank ground; its authored piers extend below ground into the water.
+      const samples = L.groundAt || [[L.x, L.y]];
+      const y = Math.max(...samples.map(([east, north]) => this.terrain.heightAt(east, north))) * ex;
       const sx = L.width / spec.x, sz = L.depth / spec.z, sy = spec.trueScale ? 1 : clamp(Math.sqrt(sx * sz) * 0.75, 0.9, 1.25);
       // the front faces `front`; the long side runs across it
       const along = L.front + Math.PI / 2;
       const hx = x + Math.cos(L.front) * (L.hideFront || 0), hz = z - Math.sin(L.front) * (L.hideFront || 0);
-      this.houses.hideInRect(hx, hz, -along, (L.hideWidth || L.width + 12) / 2, (L.hideDepth || L.depth + 12) / 2);
+      if (L.hideRects) {
+        for (const r of L.hideRects) this.houses.hideInRect(r.x, -r.y, -(r.front + Math.PI / 2), r.width / 2, r.depth / 2);
+      } else this.houses.hideInRect(hx, hz, -along, (L.hideWidth || L.width + 12) / 2, (L.hideDepth || L.depth + 12) / 2);
       this.landmarks.push({ id: L.model, x, z, matrix: placed(x, y, z, L.front, spec.trueScale ? 1 : sx, sy, spec.trueScale ? 1 : sz) });
     }
   }
@@ -257,7 +291,7 @@ export class PropsLayer {
       for (const [st, start, count] of T.ranges) {
         if (st === 1 || st === 6) continue;                              // blocks and halls keep their own look
         for (let i = start; i < start + count; i++) {
-          if (iC[i * 4 + 3] >= 2) continue;
+          if (iC[i * 4 + 3] === 2 || iC[i * 4 + 3] === 3) continue;     // (4: a building-kit house, may be replaced)
           const d = Math.hypot(iA[i * 4] - p.x, iA[i * 4 + 1] - p.y, iA[i * 4 + 2] - p.z);
           if (d > R) continue;
           const W = iB[i * 3], D = iB[i * 3 + 1], Hh = iB[i * 3 + 2], seed = iC[i * 4 + 2];

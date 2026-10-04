@@ -1,0 +1,900 @@
+{
+ "crs": "EPSG:32648",
+ "coordinates": "x east / y north relative to meta.centre_utm; world z=-y",
+ "status": "proposed; renderer hookup pending",
+ "source": "OSM banks/roads, photo-estimated plantings (ODbL geometry)",
+ "height_note": "height_m is tree height; sample ground with terrain.heightAt(x,y) * meta.vert_exag",
+ "trees": [
+  {
+   "lon": 105.4397366,
+   "lat": 10.3808875,
+   "x": 28953.08,
+   "y": -20894.31,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4398698,
+   "lat": 10.3809931,
+   "x": 28967.64,
+   "y": -20882.61,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.440003,
+   "lat": 10.3810987,
+   "x": 28982.2,
+   "y": -20870.92,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4401361,
+   "lat": 10.3812043,
+   "x": 28996.77,
+   "y": -20859.22,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4402692,
+   "lat": 10.38131,
+   "x": 29011.32,
+   "y": -20847.52,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4404023,
+   "lat": 10.3814156,
+   "x": 29025.88,
+   "y": -20835.81,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4405346,
+   "lat": 10.3815224,
+   "x": 29040.33,
+   "y": -20823.99,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4406665,
+   "lat": 10.3816295,
+   "x": 29054.76,
+   "y": -20812.12,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4407979,
+   "lat": 10.3817372,
+   "x": 29069.13,
+   "y": -20800.19,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4409292,
+   "lat": 10.3818451,
+   "x": 29083.49,
+   "y": -20788.25,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4410607,
+   "lat": 10.3819528,
+   "x": 29097.86,
+   "y": -20776.32,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4411927,
+   "lat": 10.3820597,
+   "x": 29112.3,
+   "y": -20764.48,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4413248,
+   "lat": 10.3821667,
+   "x": 29126.74,
+   "y": -20752.63,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4414569,
+   "lat": 10.3822736,
+   "x": 29141.18,
+   "y": -20740.78,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4415833,
+   "lat": 10.3823868,
+   "x": 29155.0,
+   "y": -20728.25,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4417154,
+   "lat": 10.3824934,
+   "x": 29169.44,
+   "y": -20716.45,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4418504,
+   "lat": 10.3825965,
+   "x": 29184.21,
+   "y": -20705.02,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4419835,
+   "lat": 10.3827018,
+   "x": 29198.77,
+   "y": -20693.36,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4421145,
+   "lat": 10.3828095,
+   "x": 29213.09,
+   "y": -20681.43,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4422472,
+   "lat": 10.3829156,
+   "x": 29227.6,
+   "y": -20669.68,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4423772,
+   "lat": 10.383025,
+   "x": 29241.81,
+   "y": -20657.57,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4425072,
+   "lat": 10.3831344,
+   "x": 29256.02,
+   "y": -20645.45,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4426372,
+   "lat": 10.3832438,
+   "x": 29270.23,
+   "y": -20633.34,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4427684,
+   "lat": 10.3833517,
+   "x": 29284.59,
+   "y": -20621.39,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4428983,
+   "lat": 10.3834612,
+   "x": 29298.79,
+   "y": -20609.26,
+   "species": "areca",
+   "height_m": 7,
+   "zone": "nguyen-hue-median"
+  },
+  {
+   "lon": 105.4404396,
+   "lat": 10.373586,
+   "x": 29031.15,
+   "y": -21701.53,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4406056,
+   "lat": 10.373754,
+   "x": 29049.3,
+   "y": -21682.92,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4407745,
+   "lat": 10.3739188,
+   "x": 29067.77,
+   "y": -21664.67,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4409446,
+   "lat": 10.3740829,
+   "x": 29086.36,
+   "y": -21646.51,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4411363,
+   "lat": 10.3742207,
+   "x": 29107.32,
+   "y": -21631.24,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4413346,
+   "lat": 10.3743492,
+   "x": 29129.01,
+   "y": -21617.0,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.441492,
+   "lat": 10.374523,
+   "x": 29146.22,
+   "y": -21597.76,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4416468,
+   "lat": 10.3747014,
+   "x": 29163.13,
+   "y": -21578.01,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.441741,
+   "lat": 10.3749129,
+   "x": 29173.41,
+   "y": -21554.61,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4418068,
+   "lat": 10.3751339,
+   "x": 29180.59,
+   "y": -21530.17,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4419825,
+   "lat": 10.3752921,
+   "x": 29199.79,
+   "y": -21512.65,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4421874,
+   "lat": 10.3754066,
+   "x": 29222.2,
+   "y": -21499.96,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4424211,
+   "lat": 10.375402,
+   "x": 29247.8,
+   "y": -21500.42,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4426387,
+   "lat": 10.3753091,
+   "x": 29271.62,
+   "y": -21510.66,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4428481,
+   "lat": 10.3751981,
+   "x": 29294.56,
+   "y": -21522.9,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4430763,
+   "lat": 10.3751335,
+   "x": 29319.56,
+   "y": -21530.01,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4433121,
+   "lat": 10.3751137,
+   "x": 29345.37,
+   "y": -21532.17,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4435413,
+   "lat": 10.3751476,
+   "x": 29370.46,
+   "y": -21528.39,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4436951,
+   "lat": 10.3753208,
+   "x": 29387.27,
+   "y": -21509.21,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.443811,
+   "lat": 10.375526,
+   "x": 29399.92,
+   "y": -21486.51,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4439059,
+   "lat": 10.3757414,
+   "x": 29410.28,
+   "y": -21462.67,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4440078,
+   "lat": 10.3759535,
+   "x": 29421.41,
+   "y": -21439.21,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4440474,
+   "lat": 10.3761836,
+   "x": 29425.7,
+   "y": -21413.76,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4442224,
+   "lat": 10.3763401,
+   "x": 29444.83,
+   "y": -21396.43,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4444431,
+   "lat": 10.3764136,
+   "x": 29468.98,
+   "y": -21388.27,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.444661,
+   "lat": 10.3763275,
+   "x": 29492.85,
+   "y": -21397.75,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4448481,
+   "lat": 10.3764201,
+   "x": 29513.32,
+   "y": -21387.49,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4449605,
+   "lat": 10.3766234,
+   "x": 29525.6,
+   "y": -21365.0,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4449988,
+   "lat": 10.3768554,
+   "x": 29529.75,
+   "y": -21339.33,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4450927,
+   "lat": 10.3770703,
+   "x": 29539.99,
+   "y": -21315.56,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4452896,
+   "lat": 10.3771936,
+   "x": 29561.53,
+   "y": -21301.89,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4455221,
+   "lat": 10.3772096,
+   "x": 29586.98,
+   "y": -21300.09,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.445741,
+   "lat": 10.3771208,
+   "x": 29610.96,
+   "y": -21309.88,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4459095,
+   "lat": 10.3769623,
+   "x": 29629.42,
+   "y": -21327.37,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4460851,
+   "lat": 10.3768047,
+   "x": 29648.68,
+   "y": -21344.77,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4458494,
+   "lat": 10.3766044,
+   "x": 29622.91,
+   "y": -21366.96,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4456688,
+   "lat": 10.3767567,
+   "x": 29603.1,
+   "y": -21350.14,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4454671,
+   "lat": 10.3768688,
+   "x": 29581.01,
+   "y": -21337.78,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4453189,
+   "lat": 10.3767222,
+   "x": 29564.81,
+   "y": -21354.01,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.445253,
+   "lat": 10.3764965,
+   "x": 29557.63,
+   "y": -21378.98,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4451696,
+   "lat": 10.3762808,
+   "x": 29548.53,
+   "y": -21402.84,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4449982,
+   "lat": 10.3761239,
+   "x": 29529.79,
+   "y": -21420.21,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.444775,
+   "lat": 10.3760572,
+   "x": 29505.38,
+   "y": -21427.63,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4445424,
+   "lat": 10.376104,
+   "x": 29479.9,
+   "y": -21422.49,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4443278,
+   "lat": 10.3760724,
+   "x": 29456.41,
+   "y": -21426.01,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4442339,
+   "lat": 10.3758665,
+   "x": 29446.17,
+   "y": -21448.79,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4441463,
+   "lat": 10.3756485,
+   "x": 29436.62,
+   "y": -21472.92,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.444059,
+   "lat": 10.3754313,
+   "x": 29427.09,
+   "y": -21496.93,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4439289,
+   "lat": 10.3752346,
+   "x": 29412.88,
+   "y": -21518.71,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4437999,
+   "lat": 10.3750372,
+   "x": 29398.78,
+   "y": -21540.55,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.443629,
+   "lat": 10.3748818,
+   "x": 29380.11,
+   "y": -21557.76,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4434008,
+   "lat": 10.3748199,
+   "x": 29355.13,
+   "y": -21564.64,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4431634,
+   "lat": 10.3748207,
+   "x": 29329.14,
+   "y": -21564.59,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4429288,
+   "lat": 10.374834,
+   "x": 29303.45,
+   "y": -21563.16,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4427199,
+   "lat": 10.3749413,
+   "x": 29280.57,
+   "y": -21551.32,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4425212,
+   "lat": 10.3750699,
+   "x": 29258.8,
+   "y": -21537.13,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4423041,
+   "lat": 10.3751069,
+   "x": 29235.03,
+   "y": -21533.07,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4421074,
+   "lat": 10.3749766,
+   "x": 29213.52,
+   "y": -21547.51,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4419872,
+   "lat": 10.3747819,
+   "x": 29200.39,
+   "y": -21569.06,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4418838,
+   "lat": 10.3745713,
+   "x": 29189.09,
+   "y": -21592.36,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4417431,
+   "lat": 10.3743821,
+   "x": 29173.73,
+   "y": -21613.3,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4415849,
+   "lat": 10.374207,
+   "x": 29156.43,
+   "y": -21632.68,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4413906,
+   "lat": 10.3740719,
+   "x": 29135.18,
+   "y": -21647.65,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4411991,
+   "lat": 10.3739332,
+   "x": 29114.24,
+   "y": -21663.02,
+   "species": "shade",
+   "height_m": 8,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4410177,
+   "lat": 10.3737814,
+   "x": 29094.41,
+   "y": -21679.83,
+   "species": "shade",
+   "height_m": 9,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4408439,
+   "lat": 10.3736217,
+   "x": 29075.4,
+   "y": -21697.51,
+   "species": "shade",
+   "height_m": 7,
+   "zone": "canal-bank"
+  },
+  {
+   "lon": 105.4393978,
+   "lat": 10.3817082,
+   "x": 28915.87,
+   "y": -20803.62,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4394635,
+   "lat": 10.3816213,
+   "x": 28923.07,
+   "y": -20813.21,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4395292,
+   "lat": 10.3815344,
+   "x": 28930.27,
+   "y": -20822.81,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4395948,
+   "lat": 10.3814475,
+   "x": 28937.48,
+   "y": -20832.41,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4396904,
+   "lat": 10.3819249,
+   "x": 28947.87,
+   "y": -20779.61,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4397561,
+   "lat": 10.381838,
+   "x": 28955.07,
+   "y": -20789.21,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4398218,
+   "lat": 10.3817511,
+   "x": 28962.27,
+   "y": -20798.81,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  },
+  {
+   "lon": 105.4398874,
+   "lat": 10.3816642,
+   "x": 28969.47,
+   "y": -20808.41,
+   "species": "areca",
+   "height_m": 8,
+   "zone": "cathedral-edge"
+  }
+ ]
+}

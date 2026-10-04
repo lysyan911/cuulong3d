@@ -306,6 +306,9 @@ function treeMaterial(atlas, lod, uniforms) {
 }
 
 // ---------------------------------------------------------------- layer
+const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 4, bamboo: 12.5, thotnot: 19, tram: 14,
+                       nipa: 5.5, forest: 12, shrub: 2.4, boulder: 1.8 };   // m at scale 1 (as the mid sprites)
+
 export class TreeLayer {
   /** terrain: for ground heights; nearR: full trees within (m); farR: sprite trees within (m). */
   constructor(meta, terrain, shared, { dataUrl = 'data/', nearR = 1000, farR = 6000 } = {}) {
@@ -423,6 +426,37 @@ export class TreeLayer {
     m.raycast = () => {};
     m.frustumCulled = true;
     return m;
+  }
+
+  /**
+   * Hand-placed trees (e.g. web/data/long-xuyen-greenery.json: [{x, y (north), species, height_m}]): one near and one
+   * mid mesh per list, same models and materials as the mapped trees. Trees on water are skipped.
+   */
+  placed(list) {
+    const ex = this.meta.vert_exag, water = this.terrain.surface, recs = [];
+    let k = 0;
+    for (const t of list) {
+      const sp = SPECIES.indexOf(t.species);
+      if (sp < 0 || (water && water.waterAt(t.x, t.y) > 0.5)) continue;
+      const y = this.terrain.heightAt(t.x, t.y) * ex - 0.2, sc = (t.height_m || MODEL_HEIGHT[t.species]) / MODEL_HEIGHT[t.species];
+      recs.push([t.x, y, -t.y, (k * 2.399) % 6.283, sc, 0.9 + (k % 7) * 0.03, (k * 0.618) % 1, sp]);
+      k++;
+    }
+    const g = new THREE.Group();
+    g.name = 'placed-trees';
+    if (!recs.length) return g;
+    const cx = recs.reduce((a, r) => a + r[0], 0) / recs.length, cz = recs.reduce((a, r) => a + r[2], 0) / recs.length;
+    const R = Math.max(...recs.map((r) => Math.hypot(r[0] - cx, r[2] - cz))) + 30;
+    const sphere = new THREE.Sphere(new THREE.Vector3(cx, recs[0][1], cz), R);
+    const T = { cx, ground: recs[0][1], cz };
+    SPECIES.forEach((_, sp) => {
+      const r = recs.filter((q) => q[7] === sp);
+      if (r.length) g.add(this.mesh(this.models[sp], r, this.matNear, T, sphere));
+    });
+    const mid = this.mesh(this.mid, recs, this.matMid, T, sphere);
+    mid.userData.noShadow = true;
+    g.add(mid);
+    return g;
   }
 
   dispose(obj) {

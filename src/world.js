@@ -21,17 +21,21 @@ export class GroupLayer {
     this.group.name = name;
     this.cells = [];
   }
-  addCell(gx, gy, obj, maxDistance) {
-    const [cx, cy] = groupCentre(this.meta, gx, gy);
-    this.cells.push({ obj, centre: new THREE.Vector3(cx, 0, -cy), maxDistance });
+  /** centre: optional [x, north] and half size of a smaller cell (default: the group's square). */
+  addCell(gx, gy, obj, maxDistance, centre = null, half = null) {
+    const [cx, cy] = centre || groupCentre(this.meta, gx, gy);
+    this.cells.push({ obj, centre: new THREE.Vector3(cx, 0, -cy), maxDistance, half });
     this.group.add(obj);
   }
   update(camera) {
-    const half = (this.meta.group * this.meta.grid_res_m) / 2;
+    const gHalf = (this.meta.group * this.meta.grid_res_m) / 2, p = camera.position;
+    const inner = this.ribbon ? this.ribbon.value * 0.7 : 0;
     for (const c of this.cells) {
-      const dx = Math.max(Math.abs(camera.position.x - c.centre.x) - half, 0);
-      const dz = Math.max(Math.abs(camera.position.z - c.centre.z) - half, 0);
-      c.obj.visible = Math.hypot(dx, dz, camera.position.y) < c.maxDistance;
+      const half = c.half || gHalf, ax = Math.abs(p.x - c.centre.x), az = Math.abs(p.z - c.centre.z);
+      const dx = Math.max(ax - half, 0), dz = Math.max(az - half, 0);
+      c.obj.visible = Math.hypot(dx, dz, p.y) < c.maxDistance;
+      // a cell entirely inside the 3D road zone: its lines are faded out there anyway, don't draw them
+      if (inner && p.y < inner && Math.hypot(ax + half, az + half) < inner) c.obj.visible = false;
     }
   }
 }
@@ -100,30 +104,47 @@ export class RoadLayer extends GroupLayer {
       if (!n) continue;
       const a = new Int16Array(buf, o, n * 6);
       o += n * 12;
-      const pos = new Float32Array(n * 6);
       const lift = 5 + (nc - k) * 0.6;                  // major roads sit on top of minor ones
-      for (let i = 0; i < n * 6; i += 3) {
-        pos[i] = cx + a[i];
-        pos[i + 1] = (a[i + 2] / 10) * ex + lift;
-        pos[i + 2] = -(cy + a[i + 1]);
+      // one line object per terrain tile (3.84 km) so near / out-of-view tiles can be skipped
+      const NT = 7, span = this.meta.group * this.meta.grid_res_m, tileM = span / NT;
+      const buckets = new Map();
+      for (let i = 0; i < n * 6; i += 6) {
+        const mx = (a[i] + a[i + 3]) / 2, my = (a[i + 1] + a[i + 4]) / 2;
+        const tx = Math.min(NT - 1, Math.max(0, Math.floor((mx + span / 2) / tileM)));
+        const ty = Math.min(NT - 1, Math.max(0, Math.floor((span / 2 - my) / tileM)));
+        const key = ty * NT + tx;
+        if (!buckets.has(key)) buckets.set(key, []);
+        buckets.get(key).push(i);
       }
-      const line = new LineSegments2(new LineSegmentsGeometry().setPositions(pos), this.materials[k]);
-      if (ROAD_STYLE[this.classes[k]].dashed) line.computeLineDistances();
-      line.renderOrder = 10 + (nc - k);
-      this.addCell(gx, gy, line, ROAD_STYLE[this.classes[k]].maxDist * this.distScale);
+      for (const [key, list] of buckets) {
+        const pos = new Float32Array(list.length * 6);
+        list.forEach((i, j) => {
+          for (let e = 0; e < 6; e += 3) {
+            pos[j * 6 + e] = cx + a[i + e];
+            pos[j * 6 + e + 1] = (a[i + e + 2] / 10) * ex + lift;
+            pos[j * 6 + e + 2] = -(cy + a[i + e + 1]);
+          }
+        });
+        const line = new LineSegments2(new LineSegmentsGeometry().setPositions(pos), this.materials[k]);
+        if (ROAD_STYLE[this.classes[k]].dashed) line.computeLineDistances();
+        line.renderOrder = 10 + (nc - k);
+        const tx = key % NT, ty = Math.floor(key / NT);
+        this.addCell(gx, gy, line, ROAD_STYLE[this.classes[k]].maxDist * this.distScale,
+                     [cx - span / 2 + (tx + 0.5) * tileM, cy + span / 2 - (ty + 0.5) * tileM], tileM / 2);
+      }
     }
   }
 }
 
 // ---------------------------------------------------------------- landmarks
 /** Places of worship: one InstancedMesh per kind; userData.items maps instanceId -> landmark record. */
-export function buildLandmarks(list, meta, heroes = []) {
+export function buildLandmarks(list, meta, heroes = [], excluded = []) {
   const models = landmarkModels(meta.building_exag);
   const group = new THREE.Group();
   group.name = 'landmarks';
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.8 });
   const byKind = {};
-  const replaced = new Set(heroes.flatMap(L => L.replaces || []));
+  const replaced = new Set([...excluded, ...heroes.flatMap(L => L.replaces || [])]);
   for (const L of list) if (!replaced.has(L.name)) (byKind[L.kind] ||= []).push(L);
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), y = new THREE.Vector3(0, 1, 0);
   for (const [kind, items] of Object.entries(byKind)) {

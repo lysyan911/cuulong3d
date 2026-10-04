@@ -11,8 +11,8 @@ export const GLOBALS = {
   uCloud: { value: new THREE.Vector4(0.36, 3000, 0.55, 0) },   // coverage, layer height (m), shadow strength
   uSunDir: { value: new THREE.Vector3(-0.52, 0.67, 0.52).normalize() },
   uCloudTime: { value: 0 },
-  uHorizon: { value: new THREE.Color(0.70, 0.77, 0.84) },   // humid, hazy horizon
-  uZenith: { value: new THREE.Color(0.14, 0.28, 0.56) },
+  uHorizon: { value: new THREE.Color(0.66, 0.75, 0.86) },   // humid horizon
+  uZenith: { value: new THREE.Color(0.10, 0.25, 0.58) },
   uRefl: { value: new THREE.Vector4(0, 0, 4000, 0) },
   uReflMap: { value: null },
   uReflMatrix: { value: new THREE.Matrix4() },
