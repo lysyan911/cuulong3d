@@ -30,7 +30,8 @@ const T = {
              villages: 'Tên làng, ấp', roads: 'Đường sá', buildings: 'Nhà cửa', boats: 'Ghe thuyền', trees: 'Cây cối', landmarks: 'Chùa, nhà thờ…',
              boundaries: 'Ranh giới', paddies: 'Ruộng lúa', trasu: 'Rừng ngập nước Trà Sư' },
     view: { overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két', paddies: 'Ruộng lúa – Tri Tôn',
-            trasu: 'Trà Sư – toàn cảnh', trasuCanal: 'Trà Sư – dưới tán tràm', trasuBirds: 'Trà Sư – chim nước', river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
+            trasu: 'Trà Sư – toàn cảnh', trasuCanal: 'Trà Sư – dưới tán tràm', trasuBirds: 'Trà Sư – chim nước', river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
+            lxCathedral: 'Nhà thờ Long Xuyên', agu: 'Đại học An Giang' },
   },
   en: {
     title: 'Cửu Long Project', subtitle: '3D map of Bảy Núi – An Giang (pre-2025)',
@@ -55,7 +56,8 @@ const T = {
              villages: 'Village names', roads: 'Roads & paths', buildings: 'Buildings', trees: 'Trees',
              landmarks: 'Pagodas, churches…', boundaries: 'Boundaries', boats: 'Boats', paddies: 'Rice fields', trasu: 'Trà Sư flooded forest' },
     view: { overview: 'Whole province', baynui: 'Seven Mountains', sites: 'Story places', tapa: 'Tà Pạ – Tri Tôn',
-            nuiket: 'From Núi Két summit', paddies: 'Tri Tôn rice fields', trasu: 'Trà Sư – aerial', trasuCanal: 'Trà Sư – forest canal', trasuBirds: 'Trà Sư – waterbirds', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc' },
+            nuiket: 'From Núi Két summit', paddies: 'Tri Tôn rice fields', trasu: 'Trà Sư – aerial', trasuCanal: 'Trà Sư – forest canal', trasuBirds: 'Trà Sư – waterbirds', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
+            lxCathedral: 'Long Xuyên Cathedral', agu: 'An Giang University' },
   },
 };
 

@@ -26,7 +26,7 @@ import { SunShadows } from './render/shadows.js';
 import { RenderPipeline } from './render/pipeline.js';
 import { WaterReflection } from './render/reflection.js';
 import { loadGround } from './render/ground.js';
-import { initAnalytics, track } from './analytics.js';
+import { initAnalytics, track, trackOnce, trackReady, trackFps } from './analytics.js';
 
 const DATA = 'data/';
 const MOBILE = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
@@ -150,7 +150,9 @@ async function main() {
   }) : null;
   if (imagery) ui.credits = [...meta.credits, `Close-up imagery (streamed live): ${cfg.credit || 'Esri World Imagery — Esri, Maxar, Earthstar Geographics'}`];
   // anonymous visit statistics on the public site only (see analytics.js)
-  if (initAnalytics(cfg.goatcounter)) ui.credits = [...ui.credits, 'Anonymous visit statistics: GoatCounter (no cookies, no personal data)'];
+  if (initAnalytics(cfg.goatcounter)) ui.credits = [...ui.credits, 'Anonymous visit statistics: GoatCounter (no cookies, no personal '
+    + 'data). To count return visits, this browser only remembers how many times it opened the map and when (localStorage); nothing '
+    + 'identifying is stored or sent.'];
   const surface = meta.surface ? await SurfaceMap.load(meta, DATA) : null;
   const wetland = await WetlandMap.load(DATA, meta.vert_exag);
   if (wetland) ui.credits = [...ui.credits, wetland.data.credit];
@@ -234,6 +236,10 @@ async function main() {
     chaudoc: near(lbl['Châu Đốc'].x, lbl['Châu Đốc'].y, lbl['Châu Đốc'].z, 1500, 650, -1700),
     longxuyen: near(lbl['Long Xuyên'].x, lbl['Long Xuyên'].y, lbl['Long Xuyên'].z, 1700, 750, -1900),
   };
+  // landmarks of Long Xuyên (positions as web/data/props.json: scene x, scene z)
+  const at = (x, z, dx, dh, dz, lift = 8) => { const g = terrain.heightAt(x, -z) * ex; return { target: V(x, g + lift, z), pos: V(x + dx, g + dh, z + dz) }; };
+  views.lxCathedral = at(28946, 20810, 70, 60, 95, 14);
+  views.agu = at(28032, 21988, 420, 260, 380, 10);
   // hand-placed trees (Codex: Long Xuyên medians, canal banks and courtyards)
   const placedTrees = new THREE.Group();
   scene.add(placedTrees);
@@ -310,6 +316,35 @@ async function main() {
   ui.quality = quality;
   ui.render();
   ui.loading('ready', 1);
+  const readyAt = performance.now();
+  trackReady(MOBILE, readyAt);
+  renderer.domElement.addEventListener('webglcontextlost', () => trackOnce('error-webgl'));
+  // analytics: parts of the province looked at closely (towns, cities, peaks, Trà Sư), street level, smoothness
+  const slug = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').toLowerCase()
+    .replace(/ \d+ m$/, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const areas = labels.filter((l) => ['city', 'town', 'peak'].includes(l.kind))
+    .map((l) => ({ id: slug(l.text), x: l.x, z: -l.y, r: l.kind === 'city' ? 3500 : l.kind === 'peak' ? 1500 : 1800, dwell: 0 }));
+  if (trasu) areas.push({ id: 'tra-su', x: trasu.group.position.x, z: trasu.group.position.z, r: 2500, dwell: 0 });
+  let visitClock = performance.now(), streetDwell = 0, fpsFrames = 0, fpsStart = 0;
+  const watchVisit = (now) => {
+    const dt = Math.min((now - visitClock) / 1000, 0.5);
+    visitClock = now;
+    const t = controls.target, close = camera.position.distanceTo(t) < 3000;
+    for (const a of areas) {
+      if (close && Math.hypot(t.x - a.x, t.z - a.z) < a.r) { a.dwell += dt; if (a.dwell > 8) trackOnce(`area-${a.id}`); }
+    }
+    const above = camera.position.y - terrain.heightAt(camera.position.x, -camera.position.z) * ex;
+    streetDwell = above < 25 ? streetDwell + dt : 0;
+    if (streetDwell > 5) trackOnce('explore-street');
+    // smoothness: average over 30 s of continuous use, starting 20 s after the map is ready (once per visit);
+    // a pause (hidden tab, a long stall) starts the measurement again
+    if (fpsFrames >= 0 && dt >= 0.5) { fpsStart = 0; fpsFrames = 0; }
+    if (!fpsStart && fpsFrames >= 0 && now > readyAt + 20000) fpsStart = now;
+    if (fpsStart && fpsFrames >= 0) {
+      fpsFrames++;
+      if (now - fpsStart > 30000) { trackFps(fpsFrames * 1000 / (now - fpsStart), pipeline.mode); fpsFrames = -1; }
+    }
+  };
   if (!MOBILE) loadGround().catch((e) => console.warn('Ground photos unavailable:', e.message));
   // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
   const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
@@ -387,6 +422,7 @@ async function main() {
     pipeline.render();
     occlusion.query();
     labelRenderer.render(scene, camera);
+    watchVisit(now);
     if (stats && ++statFrames && now - statStart >= 2000) {
       const fps = statFrames * 1000 / (now - statStart);
       stats.textContent = `${fps.toFixed(1)} fps · ${sceneTriangles.toLocaleString()} triangles · ${renderer.info.memory.textures} textures · ${(photoInventory.mipBytes / 1048576).toFixed(1)} MiB photo · ${buildings.rejectedWater} water conflicts hidden`;
