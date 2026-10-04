@@ -1,15 +1,37 @@
 // Shared water, shore and rice cover. North-positive map coordinates, heights in scene metres.
 // CPU masks are 20 m, aligned with the satellite group edges; no imagery key is involved.
 const clamp = (x,a,b) => Math.min(Math.max(x,a),b);
-export const FIELD = { width:84, depth:128, angle:.18, bundWidth:1.4, bundHeight:.45 };
-
-export function fieldPoint(u,v) {
+// Rice field layout, shared with the terrain shader (shaders.js, same formulas): canal blocks of 760 x 1180 m in a
+// frame turned by `angle` and gently warped (bunds are not ruler-straight); each block is cut into long strips
+// 26-60 m wide, and the strips into 1-3 fields. Field planting stages are chosen in the shader.
+export const FIELD = { angle:.18, block:[760,1180], bundHeight:.45, dykeHeight:.8 };
+const f32=Math.fround, fr=(x)=>f32(x-Math.floor(x));
+/** The terrain shader's hash12, in float32 so both pick the same layouts. */
+export function hash12(x,y) {
+  let a=fr(f32(x*0.1031)),b=fr(f32(y*0.1031)),c=a;
+  const d=f32(f32(f32(a*f32(b+33.33))+f32(b*f32(c+33.33)))+f32(c*f32(a+33.33)));
+  a=f32(a+d);b=f32(b+d);c=f32(c+d);
+  return fr(f32(f32(a+b)*c));
+}
+const warpU=(v)=>22*Math.sin(v/410+1.3)+9*Math.sin(v/157), warpV=(u)=>18*Math.sin(u/530+.4)+7*Math.sin(u/190);
+/** World (east, north) -> warped field frame. */
+export function fieldWarped(x,y) {
+  const c=Math.cos(FIELD.angle),s=Math.sin(FIELD.angle),u=x*c+y*s,v=-x*s+y*c;
+  return [u+warpU(v),v+warpV(u)];
+}
+/** Warped field frame -> world (east, north). */
+export function fieldWorld(uw,vw) {
+  let u=uw,v=vw;
+  for(let i=0;i<5;i++){u=uw-warpU(v);v=vw-warpV(u);}
   const c=Math.cos(FIELD.angle),s=Math.sin(FIELD.angle);
   return [u*c-v*s,u*s+v*c];
 }
-export function fieldCoords(x,y) {
-  const c=Math.cos(FIELD.angle),s=Math.sin(FIELD.angle);
-  return [x*c+y*s,-x*s+y*c];
+/** Strips and fields of canal block (I, J): cols = strips cut across u; n strips of sw m; parts fields of pl m. */
+export function blockLayout(I,J) {
+  const [BX,BY]=FIELD.block, h1=hash12(I,J), h2=hash12(I+17,J-5), h3=hash12(I-9,J+31);
+  const cols=h1<.5, A=cols?BX:BY, B=cols?BY:BX;
+  const n=Math.max(1,Math.floor(A/(26+34*h2)+.5)), parts=1+Math.floor(h3*3);
+  return {cols,A,B,n,sw:A/n,parts,pl:B/parts};
 }
 
 async function inflate(url) {

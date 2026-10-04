@@ -6,6 +6,8 @@
 //                  rural concrete roads in slabs with joints; dirt tracks with wheel ruts; wooden footbridges
 //   bridges        arched decks over canals (flat-topped for long spans), railings, pier walls down to the water
 //   junctions      town junctions on main roads get zebra crossings and stop lines (traffic lights: streets.js)
+//   dual roads     two one-way carriageways side by side (scripts/roads.py: median) share a kerbed grass median, open at
+//                  junctions; each carriageway draws its half (on its left) and has a sidewalk on its right only
 // Ribbons are built per 3.84 km terrain tile near the camera (scripts/roads.py writes the polylines); beyond ~4 km
 // the hybrid-map lines (world.js RoadLayer) fade back in. Town streets also get their street life (streets.js).
 import * as THREE from 'three';
@@ -13,8 +15,9 @@ import { groupCentre } from './world.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const ASPHALT = 0, WOOD = 3;          // surfaces: 0 asphalt, 1 concrete, 2 dirt, 3 wood
-const BRIDGE = 1, TOWN = 2, DYKE = 4;
-const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6, mark: 7 };
+const BRIDGE = 1, TOWN = 2, DYKE = 4, ONEWAY = 8, PALMS = 16;
+const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6, mark: 7, median: 8 };
+const MEDIAN_H = 0.22;                 // median kerb height above the road
 const KERB = 0.18;                     // town sidewalks stand this much above the street
 
 /** Embankment height (m) above the fields by class (0 motorway .. 8 path) and flags. */
@@ -111,6 +114,9 @@ const FRAG_COLOR = /* glsl */`
     if (m < 0.45) discard;
     col = sRGBr(vec3(0.82, 0.82, 0.8)) * (0.88 + 0.12 * n2);
     rough = 0.6;
+  } else if (part == 8) {                                                  // median: mown grass, concrete edge
+    col = mix(sRGBr(vec3(0.36, 0.46, 0.2)), sRGBr(vec3(0.3, 0.4, 0.16)), n1) * (0.82 + 0.25 * n2);
+    col = mix(col, sRGBr(vec3(0.62, 0.61, 0.57)) * (0.85 + 0.15 * n2), 1.0 - smoothstep(hw + 0.38, hw + 0.48, abs(ac)));
   } else if (part == 2) {                                                  // grassy embankment
     col = sRGBr(vec3(0.3, 0.4, 0.17)) * (0.72 + 0.35 * n1 + 0.1 * n2);
   } else if (part == 3) {                                                  // railing
@@ -145,8 +151,9 @@ function roadMaterial(uniforms) {
 
 export class Road3DLayer {
   /** terrain: ground heights; farR: ribbons within this distance (m); streets: optional StreetFurniture. */
-  constructor(meta, terrain, { farR = 4000, streets = null } = {}) {
+  constructor(meta, terrain, { farR = 4000, streets = null, buildings = null } = {}) {
     this.streets = streets;
+    this.buildings = buildings;      // houses standing in a median are hidden
     this.meta = meta;
     this.terrain = terrain;
     this.farR = farR;
@@ -167,13 +174,13 @@ export class Road3DLayer {
     let o = 8 + NT * NT * 4;
     const npts = new Uint16Array(buf, o, n); o += n * 2;
     const u8 = () => { const a = new Uint8Array(buf, o, n); o += n; return a; };
-    const cls = u8(), width = u8(), surface = u8(), flags = u8(), lanes = u8();
+    const cls = u8(), width = u8(), surface = u8(), flags = u8(), lanes = u8(), median = u8(), sidewalk = u8();
     if (o % 2) o++;
     const xy = new Int16Array(buf, o, nPts * 2);
     const starts = new Uint32Array(n);
     for (let i = 1; i < n; i++) starts[i] = starts[i - 1] + npts[i - 1];
     const [cx, cy] = groupCentre(this.meta, gx, gy);
-    const data = { cx, cy, npts, starts, cls, width, surface, flags, lanes, xy };
+    const data = { cx, cy, npts, starts, cls, width, surface, flags, lanes, median, sidewalk, xy };
     let first = 0;
     for (let t = 0; t < NT * NT; t++) {
       const count = tileCounts[t];
@@ -250,11 +257,13 @@ export class Road3DLayer {
       }
       const e = bridge ? 0 : embankment(cl, fl);
       const street = town && !bridge;
-      const sh = bridge ? 0.25 : street ? (cl <= 3 ? 3.5 : cl <= 5 ? 2.6 : cl <= 6 ? 1.3 : 0.3) : cl <= 4 ? 1.0 : 0.4;
+      const shKnown = D.sidewalk[c] / 10;                // (corrected sidewalk width, scripts/overrides/roads.csv)
+      const sh = bridge ? 0.25 : street ? (shKnown || (cl <= 3 ? 3.5 : cl <= 5 ? 2.6 : cl <= 6 ? 1.3 : 0.3)) : cl <= 4 ? 1.0 : 0.4;
       const run = bridge ? 0 : Math.max(e * 1.7, 0.3);
-      const offs = [-(hw + sh + run), -(hw + sh), -hw, hw, hw + sh, hw + sh + run];
+      const med = bridge ? 0 : D.median[c] / 10, dual = med > 0.15;     // one carriageway of a dual carriageway
+      const offs = [-(hw + sh + run), -(hw + sh), -hw, hw, dual ? hw + med : hw + sh, hw + sh + run];
       const rise = [0, e, e, e, e, 0];
-      const parts = [PART.slope, town ? PART.walk : PART.shoulder, PART.road, town ? PART.walk : PART.shoulder, PART.slope];
+      const parts = [PART.slope, town ? PART.walk : PART.shoulder, PART.road, dual ? PART.road : town ? PART.walk : PART.shoulder, PART.slope];
       let prev = null;
       for (let i = 0; i < np; i++) {
         const [x, y] = P[i], [nx, ny] = N[i];
@@ -262,18 +271,20 @@ export class Road3DLayer {
         const row = [];
         for (let k = 0; k < 5; k++) {                // 5 strips, own vertices each so every part keeps its colour
           if (bridge && (k === 0 || k === 4)) continue;
+          if (dual && k === 4) continue;             // (the median is drawn below)
           for (const j of [k, k + 1]) {
             // town: street just above the ground, sidewalks a kerb higher, outer edge back down to the ground
-            const yy = bridge ? yTop : !street ? yTop + rise[j] : k === 2 ? yTop + 0.06 : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
+            const yy = bridge ? yTop : !street ? yTop + rise[j] : k === 2 || (dual && k === 3) ? yTop + 0.06 : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
             row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, lanes, parts[k]));
           }
         }
         if (prev) for (let k = 0; k < row.length; k += 2) strip([prev[k], prev[k + 1]], [row[k], row[k + 1]]);
         prev = row;
       }
+      const jS = [];
       if (street) {
         // kerb faces between the street and the sidewalks
-        for (const sd of [-1, 1]) {
+        for (const sd of dual ? [-1] : [-1, 1]) {
           let pr = null;
           for (let i = 0; i < np; i++) {
             const [x, y] = P[i], [nx, ny] = N[i], o = sd * hw;
@@ -284,7 +295,6 @@ export class Road3DLayer {
           }
         }
         // junctions: crossings on the arms of main-road junctions (just beyond the side road), lights where main roads cross
-        const jS = [];
         for (let i = 0; i < np; i++) {
           const jn = J.get(ptKey(D, s0 + i));
           if (!jn) continue;
@@ -316,10 +326,63 @@ export class Road3DLayer {
             }
           }
         }
-        townRoads.push({ P, S, N, hw, sh, cl, surf, J: jS, y: ground.map((g) => g + 0.06 + KERB), ry: ground.map((g) => g + 0.06) });
       }
+      // median of a dual carriageway: kerb and grass from the road edge to the middle, open where side roads join
+      const medInfo = dual ? { med, ranges: [], noses: [], owner: false } : null;
+      if (dual) {
+        const base = street ? 0.06 : e, breaks = [];
+        for (let i = 0; i < np; i++) {
+          const jn = J.get(ptKey(D, s0 + i));
+          if (!jn) continue;
+          let oHw = 0;
+          for (const o of new Set(jn.roads)) if (o !== c) oHw = Math.max(oHw, D.width[o] / 8);
+          if (oHw) breaks.push([S[i] - oHw - 2.5, S[i] + oHw + 2.5]);
+        }
+        breaks.sort((a, b) => a[0] - b[0]);
+        let from = 0;
+        for (const [b0, b1] of [...breaks, [L, L]]) {
+          if (b0 - from > 3) medInfo.ranges.push([from, Math.min(b0, L)]);
+          from = Math.max(from, b1);
+        }
+        const along = (sv) => {                                  // point, normal and road height at distance sv
+          let i = 1;
+          while (i < np - 1 && S[i] < sv) i++;
+          const t = Math.min(Math.max((sv - S[i - 1]) / Math.max(S[i] - S[i - 1], 1e-6), 0), 1);
+          const nx = N[i - 1][0] + (N[i][0] - N[i - 1][0]) * t, ny = N[i - 1][1] + (N[i][1] - N[i - 1][1]) * t;
+          return [P[i - 1][0] + (P[i][0] - P[i - 1][0]) * t, P[i - 1][1] + (P[i][1] - P[i - 1][1]) * t, nx, ny,
+                  ground[i - 1] + (ground[i] - ground[i - 1]) * t + base];
+        };
+        const a0 = hw + Math.min(0.3, med * 0.3), a1 = hw + med;
+        for (const [r0, r1] of medInfo.ranges) {
+          const ss = [r0, ...S.filter((v) => v > r0 + 0.5 && v < r1 - 0.5), r1];
+          let pr = null;
+          ss.forEach((sv, n) => {
+            const [x, y, nx, ny, g] = along(sv), at = (o, h, part) => vert(x + nx * o, g + h, y + ny * o, sv, o, hw, surf, 0, part);
+            const row = [at(a0, 0, PART.kerb), at(a0, MEDIAN_H, PART.kerb), at(a0, MEDIAN_H, PART.median), at(a1, MEDIAN_H, PART.median)];
+            if (pr) {
+              strip([pr[0], pr[1]], [row[0], row[1]]); strip([pr[2], pr[3]], [row[2], row[3]]);
+              if (this.buildings && med > 1.5) {                 // nothing is built in the median
+                const [px, py, pnx, pny] = along(ss[n - 1]), m = (a0 + a1) / 2;
+                const ax = x + nx * m, ay = y + ny * m, bx = px + pnx * m, by = py + pny * m;
+                this.buildings.hideInRect((ax + bx) / 2, -(ay + by) / 2, Math.atan2(-(ay - by), ax - bx), Math.hypot(ax - bx, ay - by) / 2, (a1 - a0) / 2);
+              }
+            }
+            if (n === 0 || n === ss.length - 1) {                // nose
+              const q = [at(a0, 0, PART.kerb), at(a1, 0, PART.kerb), at(a1, MEDIAN_H, PART.kerb), at(a0, MEDIAN_H, PART.kerb)];
+              idx.push(q[0], q[1], q[2], q[0], q[2], q[3]);
+              if (sv > 0.5 && sv < L - 0.5) medInfo.noses.push([sv, n === 0 ? 1 : -1]);
+            }
+            pr = row;
+          });
+        }
+        // of the two carriageways, one places the median's lamps and trees (the one heading east-ish)
+        const ddx = P[np - 1][0] - P[0][0];
+        medInfo.owner = ddx > 0 || (ddx === 0 && P[np - 1][1] > P[0][1]);
+      }
+      const way = { oneway: !!(fl & ONEWAY), median: medInfo, palms: !!(fl & PALMS) };
+      if (street) townRoads.push({ P, S, N, hw, sh, cl, surf, J: jS, y: ground.map((g) => g + 0.06 + KERB), ry: ground.map((g) => g + 0.06), ...way });
       // country roads: power lines run along most of them (on the shoulder), traffic on all but tracks and paths
-      if (!town && !bridge && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, surf, rural: true, noPoles: cl < 3, y: ground.map((g) => g + e) });
+      if (!town && !bridge && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, surf, rural: true, noPoles: cl < 3, y: ground.map((g) => g + e), ...way });
       if (bridge) {
         // railings both sides, pier walls every ~15 m
         for (const sd of [-1, 1]) {

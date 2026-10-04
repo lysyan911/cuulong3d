@@ -105,8 +105,10 @@ export class RoadLayer extends GroupLayer {
       const a = new Int16Array(buf, o, n * 6);
       o += n * 12;
       const lift = 5 + (nc - k) * 0.6;                  // major roads sit on top of minor ones
-      // one line object per terrain tile (3.84 km) so near / out-of-view tiles can be skipped
-      const NT = 7, span = this.meta.group * this.meta.grid_res_m, tileM = span / NT;
+      // minor roads: one line object per terrain tile (3.84 km) so near / out-of-view tiles can be skipped; major
+      // roads (seen from far away): one per group, or the draw calls add up
+      const minor = ROAD_STYLE[this.classes[k]].maxDist <= 22000;
+      const NT = minor ? 7 : 1, span = this.meta.group * this.meta.grid_res_m, tileM = span / NT;
       const buckets = new Map();
       for (let i = 0; i < n * 6; i += 6) {
         const mx = (a[i] + a[i + 3]) / 2, my = (a[i + 1] + a[i + 4]) / 2;

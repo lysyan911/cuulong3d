@@ -13,6 +13,7 @@ import { TreeLayer } from './trees.js';
 import { HouseLayer } from './houses.js';
 import { Road3DLayer } from './roads3d.js';
 import { StreetFurniture } from './streets.js';
+import { YardLayer } from './yards.js';
 import { BuildingKit } from './kit.js';
 import { OcclusionCuller } from './render/occlusion.js';
 import { PropsLayer } from './props.js';
@@ -186,9 +187,9 @@ async function main() {
   }).catch((e) => console.warn('Building kit unavailable', e));
   const roads = new RoadLayer(meta, QUALITY.roadScale, QUALITY.roadRibbon);
   const streets = new StreetFurniture(trees, { traffic: !MOBILE });   // poles, cables, lamps, trees, stalls, traffic
-  const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon, streets });
+  const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon, streets, buildings });
   roads.group.add(roads3d.group);          // the Roads layer switch covers both
-  const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150 });
+  const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150, trees });   // bunds, dykes, thốt nốt palms
   const trasu = wetland ? new TraSuLayer(wetland, terrain, shared, { mobile: MOBILE }) : null;
   scene.add(trees.group, buildings.group, roads.group, paddies.group, streets.group);
   if (trasu) scene.add(trasu.group);
@@ -206,6 +207,9 @@ async function main() {
   }));
 
   props.setLandmarks(heroData.heroes);
+  const yards = new YardLayer(meta, terrain, { dataUrl: DATA, mobile: MOBILE });
+  buildings.group.add(yards.group);           // follows the Buildings layer switch
+  yards.load().catch(e => console.warn('Yards unavailable:', e.message));
   Object.assign(layers, { sites: overlays.layers.sites, route: overlays.layers.route, rings: overlays.layers.rings,
                           labels: overlays.layers.labels, villages: overlays.layers.villages, roads: [roads.group, streets.group],
                           buildings: [buildings.group, props.group], boats: props.boatGroup, trees: trees.group, landmarks: lm,
@@ -310,7 +314,7 @@ async function main() {
   // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
   const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
     .map((n) => scene.getObjectByName(n)).filter(Boolean)];
-  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
+  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, yards, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
 
   // Optional local QA counter; absent from the normal map UI.
   const stats = new URLSearchParams(location.search).get('stats') === '1' ? document.createElement('output') : null;
@@ -371,9 +375,13 @@ async function main() {
     roads.update(camera);
     roads3d.update(camera);
     props.update(camera);
+    yards.update(camera);
     overlays.update(camera, underCanopy);
     shadows.update(camera, controls.target, scene);
-    if (!underCanopy && surface) reflection.update(camera, surface.waterHeight(controls.target.x, -controls.target.z), reflSkip);
+    // Trà Sư: the flooded forest's water mirrors the trunks and boats, also under the canopy
+    const overWetland = wetland && wetland.floodAt(controls.target.x, -controls.target.z) > .5 && camera.position.y < wetland.level + 400;
+    if (overWetland) reflection.update(camera, wetland.level + .025, reflSkip);
+    else if (!underCanopy && surface) reflection.update(camera, surface.waterHeight(controls.target.x, -controls.target.z), reflSkip);
     else GLOBALS.uRefl.value.x = 0;
     occlusion.apply();
     pipeline.render();

@@ -27,6 +27,7 @@ const LANDMARK = {
   'long-xuyen-hoang-dieu-bridge': { x: 23, z: 188.45, trueScale: true, authoredUV: true, lod: 'long-xuyen-hoang-dieu-bridge-lod' },
   'long-xuyen-nguyen-hue-island': { x: 19, z: 30, trueScale: true, authoredUV: true, lod: 'long-xuyen-nguyen-hue-island-lod' },
   'long-xuyen-coopmart': { x: 34.837, z: 44.066, trueScale: true, authoredUV: true, lod: 'long-xuyen-coopmart-lod' },
+  'an-giang-university': { x: 651.866, z: 715.784, trueScale: true, authoredUV: true, nearR: 1100, farR: 1300, lod: 'an-giang-university-lod' },
   'long-xuyen-canal-courtyard': { x: 217.16, z: 175.70, trueScale: true, authoredUV: true, lod: 'long-xuyen-canal-courtyard-lod' },
 };
 const authoredMaps = id => id.startsWith('long-xuyen-cathedral') || LANDMARK[id.replace(/-lod$/, '')]?.authoredUV;
@@ -63,7 +64,7 @@ class Library {
         byMat.get(mat.uuid).geos.push(g);
       });
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
-        mat.side = THREE.FrontSide;
+        mat.side = mat.alphaTest > 0 ? THREE.DoubleSide : THREE.FrontSide;
         // Full and far authored exports use identical baked maps: upload each only once.
         if (authoredMaps(id) && mat.map) {
           const shared = this.surfaceMaps.get(mat.name);
@@ -124,6 +125,7 @@ class Instanced {
   }
 }
 
+const _vp = new THREE.Matrix4(), _frustum = new THREE.Frustum(), _sph = new THREE.Sphere(), _bp = new THREE.Vector3();
 const _q = new THREE.Quaternion(), _e = new THREE.Euler(), _p = new THREE.Vector3(), _s = new THREE.Vector3();
 /** Matrix for a model whose front (+Z) faces direction theta (radians, east = 0, north = +pi/2). */
 function placed(x, y, z, theta, sx, sy, sz, extraYaw = 0, roll = 0) {
@@ -248,6 +250,9 @@ export class PropsLayer {
   updateBoats(camera) {
     const p = camera.position, t = this.shared.uTime.value, ex = this.meta.vert_exag, R = this.boatR;
     const out = {};
+    // boats out of view are not drawn (they move every frame, so they are not in the occlusion culling)
+    _vp.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    _frustum.setFromProjectionMatrix(_vp);
     for (const [li, line] of this.lines.entries()) {
       const [x0, x1, z0, z1] = line.box;
       const dx = Math.max(x0 - p.x, 0, p.x - x1), dz = Math.max(z0 - p.z, 0, p.z - z1);
@@ -268,6 +273,7 @@ export class PropsLayer {
         if (Math.hypot(bx - p.x, bz - p.z, p.y) > R) continue;
         if (this.terrain.surface && this.terrain.surface.waterAt(bx, -bz) < 0.5) continue;
         const y = this.terrain.waterHeightAt(bx, -bz) + 0.06 * Math.sin(t * 1.4 + b.phase);
+        if (!_frustum.intersectsSphere(_sph.set(_bp.set(bx, y, bz), 35))) continue;
         const head = b.moored ? b.side : b.dir;
         const theta = Math.atan2(-tz * head, tx * head);                // travel direction, as east/north angle
         (out[b.id] ||= []).push(placed(bx, y, bz, theta, fade, fade, fade, 0, 0.025 * Math.sin(t * 1.1 + b.phase)));
@@ -354,7 +360,7 @@ export class PropsLayer {
         continue;
       }
       // Hysteresis avoids repeated swaps near the LOD boundary; hidden versions draw zero instances.
-      const want = d > 5000 ? null : d < 800 ? L.id : d > 1000 ? spec.lod : (L.active || spec.lod);
+      const want = d > 5000 ? null : d < (spec.nearR || 800) ? L.id : d > (spec.farR || 1000) ? spec.lod : (L.active || spec.lod);
       if (want === L.active) continue;
       const it = want && this.instancer(want, 1);
       if (want && !it) continue;   // keep the old silhouette while the next GLB loads

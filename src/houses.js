@@ -4,7 +4,8 @@
 //   far  — one mesh per 3.8 km terrain tile: walls + gable/hip/flat roof (30 vertices a house)
 //   near — per 3.8 km tile and house type, built when the camera comes close: porches on posts, stilts,
 //          shop awnings, rooftop stair huts, eaves overhangs, hip roofs
-//   roof kit — flat roofs within KIT_R: stainless / plastic water tanks, solar water heaters, air-conditioner units
+//   roof kit — flat roofs within KIT_R: stainless / plastic water tanks, solar water heaters, air-conditioner units;
+//          Vietnamese flags on the fronts of some shophouses (generated and kit ones)
 //   building kit — within the near range, houses that fit a model of Codex's Mekong kit (kit.js) are drawn with it
 //          instead of the generated near model (iC.w = 4: hidden in the near model, still drawn far away)
 // The vertex shader hides each house in exactly one of the two (by its distance to the camera), so there is
@@ -16,15 +17,16 @@
 import * as THREE from 'three';
 import { GroupLayer, groupCentre } from './world.js';
 import { photoTexture } from './photo-textures.js';
+import { signAtlas } from './signs.js';
 import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const STYLE = { tube: 0, block: 1, gable: 2, hip: 3, stilt: 4, khmer: 5, hall: 6 };
 // face ids (aK.w): what the fragment shader paints
 const F = { front: 0, back: 1, side: 2, roof: 3, wood: 4, porch: 5, under: 6, gable: 7, hut: 8, awning: 9,
-            parapet: 10, end: 11, steel: 12, solar: 13, ac: 14, tank: 15 };
+            parapet: 10, end: 11, steel: 12, solar: 13, ac: 14, tank: 15, flag: 16 };
 // roof kit parts: which ones a flat-roofed house has is picked from its seed, W and D (only those are drawn)
-const KIT = { tankLying: 1, tankUp: 2, solar: 3, acA: 4, acB: 5 };
+const KIT = { tankLying: 1, tankUp: 2, solar: 3, acA: 4, acB: 5, flag: 6 };
 const fract = (x) => x - Math.floor(x);
 const KIT_PARTS = {
   tankLying: [[KIT.tankLying], (s) => fract(s * 5.7) < 0.5],
@@ -32,6 +34,7 @@ const KIT_PARTS = {
   solar: [[KIT.solar], (s, W, D) => fract(s * 8.3) < 0.4 && D > 9],
   ac1: [[KIT.acA], (s, W) => fract(s * 2.9) < 0.6 && !(fract(s * 2.9) < 0.3 && W > 4.5)],
   ac2: [[KIT.acA, KIT.acB], (s, W) => fract(s * 2.9) < 0.3 && W > 4.5],
+  flag: [[KIT.flag], (s) => fract(s * 4.1) < 0.28],
 };
 const KIT_R = 200;
 const KIT_SUB = 3;                   // building-kit near models: 160 m sub-blocks                   // m beyond a block's edge
@@ -173,14 +176,22 @@ function roofKit(B) {
   prism(B, 0, -0.5, [xa, 1.12, z0 - 0.1], [xb, 1.12, z0 - 0.1], 0.22, 6, F.steel, KIT.solar, false);
   // air-conditioner outdoor units near the front parapet
   for (const [sx, kit] of [[-1, KIT.acA], [1, KIT.acB]]) kitBox(B, sx * 0.25, 0.5, [-0.42, 0.0, -0.75], [0.42, 0.6, -0.45], F.ac, kit);
+  // national flag on a pole sloping out of the front wall above the ground floor (heights from the ground: uy = 0)
+  if (B.only.includes(KIT.flag)) {
+    const F0 = (x, y, z) => v(0.3, 0, 0.5, x, y, z, 0, 0, KIT.flag);
+    for (const [dx, dy] of [[0.03, 0], [0, 0.03]]) {
+      B.poly([F0(-dx, 4.2 - dy, 0), F0(dx, 4.2 + dy, 0), F0(dx, 4.9 + dy, 1.4), F0(-dx, 4.9 - dy, 1.4)], F.steel, [dy ? 0 : 1, dy ? 1 : 0, 0]);
+    }
+    B.poly([F0(0, 4.32, 0.25), F0(0, 4.85, 1.3), F0(0, 4.15, 1.3), F0(0, 3.62, 0.25)], F.flag, [1, 0, 0]);
+  }
 }
 
-// shophouse awning over the pavement (tarp / tin sheet), at ~3 m
+// shophouse awning over the pavement (tarp / tin sheet), at ~2.6 m (the shop signboard above it)
 function awning(B) {
   const A = (sx, oz, y) => v(sx * 0.5, 0, 0.5, -sx * 0.15, y, oz);
-  B.poly([A(-1, 0, 3.15), A(1, 0, 3.15), A(1, 1.3, 2.95), A(-1, 1.3, 2.95)], F.awning, [0, 1, 0.3]);
-  B.poly([A(-1, 0, 3.0), A(1, 0, 3.0), A(1, 1.3, 2.8), A(-1, 1.3, 2.8)], F.under, [0, -1, 0]);
-  B.poly([A(-1, 1.3, 2.8), A(1, 1.3, 2.8), A(1, 1.3, 2.95), A(-1, 1.3, 2.95)], F.awning, [0, 0, 1]);
+  B.poly([A(-1, 0, 2.72), A(1, 0, 2.72), A(1, 1.3, 2.52), A(-1, 1.3, 2.52)], F.awning, [0, 1, 0.3]);   // (signboard above)
+  B.poly([A(-1, 0, 2.6), A(1, 0, 2.6), A(1, 1.3, 2.4), A(-1, 1.3, 2.4)], F.under, [0, -1, 0]);
+  B.poly([A(-1, 1.3, 2.4), A(1, 1.3, 2.4), A(1, 1.3, 2.52), A(-1, 1.3, 2.52)], F.awning, [0, 0, 1]);
 }
 
 // front porch (hiên): lean-to roof on two posts, at ground-floor height
@@ -270,7 +281,7 @@ const VERT_BODY = /* glsl */`
 #ifdef FAR
   if (iC.w > 0.5 && iC.w < 3.5) hide = true;           // 4: drawn by the building kit near by, by this far away
 #else
-  if (iC.w > 0.5) hide = true;
+  if (iC.w > 0.5 && !(iC.w > 3.5 && aK.w > 11.5)) hide = true;          // (kit houses keep their flags)
 #endif
   float ex = mix(1.0, uBex, smoothstep(1500.0, 6000.0, dist));   // true proportions close up
   float c = cos(iA.w), s = sin(iA.w);
@@ -285,12 +296,13 @@ const VERT_BODY = /* glsl */`
   float floorH = st < 1.5 ? 3.4 : (H > 4.8 ? H * 0.5 : H + 1.0);
   vWall = vec4(side ? lp.z : lp.x, lp.y - aK.y * L, side ? D : W, floorH);
   vRoofUV = lp.xz;
+  if (abs(aK.w - 16.0) < 0.5) vRoofUV = vec2(lp.z - 0.5 * D, lp.y);      // flag: out from the wall, height
 `;
 
 const FRAG_HEAD = /* glsl */`
 varying float vPhotoFade;
 #ifdef NEAR
-uniform sampler2D uPhotoTin, uPhotoTiles, uPhotoPlaster, uPhotoWood;
+uniform sampler2D uPhotoTin, uPhotoTiles, uPhotoPlaster, uPhotoWood, uSigns;
 vec3 photoDetail(sampler2D image, vec2 uv, vec3 average) {
   return mix(vec3(1.), clamp(texture2D(image, uv).rgb / average, vec3(.35), vec3(2.)), vPhotoFade);
 }
@@ -328,6 +340,18 @@ float hBox(float x, float y, float hx, float hy, float px, float py) {
   return (1.0 - smoothstep(hx - px, hx + px, abs(x))) * (1.0 - smoothstep(hy - py, hy + py, abs(y)));
 }
 vec3 sRGB(vec3 c) { return pow(c, vec3(2.2)); }
+// signed distance to a five-pointed star of outer radius r, point up (after Inigo Quilez)
+float starSd(vec2 p, float r) {
+  const vec2 k1 = vec2(0.809016994, -0.587785252), k2 = vec2(-0.809016994, -0.587785252);
+  p.x = abs(p.x);
+  p -= 2.0 * max(dot(k1, p), 0.0) * k1;
+  p -= 2.0 * max(dot(k2, p), 0.0) * k2;
+  p.x = abs(p.x);
+  p.y -= r;
+  vec2 ba = 0.382 * vec2(-k1.y, k1.x) - vec2(0.0, 1.0);
+  float h = clamp(dot(p, ba) / dot(ba, ba), 0.0, r);
+  return length(p - ba * h) * sign(p.y * ba.x - p.x * ba.y);
+}
 `;
 
 const FRAG_COLOR = /* glsl */`
@@ -373,6 +397,10 @@ const FRAG_COLOR = /* glsl */`
       col *= 0.78 + 0.3 * mix(0.5, hNoise(vec2(r.x * 4.0, r.y * 0.4) + seed * 9.0), vis);
     }
 #endif
+  } else if (face == 16) {                                 // Vietnamese flag: red with a yellow five-pointed star
+    vec2 q = vec2(vRoofUV.x - 0.775, vRoofUV.y - (3.97 + 0.505 * (vRoofUV.x - 0.25)));   // from the (sheared) centre
+    col = mix(sRGB(vec3(0.85, 0.06, 0.05)), sRGB(vec3(1.0, 0.85, 0.0)), 1.0 - smoothstep(-0.006, 0.006, starSd(q, 0.2)));
+    hRough = 0.7;
   } else if (face >= 12) {                                 // roof kit
     float a = fract(seed * 3.1);
     if (face == 12 || (face == 15 && a < 0.65)) {           // stainless steel (inox) with streaks
@@ -436,14 +464,22 @@ const FRAG_COLOR = /* glsl */`
           mc = mix(sRGB(vec3(0.12, 0.16, 0.19)), sRGB(vec3(0.5, 0.58, 0.62)), 0.25 * smoothstep(0.0, 2.6, hh));   // glass
         }
         if (fract(seed * 9.7) < 0.75) {
-          float sy = hh - 3.0, sb = hBox(al, sy, fw * 0.5 - 0.05, 0.32, pa, ph);
+          float sy = hh - 3.07, sb = hBox(al, sy, fw * 0.5 - 0.05, 0.3, pa, ph);   // (above the awning)
           float pc = fract(seed * 2.17);
           vec3 board = pc < 0.3 ? vec3(0.78, 0.1, 0.08) : pc < 0.5 ? vec3(0.95, 0.78, 0.15)
                      : pc < 0.7 ? vec3(0.1, 0.3, 0.68) : pc < 0.85 ? vec3(0.93, 0.93, 0.9) : vec3(0.1, 0.48, 0.25);
           vec3 ink = pc < 0.3 || pc > 0.85 ? vec3(0.98, 0.95, 0.6) : pc < 0.5 ? vec3(0.75, 0.08, 0.06)
                    : pc < 0.7 ? vec3(0.97) : vec3(0.8, 0.1, 0.08);
+#ifdef NEAR
+          // the shop's name from the lettering atlas (signs.js), centred on the board at its own proportions
+          vec2 su = vec2(al / 2.4 + 0.5, 0.5 - sy / 0.6);
+          float ci = floor(fract(seed * 13.7) * 32.0);
+          float letter = su.x > 0.02 && su.x < 0.98 && abs(al) < fw * 0.5 - 0.15
+                       ? texture2D(uSigns, (vec2(mod(ci, 4.0), floor(ci / 4.0)) + clamp(su, 0.0, 1.0)) / vec2(4.0, 8.0)).r : 0.0;
+#else
           float letter = step(0.3, hHash(vec2(floor(al / 0.2), seed * 37.0))) * hBox(mod(al, 0.2) - 0.1, sy + 0.02, 0.07, 0.12, pa, ph)
                        * step(abs(al), fw * 0.5 - 0.5);
+#endif
           vec3 bc = mix(sRGB(board), sRGB(ink), letter);
           mc = mix(mc, bc, sb);
           m = max(m, sb);
@@ -487,6 +523,7 @@ function houseMaterial(lod, uniforms) {
     ['uPhotoTin','corrugated_iron'], ['uPhotoTiles','clay_roof_tiles'],
     ['uPhotoPlaster','worn_plaster_wall'], ['uPhotoWood','wooden_rough_planks'],
   ].map(([key,id]) => [key,{value:photoTexture(`models/${id}-color.webp`,{repeat:true})}])) : {};
+  if (lod === 'NEAR') photos.uSigns = { value: signAtlas() };
   mat.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, uniforms, photos);
     sh.vertexShader = sh.vertexShader
@@ -705,10 +742,23 @@ export class HouseLayer extends GroupLayer {
       const kit = new THREE.Group(), D = T.data;
       const flat = c.parts.filter(([s]) => s === STYLE.tube || s === STYLE.block).flatMap(([, start, count]) =>
         Array.from({ length: count }, (_, j) => start + j)).filter((i) => D.iB[i * 3 + 1] >= 6 && D.iC[i * 4 + 3] !== 4);
-      for (const { geo, test } of Object.values(this.models.kit)) {
+      for (const [name, { geo, test }] of Object.entries(this.models.kit)) {
+        if (name === 'flag') continue;
         const list = flat.filter((i) => test(D.iC[i * 4 + 2] / 255, D.iB[i * 3], D.iB[i * 3 + 1]));
         if (!list.length) continue;
         const geometry = this.gathered(geo, D, list);
+        geometry.boundingSphere = c.sphere;
+        const m = new THREE.Mesh(geometry, this.matNear);
+        m.raycast = () => {};
+        kit.add(m);
+      }
+      // flags: generated tube houses and kit shophouses (in the kit's size)
+      const flagTest = this.models.kit.flag.test, isShop = (i) => this.buildingKit?.models[T.kitSel.get(i)[0] - 1].type === 'shophouse';
+      const tubes = c.parts.filter(([s]) => s === STYLE.tube).flatMap(([, start, count]) => Array.from({ length: count }, (_, j) => start + j))
+        .filter((i) => D.iB[i * 3 + 2] > 4.5 && flagTest(D.iC[i * 4 + 2] / 255));
+      for (const [list, sel] of [[tubes.filter((i) => D.iC[i * 4 + 3] !== 4), null], [tubes.filter((i) => D.iC[i * 4 + 3] === 4 && isShop(i)), T.kitSel]]) {
+        if (!list.length) continue;
+        const geometry = this.gathered(this.models.kit.flag.geo, D, list, sel);
         geometry.boundingSphere = c.sphere;
         const m = new THREE.Mesh(geometry, this.matNear);
         m.raycast = () => {};

@@ -6,6 +6,7 @@
 // So one instanced draw per model per block. Height never stretches. Plaster and tin take each house's own colours.
 import * as THREE from 'three';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
+import { signAtlas } from './signs.js';
 
 const BASE = 'models/kit/';
 const MODE = { fixed: 0, span: 1, anchor: 2, repeat: 3 };
@@ -97,7 +98,7 @@ attribute vec3 iWall;
 uniform vec3 uViewPos;
 uniform float uKitNear, uNearR;
 varying vec3 vKitWall, vKitRoof;
-varying float vKitGlass;
+varying float vKitGlass, vKitSeed;
 `;
 const VERT_BODY = /* glsl */`
   float W = iB.x, D = iB.y, flags = aMode.w;
@@ -126,10 +127,12 @@ const VERT_BODY = /* glsl */`
   if (gone) transformed = vec3(0.0);
   vKitWall = iWall; vKitRoof = iRoof;
   vKitGlass = mod(flags, 2.0);
+  vKitSeed = iC.z / 255.0;
 `;
 const FRAG_HEAD = /* glsl */`
 varying vec3 vKitWall, vKitRoof;
-varying float vKitGlass;
+varying float vKitGlass, vKitSeed;
+uniform sampler2D uSigns;
 vec3 kitLin(vec3 c) { return pow(c / 255.0, vec3(2.2)); }
 `;
 // atlas cells are 256 px; row 0 cols 0-4: plaster (cream, gray, blue, mint, yellow); tin: (0,1) gray, (1,1) blue, (4,3) green
@@ -147,6 +150,13 @@ const FRAG_TINT = /* glsl */`
     } else if ((cell.y > 0.5 && cell.y < 1.5 && cell.x < 1.5) || (cell.y > 2.5 && cell.x > 3.5 && cell.x < 4.5)) {
       vec3 m = cell.y > 2.5 ? kitLin(vec3(64, 111, 103)) : cell.x < 0.5 ? kitLin(vec3(153, 167, 166)) : kitLin(vec3(56, 112, 144));
       diffuseColor.rgb *= clamp(roofC / m, vec3(0.25), vec3(3.0));
+    } else if (cell.y > 1.5 && cell.y < 2.5 && cell.x > 5.5) {          // sign panels (blue, cream): a shop's name
+      vec2 lc = (fract(vMapUv * vec2(8.0, 4.0)) * 256.0 - 12.0) / 232.0;
+      vec2 su = vec2((lc.x - 0.5) * 1.6 + 0.5, lc.y);                   // (panels are ~7:1, the lettering 4:1)
+      float ci = floor(fract(vKitSeed * 13.7) * 32.0);
+      float m = su.x > 0.02 && su.x < 0.98 && lc.y > 0.0 && lc.y < 1.0
+              ? texture2D(uSigns, (vec2(mod(ci, 4.0), floor(ci / 4.0)) + clamp(su, 0.0, 1.0)) / vec2(4.0, 8.0)).r : 0.0;
+      diffuseColor.rgb = mix(diffuseColor.rgb, cell.x < 6.5 ? vec3(1.0, 0.85, 0.35) : vec3(0.55, 0.03, 0.02), m);
     }
   }
 `;
@@ -154,8 +164,9 @@ const FRAG_TINT = /* glsl */`
 function kitMaterial(lod, uniforms, atlas) {
   const mat = new THREE.MeshStandardMaterial({ map: atlas, roughness: 0.82, metalness: 0, flatShading: true });
   mat.defines = { [lod]: '' };
+  const signs = { value: signAtlas() };
   mat.onBeforeCompile = (sh) => {
-    Object.assign(sh.uniforms, uniforms);
+    Object.assign(sh.uniforms, uniforms, { uSigns: signs });
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', '#include <common>\n' + VERT_HEAD)
       .replace('#include <begin_vertex>', VERT_BODY);

@@ -40,15 +40,34 @@ export class WetlandMap {
   floodAt(x,north) {const [a,b]=this.local(x,north);return this.sampleLocal(a,b);}
   sceneHeight(x,north,previous) {const f=this.floodAt(x,north);return previous*(1-f)+(this.level-.24)*f;}
   generateTrees(spacing=11) {
-    const trees=[],[l,t,r,b]=this.data.bounds;
-    for(let z=Math.floor(t/spacing);z*spacing<b;z++) for(let x=Math.floor(l/spacing);x*spacing<r;x++) {
-      const px=(x+.05+.9*hash(x,z,1))*spacing,pz=(z+.05+.9*hash(x,z,2))*spacing;
-      if(this.sampleLocal(px,pz)<.98 || this.sampleLocal(px,pz,1)<.38 || hash(x,z,3)>.93)continue;
-      const path=nearestPath(px,pz,this.data.channels);
-      if(path.distance<path.width*.5+3)continue;
-      const arch=path.distance<path.width*.5+25;
-      trees.push({x:px,z:pz,scale:.78+hash(x,z,4)*.5,phase:hash(x,z,5),tint:.82+hash(x,z,6)*.3,
-                  variant:arch?1:hash(x,z,7)>.72?2:0,angle:arch?Math.atan2(-(path.z-pz),path.x-px):hash(x,z,8)*Math.PI*2});
+    const trees=[],[l,t,r,b]=this.data.bounds,bins=new Map(),step=28;
+    const occupied=(x,z,gap)=>{
+      for(let j=Math.floor(z/4)-1;j<=Math.floor(z/4)+1;j++)for(let i=Math.floor(x/4)-1;i<=Math.floor(x/4)+1;i++)
+        for(const p of bins.get(`${i},${j}`)||[])if(Math.hypot(p.x-x,p.z-z)<Math.max(gap,p.gap))return true;
+      return false;
+    };
+    const boardwalk=[{points:this.data.boardwalk,width:2.2}];
+    // Random parent groves, offspring at radial offsets, and variable spacing. No tree lattice.
+    for(let z=Math.floor(t/step)-1;z*step<b+step;z++)for(let x=Math.floor(l/step)-1;x*step<r+step;x++) {
+      const cx=(x+hash(x,z,31))*step,cz=(z+hash(x,z,32))*step;
+      const patch=hash(Math.floor(cx/85),Math.floor(cz/85),17);
+      const n=Math.round((12+hash(x,z,33)*22)*(patch<.12?.28:1)*(11/spacing)**2);
+      for(let k=0;k<n;k++) {
+        const a=hash(x,z,40+k*7)*Math.PI*2,rad=Math.sqrt(hash(x,z,41+k*7))*23;
+        const px=cx+Math.cos(a)*rad,pz=cz+Math.sin(a)*rad;
+        if(this.sampleLocal(px,pz)<.98 || this.sampleLocal(px,pz,1)<.34)continue;
+        const path=nearestPath(px,pz,this.data.channels),edge=path.distance-path.width*.5;
+        if(edge<1.8 || nearestPath(px,pz,boardwalk).distance<2.2)continue;
+        const riparian=edge<24;
+        if(!riparian && hash(x,z,42+k*7)>.76)continue;
+        const young=hash(x,z,43+k*7)<.25,gap=young?2.35:3.5;
+        if(occupied(px,pz,gap))continue;
+        const form=young?0:riparian?(hash(x,z,44+k*7)<.55?3:2):1+Math.floor(hash(x,z,44+k*7)*5);
+        const p={x:px,z:pz,gap,form,variant:riparian?1:0,scale:.82+hash(x,z,45+k*7)*.36,
+          phase:hash(x,z,46+k*7),tint:.86+hash(x,z,47+k*7)*.25,edge,
+          angle:riparian?Math.atan2(-(path.z-pz),path.x-px)+(hash(x,z,48+k*7)-.5)*.45:hash(x,z,48+k*7)*Math.PI*2};
+        const key=`${Math.floor(px/4)},${Math.floor(pz/4)}`;if(!bins.has(key))bins.set(key,[]);bins.get(key).push(p);trees.push(p);
+      }
     }
     return trees;
   }

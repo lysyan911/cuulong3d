@@ -1,0 +1,210 @@
+{
+  "models": [
+    {
+      "id": "tram-near-0",
+      "kind": "near",
+      "triangles": 350,
+      "height": 7.2,
+      "lean": 0.5,
+      "perches": [
+        [
+          -0.9455573185272825,
+          6.3223489918452245,
+          -0.050027014589882915
+        ],
+        [
+          0.13755377638465852,
+          7.403485282759538,
+          0.9824652189250047
+        ]
+      ]
+    },
+    {
+      "id": "tram-near-1",
+      "kind": "near",
+      "triangles": 526,
+      "height": 14.5,
+      "lean": 1.1,
+      "perches": [
+        [
+          1.3427455892164892,
+          12.34740953801344,
+          1.2170113938456526
+        ],
+        [
+          2.977165002432978,
+          13.908367703773036,
+          -1.059686492452082
+        ]
+      ]
+    },
+    {
+      "id": "tram-near-2",
+      "kind": "near",
+      "triangles": 526,
+      "height": 13.5,
+      "lean": 3.8,
+      "perches": [
+        [
+          1.7855983077457003,
+          12.188482581901336,
+          1.9253894630025594
+        ],
+        [
+          5.015438148191156,
+          13.16728279589536,
+          0.3941787000751504
+        ]
+      ]
+    },
+    {
+      "id": "tram-near-3",
+      "kind": "near",
+      "triangles": 526,
+      "height": 12.8,
+      "lean": 5.2,
+      "perches": [
+        [
+          1.8200302562536534,
+          11.494315134577793,
+          0.763071785672933
+        ],
+        [
+          5.19492760914011,
+          12.523882133085637,
+          1.6263615894795231
+        ]
+      ]
+    },
+    {
+      "id": "tram-near-4",
+      "kind": "near",
+      "triangles": 526,
+      "height": 15.5,
+      "lean": 2.1,
+      "perches": [
+        [
+          -0.14894137221763964,
+          13.868398365756178,
+          -0.10866833951877003
+        ],
+        [
+          1.3191374697758136,
+          15.331740970333556,
+          2.1121048355881924
+        ]
+      ]
+    },
+    {
+      "id": "tram-near-5",
+      "kind": "near",
+      "triangles": 526,
+      "height": 17,
+      "lean": 2.8,
+      "perches": [
+        [
+          0.005967850373649691,
+          14.32415518470755,
+          -1.5306627472173808
+        ],
+        [
+          1.2424375399297372,
+          16.894339203802854,
+          1.0105342565482203
+        ]
+      ]
+    },
+    {
+      "id": "tram-mid-0",
+      "kind": "mid",
+      "triangles": 52,
+      "height": 14
+    },
+    {
+      "id": "tram-far-0",
+      "kind": "far",
+      "triangles": 8,
+      "height": 14
+    },
+    {
+      "id": "tram-mid-1",
+      "kind": "mid",
+      "triangles": 52,
+      "height": 14
+    },
+    {
+      "id": "tram-far-1",
+      "kind": "far",
+      "triangles": 8,
+      "height": 14
+    },
+    {
+      "id": "tram-mid-2",
+      "kind": "mid",
+      "triangles": 52,
+      "height": 14
+    },
+    {
+      "id": "tram-far-2",
+      "kind": "far",
+      "triangles": 8,
+      "height": 14
+    },
+    {
+      "id": "egret-perched",
+      "kind": "bird",
+      "triangles": 224
+    },
+    {
+      "id": "egret-wading",
+      "kind": "bird",
+      "triangles": 224
+    },
+    {
+      "id": "cormorant-perched",
+      "kind": "bird",
+      "triangles": 224
+    },
+    {
+      "id": "cormorant-drying",
+      "kind": "bird",
+      "triangles": 180
+    },
+    {
+      "id": "bird-far-white",
+      "kind": "bird-far",
+      "triangles": 11
+    },
+    {
+      "id": "bird-far-dark",
+      "kind": "bird-far",
+      "triangles": 11
+    },
+    {
+      "id": "water-fern",
+      "kind": "plant",
+      "triangles": 10
+    },
+    {
+      "id": "water-lilies",
+      "kind": "plant",
+      "triangles": 14
+    },
+    {
+      "id": "lotus",
+      "kind": "plant",
+      "triangles": 47
+    },
+    {
+      "id": "reeds",
+      "kind": "plant",
+      "triangles": 8
+    }
+  ],
+  "atlas": "forest-atlas.png",
+  "axes": "metres; Y up; front +Z",
+  "credits": [
+    "Original CuuLong3D geometry and leaf/fern/lily artwork: CC0",
+    "Existing willow bark: https://polyhaven.com/a/bark_willow (CC0)"
+  ]
+}

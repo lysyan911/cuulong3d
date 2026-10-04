@@ -126,7 +126,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
     uMask: { value: maskTexture },
     uCrop: { value: crop || NO_CROP },
     uRice: shared.uRice || { value: 0 },
-    uField: { value: new THREE.Vector4(FIELD.width, FIELD.depth, FIELD.angle, FIELD.bundHeight) },
+    uField: { value: new THREE.Vector4(FIELD.block[0], FIELD.block[1], FIELD.angle, FIELD.bundHeight) },
     uMaskXf: { value: new THREE.Vector4(...maskXf) },
     uTexel: { value: new THREE.Vector2(1 / 1344, 1 / 1344) },
     uTexelM: { value: texelM },
@@ -220,37 +220,91 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           hillDirt = hillF * rockF - rockW;
         }
 
-        // Lowland rice parcels: raised bunds, young wet rows, green growth and golden ripening.
-        // Field layout is illustrative; cropland, buildings and roads come from the cover mask.
-        vec3 cropS = texture2D(uCrop, vGroupUv).rgb;    // R rice (surface.py), G paved, B town density (urban.py)
+        // Lowland rice: canal blocks cut into long strips and fields (layout as surface.js: fieldWarped, blockLayout),
+        // each field at its own stage (flooded, seedlings, young lime green, deep green, heading, golden, harvested);
+        // neighbours tend to be sown together. Bunds between fields, wider dykes with footpaths round the blocks,
+        // wind waves over standing rice. The satellite colour stays only as a light hint (it is dull at 10 m).
+        vec4 cropS4 = texture2D(uCrop, vGroupUv);
+        vec3 cropS = cropS4.rgb;                         // R rice (surface.py), G paved, B town density (urban.py)
+        float lawnK = smoothstep(0.7, 0.95, cropS4.a), earthK = 1.0 - smoothstep(0.3, 0.55, cropS4.a);   // A: mapped land use
         float riceCover = smoothstep(0.35, 0.85, cropS.r) * uRice * (1.0 - waterF);
-        riceCover *= 1.0 - smoothstep(12.0, 40.0, px);
+        riceCover *= 1.0 - smoothstep(40.0, 140.0, px);             // fields stay a patchwork far out
         float paddyWet = 0.0, riceStage = 0.5, riceBund = 0.0;
         if (riceCover > 0.01) {
         float ca = cos(uField.z), sa = sin(uField.z);
-        vec2 fieldP = vec2(P.x * ca + P.y * sa, -P.x * sa + P.y * ca);
-        vec2 cell = floor(fieldP / uField.xy);
-        vec2 local = mod(fieldP, uField.xy);
-        float stage = hash12(cell + 71.3);
-        float edge = min(min(local.x, uField.x - local.x), min(local.y, uField.y - local.y));
-        float bund = 1.0 - smoothstep(0.65, 1.8 + px, edge);
+        vec2 f0 = vec2(P.x * ca + P.y * sa, -P.x * sa + P.y * ca);
+        vec2 fw = f0 + vec2(22.0 * sin(f0.y / 410.0 + 1.3) + 9.0 * sin(f0.y / 157.0), 18.0 * sin(f0.x / 530.0 + 0.4) + 7.0 * sin(f0.x / 190.0));
+        vec2 SB = uField.xy, bI = floor(fw / SB), bl = fw - bI * SB;
+        float h1 = hash12(bI), h2 = hash12(bI + vec2(17.0, -5.0)), h3 = hash12(bI + vec2(-9.0, 31.0));
+        bool cols = h1 < 0.5;
+        float A = cols ? SB.x : SB.y, B = cols ? SB.y : SB.x, acr = cols ? bl.x : bl.y, alo = cols ? bl.y : bl.x;
+        float nS = max(1.0, floor(A / (26.0 + 34.0 * h2) + 0.5)), sw = A / nS;
+        float nP = 1.0 + floor(h3 * 3.0), pl = B / nP;
+        float k = floor(acr / sw), pp = floor(alo / pl), la = acr - k * sw, lb = alo - pp * pl;
+        float edge = min(min(la, sw - la), min(lb, pl - lb));
+        float eBlock = min(min(bl.x, SB.x - bl.x), min(bl.y, SB.y - bl.y));
+        // stage: block + field + slow regional waves of sowing
+        float hf = hash12(bI * 13.0 + vec2(k, pp * 7.0 + 3.0));
+        float stage = fract(hash12(bI + 41.0) * 0.55 + hf * 0.3 + vnoise(P / 2600.0) * 0.7);
+        float lw = min(1.0, 1.4 / max(px, 1.0));                            // thin lines fade to their share far away
+        float bund = (1.0 - smoothstep(0.45, 0.9 + px, edge)) * lw;
+        float dyke = (1.0 - smoothstep(1.5, 2.3 + px, eBlock)) * min(1.0, 3.5 / max(px, 1.0));
+        // footpath on some dykes (decided per block boundary, so both sides agree)
+        float onV = step(min(bl.y, SB.y - bl.y), min(bl.x, SB.x - bl.x));
+        vec2 edgeId = onV > 0.5 ? vec2(bI.x, floor(fw.y / SB.y + 0.5)) : vec2(floor(fw.x / SB.x + 0.5), bI.y + 0.5);
+        float path = step(hash12(edgeId * 3.1), 0.55) * (1.0 - smoothstep(0.35, 0.42 + px, eBlock)) * lw;
+        // stage colours (linear)
+        vec3 c0 = vec3(0.055, 0.075, 0.06), c1 = vec3(0.12, 0.17, 0.05), c2 = vec3(0.165, 0.35, 0.04), c3 = vec3(0.06, 0.21, 0.022);
+        vec3 c4 = vec3(0.22, 0.33, 0.03), c5 = vec3(0.50, 0.41, 0.045), c6 = vec3(0.27, 0.21, 0.095);
+        vec3 riceColour = stage < 0.08 ? c0 : stage < 0.18 ? c1 : stage < 0.45 ? mix(c2, c3, smoothstep(0.38, 0.45, stage))
+                        : stage < 0.68 ? c3 : stage < 0.8 ? mix(c3, c4, smoothstep(0.68, 0.76, stage))
+                        : stage < 0.92 ? mix(c4, c5, smoothstep(0.8, 0.86, stage)) : c6;
+        float standing = step(0.18, stage) * (1.0 - step(0.92, stage));
+        // texture: growth patches, rows of young plants, blades close up, wind waves on standing rice
         float rowVis = 1.0 - smoothstep(0.18, 0.75, px);
-        float riceRow = 0.5 + 0.5 * sin(fieldP.x * 13.9626); // 45 cm planted rows
-        float growth = fbm(P / 35.0);
-        vec3 riceColour = stage < 0.20 ? vec3(0.115, 0.16, 0.082)
-                        : stage < 0.52 ? vec3(0.14, 0.28, 0.042)
-                        : stage < 0.82 ? vec3(0.08, 0.21, 0.032) : vec3(0.34, 0.31, 0.083);
-        riceColour *= 0.88 + 0.23 * growth + (riceRow - 0.5) * 0.17 * rowVis;
-        riceColour = mix(riceColour, vec3(0.145, 0.17, 0.075), bund * 0.8);
-        diffuseColor.rgb = mix(diffuseColor.rgb, riceColour, riceCover * 0.58);
-        paddyWet = riceCover * (1.0 - step(0.20, stage)) * (1.0 - bund);
-        riceStage = stage; riceBund = bund;
+        float rows = 0.5 + 0.5 * sin(lb * 13.9626);                          // 45 cm rows across the field
+        riceColour *= 0.82 + 0.3 * fbm(P / 28.0) + (rows - 0.5) * 0.22 * rowVis * (1.0 - step(0.45, stage));
+        riceColour = mix(riceColour, riceColour.gbr * vec3(1.15, 0.85, 0.6) + riceColour * 0.4, 0.12 * (vnoise(P / 9.0) - 0.4) * standing);   // uneven ripening
+        riceColour *= 1.0 + octave(P, 2.2, px) * 0.35 * standing;
+        vec2 WD = vec2(0.8, 0.6);
+        float wave = vnoise(vec2(dot(P, WD) * 0.022 - uTime * 0.3, dot(P, vec2(-WD.y, WD.x)) * 0.007));
+        riceColour *= 1.0 + (wave - 0.5) * 0.26 * standing;
+        // seedlings: sparse green dots in the water; harvest: straw rows on stubble
+        if (stage < 0.18 && stage >= 0.08) riceColour = mix(c0 * 1.3, c2, 0.35 + 0.35 * rows * rowVis);
+        if (stage >= 0.92) riceColour *= 0.85 + 0.35 * step(0.78, fract(lb / 2.4)) * (1.0 - smoothstep(0.3, 1.2, px));
+        // bunds: grass and weeds; dykes: darker grass, some with a concrete footpath
+        vec3 bundC = vec3(0.06, 0.14, 0.03) * (0.8 + 0.4 * vnoise(P / 3.0));
+        riceColour = mix(riceColour, bundC, max(bund * 0.9, dyke * 0.95));
+        riceColour = mix(riceColour, vec3(0.42, 0.41, 0.38) * (0.85 + 0.2 * vnoise(P * 1.7)), path * 0.9);
+        diffuseColor.rgb = mix(diffuseColor.rgb, riceColour, riceCover * 0.86);
+        paddyWet = riceCover * (1.0 - step(0.18, stage)) * (1.0 - max(bund, dyke));
+        riceStage = stage; riceBund = max(bund, dyke);
         }
 
         // paved ground: concrete between the houses of a town, packed-earth yards around village houses. Replaces the
         // satellite image there (its roof prints and shadows would lie on the ground under the 3D houses)
         float paved = cropS.g * (1.0 - waterF) * (1.0 - riceCover) * (1.0 - hillF * 0.8);
         float townK = smoothstep(0.15, 0.7, cropS.b);
+        // other green lowland (grass banks, verges, gardens): livelier than the dull 10 m satellite colour
+        {
+          vec3 sc = diffuseColor.rgb;
+          float vegL = smoothstep(0.0, 0.03, sc.g - max(sc.r, sc.b)) * (1.0 - riceCover) * (1.0 - hillF) * (1.0 - waterF) * (1.0 - townK);
+          float lum = dot(sc, vec3(0.2126, 0.7152, 0.0722));
+          diffuseColor.rgb = mix(sc, mix(vec3(lum), sc, 1.3) * 1.08, vegL);
+        }
+        // unpaved ground in town (empty lots, gardens): grass and dry earth, the satellite colour only as a hint (at
+        // 10 m it smudges tree crowns and shade into dark blots)
+        float lotK = max(townK * (1.0 - smoothstep(0.0, 0.5, paved)), max(lawnK, earthK)) * (1.0 - waterF) * (1.0 - riceCover)
+                   * (1.0 - hillF) * mix(max(0.25, lawnK * 0.55), 1.0, smoothstep(3.0, 10.0, uTexelM));   // (high-res imagery stays; mapped lawns greened)
+        if (lotK > 0.01) {
+          float ln = vnoise(P / 14.0) * 0.65 + vnoise(P / 3.7) * 0.35;
+          float dry = mix(mix(smoothstep(0.35, 0.75, ln), 0.08, lawnK), 1.0, earthK);   // parks: mown lawn; sites: bare
+          vec3 grass = mix(vec3(0.115, 0.15, 0.06), vec3(0.11, 0.17, 0.055), lawnK);
+          vec3 lotC = mix(grass, vec3(0.2, 0.17, 0.11), dry) * (0.85 + 0.3 * vnoise(P / 1.3));
+          float satL = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+          lotC *= clamp(satL / 0.1, 0.75, 1.2);
+          diffuseColor.rgb = mix(diffuseColor.rgb, lotC, lotK * 0.7);
+        }
         if (paved > 0.01) {
           vec3 sat = diffuseColor.rgb;
           float gn = vnoise(P / 8.0) * 0.6 + vnoise(P / 2.3) * 0.4;
@@ -273,12 +327,12 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float yard = max(land - mudBank, 0.0);
           float field = riceCover * (1.0 - riceBund);
           float w[6];
-          w[0] = field * step(riceStage, 0.2) + mudBank;                       // flooded / wet mud
-          w[1] = riceCover * riceBund * 0.6;                                   // dry bunds
+          w[0] = field * step(riceStage, 0.18) + mudBank;                      // flooded / wet mud
+          w[1] = riceCover * riceBund * 0.6 + field * step(0.92, riceStage);    // dry bunds, harvested stubble
           w[2] = yard * vegG + riceCover * riceBund * 0.4;                     // grass
           w[3] = yard * (1.0 - vegG) + hillDirt;                               // dirt yards, paths, bare hill flats
           w[4] = rockW;                                                        // granite
-          w[5] = field * (1.0 - step(riceStage, 0.2));                         // young / growing rice
+          w[5] = field * step(0.18, riceStage) * (1.0 - step(0.92, riceStage)); // young / growing rice
           float gLod = log2(max(px / 0.02, 1.0)), gS = exp2(floor(gLod)), gF = fract(gLod);   // ~0.02 m per pixel at s = 1
           vec3 pc = vec3(0.0), pm = vec3(0.0);
           float W = 0.0;
@@ -391,5 +445,5 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
       `);
     patchCloudShadow(shader, skyUniforms());
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-paved-v9';
+  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v17';
 }

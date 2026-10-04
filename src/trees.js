@@ -187,15 +187,19 @@ function speciesModels() {
   { const m = new Model();                       // nipa: fronds straight from the mud, no trunk
     for (let i = 0; i < 8; i++) m.frond([0, 0.1, 0], (i / 8) * Math.PI * 2, 1.15 - (i % 2) * 0.2, 5.5, 1.2, 0.32, 'frond', ONE);
     M[S.nipa] = m.geometry(); }
-  { const m = new Model();                       // thốt nốt: tall straight trunk, ball of fan leaves
-    m.trunk(16, 0.32, 0.24, BARK.sugar, { rings: 1, segs: 5 });
-    const c = [0, 17.6, 0];
-    for (let i = 0; i < 16; i++) {
-      const phi = Math.acos(1 - 2 * ((i + 0.5) / 16)), th = i * 2.4;
+  { const m = new Model();                       // thốt nốt: tall straight trunk, dense ball of fan leaves (~7 m)
+    m.trunk(15.5, 0.32, 0.24, BARK.sugar, { rings: 1, segs: 5 });
+    const c = [0, 17.4, 0];
+    for (let i = 0; i < 26; i++) {
+      const phi = Math.acos(1 - 2 * ((i + 0.5) / 26)), th = i * 2.4;
       const d = [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)];
-      const p = [d[0] * 2.0, c[1] + d[1] * 1.6, d[2] * 2.0];
+      const p = [d[0] * 2.9, c[1] + d[1] * 2.2, d[2] * 2.9];
       const a = Math.atan2(d[2], d[0]) + Math.PI / 2;
-      m.card(p[0], p[2], a, 3.2, p[1] - 1.6, p[1] + 1.6, 'fan', c, i % 7 === 3 ? DEAD : ONE);
+      m.card(p[0], p[2], a, 4.2, p[1] - 2.0, p[1] + 2.0, 'fan', c, i % 9 === 4 ? DEAD : ONE);
+    }
+    for (let i = 0; i < 6; i++) {                 // skirt of dead fronds hanging under the crown
+      const th = i * 1.047 + 0.3;
+      m.card(Math.cos(th) * 1.1, Math.sin(th) * 1.1, th + Math.PI / 2, 2.6, c[1] - 3.6, c[1] - 1.6, 'fan', c, DEAD);
     }
     M[S.thotnot] = m.geometry(); }
   { const m = new Model();                       // banana: green pseudo-stem, big arching leaves

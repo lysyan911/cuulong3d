@@ -3,7 +3,9 @@
 //   roads), street lamps on main roads,
 //   street trees (the shade-tree models of trees.js), parked motorbikes in front of the shops, and pavement food stalls
 //   (cart, umbrella, plastic stools); traffic lights at main-road junctions (crossings: roads3d.js); traffic: motorbike
-//   riders, cars, 16-seat vans, small trucks and coaches (keeping right), cars parked at the kerb of wide streets.
+//   riders, cars, 16-seat vans, small trucks and coaches (keeping right), cars parked at the kerb of wide streets;
+//   dual carriageways: double-arm lamps and areca palms in the median, red-white posts with a keep-right sign at its
+//   ends, one-way traffic. Dense bundles of telecom cables along the poles and drops to the houses.
 // Placement is rule-based and stable (hashed from the road geometry), not surveyed; the traffic stands still.
 // Everything is instanced; instances beyond their show range collapse in the vertex shader.
 import * as THREE from 'three';
@@ -119,9 +121,24 @@ function models() {
     ...head(3.4, 5.25), ...head(0, 2.9, 0.18),
     part(box(0.5, 0.36, 0.08), DARK, 2.3, 5.45, 0.06),                      // countdown display
   ]);
-  return { pole, lamp, bike, stall, car, van, truck, bus, rider, signal };
+  // median lamp: tall pole, an arm to each carriageway
+  const lamp2 = mergeGeometries([
+    part(cyl(0.09, 0.16, 10.0, 6), STEEL, 0, 5.0),
+    part(box(0.35, 0.6, 0.35), [0.5, 0.5, 0.48], 0, 0.3),
+    ...[-1, 1].flatMap((sx) => [part(box(1.8, 0.07, 0.07), STEEL, sx * 0.9, 9.85),
+                                part(box(0.62, 0.12, 0.28), [0.85, 0.85, 0.8], sx * 1.8, 9.8)]),
+  ]);
+  // median nose: red and white striped post, blue keep-right sign facing +z
+  const nose = mergeGeometries([
+    ...Array.from({ length: 6 }, (_, i) => part(cyl(0.05, 0.05, 0.4, 6), i % 2 ? [0.95, 0.95, 0.93] : [0.75, 0.08, 0.06], 0, 0.2 + i * 0.4)),
+    part(cyl(0.36, 0.36, 0.03, 14), [0.1, 0.3, 0.75], 0, 2.65, 0.06, Math.PI / 2),
+    part(box(0.08, 0.32, 0.02), [0.95, 0.95, 0.95], 0.02, 2.62, 0.085, 0, -0.6),
+    part(box(0.18, 0.06, 0.02), [0.95, 0.95, 0.95], 0.1, 2.5, 0.085, 0, 0.3),
+  ]);
+  return { pole, lamp, bike, stall, car, van, truck, bus, rider, signal, lamp2, nose };
 }
 const RANGE = { car: CAR_R, van: CAR_R, truck: CAR_R, bus: CAR_R, rider: RIDER_R };
+const MEDIAN_H = 0.22, ARECA = 3;                       // (roads3d.js median kerb; trees.js species)
 
 function material(showR = SHOW_R) {
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.75, metalness: 0, side: THREE.DoubleSide });
@@ -179,7 +196,7 @@ export class StreetFurniture {
    * cl (class), y: sidewalk heights }. Returns a Group (or null).
    */
   build(roads, sphere, signals = []) {
-    const M = { pole: [], lamp: [], bike: [], stall: [], signal: [], car: [], van: [], truck: [], bus: [], rider: [] };
+    const M = { pole: [], lamp: [], bike: [], stall: [], signal: [], car: [], van: [], truck: [], bus: [], rider: [], lamp2: [], nose: [] };
     const C = { bike: [], stall: [], car: [], van: [], truck: [], bus: [], rider: [] }, trees = [], wire = [];
     const at = (R, s) => {                                   // point, normal, height at distance s along a road
       let i = 1;
@@ -203,8 +220,9 @@ export class StreetFurniture {
     };
     // a vehicle on the road surface: sd -1 = right of the road direction (driving along it), +1 = the opposite lane
     const PAL = { car: CAR_COLOURS, van: VAN_COLOURS, truck: CAB_COLOURS, bus: BUS_COLOURS, rider: BIKE_PAINT };
+    let oneway = false;                                     // one-way roads: both lanes go along the road
     const vehicle = (kind, q, off, sd, jit, r) => {
-      const m = place(q, off, sd, (sd > 0 ? Math.PI : 0) + jit);
+      const m = place(q, off, sd, (sd > 0 && !oneway ? Math.PI : 0) + jit);
       m.elements[13] = q.ry;
       M[kind].push(m);
       C[kind].push(PAL[kind][Math.floor(r * PAL[kind].length)]);
@@ -219,16 +237,17 @@ export class StreetFurniture {
       if (L < 18 || R.cl > 6) continue;
       const k0 = Math.round(R.P[0][0] * 3.1) * 7919 + Math.round(R.P[0][1] * 2.3);
       const h = (i, j) => hashOf(k0 + i * 131, j);
-      const main = R.cl <= 4, wide = R.sh >= 2;
+      const main = R.cl <= 4, wide = R.sh >= 2, Md = R.median, sides = Md ? [-1] : [-1, 1];  // (dual: no sidewalk on the left)
+      oneway = R.oneway;
       // power poles on one side, cables between them (country roads: on the shoulder, further apart)
-      const ps = h(1, 1) < 0.5 ? 1 : -1, sp = R.rural ? 42 + h(1, 2) * 10 : 34 + h(1, 2) * 8;
+      const ps = Md ? -1 : h(1, 1) < 0.5 ? 1 : -1, sp = R.rural ? 42 + h(1, 2) * 10 : 34 + h(1, 2) * 8;
       const nearJ = (s) => R.J && R.J.some(([js, rr]) => Math.abs(s - js) < rr);
       // traffic, keeping right: riders in swarms, cars, vans, trucks, coaches; parked cars at the kerb of wide streets
       const town = !R.rural, paved = R.surf === 0 || R.surf === 1;
       if (this.traffic && paved && R.hw >= 1.4) for (const sd of [-1, 1]) {
         if (R.hw < 2.2 && sd > 0 && h(21, 1) < 0.5) continue;                    // narrow lanes: one way only here
         // parked cars at the kerb of wide town streets (one side, both on the widest); moving traffic keeps clear
-        const parks = town && R.surf === 0 && R.hw >= 4 && (R.hw >= 5.5 || (sd > 0) === (h(39, 1) < 0.5));
+        const parks = town && R.surf === 0 && R.hw >= 4 && !(Md && sd > 0) && (R.hw >= 5.5 || Md || (sd > 0) === (h(39, 1) < 0.5));
         const edge = parks ? R.hw - 2.3 : R.hw - 0.3, lane = R.hw * (R.hw < 2.2 ? 0.45 : 0.55);
         const busy = town ? (main ? 0.7 : 0.3) : (R.cl <= 4 ? 0.15 : 0.05), step = 7 / busy;
         let free = -1e9;                                                         // no overlaps along the lane
@@ -262,28 +281,59 @@ export class StreetFurniture {
           }
         }
       }
+      // the median: lamps, palms and end posts (placed by one of the two carriageways)
+      if (Md && Md.owner) {
+        const inR = (s) => Md.ranges.some(([a, b]) => s > a + 3 && s < b - 3), mo = R.hw + Md.med;
+        const onMedian = (q, off, sd, yaw) => { const m = place(q, off, sd, yaw); m.elements[13] = q.ry + MEDIAN_H; return m; };
+        if (Md.med >= 0.45 && R.cl <= 4) for (let s = 10 + h(40, 1) * 12; s < L - 4; s += 32) if (inR(s)) M.lamp2.push(onMedian(at(R, s), mo, 1, 0));
+        if (Md.med >= 0.9) for (let s = 4 + h(41, 1) * 6, j = 0; s < L - 3; s += 8 + h(42, j) * 7, j++) {
+          if (!inR(s) || (h(43, j) > 0.75 && !R.palms)) continue;
+          const q = at(R, s), x = q.x + q.nx * mo, yN = q.yN + q.ny * mo;
+          trees.push([x, q.ry + MEDIAN_H - 0.1, -yN, h(44, j) * 6.283, (R.palms ? 1.25 : 0.5) + h(45, j) * 0.2, 0.9 + h(46, j) * 0.2, h(47, j), ARECA]);
+        }
+        for (const [s, dir] of Md.noses) M.nose.push(onMedian(at(R, s), mo - 0.45, 1, dir > 0 ? Math.PI : 0));
+      }
+      // wide medians (a park between the carriageways): a row of trees along each side, by each carriageway
+      if (Md && Md.med >= 3) {
+        const inR = (s) => Md.ranges.some(([a, b]) => s > a + 3 && s < b - 3), mo = R.hw + 1.6;
+        for (let s = 5 + h(50, 1) * 5, j = 0; s < L - 3; s += 9 + h(51, j) * 4, j++) {
+          if (!inR(s)) continue;
+          const q = at(R, s), x = q.x + q.nx * mo, yN = q.yN + q.ny * mo;
+          trees.push([x, q.ry + MEDIAN_H - 0.1, -yN, h(52, j) * 6.283, R.palms ? 1.2 + h(53, j) * 0.25 : 0.3 + h(53, j) * 0.15, 0.9 + h(54, j) * 0.2, h(55, j), R.palms ? ARECA : TREE_SPECIES]);
+        }
+      }
       if (R.noPoles || (R.rural && h(1, 4) < 0.25)) continue;                  // some country roads have no power line
       let prevTop = null;
       for (let s = 5 + h(1, 3) * 8; s < L - 4; s += sp) {
         const q = at(R, s), m = place(q, R.hw + (R.rural ? R.sh * 0.7 : 0.45), ps, 0, 1);
         M.pole.push(m);
         const top = [-0.75, 0, 0.75].map((dx) => new THREE.Vector3(dx, 8.45, 0).applyMatrix4(m));
-        const tel = [-0.15, 0, 0.15].map((dx) => new THREE.Vector3(dx, 6.2, 0).applyMatrix4(m));
+        // telecom: a dense bundle in towns (fibre, TV, phone cables of several companies), a few in the country
+        const nTel = R.rural ? 3 : 9;
+        const tel = Array.from({ length: nTel }, (_, j) => new THREE.Vector3(-0.25 + (j % 3) * 0.25, 5.7 + Math.floor(j / 3) * 0.28, 0).applyMatrix4(m));
         const ends = [...top, ...tel];
-        if (prevTop) ends.forEach((e, j) => sag(wire, prevTop[j], e, j < 3 ? 0.35 : 0.6 + 0.25 * (j % 2)));
+        if (prevTop) ends.forEach((e, j) => sag(wire, prevTop[j], e, j < 3 ? 0.35 : 0.55 + 0.6 * hashOf(k0 + j, Math.round(s)), j < 3 ? 8 : 5));
         prevTop = ends;
+        // service drops from the pole to the houses (towns): along this side, now and then across the street
+        if (!R.rural) for (let d = 0; d < 1 + Math.floor(h(48, Math.round(s)) * 3); d++) {
+          const r = h(49, Math.round(s) * 7 + d), across = !Md && r < 0.25;
+          const q2 = at(R, Math.min(Math.max(s + (r - 0.5) * 18, 0), L)), off = R.hw + R.sh + 0.2, side = across ? -ps : ps;
+          const end = new THREE.Vector3(q2.x + q2.nx * off * side, q2.y + 4.3 + r * 1.2, -(q2.yN + q2.ny * off * side));
+          sag(wire, tel[d % nTel], end, across ? 0.5 : 0.25, across ? 5 : 3);
+        }
       }
       if (R.rural) continue;
       // street lamps on main roads, on the other side
-      if (main) for (let s = 12 + h(2, 1) * 10; s < L - 4; s += 30) M.lamp.push(place(at(R, s), R.hw + 0.35, -ps));
+      if (main && !Md) for (let s = 12 + h(2, 1) * 10; s < L - 4; s += 30) M.lamp.push(place(at(R, s), R.hw + 0.35, -ps));
       // street trees along the outer edge of wide sidewalks
-      if (wide) for (const sd of [-1, 1]) for (let s = 6 + h(3, sd + 2) * 6, j = 0; s < L - 4; s += 9 + h(3, j) * 7, j++) {
+      if (wide) for (const sd of sides) for (let s = 6 + h(3, sd + 2) * 6, j = 0; s < L - 4; s += 9 + h(3, j) * 7, j++) {
         if (h(4, j * 3 + sd + 2) < (main ? 0.2 : 0.65)) continue;              // lanes: only a few trees
         const q = at(R, s), x = q.x + q.nx * (R.hw + R.sh - 0.8) * sd, yN = q.yN + q.ny * (R.hw + R.sh - 0.8) * sd;
-        trees.push([x, q.y - 0.2, -yN, h(5, j) * 6.283, (main ? 0.32 : 0.24) + h(6, j) * 0.14, 0.85 + h(7, j) * 0.3, h(8, j), TREE_SPECIES]);
+        trees.push(R.palms ? [x, q.y - 0.2, -yN, h(5, j) * 6.283, 1.15 + h(6, j) * 0.25, 0.9 + h(7, j) * 0.2, h(8, j), ARECA]   // palm avenue
+                           : [x, q.y - 0.2, -yN, h(5, j) * 6.283, (main ? 0.32 : 0.24) + h(6, j) * 0.14, 0.85 + h(7, j) * 0.3, h(8, j), TREE_SPECIES]);
       }
       // parked motorbikes in front of shops (nose to the kerb), in rows
-      if (R.sh >= 1.2) for (const sd of [-1, 1]) for (let s = 4 + h(9, sd + 2) * 10, j = 0; s < L - 4; s += 18 + h(10, j) * 20, j++) {
+      if (R.sh >= 1.2) for (const sd of sides) for (let s = 4 + h(9, sd + 2) * 10, j = 0; s < L - 4; s += 18 + h(10, j) * 20, j++) {
         if (h(11, j * 5 + sd + 2) > (main ? 0.6 : 0.4)) continue;
         const n = 2 + Math.floor(h(12, j) * 6);
         for (let b = 0; b < n && s + b * 0.8 < L - 3; b++) {
@@ -295,7 +345,7 @@ export class StreetFurniture {
       // pavement food stalls on wide sidewalks
       if (R.sh >= 2.4) for (let s = 15 + h(15, 1) * 30, j = 0; s < L - 8; s += 45 + h(16, j) * 50, j++) {
         if (h(17, j) > 0.45) continue;
-        const sd = h(18, j) < 0.5 ? 1 : -1;
+        const sd = Md || h(18, j) < 0.5 ? -1 : 1;
         M.stall.push(place(at(R, s), R.hw + R.sh * 0.5, sd, h(19, j) * 0.6));
         C.stall.push(UMBRELLA_COLOURS[Math.floor(h(20, j) * UMBRELLA_COLOURS.length)]);
       }
@@ -351,7 +401,8 @@ export class StreetFurniture {
       }
       if (c.trees.length && this.trees) {
         const T = { cx: c.x, ground: y, cz: c.z };
-        cg.add(this.trees.mesh(this.trees.models[TREE_SPECIES], c.trees, this.trees.matNear, T, cs.clone()));
+        for (const sp of new Set(c.trees.map((t) => t[7])))
+          cg.add(this.trees.mesh(this.trees.models[sp], c.trees.filter((t) => t[7] === sp), this.trees.matNear, T, cs.clone()));
       }
       g.add(cg);
     }
@@ -383,11 +434,11 @@ export class StreetFurniture {
   }
 }
 
-// a sagging cable from a to b as 8 line segments
-function sag(out, a, b, depth) {
+// a sagging cable from a to b as n line segments
+function sag(out, a, b, depth, n = 8) {
   let p = a;
-  for (let i = 1; i <= 8; i++) {
-    const t = i / 8, q = a.clone().lerp(b, t);
+  for (let i = 1; i <= n; i++) {
+    const t = i / n, q = a.clone().lerp(b, t);
     q.y -= depth * 4 * t * (1 - t);
     out.push(p.x, p.y, p.z, q.x, q.y, q.z);
     p = q;

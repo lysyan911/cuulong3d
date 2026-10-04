@@ -45,19 +45,6 @@
   "roads_2_3": 19054,
   "roads_3_3": 976,
   "roads_1_3": 8084,
-  "ways_0_1": 111,
-  "ways_0_2": 535,
-  "ways_1_0": 1028,
-  "ways_1_1": 2579,
-  "ways_1_2": 2442,
-  "ways_1_3": 452,
-  "ways_2_0": 532,
-  "ways_2_1": 2078,
-  "ways_2_2": 4592,
-  "ways_2_3": 1364,
-  "ways_3_1": 237,
-  "ways_3_2": 3692,
-  "ways_3_3": 83,
   "water_0_0": 1,
   "water_0_1": 12,
   "water_0_2": 22,
@@ -71,7 +58,20 @@
   "water_2_3": 142,
   "water_3_1": 5,
   "water_3_2": 52,
-  "water_3_3": 37
+  "water_3_3": 37,
+  "ways_0_1": 115,
+  "ways_0_2": 557,
+  "ways_1_0": 1134,
+  "ways_1_1": 2730,
+  "ways_1_2": 2509,
+  "ways_1_3": 458,
+  "ways_2_0": 586,
+  "ways_2_1": 2291,
+  "ways_2_2": 4802,
+  "ways_2_3": 1389,
+  "ways_3_1": 259,
+  "ways_3_2": 3922,
+  "ways_3_3": 84
  },
  "subtiles": [
   {
@@ -2879,7 +2879,12 @@
   "Photo textures: Foliage008 — ambientCG (https://ambientcg.com/view?id=Foliage008) — CC0",
   "Foliage/aquatic/rice textures: illustrative adaptations of CC0 LeafSet022, LeafSet024 and Foliage008 photographs; not species-specific photographs.",
   "Rice-field cover: ESA WorldCover 2021 © ESA (CC BY 4.0); plot divisions and crop stages are illustrative",
-  "Co.opmart Long Xuyen: original Blender exterior and original 1K baked sign atlas; cached Overture footprint matched to supplied reference photos (reference only, not redistributed). Store identity/address: https://co-opmart.com.vn/he-thong-sieu-thi/co-opmart-long-xuyen; facade and 14.2 x 9.5 m advertising panel: https://billboardquangcao.com/san-pham/trung-tam-thuong-mai-coopmart-long-xuyen. Reference photos are not included as textures. Proportions and unseen parts estimated; brand names identify the landmark"
+  "Co.opmart Long Xuyen: original Blender exterior and original 1K baked sign atlas; cached Overture footprint matched to supplied reference photos (reference only, not redistributed). Store identity/address: https://co-opmart.com.vn/he-thong-sieu-thi/co-opmart-long-xuyen; facade and 14.2 x 9.5 m advertising panel: https://billboardquangcao.com/san-pham/trung-tam-thuong-mai-coopmart-long-xuyen. Reference photos are not included as textures. Proportions and unseen parts estimated; brand names identify the landmark",
+  "An Giang University main campus: original Blender exterior and original baked surface/lettering textures; OSM university way 995513829 and building ways 674697655, 674697656, 835792473, 835792474, 835792475 (https://www.openstreetmap.org/way/995513829, ODbL), supplemented by existing cached Overture building footprints (https://overturemaps.org/). Address and visual references: https://www.agu.edu.vn/en/about/overview; https://hop.agu.edu.vn/gallery-co-so-vat-chat; https://www.agu.edu.vn/vi/tuyen-sinh/gioi-thieu-ve-agu. Campus lawn: Poly Haven grass_ground (https://polyhaven.com/a/grass_ground, CC0); foliage: existing original atlas composition using ambientCG LeafSet024 (https://ambientcg.com/view?id=LeafSet024, CC0). Reference photographs are not included as textures. Heights, planting and unseen elevations are estimated",
+  "Long Xuyên road corrections: owner-supplied non-Google references; official Long Xuyên/An Giang planning facts and Báo An Giang project reports; full URLs and per-field evidence in scripts/overrides/roads.provenance.json.",
+  "Mekong building kit: original project geometry and shared atlas (no copied photos or logos); architecture context: user-supplied An Giang references and the An Giang official tourism guide (https://media.angiang.gov.vn/SoVHTTDL-Portal/File-Dinh-Kem/thong_tin_du_lich_an_giang.pdf)",
+  "Yards: estimated decoration from existing Overture footprints (CDLA Permissive 2.0), OpenStreetMap contributors (ODbL), modified Copernicus Sentinel-2 imagery and ESA WorldCover 2021 (CC BY 4.0); modular geometry original/CC0, foliage/plaster/wood CC0 donors in models/yards/kit.json.",
+  "Trà Sư forest kit: original geometry, leaf and aquatic-plant atlas artwork (CC0); bark from Poly Haven (CC0, https://polyhaven.com/a/bark_willow)"
  ],
  "relief": {
   "res_m": 30,
@@ -3805,6 +3810,6 @@
   "format": "zlib RGB8: water confidence, rice cover, signed shore distance (B-128)*2 m",
   "bank_height_m": 1.5,
   "field_layout": "illustrative 84 x 128 m plots over lowland WorldCover cropland",
-  "crop_channels": "R rice cover (surface.py), G paved ground, B town density (urban.py)"
+  "crop_channels": "R rice cover (surface.py), G paved ground, B town density, A ground kind 160 / lawn 255 / earth 64 (urban.py)"
  }
 }
