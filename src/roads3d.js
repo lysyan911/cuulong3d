@@ -11,6 +11,7 @@
 // Ribbons are built per 3.84 km terrain tile near the camera (scripts/roads.py writes the polylines); beyond ~4 km
 // the hybrid-map lines (world.js RoadLayer) fade back in. Town streets also get their street life (streets.js).
 import * as THREE from 'three';
+import { warm } from './render/warmup.js';
 import { groupCentre } from './world.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
@@ -29,6 +30,16 @@ function embankment(cls, flags) {
   if (cls <= 6) return dyke ? 1.1 : 0.6;
   if (cls === 7) return dyke ? 0.8 : 0.4;
   return dyke ? 0.6 : 0.25;
+}
+
+// cross-section of road chunk c: embankment height, town street?, shoulder / sidewalk width, slope run (m)
+function crossSection(D, c) {
+  const cl = D.cls[c], fl = D.flags[c], bridge = fl & BRIDGE;
+  const e = bridge ? 0 : embankment(cl, fl);
+  const street = !!(fl & TOWN) && !bridge;
+  const shKnown = D.sidewalk[c] / 10;                  // (corrected sidewalk width, scripts/overrides/roads.csv)
+  const sh = bridge ? 0.25 : street ? (shKnown || (cl <= 3 ? 3.5 : cl <= 5 ? 2.6 : cl <= 6 ? 1.3 : 0.3)) : cl <= 4 ? 1.0 : 0.4;
+  return { e, street, sh, run: bridge ? 0 : Math.max(e * 1.7, 0.3) };
 }
 
 const VERT = /* glsl */`
@@ -195,10 +206,12 @@ export class Road3DLayer {
   }
 
   /** Road junctions of a group: shared OSM nodes where 3+ road arms meet. key(point) -> { roads: [chunk...] } */
-  junctions(D) {
-    if (D.junc) return D.junc;
+  junctions(D) { if (D.junc) return D.junc; const g = this.junctionSteps(D); let r; while (!(r = g.next()).done); return r.value; }
+
+  *junctionSteps(D) {                              // (in steps: the largest group took ~33 ms)
     const all = new Map();
     for (let c = 0; c < D.npts.length; c++) {
+      if (c % 2000 === 1999) yield;
       if (D.flags[c] & BRIDGE) continue;
       const np = D.npts[c], s0 = D.starts[c];
       for (let i = 0; i < np; i++) {
@@ -212,10 +225,13 @@ export class Road3DLayer {
     return D.junc;
   }
 
-  build(T) {
+  build(T) { const g = this.buildSteps(T); let r; while (!(r = g.next()).done); return r.value; }
+
+  // a tile's road mesh (and its street furniture), built in steps: update() runs them a few ms per frame
+  *buildSteps(T) {
     const D = T.data, ex = this.meta.vert_exag;
     const pos = [], uv = [], info = [], idx = [], townRoads = [], signals = [];
-    const J = this.junctions(D);
+    const J = D.junc || (yield* this.junctionSteps(D));
     let v = 0;
     const vert = (x, y, yN, along, across, hw, surf, lanes, part) => {
       pos.push(x, y, -yN); uv.push(along, across); info.push(hw, surf, lanes, part);
@@ -225,6 +241,7 @@ export class Road3DLayer {
     const strip = (A, B) => { for (let k = 0; k < A.length - 1; k++) idx.push(A[k], B[k], B[k + 1], A[k], B[k + 1], A[k + 1]); };
 
     for (let c = T.first; c < T.first + T.count; c++) {
+      if ((c - T.first) % 10 === 9) yield;
       const np = D.npts[c], s0 = D.starts[c];
       const cl = D.cls[c], fl = D.flags[c], surf = D.surface[c];
       const hw = D.width[c] / 8, bridge = fl & BRIDGE, town = fl & TOWN;
@@ -255,11 +272,7 @@ export class Road3DLayer {
           return base + clear * 1.5 * prof;
         });
       }
-      const e = bridge ? 0 : embankment(cl, fl);
-      const street = town && !bridge;
-      const shKnown = D.sidewalk[c] / 10;                // (corrected sidewalk width, scripts/overrides/roads.csv)
-      const sh = bridge ? 0.25 : street ? (shKnown || (cl <= 3 ? 3.5 : cl <= 5 ? 2.6 : cl <= 6 ? 1.3 : 0.3)) : cl <= 4 ? 1.0 : 0.4;
-      const run = bridge ? 0 : Math.max(e * 1.7, 0.3);
+      const { e, street, sh, run } = crossSection(D, c);
       const med = bridge ? 0 : D.median[c] / 10, dual = med > 0.15;     // one carriageway of a dual carriageway
       const offs = [-(hw + sh + run), -(hw + sh), -hw, hw, dual ? hw + med : hw + sh, hw + sh + run];
       const rise = [0, e, e, e, e, 0];
@@ -426,21 +439,54 @@ export class Road3DLayer {
     const m = new THREE.Mesh(g, this.material);
     m.raycast = () => {};
     if (this.streets && townRoads.length) {
-      T.furn = this.streets.build(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200), signals);
-      if (T.furn) this.streets.group.add(T.furn);
+      yield;
+      T.furn = yield* this.streets.buildSteps(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200), signals);
     }
     return m;
+  }
+
+  /** Where something standing beside a road (a sign) should stand: { h, x, north } on top of the road's
+   *  embankment, or null when no road is near. A point on the grassy slope moves onto the shoulder edge. */
+  surfaceAt(x, north, reach = 4) {
+    const ex = this.meta.vert_exag, half = this.tileM / 2 + 30;
+    let best = null;
+    for (const T of this.tiles) {
+      if (Math.abs(x - T.cx) > half || Math.abs(north + T.cz) > half) continue;
+      const D = T.data;
+      for (let c = T.first; c < T.first + T.count; c++) {
+        if (D.flags[c] & BRIDGE) continue;
+        const s0 = D.starts[c], X = D.cx, Y = D.cy, xy = D.xy;
+        const cs = crossSection(D, c), hw = D.width[c] / 8, outer = hw + cs.sh + cs.run;
+        for (let i = 0; i < D.npts[c] - 1; i++) {
+          const ax = X + xy[(s0 + i) * 2] / 2, ay = Y + xy[(s0 + i) * 2 + 1] / 2;
+          const dx = X + xy[(s0 + i + 1) * 2] / 2 - ax, dy = Y + xy[(s0 + i + 1) * 2 + 1] / 2 - ay;
+          const t = Math.min(Math.max(((x - ax) * dx + (north - ay) * dy) / (dx * dx + dy * dy || 1), 0), 1);
+          const px = ax + dx * t, py = ay + dy * t, d = Math.hypot(x - px, north - py);
+          if (d - outer < reach && (!best || d - outer < best.m)) best = { m: d - outer, d, px, py, hw, ...cs };
+        }
+      }
+    }
+    if (!best) return null;
+    const { d, px, py, hw, e, street, sh } = best, g = this.terrain.heightAt(px, py) * ex;
+    if (street) return { h: d <= hw ? g + 0.06 : d <= hw + sh ? g + 0.06 + KERB : g, x, north };
+    if (d <= hw + sh) return { h: g + e, x, north };
+    const k = (hw + sh - 0.05) / d;                     // off the slope, onto the shoulder edge
+    return { h: g + e, x: px + (x - px) * k, north: py + (north - py) * k };
   }
 
   update(camera) {
     if (!this.group.visible) return;
     const p = camera.position, half = this.tileM / 2;
-    let built = 0;
+    this.jobs ||= new Map();
     for (const T of this.tiles) {
       const dx = Math.max(Math.abs(p.x - T.cx) - half, 0), dz = Math.max(Math.abs(p.z - T.cz) - half, 0);
       const d = Math.hypot(dx, dz, Math.max(p.y - T.ground - 30, 0));
+      T.dist = d;
       if (d < this.farR + 200) {
-        if (!T.mesh && built < 2) { T.mesh = this.build(T); this.group.add(T.mesh); built++; }   // spread the work
+        if (!T.mesh && !this.jobs.has(T) && this.jobs.size < 2) this.jobs.set(T, this.buildSteps(T));   // built in steps below
+      } else if (this.jobs.has(T) && d > this.farR + 600) {
+        this.jobs.delete(T);                                       // left the range before it was finished
+        if (T.furn) { this.streets.dispose(T.furn); T.furn = null; }
       } else if (T.mesh && d > this.farR + 1500) {
         this.group.remove(T.mesh);
         T.mesh.geometry.dispose();
@@ -448,6 +494,21 @@ export class Road3DLayer {
         if (T.furn) { this.streets.dispose(T.furn); T.furn = null; }
       }
       if (T.furn) { T.furn.visible = d < 1400; if (T.furn.visible) this.streets.update(T.furn, p); }
+    }
+    // run the tile builds a few ms per frame (a town tile with its street furniture took up to ~110 ms in one go)
+    const deadline = performance.now() + 3;
+    for (const [T, steps] of [...this.jobs].sort((a, b) => a[0].dist - b[0].dist)) {
+      let r;
+      while (performance.now() < deadline && !(r = steps.next()).done);
+      if (r && r.done) {
+        const mesh = T.mesh = r.value, furn = T.furn;
+        this.jobs.delete(T);
+        Promise.all([warm(mesh), warm(furn)]).then(() => {           // shown once its shaders are ready
+          if (T.mesh === mesh) this.group.add(mesh);
+          if (furn && T.furn === furn) this.streets.group.add(furn);
+        });
+      }
+      if (performance.now() >= deadline) break;
     }
   }
 }

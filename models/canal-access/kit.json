@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "moored-blue-sampan",
+  "file": "moored-blue-sampan.glb",
+  "triangles": 584,
+  "materials": 1,
+  "units": "metres",
+  "up": "+Y",
+  "front": "+Z",
+  "origin": "waterline, footprint centre",
+  "footprint_m": {
+    "width": 1.8,
+    "depth": 5.2
+  },
+  "proof_envelope_m": {
+    "width": 2.1,
+    "depth": 5.6
+  },
+  "credit": "Original static blue wooden sampan model and painted vertex colours for this project",
+  "texture_bytes": 0,
+  "near_range_m": 250,
+  "max_instances": 6
+}

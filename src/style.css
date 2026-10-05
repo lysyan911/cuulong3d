@@ -142,3 +142,54 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   .topbar { top: 8px; left: 8px; right: 8px; }
   .hint { display: none; }
 }
+
+/* Place search, sharing and accessible map controls. */
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.map-tools { display: flex; gap: 6px; margin-left: auto; }
+.map-tools .icon-btn { width: 44px; height: 44px; display: grid; place-items: center; }
+.map-tools svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.topbar .map-tools + .chip { margin-left: 0; min-height: 44px; }
+.compass { font-size: 12px; font-weight: 700; }
+#compassNeedle { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+#compassNeedle span { color: var(--accent); margin-top: 2px; font-size: 15px; }
+.new-help { border-color: var(--accent); }
+.ux-dialog { color: var(--text); background: var(--panel-solid); padding: 20px; width: min(520px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; }
+.ux-dialog::backdrop { background: #080e0bac; backdrop-filter: blur(3px); }
+.dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.dialog-head h2 { margin: 0; font-size: 19px; }
+.dialog-head button { min-height: 44px; }
+.ux-dialog input { width: 100%; min-height: 48px; background: #ffffff0a; border: 1px solid var(--line); border-radius: 8px; color: var(--text); padding: 12px; font: inherit; }
+.ux-dialog input::placeholder { color: var(--muted); }
+.place-results { list-style: none; margin: 0; padding: 0; max-height: 42dvh; overflow: auto; }
+.place-result { width: 100%; color: var(--text); background: transparent; border: 1px solid transparent; border-radius: 8px; text-align: left; padding: 12px; cursor: pointer; font: inherit; display: flex; flex-direction: column; gap: 4px; min-height: 58px; }
+.place-result span { color: var(--muted); font-size: 12px; }
+.place-result:hover, .place-result[aria-selected="true"] { background: #e0b25a14; border-color: var(--accent); }
+.control-list { margin: 0; line-height: 1.6; font-size: 14px; }
+.control-list dt { color: var(--accent); font-weight: 700; margin: 12px 0 6px; }
+.control-list dd { margin: 0 0 10px; }
+.welcome { position: fixed; bottom: 28px; right: 12px; width: 290px; padding: 16px; z-index: 6; }
+.welcome h2 { margin: 0; font-size: 17px; }
+.welcome p { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.welcome .actions { display: flex; gap: 8px; }
+.map-status:not(:empty) { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--panel-solid); color: var(--text); padding: 10px 16px; border: 1px solid var(--accent); border-radius: 10px; z-index: 30; font-size: 13px; max-width: 90vw; }
+.site-list li { min-height: 42px; }
+@media (max-width:760px), (pointer:coarse) {
+  .map-tools { position: fixed; top: 72px; right: 8px; gap: 6px; }
+  .sidebar { max-height: calc(100dvh - 158px); top: 124px; }
+  .icon-btn, #menuBtn, .chip { min-width: 44px; min-height: 44px; }
+  .btn-grid button, .seg button, .site-list li, .layers label { min-height: 44px; }
+  .layers input { width: 20px; height: 20px; }
+  .info .close { width: 44px; height: 44px; }
+  .info h3 { margin-right: 44px; }
+  .welcome { display: none; }
+}
+@media (max-width:480px) {
+  .title { padding: 8px 10px; flex: 1; }
+  .title p { display: none; }
+  .title h1 { font-size: 13px; }
+  .topbar { gap: 6px; }
+  .map-tools { top: 60px; }
+  .sidebar { top: 112px; }
+}
+@media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; } }

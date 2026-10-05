@@ -1,6 +1,8 @@
 // Split shoreline triangles into a raised land top, flat water top and exposed bank faces.
 // Sharing every edge intersection keeps the mesh watertight within a terrain tile.
-export function splitShore(position,normal,uv,index,confidence,surfaceCount,waterHeight,bankHeight) {
+export function splitShore(...args) { const g=splitShoreSteps(...args); let r; while(!(r=g.next()).done); return r.value; }
+// (Claude Code) the same, in steps: terrain.js spreads the detailed tiles over a few frames
+export function* splitShoreSteps(position,normal,uv,index,confidence,surfaceCount,waterHeight,bankHeight) {
   const extraP=[],extraN=[],extraUV=[],surface=[],banks=[],edges=new Map();
   const originalCount=position.length/3;
   const cut=(a,b)=>{
@@ -23,6 +25,7 @@ export function splitShore(position,normal,uv,index,confidence,surfaceCount,wate
   };
   const addPolygon=(p)=>{for(let j=1;j<p.length-1;j++)addTri(surface,p[0],p[j],p[j+1]);};
   for(let i=0;i<surfaceCount;i+=3) {
+    if(i%12000===0&&i)yield;
     const ids=[index[i],index[i+1],index[i+2]],wet=ids.filter(k=>confidence[k]>=.5).length;
     if(wet===0 || wet===3){surface.push(...ids);continue;}
     const land=[],water=[],crossings=[];
@@ -35,6 +38,7 @@ export function splitShore(position,normal,uv,index,confidence,surfaceCount,wate
     const [[a,aw],[b,bw]]=crossings;
     addTri(banks,a,aw,b);addTri(banks,b,aw,bw);
   }
+  yield;
   const surfaceIndexCount=surface.length+index.length-surfaceCount;
   const indices=surface.concat(index.slice(surfaceCount),banks);
   const append=(original,extra)=>{const a=new Float32Array(original.length+extra.length);a.set(original);a.set(extra,original.length);return a;};

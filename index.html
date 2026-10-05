@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dự án Cửu Long</title>
 <meta name="description" content="Dự án Cửu Long: bản đồ 3D Bảy Núi – An Giang (trước 2025), dự án cá nhân phi thương mại.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,12 @@
       <h1 data-i18n="title">Dự án Cửu Long</h1>
       <p data-i18n="subtitle">Bản đồ 3D Bảy Núi – An Giang (trước 2025)</p>
     </div>
+      <nav id="mapTools" class="map-tools" aria-label="Map tools">
+      <button id="placeSearchBtn" class="icon-btn" aria-label="Tìm địa điểm"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></button>
+      <button id="shareBtn" class="icon-btn" aria-label="Chia sẻ góc nhìn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M5 13v8h14v-8"/></svg></button>
+      <button id="compassBtn" class="icon-btn compass" aria-label="Hướng Bắc"><span id="compassNeedle" aria-hidden="true">N<span>▲</span></span></button>
+      <button id="helpBtn" class="icon-btn" aria-label="Hướng dẫn">?</button>
+    </nav>
     <button id="langBtn" class="chip" aria-label="Language">EN</button>
   </header>
 
@@ -61,6 +67,10 @@
       <h2 data-i18n="quality">Chất lượng hình ảnh</h2>
       <div id="quality" class="seg"></div>
     </section>
+    <section>
+      <h2 data-i18n="weather">Thời tiết</h2>
+      <div id="weather" class="seg"></div>
+    </section>
     <section class="small" id="about">
       <p id="aboutText">Bản đồ 3D địa lý An Giang (trước 2025). Dự án cá nhân, phi thương mại.</p>
       <button id="creditsBtn" class="link" data-i18n="credits">Nguồn dữ liệu</button>
@@ -75,13 +85,37 @@
   <div id="imgCredit" class="img-credit hidden">Imagery © Esri, Maxar, Earthstar Geographics</div>
   <div id="hint" class="hint" data-i18n="hint">Kéo để di chuyển · Chuột phải / hai ngón để xoay · Cuộn để phóng to · Bấm vào địa điểm để đọc</div>
 
-  <div id="loading" class="loading">
+  <div id="loading" class="loading" role="status" aria-live="polite" aria-busy="true">
     <div class="loading-card">
       <div class="loading-title">Dự án Cửu Long</div>
       <div id="loadingText" class="loading-text">Đang tải bản đồ…</div>
-      <div class="bar"><div id="loadingBar"></div></div>
+      <div class="bar" id="loadingProgress" role="progressbar" aria-label="Loading map" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="loadingBar"></div></div>
+      <div id="loadingPercent" class="loading-text">0%</div>
     </div>
   </div>
+
+  <aside id="mapWelcome" class="panel welcome" hidden aria-labelledby="welcomeTitle">
+    <h2 id="welcomeTitle" data-ux="welcome">Khám phá An Giang</h2>
+    <p data-ux="welcomeText">Kéo để di chuyển, cuộn để phóng to.</p>
+    <div class="actions"><button id="welcomeHelp" class="chip" data-ux="controls">Điều khiển</button><button id="welcomeClose" class="chip" data-ux="gotIt">Đã hiểu</button></div>
+  </aside>
+  <dialog id="placeSearch" class="panel ux-dialog" aria-labelledby="placeSearchTitle">
+    <div class="dialog-head"><h2 id="placeSearchTitle" data-ux="search">Tìm địa điểm</h2><button class="chip" data-dialog-close="placeSearch" data-ux="close">Đóng</button></div>
+    <input id="placeQuery" type="search" autocomplete="off" role="combobox" aria-controls="placeResults" aria-expanded="true" aria-autocomplete="list" aria-describedby="placeSearchHint">
+    <p id="placeSearchHint" class="small" data-ux="searchHint"></p>
+    <p id="placeResultCount" class="small" role="status" aria-live="polite"></p>
+    <ul id="placeResults" class="place-results" role="listbox" aria-labelledby="placeSearchTitle"></ul>
+    <p id="placeEmpty" data-ux="noResults" hidden></p>
+  </dialog>
+  <dialog id="mapHelp" class="panel ux-dialog" aria-labelledby="mapHelpTitle">
+    <div class="dialog-head"><h2 id="mapHelpTitle" data-ux="help">Hướng dẫn</h2><button class="chip" data-dialog-close="mapHelp" data-ux="close">Đóng</button></div>
+    <dl class="control-list"><dt data-ux="controls"></dt><dd data-ux="mouse"></dd><dd data-ux="touch"></dd><dd data-ux="keys"></dd><dd data-ux="street"></dd><dt data-ux="search"></dt><dd data-ux="searchHelp"></dd><dt data-ux="share"></dt><dd data-ux="shareHelp"></dd></dl>
+  </dialog>
+  <dialog id="mapShare" class="panel ux-dialog" aria-labelledby="mapShareTitle">
+    <div class="dialog-head"><h2 id="mapShareTitle" data-ux="share"></h2><button class="chip" data-dialog-close="mapShare" data-ux="close">Đóng</button></div>
+    <p data-ux="copyHint"></p><input id="shareLink" readonly aria-label="View link"><button id="shareCopy" class="chip" data-ux="copy">Sao chép</button>
+  </dialog>
+  <div id="mapStatus" class="map-status" role="status" aria-live="polite"></div>
 
   <dialog id="credits" class="panel credits">
     <h2 data-i18n="credits">Nguồn dữ liệu</h2>

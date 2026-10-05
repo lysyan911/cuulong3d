@@ -6,7 +6,7 @@
 // are loaded on demand and the least recently used ones are released (GPU memory on integrated graphics).
 import * as THREE from 'three';
 import { patchTerrainMaterial } from './shaders.js';
-import { splitShore } from './shore.js';
+import { splitShoreSteps } from './shore.js';
 
 const MAX_LOD = 4;
 const REBUILDS_PER_FRAME = 10;
@@ -14,6 +14,8 @@ const DETAIL_LOD = 1;            // tiles at LOD <= this use 10 m detail texture
 const HILL_RANGE = 40;           // metres of relief that make a tile a "hill tile" (finer mesh)
 const HILL_STEP = [1 / 3, 2 / 3, 1, 2, 4];   // hill tile vertex spacing per LOD, in 60 m cells (20 m close up)
 const BUILD_MS = 10;             // terrain rebuild budget per frame
+const MERGE_LOD = 3;             // tiles this coarse are drawn merged per texture group (one draw instead of up to 49)
+const SLICE_MS = 3;              // the detailed (LOD 0) tiles are built in steps, this long per frame (no hitch)
 
 // Catmull-Rom weights: C1-smooth and passes through the samples (keeps peaks)
 function crw(t, w) {
@@ -51,6 +53,7 @@ export class Terrain {
     this.loader = new THREE.TextureLoader();
     this.imagery = imagery;   // optional StreamedImagery (live high-res tiles for the nearest tiles)
     this.detail = new Map();   // "gx_gy_sx_sy" -> { state, material, textures, lastUsed }
+    this.jobs = new Map();     // tile -> { lod, steps }: detailed tiles being built over a few frames
     this.frame = 0;
     this.subOf = {};            // tile index within group -> sub-tile index
     for (const st of meta.subtiles) {
@@ -187,7 +190,10 @@ export class Terrain {
     return this.surface ? this.surface.waterHeight(x, y) : this.heightAt(x, y) * this.ex;
   }
 
-  build(t, lod) {
+  build(t, lod) { const g = this.buildSteps(t, lod); let r; while (!(r = g.next()).done); return r.value; }
+
+  // the tile geometry, built in steps (yield = a good place to pause until the next frame)
+  *buildSteps(t, lod) {
     const s = t.hill ? HILL_STEP[lod] : lod === 0 && this.surface ? 1 / 3 : 1 << lod;
     const ex = this.ex, res = this.res, G = this.G;
     const cols = [], rows = [];
@@ -206,7 +212,10 @@ export class Terrain {
     // heights once per vertex on a grid with a one-vertex ring around it (for the normals), not 5x per vertex
     const ex1 = [cols[0] - s, ...cols, cols[nx - 1] + s], ey1 = [rows[0] - s, ...rows, rows[ny - 1] + s];
     const HE = new Float32Array((nx + 2) * (ny + 2));
-    for (let r = 0; r < ny + 2; r++) for (let c = 0; c < nx + 2; c++) HE[r * (nx + 2) + c] = this.heightAtGrid(ey1[r], ex1[c]);
+    for (let r = 0; r < ny + 2; r++) {
+      for (let c = 0; c < nx + 2; c++) HE[r * (nx + 2) + c] = this.heightAtGrid(ey1[r], ex1[c]);
+      if ((r & 7) === 7) yield;
+    }
     const rowOf = new Map(rows.map((v, q) => [v, q])), colOf = new Map(cols.map((v, q) => [v, q]));
     const writeVertex = (k, i, j, drop) => {
       const r = rowOf.get(i) + 1, c = colOf.get(j) + 1, W2 = nx + 2;
@@ -225,7 +234,10 @@ export class Terrain {
     };
 
     let k = 0;
-    for (const i of rows) for (const j of cols) writeVertex(k++, i, j, 0);
+    for (let r = 0; r < ny; r++) {
+      for (const j of cols) writeVertex(k++, rows[r], j, 0);
+      if ((r & 15) === 15) yield;
+    }
     let idx = [];
     for (let r = 0; r < ny - 1; r++) {
       for (let c = 0; c < nx - 1; c++) {
@@ -255,12 +267,14 @@ export class Terrain {
 
     let surfaceIndexCount = idx.length, bankIndexCount = 0;
     if (this.surface && lod <= 1) {
-      const clipped = splitShore(pos, nor, uv, idx, confidence, (nx - 1) * (ny - 1) * 6,
+      yield;
+      const clipped = yield* splitShoreSteps(pos, nor, uv, idx, confidence, (nx - 1) * (ny - 1) * 6,
         (x, y) => this.waterHeightAt(x, y),
         (x, y) => Math.max(this.heightAt(x, y) * ex, this.waterHeightAt(x, y) + this.meta.surface.bank_height_m * ex));
       pos = clipped.position; nor = clipped.normal; uv = clipped.uv; idx = clipped.indices;
       surfaceIndexCount = clipped.surfaceIndexCount; bankIndexCount = clipped.bankIndexCount;
     }
+    if (lod <= 1) yield;
     const g = new THREE.BufferGeometry();
     g.addGroup(0, surfaceIndexCount, 0);
     if (bankIndexCount) g.addGroup(surfaceIndexCount, bankIndexCount, 1);
@@ -282,7 +296,13 @@ export class Terrain {
       }
       g.setAttribute('uv1', new THREE.BufferAttribute(uv1, 2));
     }
-    g.setIndex(idx);
+    yield;
+    const ia = pos.length / 3 > 65535 ? new Uint32Array(idx.length) : new Uint16Array(idx.length);
+    for (let q = 0; q < idx.length; q += 65536) {        // (a plain array would be converted in one go by setIndex)
+      ia.set(idx.slice(q, q + 65536), q);
+      if (lod <= 1 && q && (q & 262143) === 0) yield;
+    }
+    g.setIndex(new THREE.BufferAttribute(ia, 1));
     g.computeBoundingSphere();
     return g;
   }
@@ -340,7 +360,12 @@ export class Terrain {
       let lod = Math.floor(Math.log2(Math.max(d, 1) / (tileWorld * 1.2))) + 1 + this.lodBias - (t.hill ? 1 : 0);
       lod = Math.min(Math.max(lod, 0), MAX_LOD);
       const overBudget = performance.now() - frameStart > BUILD_MS;
-      if (lod !== t.lod && (t.lod === -1 || (rebuilt < REBUILDS_PER_FRAME && !overBudget))) {
+      const heavy = lod === 0 || (t.hill && lod <= 1);               // the slow builds (12-37 ms): in steps over a few frames
+      if (heavy && t.lod !== lod && t.lod !== -1) {
+        const job = this.jobs.get(t);
+        if (!job || job.lod !== lod) this.jobs.set(t, { lod, steps: this.buildSteps(t, lod) });
+      } else if (this.jobs.has(t) && lod !== this.jobs.get(t).lod) this.jobs.delete(t);
+      else if (lod !== t.lod && (t.lod === -1 || (rebuilt < REBUILDS_PER_FRAME && !overBudget))) {
         if (t.lod === -1 && overBudget) lod = Math.max(lod, 3);      // something cheap now, the real LOD later
         const old = t.mesh.geometry;
         t.mesh.geometry = this.build(t, lod);
@@ -359,7 +384,78 @@ export class Terrain {
       }
       t.mesh.material[0] = mat;
     }
+    // advance the detailed-tile jobs for SLICE_MS, nearest tiles first; swap each in when it is done
+    if (this.jobs.size) {
+      const deadline = performance.now() + SLICE_MS;
+      const order = [...this.jobs.keys()].sort((a, b) => camera.position.distanceTo(a.center) - camera.position.distanceTo(b.center));
+      for (const t of order) {
+        const job = this.jobs.get(t);
+        let r;
+        while (performance.now() < deadline && !(r = job.steps.next()).done);
+        if (r && r.done) {
+          const old = t.mesh.geometry;
+          t.mesh.geometry = r.value;
+          if (old) old.dispose();
+          t.lod = job.lod;
+          this.jobs.delete(t);
+        }
+        if (performance.now() >= deadline) break;
+      }
+    }
+    this.mergeFar();
     this.releaseDetail();
     if (this.imagery) this.imagery.release();
+  }
+
+  // Distant tiles of a texture group share one material: draw them as one merged mesh. Rebuilt (< 1 ms, one group
+  // per frame) when one of them changes level; until then that tile draws on its own, so nothing is ever missing.
+  mergeFar() {
+    if (!this.byGroup) {
+      this.byGroup = new Map();
+      for (const t of this.tiles) {
+        const k = t.gy * 100 + t.gx;
+        if (!this.byGroup.has(k)) this.byGroup.set(k, { tiles: [], lods: new Map(), mesh: null, sig: '' });
+        this.byGroup.get(k).tiles.push(t);
+      }
+    }
+    let rebuilt = 0;
+    for (const G of this.byGroup.values()) {
+      const list = G.tiles.filter((t) => t.lod >= MERGE_LOD && t.mesh.material[0] === t.base && !this.jobs.has(t) && t.mesh.geometry);
+      const sig = list.map((t) => t.tx * 100000 + t.ty * 10 + t.lod).join();
+      G.stale = false;
+      if (sig !== G.sig) {
+        if (list.length < 2) { G.sig = sig; G.lods = new Map(); }
+        else if (rebuilt < 2) {
+          rebuilt++;
+          G.sig = sig;
+          G.lods = new Map(list.map((t) => [t, t.lod]));
+          let nv = 0, ni = 0;
+          for (const t of list) { nv += t.mesh.geometry.attributes.position.count; ni += t.mesh.geometry.index.count; }
+          const pos = new Float32Array(nv * 3), nor = new Float32Array(nv * 3), uv = new Float32Array(nv * 2);
+          const idx = new Uint32Array(ni);
+          let v = 0, i = 0;
+          for (const t of list) {
+            const g = t.mesh.geometry, n = g.attributes.position.count, ix = g.index.array;
+            pos.set(g.attributes.position.array, v * 3); nor.set(g.attributes.normal.array, v * 3); uv.set(g.attributes.uv.array, v * 2);
+            for (let k = 0; k < ix.length; k++) idx[i + k] = ix[k] + v;
+            v += n; i += ix.length;
+          }
+          const geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+          geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+          geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+          geo.setIndex(new THREE.BufferAttribute(idx, 1));
+          geo.computeBoundingSphere();
+          if (!G.mesh) {
+            G.mesh = new THREE.Mesh(geo, list[0].base);
+            G.mesh.matrixAutoUpdate = false;
+            this.group.add(G.mesh);
+          } else { G.mesh.geometry.dispose(); G.mesh.geometry = geo; }
+        } else G.stale = true;                      // out of date: its tiles draw on their own this frame
+      }
+      if (G.mesh) G.mesh.visible = !G.stale && G.lods.size > 0;
+      // a tile is drawn by the merged mesh only at the level it was merged with
+      for (const t of G.tiles) if (t.lod !== -1) t.mesh.visible = G.stale || G.lods.get(t) !== t.lod || t.mesh.material[0] !== t.base;
+    }
   }
 }

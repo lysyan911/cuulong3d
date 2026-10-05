@@ -6,13 +6,21 @@
 //                    real rivers and canals (inst/water_*.bin), sized to each waterway, bobbing on the water
 // Models load the first time they are needed. Each model is merged per material and drawn instanced.
 import * as THREE from 'three';
+import { warm } from './render/warmup.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OCC_SOURCES } from './render/occlusion.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 import { metricUVs, modelPhotoMaterial } from './photo-textures.js';
+import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const MODELS = 'models/';
+// (Claude Code) cloud shade and rain wetness on the models too, as on the terrain and houses (render/atmosphere.js)
+function weathered(mat) {
+  if (mat.isMeshStandardMaterial && mat.onBeforeCompile === THREE.Material.prototype.onBeforeCompile)
+    mat.onBeforeCompile = (sh) => patchCloudShadow(sh, cloudUniforms());
+  return mat;
+}
 // footprint (m): x = across the front, z = front to back (from the model manifests)
 const HOUSE = {
   'modern-tube-house': { x: 4.8, z: 12 },
@@ -72,8 +80,14 @@ class Library {
           else this.surfaceMaps.set(mat.name, mat.map);
         }
         const geometry = mergeGeometries(geos); geos.forEach(g => g.dispose());
-        return { geometry, material: modelPhotoMaterial(mat, id) };
+        return { geometry, material: weathered(modelPhotoMaterial(mat, id)) };
       });
+      // compile its shaders in the background before first use (a first look at a landmark froze ~150 ms)
+      const probe = new THREE.Group();
+      for (const { geometry, material } of entry.parts) probe.add(new THREE.InstancedMesh(geometry, material, 1));
+      return warm(probe);
+    }).then(() => {
+      if (entry.failed || !entry.parts) return;
       entry.ready = true;
     }).catch((e) => { console.warn('model', id, e); entry.failed = true; });
     return null;
@@ -155,6 +169,7 @@ export class PropsLayer {
     this.lastPick = null;
     this.landmarks = [];
     this.lines = [];
+    this.placeLayers = [];         // independent roadside/bridge/bank assets; no render-loop hook
   }
 
   instancer(id, cap) {
@@ -250,6 +265,7 @@ export class PropsLayer {
   updateBoats(camera) {
     const p = camera.position, t = this.shared.uTime.value, ex = this.meta.vert_exag, R = this.boatR;
     const out = {};
+    this.wakes = [];                                                     // moving boats, for their wakes (waterlife.js)
     // boats out of view are not drawn (they move every frame, so they are not in the occlusion culling)
     _vp.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     _frustum.setFromProjectionMatrix(_vp);
@@ -273,6 +289,7 @@ export class PropsLayer {
         if (Math.hypot(bx - p.x, bz - p.z, p.y) > R) continue;
         if (this.terrain.surface && this.terrain.surface.waterAt(bx, -bz) < 0.5) continue;
         const y = this.terrain.waterHeightAt(bx, -bz) + 0.06 * Math.sin(t * 1.4 + b.phase);
+        if (!b.moored) this.wakes.push({ x: bx, y, z: bz, fx: tx * b.dir, fz: tz * b.dir, L: BOAT[b.id].L, B: b.B, v: b.v, fade });
         if (!_frustum.intersectsSphere(_sph.set(_bp.set(bx, y, bz), 35))) continue;
         const head = b.moored ? b.side : b.dir;
         const theta = Math.atan2(-tz * head, tx * head);                // travel direction, as east/north angle
@@ -339,6 +356,7 @@ export class PropsLayer {
 
   update(camera) {
     const p = camera.position;
+    for (const layer of this.placeLayers) layer.update(camera);
     if (this.group.visible) this.updateHouses(camera, p);
     if (this.boatGroup.visible) this.updateBoats(camera);
   }

@@ -14,7 +14,9 @@ const T = {
     about_study: 'Bản đồ 3D địa lý An Giang (trước 2025): địa hình, sông kênh, rừng, ruộng lúa, làng và đô thị. Dự án cá nhân, phi thương mại.',
     views: 'Góc nhìn', places: 'Địa điểm trong truyện', layers: 'Lớp hiển thị', quality: 'Chất lượng hình ảnh',
     qualityModes: { fast: 'Nhanh', good: 'Đẹp', cinematic: 'Điện ảnh' },
-    qualityNote: 'Điện ảnh: bóng nắng sắc nét, che khuất ánh sáng đầy đủ — dành cho cận cảnh, máy mạnh.', credits: 'Nguồn dữ liệu', close: 'Đóng',
+    qualityNote: 'Điện ảnh: bóng nắng sắc nét, che khuất ánh sáng đầy đủ — dành cho cận cảnh, máy mạnh.',
+    weather: 'Thời tiết', weatherModes: { clear: 'Quang', cloudy: 'Ít mây', overcast: 'U ám', rain: 'Mưa rào', auto: 'Tự động' },
+    weatherNote: 'Tự động: chiều miền Tây, phần lớn nắng ráo, thỉnh thoảng mây kéo đến thành cơn mưa rào rồi tạnh.', credits: 'Nguồn dữ liệu', close: 'Đóng',
     m_real: 'Có thật', m_embellished: 'Có thật + hư cấu', m_fictional: 'Hư cấu', m_reference: 'Tham khảo',
     m_road_note: 'Ghi chú đường', m_conflict: 'Truyện khác thực tế',
     about: 'Dự án của người hâm mộ, phi thương mại. Vị trí đặt theo truyện; chỗ nào truyện khác thực tế đều có ghi chú.',
@@ -25,11 +27,11 @@ const T = {
     lm_note: 'Công trình có thật (theo OpenStreetMap). Mô hình chỉ mang tính minh họa.',
     lm: { khmer_pagoda: 'Chùa Khmer', viet_pagoda: 'Chùa / miếu', church: 'Nhà thờ', mosque: 'Thánh đường Hồi giáo', caodai: 'Thánh thất Cao Đài' },
     loading: { meta: 'Đang đọc thông tin…', terrain: 'Đang tải địa hình…', tex: 'Đang tải bản đồ màu…', data: 'Đang tải địa điểm…',
-               trees: 'Đang trồng cây…', houses: 'Đang dựng nhà…', ready: 'Sẵn sàng' },
+               trees: 'Đang trồng cây…', houses: 'Đang dựng nhà…', models: 'Đang tải biển báo, cầu và bờ sông…', ready: 'Sẵn sàng' },
     layer: { sites: 'Địa điểm truyện', route: 'Lộ trình nhân vật', rings: 'Vùng ước đoán', labels: 'Địa danh',
              villages: 'Tên làng, ấp', roads: 'Đường sá', buildings: 'Nhà cửa', boats: 'Ghe thuyền', trees: 'Cây cối', landmarks: 'Chùa, nhà thờ…',
-             boundaries: 'Ranh giới', paddies: 'Ruộng lúa', trasu: 'Rừng ngập nước Trà Sư' },
-    view: { overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két', paddies: 'Ruộng lúa – Tri Tôn',
+             boundaries: 'Ranh giới', paddies: 'Ruộng lúa', trasu: 'Rừng ngập nước Trà Sư', fauna: 'Động vật' },
+    view: { faunaPilot: 'Động vật – ruộng Tri Tôn', overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két', paddies: 'Ruộng lúa – Tri Tôn',
             trasu: 'Trà Sư – toàn cảnh', trasuCanal: 'Trà Sư – dưới tán tràm', trasuBirds: 'Trà Sư – chim nước', river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
             lxCathedral: 'Nhà thờ Long Xuyên', agu: 'Đại học An Giang' },
   },
@@ -40,7 +42,9 @@ const T = {
     about_study: '3D geography of An Giang (pre-2025): terrain, rivers and canals, forests, rice fields, villages and towns. Personal, non-commercial project.',
     views: 'Views', places: 'Places in the story', layers: 'Layers', quality: 'Picture quality',
     qualityModes: { fast: 'Fast', good: 'Good', cinematic: 'Cinematic' },
-    qualityNote: 'Cinematic: sharp sun shadows and full ambient occlusion, for close-ups on a strong computer.', credits: 'Data sources', close: 'Close',
+    qualityNote: 'Cinematic: sharp sun shadows and full ambient occlusion, for close-ups on a strong computer.',
+    weather: 'Weather', weatherModes: { clear: 'Clear', cloudy: 'Partly cloudy', overcast: 'Overcast', rain: 'Rain shower', auto: 'Auto' },
+    weatherNote: 'Auto: a delta afternoon, mostly fair; now and then clouds build into a short shower, then it clears.', credits: 'Data sources', close: 'Close',
     m_real: 'Real place', m_embellished: 'Real + invented', m_fictional: 'Invented', m_reference: 'Reference',
     m_road_note: 'Road note', m_conflict: 'Story differs from reality',
     about: 'Non-commercial fan project. Places sit where the novel puts them; conflicts with reality are noted.',
@@ -51,20 +55,21 @@ const T = {
     lm_note: 'Real building (from OpenStreetMap). The model is illustrative only.',
     lm: { khmer_pagoda: 'Khmer pagoda', viet_pagoda: 'Pagoda / temple', church: 'Church', mosque: 'Mosque', caodai: 'Cao Đài temple' },
     loading: { meta: 'Reading map info…', terrain: 'Loading terrain…', tex: 'Loading map colours…', data: 'Loading places…',
-               trees: 'Planting trees…', houses: 'Building houses…', ready: 'Ready' },
+               trees: 'Planting trees…', houses: 'Building houses…', models: 'Loading signs, bridges and river banks…', ready: 'Ready' },
     layer: { sites: 'Story places', route: "Narrator's route", rings: 'Uncertainty', labels: 'Place names',
              villages: 'Village names', roads: 'Roads & paths', buildings: 'Buildings', trees: 'Trees',
-             landmarks: 'Pagodas, churches…', boundaries: 'Boundaries', boats: 'Boats', paddies: 'Rice fields', trasu: 'Trà Sư flooded forest' },
-    view: { overview: 'Whole province', baynui: 'Seven Mountains', sites: 'Story places', tapa: 'Tà Pạ – Tri Tôn',
+             landmarks: 'Pagodas, churches…', boundaries: 'Boundaries', boats: 'Boats', paddies: 'Rice fields', trasu: 'Trà Sư flooded forest', fauna: 'Wildlife' },
+    view: { faunaPilot: 'Wildlife – Tri Tôn fields', overview: 'Whole province', baynui: 'Seven Mountains', sites: 'Story places', tapa: 'Tà Pạ – Tri Tôn',
             nuiket: 'From Núi Két summit', paddies: 'Tri Tôn rice fields', trasu: 'Trà Sư – aerial', trasuCanal: 'Trà Sư – forest canal', trasuBirds: 'Trà Sư – waterbirds', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
             lxCathedral: 'Long Xuyên Cathedral', agu: 'An Giang University' },
   },
 };
 
 export class UI {
-  constructor({ credits, onView, onSite, onLayer, onLang, onMode, onQuality }) {
+  constructor({ credits, onView, onSite, onLayer, onLang, onMode, onQuality, onWeather }) {
     this.lang = 'vi';
-    this.cb = { onView, onSite, onLayer, onLang, onMode, onQuality };
+    this.cb = { onView, onSite, onLayer, onLang, onMode, onQuality, onWeather };
+    this.weather = 'clear';
     this.mode = 'study';
     try { if (localStorage.getItem('cuulong-mode') === 'novel') this.mode = 'novel'; } catch { /* private mode */ }
     this.credits = credits;
@@ -72,16 +77,25 @@ export class UI {
     this.$('langBtn').onclick = () => this.setLang(this.lang === 'vi' ? 'en' : 'vi');
     this.$('infoClose').onclick = () => this.hideInfo();
     this.$('creditsBtn').onclick = () => this.$('credits').showModal();
-    this.$('menuBtn').onclick = () => this.$('sidebar').classList.toggle('open');
+    this.$('menuBtn').setAttribute('aria-controls', 'sidebar');
+    this.$('menuBtn').setAttribute('aria-expanded', 'false');
+    this.$('menuBtn').onclick = () => { const open = this.$('sidebar').classList.toggle('open'); this.$('menuBtn').setAttribute('aria-expanded', String(open)); };
     setTimeout(() => (this.$('hint').style.opacity = '0'), 12000);
   }
 
   t(key) { return T[this.lang][key]; }
+  closeMenu() { this.$('sidebar').classList.remove('open'); this.$('menuBtn').setAttribute('aria-expanded', 'false'); }
+  viewName(id, lang = this.lang) { return T[lang].view[id] || id; }
 
   loading(step, frac) {
     this.$('loadingText').textContent = T[this.lang].loading[step] || step;
-    this.$('loadingBar').style.width = `${Math.round(frac * 100)}%`;
-    if (step === 'ready') setTimeout(() => this.$('loading').classList.add('done'), 300);
+    this.loadFraction = Math.max(this.loadFraction || 0, Number.isFinite(frac) ? Math.min(1, Math.max(0, frac)) : 0);
+    const percent = Math.round(this.loadFraction * 100);
+    this.$('loadingBar').style.width = `${percent}%`;
+    this.$('loadingPercent').textContent = `${percent}%`;
+    this.$('loadingProgress').setAttribute('aria-valuenow', percent);
+    this.$('loadingProgress').setAttribute('aria-label', T[this.lang].loading[step] || step);
+    if (step === 'ready') { this.$('loading').setAttribute('aria-busy', 'false'); setTimeout(() => { this.$('loading').classList.add('done'); this.$('loading').setAttribute('aria-hidden', 'true'); }, 300); }
   }
 
   build({ views, sites, layers }) {
@@ -123,7 +137,7 @@ export class UI {
       if (!novel && NOVEL_VIEWS.includes(id)) continue;
       const b = document.createElement('button');
       b.textContent = T[this.lang].view[id] || id;
-      b.onclick = () => { this.cb.onView(id); this.$('sidebar').classList.remove('open'); };
+      b.onclick = () => { this.cb.onView(id); this.closeMenu(); };
       views.append(b);
     }
 
@@ -131,11 +145,12 @@ export class UI {
     list.innerHTML = '';
     for (const s of this.sites) {
       const li = document.createElement('li');
-      li.dataset.id = s.id;
+      li.dataset.id = s.id; li.tabIndex = 0; li.setAttribute('role', 'button');
+      li.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } };
       li.innerHTML = `<span class="site-id" style="background:${MATCH_COLORS[s.match]}">${s.id}</span>` +
         `<span class="site-name">${escapeHtml(this.lang === 'vi' ? s.short || s.name_vi : s.name.split(' (')[0])}</span>` +
         (s.mismatch ? '<i class="warn">!</i>' : '');
-      li.onclick = () => { this.cb.onSite(s); this.$('sidebar').classList.remove('open'); };
+      li.onclick = () => { this.cb.onSite(s); this.closeMenu(); };
       list.append(li);
     }
 
@@ -168,8 +183,26 @@ export class UI {
       q.append(note);
     }
 
+    const w = this.$('weather');
+    if (w) {
+      w.innerHTML = '';
+      for (const id of ['clear', 'cloudy', 'overcast', 'rain', 'auto']) {
+        const b = document.createElement('button');
+        b.textContent = T[this.lang].weatherModes[id];
+        b.className = this.weather === id ? 'on' : '';
+        b.setAttribute('aria-pressed', this.weather === id);
+        b.onclick = () => { this.weather = id; this.cb.onWeather?.(id); this.render(); };
+        w.append(b);
+      }
+      const note = document.createElement('p');
+      note.className = 'seg-note';
+      note.textContent = T[this.lang].weatherNote;
+      w.append(note);
+    }
+
     this.$('creditsList').innerHTML = this.credits.filter((c) => novel || !isStoryCredit(c)).map((c) => `<li>${escapeHtml(c)}</li>`).join('');
     if (this.current) this.current.kind === 'site' ? this.showSite(this.current.item) : this.showLandmark(this.current.item);
+    this.extras?.render();
   }
 
   /** 'study' (default: no novel content) or 'novel' (story places, route, notes). */
@@ -224,6 +257,6 @@ export class UI {
     this.current = null;
     this.$('info').classList.add('hidden');
     for (const li of this.$('siteList').children) li.classList.remove('active');
-    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    if (new URLSearchParams(location.hash.slice(1)).has('site')) history.replaceState(null, '', location.pathname + location.search);
   }
 }

@@ -10,6 +10,7 @@ export const CLOUD_GLSL = /* glsl */ `
 uniform vec4 uCloud;     // coverage 0..1, layer height (scene m), shadow strength, -
 uniform vec3 uSunDir;    // towards the sun
 uniform float uCloudTime;
+uniform vec4 uWeather;   // overcast darkness, rain, lightning flash, wetness (render/weather.js)
 float cHash(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
 float cNoise(vec2 p) {
   vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -34,7 +35,7 @@ float cloudShadow(vec3 wp) {
 
 /** The cloud uniforms (shared, see globals.js). */
 export function cloudUniforms() {
-  return { uCloud: GLOBALS.uCloud, uSunDir: GLOBALS.uSunDir, uCloudTime: GLOBALS.uCloudTime };
+  return { uCloud: GLOBALS.uCloud, uSunDir: GLOBALS.uSunDir, uCloudTime: GLOBALS.uCloudTime, uWeather: GLOBALS.uWeather };
 }
 
 /** Cloud + sky colour uniforms, for materials that use SKY_GLSL (water reflections). */
@@ -56,6 +57,16 @@ export function patchCloudShadow(shader, uniforms) {
       // world position from the view-space position (rigid view matrix)
       vec3 cloudWP = transpose(mat3(viewMatrix)) * (-vViewPosition - viewMatrix[3].xyz);
       float cloudShade = cloudShadow(cloudWP);
+      #ifdef STANDARD
+      if (uWeather.w > 0.001) {                  // rain: wet surfaces (facing up) darker and glossier, puddles on the flat
+        float up = (transpose(mat3(viewMatrix)) * normal).y;
+        float wetK = uWeather.w * smoothstep(0.2, 0.8, up) * smoothstep(0.4, 0.6, material.roughness);   // (water is already wet)
+        float pud = smoothstep(0.58, 0.66, cNoise(cloudWP.xz * 0.33) * 0.7 + cNoise(cloudWP.xz * 1.3) * 0.3) * smoothstep(0.93, 0.99, up) * wetK;
+        material.diffuseColor *= 1.0 - 0.3 * wetK - 0.25 * pud;
+        material.roughness = mix(material.roughness, mix(0.5, 0.08, pud), 0.7 * wetK);
+        normal = normalize(mix(normal, viewMatrix[1].xyz, pud));   // standing water is flat (no glittering bumps)
+      }
+      #endif
       ${lights}`);
 }
 
@@ -69,7 +80,7 @@ uniform mat4 uReflMatrix;
 vec3 skyRadiance(vec3 d, vec3 from, float withClouds, out float cover) {
   float e = d.y, mu = dot(d, uSunDir);
   vec3 col = mix(uHorizon, uZenith, pow(clamp(e, 0.0, 1.0), 0.48));
-  col += vec3(1.0, 0.80, 0.52) * (0.12 * pow(max(mu, 0.0), 5.0) + 0.45 * pow(max(mu, 0.0), 60.0));   // sun glow
+  col += vec3(1.0, 0.80, 0.52) * (0.12 * pow(max(mu, 0.0), 5.0) + 0.45 * pow(max(mu, 0.0), 60.0)) * (1.0 - 0.9 * uWeather.x);   // sun glow
   col = mix(col, uHorizon * 0.9, smoothstep(0.0, -0.15, e));                                         // haze below
   cover = 0.0;
   if (withClouds > 0.5 && e > 0.005 && from.y < uCloud.y) {
@@ -81,6 +92,8 @@ vec3 skyRadiance(vec3 d, vec3 from, float withClouds, out float cover) {
       float light = clamp(1.0 - 0.75 * toSun + 0.2 * (1.0 - dens), 0.0, 1.0);
       vec3 cloud = mix(vec3(0.50, 0.55, 0.63), vec3(1.05, 1.0, 0.94), light);
       cloud += vec3(1.0, 0.85, 0.6) * pow(max(mu, 0.0), 12.0) * (1.0 - dens) * 0.9;   // silver lining
+      cloud *= 1.0 - 0.55 * uWeather.x * (0.6 + 0.4 * toSun);                       // rain clouds: dark grey, darker bases
+      cloud += vec3(0.85, 0.88, 1.0) * uWeather.z * (0.6 + 0.8 * dens);             // lightning inside the clouds
       cloud = mix(cloud, uHorizon, smoothstep(8000.0, 70000.0, t) * 0.7);           // aerial haze
       col = mix(col, cloud, dens);
       cover = dens;
@@ -119,9 +132,12 @@ export function skyMaterial(uniforms, { horizon, zenith }) {
  * is the haze extinction at sea level (per m) and it thins out with height (scale height HAZE_H), so low views over
  * the delta fade to the haze colour within ~10-20 km while views from high above stay clear. Linear Fog still works
  * as before (used under the Trà Sư canopy). Call once, before any material compiles.
+ * The haze colour is worked out per pixel from the angle to the sun (sunDir, fixed for the session): fogColor is the
+ * horizon blue; looking towards the sun the haze glows warm (forward scattering by the humid air), looking away it
+ * turns a deeper blue, so far hills fade into blue layers rather than grey.
  */
 export const HAZE_H = 1100;
-export function installAerialHaze() {
+export function installAerialHaze(sunDir) {
   if (THREE.ShaderChunk.fog_fragment.includes('vFogWorld')) return;
   THREE.ShaderChunk.fog_pars_vertex = '#ifdef USE_FOG\n  varying float vFogDepth;\n  varying vec3 vFogWorld;\n#endif';
   THREE.ShaderChunk.fog_vertex = `#ifdef USE_FOG
@@ -148,10 +164,17 @@ export function installAerialHaze() {
       float fogOd = fogDensity * exp(-max(cameraPosition.y, 0.0) * fogB) * fogLen
                   * (abs(fogK) > 1e-3 ? (1.0 - exp(-fogK)) / fogK : 1.0);
       float fogFactor = 1.0 - exp(-fogOd);
+      vec3 fogDir = fogRay / max(fogLen, 1.0);
+      float fogMu = dot(fogDir, vec3(${sunDir.x.toFixed(4)}, ${sunDir.y.toFixed(4)}, ${sunDir.z.toFixed(4)}));
+      float fogMie = 0.42 * pow(max(fogMu, 0.0), 6.0) + 0.16 * max(fogMu, 0.0) * max(fogMu, 0.0);
+      // (a little darker than the sky at the horizon, so it keeps its blue through the tone mapping)
+      vec3 fogCol = mix(fogColor * vec3(0.76, 0.88, 1.02), vec3(1.0, 0.84, 0.62), clamp(fogMie, 0.0, 1.0));
+      fogCol = mix(fogCol, fogColor * vec3(0.66, 0.80, 1.0), 0.5 * max(-fogMu, 0.0));
     #else
+      vec3 fogCol = fogColor;
       float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );
     #endif
-    gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+    gl_FragColor.rgb = mix( gl_FragColor.rgb, fogCol, fogFactor );
   #endif`;
 }
 

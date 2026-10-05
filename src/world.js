@@ -5,6 +5,7 @@ import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { landmarkModels } from './models.js';
+import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 export function groupCentre(meta, gx, gy) {
   const span = meta.group * meta.grid_res_m;
@@ -145,6 +146,7 @@ export function buildLandmarks(list, meta, heroes = [], excluded = []) {
   const group = new THREE.Group();
   group.name = 'landmarks';
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.8 });
+  mat.onBeforeCompile = (sh) => patchCloudShadow(sh, cloudUniforms());   // cloud shade, wet in the rain
   const byKind = {};
   const replaced = new Set([...excluded, ...heroes.flatMap(L => L.replaces || [])]);
   for (const L of list) if (!replaced.has(L.name)) (byKind[L.kind] ||= []).push(L);

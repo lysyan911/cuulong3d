@@ -11,6 +11,8 @@ import * as THREE from 'three';
 import { photoTexture } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
+import { closeTreeModels, outerCloseTreeModels, selectCloseTrees, CLOSE_TREE_RADIUS } from './near-tree-models.js';
+import { nextTreeModels, outerTreeModels } from './near-tree-species.js';
 
 const SPECIES = ['fruit', 'shade', 'coconut', 'areca', 'banana', 'bamboo', 'thotnot', 'tram', 'nipa', 'forest', 'shrub', 'boulder'];
 const NS = SPECIES.length;
@@ -33,6 +35,10 @@ const CELL = {
   palmSprite: [16, 752, 480, 480], palmTop: [512, 752, 480, 480], thotnotSprite: [1008, 752, 320, 480],
   bananaSprite: [1344, 752, 320, 320], nipaSprite: [1680, 752, 352, 320], arecaSprite: [1680, 1088, 224, 480],
   rockSprite: [16, 1248, 256, 192],
+  mangoTwig: [304, 1248, 480, 288], mangoBark: [16, 1472, 128, 512], coconutBark: [160, 1472, 128, 512],
+  fineTwig: [800, 1248, 432, 288], narrowTwig: [304, 1552, 480, 224],
+  paleBark: [800, 1552, 128, 432], bananaStem: [944, 1552, 128, 432], bananaBlade: [304, 1792, 480, 224],
+  mangoOuter: [1248, 1584, 384, 400],
 };
 const uvRect = ([x, y, w, h]) => [x / AS, 1 - (y + h) / AS, w / AS, h / AS];   // u0, v0, du, dv (flipY)
 
@@ -216,10 +222,10 @@ function speciesModels() {
 
 // mid: two crossed sprite cards + one top card; the cell per species is chosen in the shader
 const SPRITE = {   // side cell, top cell, width, height
-  fruit: ['broadSide', 'broadTop', 7, 8], shade: ['broadSide', 'broadTop', 14, 15], coconut: ['palmSprite', 'palmTop', 9, 13.5],
-  areca: ['arecaSprite', 'palmTop', 4.5, 12], banana: ['bananaSprite', 'palmTop', 4.5, 4], bamboo: ['bambooSide', 'broadTop', 7, 12.5],
+  fruit: ['mangoOuter', 'mangoTwig', 7, 8.22], shade: ['broadSide', 'broadTop', 14, 15], coconut: ['palmSprite', 'palmTop', 9, 13.5],
+  areca: ['arecaSprite', 'palmTop', 4.5, 12], banana: ['bananaSprite', 'bananaBlade', 5.5, 5], bamboo: ['bambooSide', 'broadTop', 7, 12.5],
   thotnot: ['thotnotSprite', 'fan', 6, 19], tram: ['tramSide', 'broadTop', 3.6, 14], nipa: ['nipaSprite', 'palmTop', 6.5, 5.5],
-  forest: ['broadSide', 'broadTop', 10, 12], shrub: ['broadSide', 'broadTop', 3.2, 2.4], boulder: ['rockSprite', 'rockSprite', 2.6, 1.8],
+  forest: ['broadSide', 'mangoTwig', 9, 25], shrub: ['broadSide', 'broadTop', 3.2, 2.4], boulder: ['rockSprite', 'rockSprite', 2.6, 1.8],
 };
 function midModel() {
   const m = new Model();
@@ -310,8 +316,8 @@ function treeMaterial(atlas, lod, uniforms) {
 }
 
 // ---------------------------------------------------------------- layer
-const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 4, bamboo: 12.5, thotnot: 19, tram: 14,
-                       nipa: 5.5, forest: 12, shrub: 2.4, boulder: 1.8 };   // m at scale 1 (as the mid sprites)
+const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 5, bamboo: 12.5, thotnot: 19, tram: 14,
+                       nipa: 5.5, forest: 25, shrub: 2.4, boulder: 1.8 };   // m at scale 1 (as the mid sprites)
 
 export class TreeLayer {
   /** terrain: for ground heights; nearR: full trees within (m); farR: sprite trees within (m). */
@@ -336,6 +342,14 @@ export class TreeLayer {
     this.matNear = treeMaterial(atlas, 'NEAR', this.uniforms);
     this.matMid = treeMaterial(atlas, 'MID', this.uniforms);
     this.models = speciesModels();
+    // Outer trees share the close silhouettes. Public models stay cheap for their bulk reuse in paddies.
+    for (const [name, model] of Object.entries({...outerCloseTreeModels(Model, CELL, uvRect, BARK), ...outerTreeModels(Model, CELL, uvRect, BARK)})) this.models[S[name]] = model;
+    this.closeModels = [];
+    for (const [name, model] of Object.entries({...closeTreeModels(Model, CELL, uvRect, BARK), ...nextTreeModels(Model, CELL, uvRect, BARK)})) this.closeModels[S[name]] = model;
+    this.baseTriangles = this.models.map(g => g.index.count / 3);
+    this.detailTriangles = this.closeModels.map(g => g.index.count / 3);
+    this.closeChunks = new Map();
+    this.closePosition = new THREE.Vector3(Infinity, Infinity, Infinity);
     this.mid = midModel();
     const res = meta.grid_res_m, span = meta.group * res;
     this.tileM = meta.tile * res;
@@ -432,6 +446,74 @@ export class TreeLayer {
     return m;
   }
 
+  // Retain the existing instance layout / shared model attributes. Only instance buffers change on camera movement.
+  writeRecords(mesh, recs) {
+    const g = mesh.geometry;
+    for (const [name, offset] of [['iP', 0], ['iS', 4]]) {
+      let attr = g.getAttribute(name);
+      if (attr.count < recs.length) {
+        attr = new THREE.InstancedBufferAttribute(new Float32Array(recs.length * 4), 4);
+        attr.setUsage(THREE.DynamicDrawUsage); g.setAttribute(name, attr);
+      }
+      recs.forEach((r, i) => attr.array.set(r.slice(offset, offset + 4), i * 4));
+      attr.needsUpdate = true;
+    }
+    g.instanceCount = recs.length;
+    mesh.visible = recs.length > 0;
+  }
+
+  treeChunk(group, records, T, sphere) {
+    const ordinary = [], detail = [];
+    const bounds = [Infinity, Infinity, Infinity, -Infinity, -Infinity, -Infinity];
+    records.forEach((recs, sp) => {
+      if (!recs.length) return;
+      const mesh = this.mesh(this.models[sp], recs, this.matNear, T, sphere);
+      mesh.name = `tree-${SPECIES[sp]}-near`;
+      mesh.userData.treeSpecies = SPECIES[sp]; mesh.userData.treeLod = 'near';
+      ordinary[sp] = mesh; group.add(mesh);
+      if (this.closeModels[sp]) for (const r of recs) for (let i = 0; i < 3; i++) {
+        bounds[i] = Math.min(bounds[i], r[i]); bounds[i + 3] = Math.max(bounds[i + 3], r[i]);
+      }
+    });
+    this.closeChunks.set(group, { records, ordinary, detail, T, sphere, bounds, selected: records.map(() => []), active: false });
+  }
+
+  refreshCloseTrees(camera) {
+    if (camera.position.distanceToSquared(this.closePosition) < 64 && this.closeNearR === this.uniforms.uNearR.value && this.frame % 120 !== 0) return;
+    this.closePosition.copy(camera.position);
+    this.closeNearR = this.uniforms.uNearR.value;
+    for (const [group, chunk] of this.closeChunks) {
+      // A cheap instance bound skips scanning distant chunks. Disable detail too when entering Trà Sư.
+      const p = camera.position, b = chunk.bounds;
+      const distance = Math.hypot(Math.max(b[0] - p.x, p.x - b[3], 0), Math.max(b[1] - p.y, p.y - b[4], 0),
+        Math.max(b[2] - p.z, p.z - b[5], 0));
+      const nearby = this.uniforms.uNearR.value > 0 && distance <= CLOSE_TREE_RADIUS;
+      if (!nearby && !chunk.active) continue;
+      const result = selectCloseTrees(chunk.records, this.baseTriangles, this.detailTriangles, p, nearby ? CLOSE_TREE_RADIUS : 0);
+      chunk.active = result.close.some(recs => recs.length > 0);
+      group.userData.closeTreeTriangles = result.extra;
+      group.userData.closeTreeBudget = result.budget;
+      group.userData.closeTreeMandatory = result.mandatoryCount;
+      group.userData.closeTreeMandatoryTriangles = result.mandatoryExtra;
+      group.userData.closeTreeRingTriangles = result.ringExtra;
+      chunk.records.forEach((recs, sp) => {
+        if (!this.closeModels[sp] || !recs.length) return;
+        const selected = result.close[sp], previous = chunk.selected[sp];
+        if (selected.length === previous.length && selected.every((r, i) => r === previous[i])) return;
+        chunk.selected[sp] = selected;
+        this.writeRecords(chunk.ordinary[sp], result.ordinary[sp]);
+        if (!chunk.detail[sp] && result.close[sp].length) {
+          // Allocate for the chunk's whole species once. Moving closer reuses capacity without growing GPU buffers.
+          const m = this.mesh(this.closeModels[sp], recs, this.matNear, chunk.T, chunk.sphere);
+          this.writeRecords(m, result.close[sp]);
+          m.name = `tree-${SPECIES[sp]}-close`;
+          m.userData.treeSpecies = SPECIES[sp]; m.userData.treeLod = 'close';
+          chunk.detail[sp] = m; group.add(m);
+        } else if (chunk.detail[sp]) this.writeRecords(chunk.detail[sp], result.close[sp]);
+      });
+    }
+  }
+
   /**
    * Hand-placed trees (e.g. web/data/long-xuyen-greenery.json: [{x, y (north), species, height_m}]): one near and one
    * mid mesh per list, same models and materials as the mapped trees. Trees on water are skipped.
@@ -453,10 +535,8 @@ export class TreeLayer {
     const R = Math.max(...recs.map((r) => Math.hypot(r[0] - cx, r[2] - cz))) + 30;
     const sphere = new THREE.Sphere(new THREE.Vector3(cx, recs[0][1], cz), R);
     const T = { cx, ground: recs[0][1], cz };
-    SPECIES.forEach((_, sp) => {
-      const r = recs.filter((q) => q[7] === sp);
-      if (r.length) g.add(this.mesh(this.models[sp], r, this.matNear, T, sphere));
-    });
+    this.treeChunk(g, SPECIES.map((_, sp) => recs.filter(q => q[7] === sp)), T, sphere);
+    this.closePosition.set(Infinity, Infinity, Infinity);
     const mid = this.mesh(this.mid, recs, this.matMid, T, sphere);
     mid.userData.noShadow = true;
     g.add(mid);
@@ -466,6 +546,7 @@ export class TreeLayer {
   dispose(obj) {
     if (!obj) return;
     this.group.remove(obj);
+    this.closeChunks.delete(obj);
     obj.traverse((m) => {
       if (!m.isMesh) return;
       for (const k of ['position', 'normal', 'uv', 'aPart', 'aColor', 'aQuad']) m.geometry.deleteAttribute(k);
@@ -485,6 +566,10 @@ export class TreeLayer {
     const nearR = immersed ? 0 : this.nearR, farR = immersed ? Math.min(650, this.farR) : this.farR;
     this.uniforms.uNearR.value = nearR; this.uniforms.uFarR.value = farR;
     const want = [];
+    // new tree meshes: a few ms per frame (each is small, but many arriving together made a hitch); always one
+    const t0 = performance.now();
+    let made = 0;
+    const room = () => made === 0 || performance.now() - t0 < 4;
     for (const T of this.tiles) {
       const dx = Math.max(Math.abs(p.x - T.cx) - half, 0), dz = Math.max(Math.abs(p.z - T.cz) - half, 0);
       const d = Math.hypot(dx, dz, Math.max(p.y - T.ground - 60, 0));
@@ -492,8 +577,8 @@ export class TreeLayer {
         T.used = this.frame;
         if (T.state === 0) want.push([d, T]);
         if (T.state === 2) {
-          if (!T.midMesh) { T.midMesh = this.mesh(this.mid, this.instances(T, false), this.matMid, T); T.midMesh.userData.noShadow = true; this.group.add(T.midMesh); }
-          T.midMesh.visible = true;
+          if (!T.midMesh && room()) { T.midMesh = this.mesh(this.mid, this.instances(T, false), this.matMid, T); T.midMesh.userData.noShadow = true; this.group.add(T.midMesh); made++; }
+          if (T.midMesh) T.midMesh.visible = true;
           // full trees per chunk (CH x CH per tile), only the chunks within reach exist
           T.chunks ||= new Map();
           const cm = this.tileM / CH;
@@ -502,12 +587,12 @@ export class TreeLayer {
             const ddx = Math.max(Math.abs(p.x - ccx) - cm / 2, 0), ddz = Math.max(Math.abs(p.z - ccz) - cm / 2, 0);
             const inReach = nearR > 0 && d < nearR + 50 && Math.hypot(ddx, ddz, Math.max(p.y - T.ground - 60, 0)) < nearR + 50;
             let g = T.chunks.get(key);
-            if (inReach && !g) {
+            if (inReach && !g && room()) {
+              made++;
               g = new THREE.Group();
               const sphere = new THREE.Sphere(new THREE.Vector3(ccx, T.ground, ccz), cm * 0.75 + 300);
-              this.instances(T, true, [cx, cy]).forEach((recs, sp) => {
-                if (recs.length) g.add(this.mesh(this.models[sp], recs, this.matNear, T, sphere));
-              });
+              this.treeChunk(g, this.instances(T, true, [cx, cy]), T, sphere);
+              this.closePosition.set(Infinity, Infinity, Infinity);
               this.group.add(g);
               T.chunks.set(key, g);
             } else if (!inReach && g) {
@@ -523,5 +608,6 @@ export class TreeLayer {
     }
     want.sort((a, b) => a[0] - b[0]);
     for (const [, T] of want) { if (this.loading >= 4) break; this.load(T); }
+    this.refreshCloseTrees(camera);
   }
 }

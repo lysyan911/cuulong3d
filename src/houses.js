@@ -15,6 +15,7 @@
 // Geometry is parametric: each vertex = unit position (scaled by width W, eaves height H, depth D)
 //   + offset in metres + flags (roof rise R, stilt lift L, hip inset) — so one model fits every footprint.
 import * as THREE from 'three';
+import { warm } from './render/warmup.js';
 import { GroupLayer, groupCentre } from './world.js';
 import { photoTexture } from './photo-textures.js';
 import { signAtlas } from './signs.js';
@@ -558,6 +559,7 @@ export class HouseLayer extends GroupLayer {
     this.maxDistance = maxDistance;
     this.terrain = terrain;
     this.rejectedWater = 0;
+    this.jobs = new Map();                     // tile -> steps: detailed tiles being built (update)
     this.nearR = nearR;
     this.nStyles = meta.house_styles.length;
     this.nTiles = meta.house_tiles;
@@ -723,11 +725,15 @@ export class HouseLayer extends GroupLayer {
     for (const T of this.tiles) if (T.meshes) this.disposeTile(T);
   }
 
-  buildTile(T) {
+  buildTile(T) { const g = this.buildTileSteps(T); while (!g.next().done); }
+
+  // the detailed meshes of a tile, block by block (update() runs this a few ms per frame; the far copies show meanwhile)
+  *buildTileSteps(T) {
     if (this.buildingKit?.ready && !T.kitSel) this.assignKit(T);
     const grp = new THREE.Group();
     const cw = this.tileM / CELLS;
     for (const c of T.cells) {
+      yield;
       const cg = new THREE.Group();
       cg.userData.sphere = c.sphere;
       cg.userData.occBox = this.box(c.sphere.center.x, c.sphere.center.z, cw / 2, T);
@@ -815,6 +821,11 @@ export class HouseLayer extends GroupLayer {
       cg.userData.far = f;
       grp.add(cg, f);
     }
+    // houses hidden or replaced while this was being built (setHidden): copy their flags into the gathered meshes
+    grp.traverse((m) => {
+      const list = m.isMesh && m.geometry.userData.list, a = list && m.geometry.attributes.iC;
+      if (a) { for (let j = 0; j < list.length; j++) a.array[j * 4 + 3] = T.data.iC[list[j] * 4 + 3]; a.needsUpdate = true; }
+    });
     this.group.add(grp);
     T.meshes = grp;
     this.built++;
@@ -867,8 +878,13 @@ export class HouseLayer extends GroupLayer {
       const dist = Math.hypot(dx, dy, dz);
       T.far.visible = dist < this.maxDistance;
       const near = dist < reach + this.tileM * 0.1;
+      T.dist = dist;
       if (near) {
-        if (!T.meshes) this.buildTile(T);
+        if (!T.meshes || T.warming) {               // being built in steps (below) / compiled; the far copies stand in
+          if (!this.jobs.has(T)) this.jobs.set(T, this.buildTileSteps(T));
+          T.used = this.frame;
+          continue;
+        }
         T.meshes.visible = true;
         T.far.visible = false;                    // drawn per block instead
         for (const cg of T.meshes.children) {     // detailed blocks within reach; simple ones unless fully within it
@@ -887,6 +903,18 @@ export class HouseLayer extends GroupLayer {
       } else if (T.meshes) {
         T.meshes.visible = false;
       }
+    }
+    // run the tile builds ~4 ms per frame, nearest first (a town tile took up to ~40 ms in one go)
+    const deadline = performance.now() + 4;
+    for (const [T, steps] of [...this.jobs].sort((a, b) => a[0].dist - b[0].dist)) {
+      if (T.dist > reach * 2) { this.jobs.delete(T); continue; }
+      let r;
+      while (performance.now() < deadline && !(r = steps.next()).done);
+      if (r && r.done) {
+        this.jobs.delete(T); T.meshes.visible = false; T.warming = true;
+        warm(T.meshes).then(() => { T.warming = false; });     // shown once its shaders are ready
+      }
+      if (performance.now() >= deadline) break;
     }
     if (this.built > 24) {                       // free the least recently used tiles
       const old = this.tiles.filter((T) => T.meshes && T.used < this.frame).sort((a, b) => a.used - b.used);

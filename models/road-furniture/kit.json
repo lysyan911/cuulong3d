@@ -1,0 +1,233 @@
+{
+  "models": [
+    {
+      "id": "kilometre",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "kilometre-near.glb",
+        "triangles": 59
+      },
+      "reference_m": [
+        0.5,
+        0.3,
+        0.79
+      ],
+      "far": {
+        "file": "kilometre-far.glb",
+        "triangles": 39
+      }
+    },
+    {
+      "id": "direction",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "direction-near.glb",
+        "triangles": 116
+      },
+      "reference_m": [
+        2.8,
+        0.255,
+        3.4
+      ],
+      "far": {
+        "file": "direction-far.glb",
+        "triangles": 36
+      }
+    },
+    {
+      "id": "village",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "village-near.glb",
+        "triangles": 116
+      },
+      "reference_m": [
+        2.6,
+        0.255,
+        3.0
+      ],
+      "far": {
+        "file": "village-far.glb",
+        "triangles": 36
+      }
+    },
+    {
+      "id": "school",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "school-near.glb",
+        "triangles": 172
+      },
+      "reference_m": [
+        0.9,
+        0.24,
+        2.95
+      ],
+      "far": {
+        "file": "school-far.glb",
+        "triangles": 32
+      }
+    },
+    {
+      "id": "slow",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "slow-near.glb",
+        "triangles": 172
+      },
+      "reference_m": [
+        0.9,
+        0.24,
+        2.95
+      ],
+      "far": {
+        "file": "slow-far.glb",
+        "triangles": 32
+      }
+    },
+    {
+      "id": "speed",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "speed-near.glb",
+        "triangles": 240
+      },
+      "reference_m": [
+        0.7,
+        0.24,
+        2.95
+      ],
+      "far": {
+        "file": "speed-far.glb",
+        "triangles": 60
+      }
+    },
+    {
+      "id": "bridge",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "bridge-near.glb",
+        "triangles": 116
+      },
+      "reference_m": [
+        2.1,
+        0.255,
+        3.0
+      ],
+      "far": {
+        "file": "bridge-far.glb",
+        "triangles": 36
+      }
+    },
+    {
+      "id": "load",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "load-near.glb",
+        "triangles": 240
+      },
+      "reference_m": [
+        0.7,
+        0.24,
+        2.95
+      ],
+      "far": {
+        "file": "load-far.glb",
+        "triangles": 60
+      }
+    },
+    {
+      "id": "ferry",
+      "front": "+Z",
+      "origin": "ground, footprint centre",
+      "units": "metres",
+      "near": {
+        "file": "ferry-near.glb",
+        "triangles": 116
+      },
+      "reference_m": [
+        2.2,
+        0.255,
+        3.0
+      ],
+      "far": {
+        "file": "ferry-far.glb",
+        "triangles": 36
+      }
+    }
+  ],
+  "version": 1,
+  "atlas": {
+    "file": "road-furniture-atlas.png",
+    "width": 2048,
+    "height": 2048,
+    "license": "Original vector/Pillow artwork; no copied photos",
+    "unique_panels": 962,
+    "used_height_px": 1856,
+    "rgba_mip_bytes": 22369621,
+    "prototype_rects": {
+      "ferry": [
+        0.3129883,
+        0.8833008,
+        0.0615234,
+        0.0224609
+      ]
+    },
+    "swatches": {
+      "white": [
+        0.03125,
+        0.984375
+      ],
+      "red": [
+        0.09375,
+        0.984375
+      ],
+      "blue": [
+        0.15625,
+        0.984375
+      ],
+      "steel": [
+        0.21875,
+        0.984375
+      ],
+      "back": [
+        0.28125,
+        0.984375
+      ]
+    },
+    "face_contract": "UV1=(-1,-1) solid; UV1=[0..1] sign face; instance rfRect maps UV1 to atlas_rect; front+Z"
+  },
+  "sources": {
+    "osm": "https://www.openstreetmap.org/copyright",
+    "standard": "https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2019/12/30665/30013-1-2020211-21254-2019-tt-bgtvt.pdf",
+    "standard_status": "https://vbpl.moj.gov.vn/tiengiang/Pages/vbpq-toanvan.aspx?ItemID=143468",
+    "bridge_standard": "https://datafiles.chinhphu.vn/cpp/files/duthaovbpl/2024/Thang08/bang-so-sanh-qcvn41.pdf",
+    "school_standard": "https://cdn.haiphong.gov.vn/gov-hpg/SiteFolders/xadongphuong/5973/tintuc/2024/3/so-tay-atgt-truong-hoc638460206614705423.pdf"
+  },
+  "standard": "QCVN 41:2019/BGTVT, requested pre-2025 map design reference",
+  "placements": "data/road-furniture.json",
+  "runtime_budget": {
+    "calls": 16,
+    "triangles": 25000,
+    "range_m": 450,
+    "near_m": 140,
+    "cell_m": 200
+  },
+  "licence": "Geometry and atlas original; placement semantics OSM ODbL"
+}

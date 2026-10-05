@@ -1,0 +1,263 @@
+{
+  "schema": 1,
+  "units": "metres",
+  "up": "+Y",
+  "front": "+Z",
+  "origin": "reference ground at footprint centre; banks on contour at dry top",
+  "material": {
+    "name": "mekong_places_matte",
+    "vertex_colours": true,
+    "roughness": 0.88,
+    "textures": [],
+    "shared": true
+  },
+  "models": [
+    {
+      "id": "monkey",
+      "near": {
+        "file": "monkey-near.glb",
+        "triangles": 856,
+        "materials": 1,
+        "bytes": 64700
+      },
+      "reference": {
+        "width": 0.9,
+        "length": 12,
+        "thickness": 0.1,
+        "profile": "monkey"
+      },
+      "far": {
+        "file": "monkey-far.glb",
+        "triangles": 304,
+        "materials": 1,
+        "bytes": 21636
+      }
+    },
+    {
+      "id": "rural",
+      "near": {
+        "file": "rural-near.glb",
+        "triangles": 1516,
+        "materials": 1,
+        "bytes": 115168
+      },
+      "reference": {
+        "width": 3.2,
+        "length": 30,
+        "thickness": 0.28,
+        "profile": "rural"
+      },
+      "far": {
+        "file": "rural-far.glb",
+        "triangles": 412,
+        "materials": 1,
+        "bytes": 29044
+      }
+    },
+    {
+      "id": "truss",
+      "near": {
+        "file": "truss-near.glb",
+        "triangles": 1180,
+        "materials": 1,
+        "bytes": 86940
+      },
+      "reference": {
+        "width": 5,
+        "length": 40,
+        "thickness": 0.55,
+        "profile": "truss"
+      },
+      "far": {
+        "file": "truss-far.glb",
+        "triangles": 412,
+        "materials": 1,
+        "bytes": 27028
+      }
+    },
+    {
+      "id": "girder",
+      "near": {
+        "file": "girder-near.glb",
+        "triangles": 3172,
+        "materials": 1,
+        "bytes": 242292
+      },
+      "reference": {
+        "width": 10,
+        "length": 60,
+        "thickness": 0.7,
+        "profile": "girder"
+      },
+      "far": {
+        "file": "girder-far.glb",
+        "triangles": 412,
+        "materials": 1,
+        "bytes": 27000
+      }
+    },
+    {
+      "id": "vam-cong",
+      "near": {
+        "file": "vam-cong-near.glb",
+        "triangles": 17172,
+        "materials": 1,
+        "bytes": 1581084
+      },
+      "reference": {
+        "width": 24.5,
+        "length": 2966,
+        "thickness": 2.1,
+        "profile": "vam-cong"
+      },
+      "far": {
+        "file": "vam-cong-far.glb",
+        "triangles": 1500,
+        "materials": 1,
+        "bytes": 107896
+      }
+    },
+    {
+      "id": "embankment",
+      "near": {
+        "file": "embankment-near.glb",
+        "triangles": 290,
+        "materials": 1,
+        "bytes": 23844
+      },
+      "reference": {
+        "width": 5,
+        "length": 10,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "embankment-far.glb",
+        "triangles": 98,
+        "materials": 1,
+        "bytes": 8864
+      }
+    },
+    {
+      "id": "mud-bank",
+      "near": {
+        "file": "mud-bank-near.glb",
+        "triangles": 4,
+        "materials": 1,
+        "bytes": 1632
+      },
+      "reference": {
+        "width": 5,
+        "length": 10,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "mud-bank-far.glb",
+        "triangles": 4,
+        "materials": 1,
+        "bytes": 1628
+      }
+    },
+    {
+      "id": "landing",
+      "near": {
+        "file": "landing-near.glb",
+        "triangles": 192,
+        "materials": 1,
+        "bytes": 16144
+      },
+      "reference": {
+        "width": 2.4,
+        "length": 4,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "landing-far.glb",
+        "triangles": 132,
+        "materials": 1,
+        "bytes": 11460
+      }
+    },
+    {
+      "id": "clay-steps",
+      "near": {
+        "file": "clay-steps-near.glb",
+        "triangles": 96,
+        "materials": 1,
+        "bytes": 8680
+      },
+      "reference": {
+        "width": 2.4,
+        "length": 4,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "clay-steps-far.glb",
+        "triangles": 36,
+        "materials": 1,
+        "bytes": 3988
+      }
+    },
+    {
+      "id": "reeds",
+      "near": {
+        "file": "reeds-near.glb",
+        "triangles": 156,
+        "materials": 1,
+        "bytes": 13816
+      },
+      "reference": {
+        "width": 3,
+        "length": 3,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "reeds-far.glb",
+        "triangles": 52,
+        "materials": 1,
+        "bytes": 5412
+      }
+    },
+    {
+      "id": "nipa",
+      "near": {
+        "file": "nipa-near.glb",
+        "triangles": 192,
+        "materials": 1,
+        "bytes": 16208
+      },
+      "reference": {
+        "width": 3,
+        "length": 3,
+        "bank_height": 1.6,
+        "profile": "bank"
+      },
+      "far": {
+        "file": "nipa-far.glb",
+        "triangles": 64,
+        "materials": 1,
+        "bytes": 6220
+      }
+    },
+    {
+      "id": "pier",
+      "reference": {
+        "width": 1,
+        "length": 0.34,
+        "height": 1
+      },
+      "near": {
+        "file": "pier.glb",
+        "triangles": 36,
+        "materials": 1,
+        "bytes": 3896
+      }
+    }
+  ],
+  "licence": "Original project meshes/palette; no copied photo pixels",
+  "placement": "Reflow decks along OSM stations, preserving rail/lamps/thickness. Separately scaled piers. Banks share exact contour anchors."
+}

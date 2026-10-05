@@ -5,6 +5,8 @@ import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
 import { Terrain } from './terrain.js';
 import { SurfaceMap } from './surface.js';
 import { PaddyLayer } from './paddies.js';
+import { GrassLayer } from './grass.js';
+import { WaterLife } from './waterlife.js';
 import { WetlandMap } from './wetland-map.js';
 import { TraSuLayer } from './trasu.js';
 import { StreamedImagery } from './imagery.js';
@@ -14,16 +16,23 @@ import { HouseLayer } from './houses.js';
 import { Road3DLayer } from './roads3d.js';
 import { StreetFurniture } from './streets.js';
 import { YardLayer } from './yards.js';
+import { FaunaLayer } from './fauna.js';
 import { BuildingKit } from './kit.js';
+import { setWarmContext, warm } from './render/warmup.js';
 import { OcclusionCuller } from './render/occlusion.js';
 import { PropsLayer } from './props.js';
+import { RoadFurnitureLayer } from './road-furniture.js';
+import { MekongPlacesLayer } from './mekong-places.js';
+import { CanalAccessLayer } from './canal-access.js';
 import { Overlays } from './overlays.js';
 import { UI, NOVEL_LAYERS } from './ui.js';
+import { PlacesUX } from './places-ux.js';
 import { photoInventory } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
 import { skyMaterial, cloudUniforms, installAerialHaze } from './render/atmosphere.js';
 import { SunShadows } from './render/shadows.js';
 import { RenderPipeline } from './render/pipeline.js';
+import { Weather } from './render/weather.js';
 import { WaterReflection } from './render/reflection.js';
 import { loadGround } from './render/ground.js';
 import { initAnalytics, track, trackOnce, trackReady, trackFps } from './analytics.js';
@@ -38,7 +47,7 @@ const QUALITY = MOBILE
 const getJSON = (f) => fetch(DATA + f).then((r) => { if (!r.ok) throw new Error(f); return r.json(); });
 
 async function main() {
-  installAerialHaze();
+  installAerialHaze(GLOBALS.uSunDir.value);
   // ---------------------------------------------------------------- renderer, scene, camera
   const container = document.getElementById('viewport');
   const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
@@ -57,7 +66,7 @@ async function main() {
                             minDistance: 25, maxDistance: 320000, zoomToCursor: true });
 
   // ---------------------------------------------------------------- sky, sun, haze (render/atmosphere.js)
-  // Afternoon sun from the south-west; one drifting cloud layer that both fills the sky and shades the ground.
+  // Late-afternoon sun from the south-west (~32° up); one drifting cloud layer that both fills the sky and shades the ground.
   const HORIZON = GLOBALS.uHorizon.value, ZENITH = GLOBALS.uZenith.value;
   const sunDir = GLOBALS.uSunDir.value;
   const sky = new THREE.Mesh(new THREE.SphereGeometry(400000, 48, 24), skyMaterial(cloudUniforms(), { horizon: HORIZON, zenith: ZENITH }));
@@ -72,9 +81,9 @@ async function main() {
   envScene.add(new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), envSky));
   scene.environment = pmrem.fromScene(envScene, 0, 1, 2000).texture;
   scene.environmentIntensity = 0.42;
-  const sun = new THREE.DirectionalLight(0xffeedd, 3.4);
+  const sun = new THREE.DirectionalLight(0xffe2c0, 3.5);
   sun.position.copy(sunDir).multiplyScalar(100000);
-  scene.add(sun, sun.target, new THREE.HemisphereLight(0xc4dcff, 0x6a6146, 0.42));
+  scene.add(sun, sun.target, new THREE.HemisphereLight(0xbcd6ff, 0x6a5a40, 0.42));
   const HAZE = 0.65e-4;   // humid delta air: sea-level haze extinction per m (render/atmosphere.js installAerialHaze)
   scene.fog = new THREE.FogExp2(HORIZON.clone(), HAZE);
   const shadows = new SunShadows(renderer, sun, sunDir);
@@ -83,9 +92,9 @@ async function main() {
   const occlusion = new OcclusionCuller(renderer, scene, camera, () => pipeline.depthTarget());
   if (new URLSearchParams(location.search).get('occlusion') === '0') occlusion.enabled = false;
   const pipeline = new RenderPipeline(renderer, scene, camera, shadows, { mobile: MOBILE, reflection });
+  const weather = new Weather({ renderer, scene, sun, shadows, pipeline, mobile: MOBILE });   // render/weather.js
   let quality = MOBILE ? 'fast' : 'good';
   try { quality = localStorage.getItem('cuulong-quality') || quality; } catch { /* private mode */ }
-  const fogSun = new THREE.Color(0.86, 0.80, 0.70), viewDir = new THREE.Vector3();
 
   // ---------------------------------------------------------------- UI + loading
   let meta;
@@ -97,6 +106,7 @@ async function main() {
     onLayer: (name, on) => { track(`layer-${name}-${on ? 'on' : 'off'}`); if (name === 'paddies') shared.uRice.value = on ? 1 : 0; if (layers[name]) for (const o of [].concat(layers[name])) o.visible = on; },
     onLang: (lang) => { track(`lang-${lang}`); overlays.setLanguage(lang); },
     onMode: (m) => { track(`mode-${m}`); applyMode(); },
+    onWeather: (w) => { track(`weather-${w}`); weather.set(w); },
     onQuality: (q) => { track(`quality-${q}`); quality = q; try { localStorage.setItem('cuulong-quality', q); } catch { /* ignore */ } pipeline.setMode(q); },
   });
   ui.loading('meta', 0.02);
@@ -190,6 +200,8 @@ async function main() {
   const roads = new RoadLayer(meta, QUALITY.roadScale, QUALITY.roadRibbon);
   const streets = new StreetFurniture(trees, { traffic: !MOBILE });   // poles, cables, lamps, trees, stalls, traffic
   const roads3d = new Road3DLayer(meta, terrain, { farR: QUALITY.roadRibbon, streets, buildings });
+  const grass = new GrassLayer(meta, terrain, textures, { roads3d, mobile: MOBILE, time: shared.uTime });   // tufts and reeds near the camera
+  scene.add(grass.group);
   roads.group.add(roads3d.group);          // the Roads layer switch covers both
   const paddies = new PaddyLayer(terrain, { nearR: MOBILE ? 600 : 1150, trees });   // bunds, dykes, thốt nốt palms
   const trasu = wetland ? new TraSuLayer(wetland, terrain, shared, { mobile: MOBILE }) : null;
@@ -198,6 +210,8 @@ async function main() {
   // hero houses (the owner's Blender models, ~36k triangles each) replace generated houses only right around the camera
   const props = new PropsLayer(meta, terrain, buildings, shared, MOBILE ? { heroR: 150, heroCap: 6, boatR: 1500, boatCap: 80 }
                                                                         : { heroR: 220, heroCap: 12 });
+  const waterLife = new WaterLife(meta, terrain, props, { mobile: MOBILE, time: shared.uTime });   // boat wakes, lục bình rafts
+  scene.add(waterLife.group);
   scene.add(props.group, props.boatGroup);
   const layerOf = { bld: buildings, roads, ways: roads3d, water: props };
   const keys = Object.keys(meta.instance_counts);
@@ -209,13 +223,26 @@ async function main() {
   }));
 
   props.setLandmarks(heroData.heroes);
+  ui.loading('models', .98);
+  const roadFurniture = new RoadFurnitureLayer(meta, terrain, { dataUrl: DATA, mobile: MOBILE, roads3d });
+  const mekongPlaces = new MekongPlacesLayer(terrain, { mobile: MOBILE, dataUrl: DATA });
+  const canalAccess = new CanalAccessLayer(meta, terrain, { dataUrl: DATA, mobile: MOBILE });
+  const roadPlaces = new THREE.Group(); roadPlaces.name = 'road-places';
+  roadPlaces.add(roadFurniture.group, mekongPlaces.group); scene.add(roadPlaces);
+  props.boatGroup.add(canalAccess.group); buildings.group.add(canalAccess.supportGroup);
+  props.placeLayers.push(roadFurniture, mekongPlaces, canalAccess);
+  await Promise.all([roadFurniture.load(), mekongPlaces.load(), canalAccess.load()].map(p => p.catch(e => console.warn('Places assets unavailable:', e.message))));
   const yards = new YardLayer(meta, terrain, { dataUrl: DATA, mobile: MOBILE });
   buildings.group.add(yards.group);           // follows the Buildings layer switch
-  yards.load().catch(e => console.warn('Yards unavailable:', e.message));
+  yards.load().then(() => warm(yards.group)).catch(e => console.warn('Yards unavailable:', e.message));
+  const fauna = new FaunaLayer(terrain, { mobile: MOBILE, streets, renderer });
+  scene.add(fauna.group);
+  await fauna.loadIndex().catch(() => {});
+  fauna.load().then(() => warm(fauna.group)).catch(e => { fauna.dispose(); console.warn('Fauna unavailable:', e.message); });   // no wait for the models; shaders compiled in the background
   Object.assign(layers, { sites: overlays.layers.sites, route: overlays.layers.route, rings: overlays.layers.rings,
-                          labels: overlays.layers.labels, villages: overlays.layers.villages, roads: [roads.group, streets.group],
-                          buildings: [buildings.group, props.group], boats: props.boatGroup, trees: trees.group, landmarks: lm,
-                          boundaries: overlays.layers.boundaries, paddies: paddies.group });
+                          labels: overlays.layers.labels, villages: overlays.layers.villages, roads: [roads.group, streets.group, roadPlaces],
+                          buildings: [buildings.group, props.group], boats: [props.boatGroup, waterLife.group], trees: [trees.group, grass.group], landmarks: lm,
+                          boundaries: overlays.layers.boundaries, paddies: paddies.group, fauna: fauna.group });
 
   // ---------------------------------------------------------------- camera views
   const ex = meta.vert_exag;
@@ -240,6 +267,7 @@ async function main() {
   const at = (x, z, dx, dh, dz, lift = 8) => { const g = terrain.heightAt(x, -z) * ex; return { target: V(x, g + lift, z), pos: V(x + dx, g + dh, z + dz) }; };
   views.lxCathedral = at(28946, 20810, 70, 60, 95, 14);
   views.agu = at(28032, 21988, 420, 260, 380, 10);
+  if (fauna.pilot) views.faunaPilot = at(fauna.pilot.x, -fauna.pilot.north, 21, 12, 26, .6);
   // hand-placed trees (Codex: Long Xuyên medians, canal banks and courtyards)
   const placedTrees = new THREE.Group();
   scene.add(placedTrees);
@@ -307,7 +335,7 @@ async function main() {
   resize();
 
   // ---------------------------------------------------------------- start
-  const startSite = decodeURIComponent((location.hash.match(/site=([^&]+)/) || [])[1] || '');
+  const startSite = new URLSearchParams(location.hash.slice(1)).get('site') || '';
   const start = fit(views.overview);
   camera.position.copy(start.pos);
   controls.target.copy(start.target);
@@ -315,9 +343,13 @@ async function main() {
   await pipeline.setMode(quality);
   ui.quality = quality;
   ui.render();
+  const extraPlaces = (mekongPlaces.bridgeData?.placements || []).filter(p => /^(cầu|bridge)\s/i.test(p.name || '')).map(p => ({ name: p.name, x: p.x, n: p.north, distance: Math.min(4000, Math.max(140, p.length * .85)) }));
+  new PlacesUX({ ui, camera, controls, terrain, meta, views, labels, villages: villageLabels, landmarks, heroes: heroData.heroes, sites: sites.sites, extraPlaces, flyTo, cancelFlight: () => { flight = null; } });
   ui.loading('ready', 1);
   const readyAt = performance.now();
   trackReady(MOBILE, readyAt);
+  setWarmContext(renderer, scene, camera, () => !!pipeline.composer);
+  warm(scene);                                   // compile what already exists (hidden too) in the background
   renderer.domElement.addEventListener('webglcontextlost', () => trackOnce('error-webgl'));
   // analytics: parts of the province looked at closely (towns, cities, peaks, Trà Sư), street level, smoothness
   const slug = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').toLowerCase()
@@ -349,7 +381,7 @@ async function main() {
   // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
   const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
     .map((n) => scene.getObjectByName(n)).filter(Boolean)];
-  window.__cl = { scene, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, yards, surface, trasu, views, shared, pipeline, shadows, sun, reflection };  // debugging handle
+  window.__cl = { scene, sky, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, grass, waterLife, yards, fauna, surface, trasu, views, shared, pipeline, shadows, sun, reflection, weather };  // debugging handle
 
   // Optional local QA counter; absent from the normal map UI.
   const stats = new URLSearchParams(location.search).get('stats') === '1' ? document.createElement('output') : null;
@@ -366,6 +398,7 @@ async function main() {
   }
 
   const forestHaze = new THREE.Color(.36, .44, .30);
+  let faunaLast = performance.now(), weatherLast = faunaLast;
   const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   renderer.setAnimationLoop((now) => {
     if (stats) sceneTriangles = 0;
@@ -389,11 +422,10 @@ async function main() {
     GLOBALS.uCloudTime.value = now / 1000;
     const underCanopy = wetland && camera.position.y < wetland.level + 80 && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
     pipeline.limitPixelRatio(underCanopy ? 1 : null);
-    // haze: warmer looking towards the sun, cooler away from it
-    camera.getWorldDirection(viewDir);
-    const toSun = Math.max(0, viewDir.x * sunDir.x + viewDir.z * sunDir.z) / Math.hypot(sunDir.x, sunDir.z);
-    scene.fog.color.copy(underCanopy ? forestHaze : HORIZON).lerp(fogSun, underCanopy ? 0 : toSun * toSun * 0.6);
+    // haze colour (warm towards the sun, blue away) is per pixel: render/atmosphere.js installAerialHaze
+    scene.fog.color.copy(underCanopy ? forestHaze : HORIZON);
     scene.fog.density = underCanopy ? 0.0035 : HAZE;
+    weather.update((now - weatherLast) / 1000, camera); weatherLast = now;   // clouds, rain, wet ground, light (after the fog)
     // stay above the ground
     const inWetland = wetland && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
     const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 8);   // street-level views allowed
@@ -404,13 +436,16 @@ async function main() {
     terrain.lodBias = underCanopy ? Math.max(1, QUALITY.lodBias) : QUALITY.lodBias;
     terrain.update(camera);
     paddies.update(camera);
+    grass.update(camera);
     if (trasu) trasu.update(camera);
     trees.update(camera);
     buildings.update(camera);
     roads.update(camera);
     roads3d.update(camera);
     props.update(camera);
+    waterLife.update(camera);
     yards.update(camera);
+    fauna.update(camera, (now - faunaLast) / 1000); faunaLast = now;
     overlays.update(camera, underCanopy);
     shadows.update(camera, controls.target, scene);
     // Trà Sư: the flooded forest's water mirrors the trunks and boats, also under the canopy

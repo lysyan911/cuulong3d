@@ -25,6 +25,7 @@ export class SunShadows {
     this.right = new THREE.Vector3();
     this.up = new THREE.Vector3();
     this.frame = 0;
+    this.strength = 1;
     this.last = new THREE.Vector4(NaN, 0, 0, 0);    // centre + size of the last rendered shadow map
   }
 
@@ -49,7 +50,7 @@ export class SunShadows {
     if (this.needsAssign || ++this.frame % 45 === 0) { this.assign(scene); this.needsAssign = false; }
     const d = camera.position.distanceTo(target);
     const k = 1 - smooth(2500, 5000, d);
-    this.sun.shadow.intensity = 0.9 * k;
+    this.sun.shadow.intensity = 0.9 * k * this.strength;           // (weather: weaker under overcast)
     this.sun.shadow.autoUpdate = false;
     if (k <= 0) return;
     const S = Math.min(Math.max(d * 0.7, 140), 2600);           // half size of the shadowed square (m)
@@ -68,6 +69,10 @@ export class SunShadows {
     this.sun.target.updateMatrixWorld();
     this.sun.updateMatrixWorld();
     this.sun.shadow.normalBias = texel * 0.9;
+    // depth range just around the shadowed square (hills up to ~1 km above it): with the old 50-20000 m range the
+    // constant bias was ~6 m, so anything lower (cars, people, animals, fences) cast no shadow at all
+    cam.near = 9000 - S - 1600; cam.far = 9000 + S + 300;
+    this.sun.shadow.bias = -(0.03 + texel * 0.4) / (cam.far - cam.near);
     cam.updateProjectionMatrix();
     // redraw the map when the shadowed square moves or resizes; otherwise only every 4th frame (swaying trees, boats)
     const moved = c.x !== this.last.x || c.y !== this.last.y || c.z !== this.last.z || S !== this.last.w;

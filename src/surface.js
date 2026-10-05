@@ -34,6 +34,23 @@ export function blockLayout(I,J) {
   return {cols,A,B,n,sw:A/n,parts,pl:B/parts};
 }
 
+/** CPU twin of shaders.js rice stage. Call only inside the rice mask. */
+export function fieldStage(x,y) {
+  return fieldPatch(x,y).stage;
+}
+export function fieldPatch(x,y) {
+  const [u,v]=fieldWarped(x,y),I=Math.floor(u/760),J=Math.floor(v/1180);
+  const a=u-I*760,b=v-J*1180,l=blockLayout(I,J);
+  const across=l.cols?a:b,along=l.cols?b:a,k=Math.floor(across/l.sw),p=Math.floor(along/l.pl);
+  const la=across-k*l.sw,lb=along-p*l.pl;
+  const nx=f32(x/2600),ny=f32(y/2600),ix=Math.floor(nx),iy=Math.floor(ny),fx=fr(nx),fy=fr(ny);
+  const sx=f32(f32(fx*fx)*f32(3-f32(2*fx))),sy=f32(f32(fy*fy)*f32(3-f32(2*fy)));
+  const mix=(a,b,t)=>f32(f32(a*f32(1-t))+f32(b*t));
+  const noise=mix(mix(hash12(ix,iy),hash12(ix+1,iy),sx),mix(hash12(ix,iy+1),hash12(ix+1,iy+1),sx),sy);
+  const stage=fr(f32(f32(f32(hash12(I+41,J+41)*.55)+f32(hash12(I*13+k,J*13+p*7+3)*.3))+f32(noise*.7)));
+  return {stage,edge:Math.min(la,l.sw-la,lb,l.pl-lb),blockEdge:Math.min(a,760-a,b,1180-b),id:[I,J,k,p]};
+}
+
 async function inflate(url) {
   const response=await fetch(url);
   if (!response.ok) throw new Error('Surface data unavailable');

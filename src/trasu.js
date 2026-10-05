@@ -65,6 +65,18 @@ function waterMaterial(texture,map,time) {
       .replace('#include <metalnessmap_fragment>',`#include <metalnessmap_fragment>
         metalnessFactor=0.;`)
       .replace('#include <normal_fragment_begin>',`#include <normal_fragment_begin>
+        // rain (Claude Code): rings spreading from the drops on the open water, close up (as on the rivers, shaders.js)
+        float rainK=uWeather.y*(1.-smoothstep(20.,60.,dist))*openK;
+        if(rainK>.01){
+          for(int k=0;k<2;k++){
+            vec2 rp=vPhotoWorld.xz/(k==0?.7:1.13)+float(k)*7.3,ci=floor(rp),cf=fract(rp)-.5;
+            float t=fract(uTime*.85+wh(ci+float(k)*31.));
+            vec2 d=cf-(vec2(wh(ci+3.1),wh(ci+7.7))-.5)*.5;
+            float r=length(d),front=r-t*.42,ring=sin(front*46.)*exp(-front*front/.0036)*(1.-t);
+            vec2 dir=d/max(r,1e-4);
+            ripN+=dir*ring*.45*rainK;
+          }
+        }
         normal=normalize(normal+(viewMatrix*vec4(ripN.x,0.,ripN.y,0.)).xyz*openK);`)
       .replace('#include <opaque_fragment>',`
         if(openK>.01){
@@ -97,7 +109,7 @@ function waterMaterial(texture,map,time) {
     patchCloudShadow(sh,skyUniforms());
   };
   // Supply UV varying even without a conventional map (Three otherwise omits vUv).
-  mat.defines={USE_UV:''};mat.customProgramCacheKey=()=> 'trasu-water-duckweed-v5';return mat;
+  mat.defines={USE_UV:''};mat.customProgramCacheKey=()=> 'trasu-water-duckweed-v6';return mat;
 }
 function sampan() {
   const g=new THREE.Group(),wood=new THREE.MeshStandardMaterial({...photoMaps('models','wooden_rough_planks'),color:0x77977c,roughness:1,side:THREE.DoubleSide});

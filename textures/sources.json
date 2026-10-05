@@ -596,15 +596,16 @@
       "file": "foliage/tree-atlas.webp",
       "width": 2048,
       "height": 2048,
-      "bytes": 1738064,
-      "sha256": "cf4ba30724b3682caacb44e9acce9a31f93b83d652172f00f1a09f8813ae510e",
+      "bytes": 2496058,
+      "sha256": "f50e57b242a64ff8c09b1aa9d88bf3387cbd33315e8363a3796336eb3955e36a",
       "sources": [
         "LeafSet022",
         "LeafSet024",
         "palm_tree_bark",
-        "tiger_rock"
+        "tiger_rock",
+        "bark_willow"
       ],
-      "surface": "2K multi-species photo atlas; leaf and palm silhouettes are illustrative adaptations",
+      "surface": "2K shared tree photo atlas; near mango, coconut, banana, fine/narrow twig and pale bark cells; illustrative species adaptations",
       "metres_per_tile": 0,
       "colour_space": "sRGB",
       "alpha": true
@@ -743,9 +744,186 @@
       1248,
       256,
       192
+    ],
+    "mangoTwig": [
+      304,
+      1248,
+      480,
+      288
+    ],
+    "mangoBark": [
+      16,
+      1472,
+      128,
+      512
+    ],
+    "coconutBark": [
+      160,
+      1472,
+      128,
+      512
+    ],
+    "fineTwig": [
+      800,
+      1248,
+      432,
+      288
+    ],
+    "narrowTwig": [
+      304,
+      1552,
+      480,
+      224
+    ],
+    "paleBark": [
+      800,
+      1552,
+      128,
+      432
+    ],
+    "bananaStem": [
+      944,
+      1552,
+      128,
+      432
+    ],
+    "bananaBlade": [
+      304,
+      1792,
+      480,
+      224
+    ],
+    "mangoOuter": [
+      1248,
+      1584,
+      384,
+      400
     ]
   },
   "adaptation_note": "LeafSet022/024 and Foliage008 are photo donors. Melaleuca, palm, bamboo, banana, duckweed, water lettuce and young rice are illustrative adaptations, not species-specific photographs.",
-  "shipping_bytes": 10978288,
-  "gpu_note": "RGBA8 decoded GPU upper bound per loaded image: width*height*4*4/3 (mipmaps); disk size is not GPU memory."
+  "shipping_bytes": 11736282,
+  "gpu_note": "RGBA8 decoded GPU upper bound per loaded image: width*height*4*4/3 (mipmaps); disk size is not GPU memory.",
+  "near_tree_atlas_cells": {
+    "mangoTwig": {
+      "rect": [
+        304,
+        1248,
+        480,
+        288
+      ],
+      "sources": [
+        "LeafSet022"
+      ],
+      "note": "Original drooping branch spray; CC0 narrow leaf photo donor, not mango photography."
+    },
+    "mangoBark": {
+      "rect": [
+        16,
+        1472,
+        128,
+        512
+      ],
+      "sources": [
+        "bark_willow"
+      ],
+      "note": "Desaturated willow bark adaptation."
+    },
+    "coconutBark": {
+      "rect": [
+        160,
+        1472,
+        128,
+        512
+      ],
+      "sources": [
+        "palm_tree_bark"
+      ],
+      "note": "CC0 palm bark with retained rings and fibres."
+    },
+    "fineTwig": {
+      "rect": [
+        800,
+        1248,
+        432,
+        288
+      ],
+      "sources": [
+        "LeafSet022"
+      ],
+      "note": "Original connected fine branches and paired photo leaflets; illustrative rain-tree/bamboo spray."
+    },
+    "narrowTwig": {
+      "rect": [
+        304,
+        1552,
+        480,
+        224
+      ],
+      "sources": [
+        "LeafSet022"
+      ],
+      "note": "Original connected twig with alternate narrow photo leaves; illustrative melaleuca spray."
+    },
+    "paleBark": {
+      "rect": [
+        800,
+        1552,
+        128,
+        432
+      ],
+      "sources": [
+        "bark_willow"
+      ],
+      "note": "Pale grey peeling/fibrous willow bark adaptation, not melaleuca/eucalyptus photography."
+    },
+    "bananaStem": {
+      "rect": [
+        944,
+        1552,
+        128,
+        432
+      ],
+      "sources": [],
+      "note": "Original green pseudostem colour, elongated purple/brown blotches and sheath seams; no photograph."
+    },
+    "bananaBlade": {
+      "rect": [
+        304,
+        1792,
+        480,
+        224
+      ],
+      "sources": [
+        "LeafSet024"
+      ],
+      "note": "Original full blade silhouette, torn margins and transverse veins; CC0 broadleaf colour donor. Length along u, base left, tip right; unbroken central green midrib."
+    },
+    "mangoOuter": {
+      "rect": [
+        1248,
+        1584,
+        384,
+        400
+      ],
+      "sources": [
+        "LeafSet022",
+        "bark_willow"
+      ],
+      "note": "Original irregular full-tree silhouette assembled from mangoTwig and bark; transparent background."
+    }
+  },
+  "atlas_patch_check": {
+    "changed_cells": [
+      "fineTwig",
+      "narrowTwig",
+      "paleBark",
+      "bananaStem",
+      "bananaBlade",
+      "mangoOuter"
+    ],
+    "outside_rgba_sha256": "51e056052dc901205a9e261df691fd9d532bee71b28e5e2fd65ebf11793f4585",
+    "outside_rgba_identical": true,
+    "webp_lossless": true,
+    "exact": true
+  }
 }

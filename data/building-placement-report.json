@@ -1,0 +1,333 @@
+{
+ "schema": 1,
+ "input_houses": 733992,
+ "output_houses": 733992,
+ "centre_anchors": 42525,
+ "bounded_trims": 66183,
+ "duplicates_removed": 0,
+ "moves_reverted_for_joint_overlap": 2680,
+ "before": {
+  "full_road": 113178,
+  "core_road": 45021,
+  "overlap_pairs": 93875
+ },
+ "after": {
+  "full_road": 108476,
+  "core_road": 41016,
+  "overlap_pairs": 61223
+ },
+ "residual": {
+  "real_source_core": 41879,
+  "real_source_full": 110513,
+  "approximation_core": 1584,
+  "approximation_full": 1248,
+  "model_core_with_source_intersection": 39432,
+  "model_full_with_source_intersection": 107228,
+  "major_core_over_20pct": 4991,
+  "uncertain_water_all9": 2427
+ },
+ "limits": {
+  "max_shift_m": 3,
+  "max_axis_shrink_fraction": 0.15,
+  "water_mask_resolution_m": 20,
+  "observed_max_shift_m": 3.0,
+  "observed_min_axis_ratio": 0.85,
+  "unresolved": "Retained genuine source/ribbon intersections and coarse-mask water ambiguity; no imagery-proven roof deletion."
+ },
+ "source": "Existing Overture footprint extract (licensing as current meta.json credits); cached OSM (ODbL); existing Sentinel-derived surface mask",
+ "canal_houses": {
+  "records": 301,
+  "orientations_changed": 54,
+  "detached_to_stilt": 166
+ },
+ "complete_audit_after": {
+  "houses": 733992,
+  "road_ribbons": 20721,
+  "full_road_conflicts": 108471,
+  "carriageway_conflicts": 41013,
+  "bridge_conflicts": 416,
+  "overlap_pairs": 61223,
+  "overlap_houses": 101193,
+  "runtime_water_rejected": 3473,
+  "nonstilt_water_corners": 3527,
+  "openwater_all_samples": 2427,
+  "stilt_part_water": 742,
+  "worst_road_places": [
+   {
+    "lon": 104.9454263,
+    "lat": 10.6039025,
+    "x": -25153.0,
+    "north": 3731.0,
+    "width": 62.0,
+    "depth": 127.5,
+    "style": 6,
+    "road_core_overlap_m2": 956.3,
+    "full_overlap_m2": 1694.81
+   },
+   {
+    "lon": 104.9308956,
+    "lat": 10.6026425,
+    "x": -26742.5,
+    "north": 3592.0,
+    "width": 39.5,
+    "depth": 81.0,
+    "style": 6,
+    "road_core_overlap_m2": 596.53,
+    "full_overlap_m2": 753.25
+   },
+   {
+    "lon": 104.9468205,
+    "lat": 10.6032697,
+    "x": -25000.5,
+    "north": 3661.0,
+    "width": 40.0,
+    "depth": 84.5,
+    "style": 6,
+    "road_core_overlap_m2": 589.56,
+    "full_overlap_m2": 865.07
+   },
+   {
+    "lon": 105.2633274,
+    "lat": 10.5543617,
+    "x": 9626.0,
+    "north": -1735.0,
+    "width": 47.25,
+    "depth": 76.0,
+    "style": 1,
+    "road_core_overlap_m2": 570.03,
+    "full_overlap_m2": 974.27
+   },
+   {
+    "lon": 104.9105134,
+    "lat": 10.4939118,
+    "x": -28975.5,
+    "north": -8429.5,
+    "width": 47.5,
+    "depth": 97.0,
+    "style": 1,
+    "road_core_overlap_m2": 550.44,
+    "full_overlap_m2": 851.42
+   },
+   {
+    "lon": 105.4387215,
+    "lat": 10.3773238,
+    "x": 28842.5,
+    "north": -21288.5,
+    "width": 36.25,
+    "depth": 105.5,
+    "style": 1,
+    "road_core_overlap_m2": 527.79,
+    "full_overlap_m2": 984.24
+   },
+   {
+    "lon": 104.9797974,
+    "lat": 10.6378451,
+    "x": -21393.0,
+    "north": 7483.5,
+    "width": 27.5,
+    "depth": 68.0,
+    "style": 6,
+    "road_core_overlap_m2": 453.05,
+    "full_overlap_m2": 729.53
+   },
+   {
+    "lon": 105.3958524,
+    "lat": 10.4543677,
+    "x": 24139.0,
+    "north": -12776.0,
+    "width": 35.5,
+    "depth": 88.0,
+    "style": 1,
+    "road_core_overlap_m2": 450.16,
+    "full_overlap_m2": 705.37
+   },
+   {
+    "lon": 105.3451182,
+    "lat": 10.712328,
+    "x": 18555.0,
+    "north": 15740.0,
+    "width": 63.75,
+    "depth": 127.5,
+    "style": 6,
+    "road_core_overlap_m2": 447.39,
+    "full_overlap_m2": 810.41
+   },
+   {
+    "lon": 105.0001585,
+    "lat": 10.6201959,
+    "x": -19166.0,
+    "north": 5532.0,
+    "width": 37.25,
+    "depth": 67.5,
+    "style": 1,
+    "road_core_overlap_m2": 422.72,
+    "full_overlap_m2": 640.06
+   },
+   {
+    "lon": 105.2783729,
+    "lat": 10.7363978,
+    "x": 11254.0,
+    "north": 18394.0,
+    "width": 63.75,
+    "depth": 76.0,
+    "style": 0,
+    "road_core_overlap_m2": 406.61,
+    "full_overlap_m2": 656.58
+   },
+   {
+    "lon": 105.447626,
+    "lat": 10.4591017,
+    "x": 29804.5,
+    "north": -12245.0,
+    "width": 42.75,
+    "depth": 79.5,
+    "style": 6,
+    "road_core_overlap_m2": 388.41,
+    "full_overlap_m2": 710.45
+   },
+   {
+    "lon": 104.9462949,
+    "lat": 10.6031294,
+    "x": -25058.0,
+    "north": 3645.5,
+    "width": 63.75,
+    "depth": 127.5,
+    "style": 6,
+    "road_core_overlap_m2": 387.34,
+    "full_overlap_m2": 718.32
+   },
+   {
+    "lon": 105.0837768,
+    "lat": 10.9433947,
+    "x": -10029.5,
+    "north": 41269.0,
+    "width": 42.25,
+    "depth": 80.0,
+    "style": 6,
+    "road_core_overlap_m2": 380.26,
+    "full_overlap_m2": 723.34
+   },
+   {
+    "lon": 105.0251415,
+    "lat": 10.638731,
+    "x": -16433.5,
+    "north": 7581.5,
+    "width": 29.5,
+    "depth": 112.5,
+    "style": 6,
+    "road_core_overlap_m2": 365.72,
+    "full_overlap_m2": 664.59
+   },
+   {
+    "lon": 105.4354931,
+    "lat": 10.3845047,
+    "x": 28488.0,
+    "north": -20495.0,
+    "width": 44.25,
+    "depth": 111.5,
+    "style": 6,
+    "road_core_overlap_m2": 365.43,
+    "full_overlap_m2": 858.43
+   },
+   {
+    "lon": 105.4339991,
+    "lat": 10.3809207,
+    "x": 28325.0,
+    "north": -20891.5,
+    "width": 54.25,
+    "depth": 117.5,
+    "style": 6,
+    "road_core_overlap_m2": 364.26,
+    "full_overlap_m2": 718.99
+   },
+   {
+    "lon": 105.0711793,
+    "lat": 10.673205,
+    "x": -11399.0,
+    "north": 11394.0,
+    "width": 52.5,
+    "depth": 58.0,
+    "style": 1,
+    "road_core_overlap_m2": 348.33,
+    "full_overlap_m2": 680.75
+   },
+   {
+    "lon": 105.4409108,
+    "lat": 10.3653418,
+    "x": 29084.0,
+    "north": -22613.0,
+    "width": 42.75,
+    "depth": 66.0,
+    "style": 1,
+    "road_core_overlap_m2": 330.26,
+    "full_overlap_m2": 654.58
+   },
+   {
+    "lon": 105.1132245,
+    "lat": 10.957937,
+    "x": -6812.5,
+    "north": 42878.0,
+    "width": 44.0,
+    "depth": 74.5,
+    "style": 6,
+    "road_core_overlap_m2": 328.62,
+    "full_overlap_m2": 548.14
+   },
+   {
+    "lon": 105.0021287,
+    "lat": 10.6212224,
+    "x": -18950.5,
+    "north": 5645.5,
+    "width": 41.75,
+    "depth": 66.5,
+    "style": 6,
+    "road_core_overlap_m2": 324.42,
+    "full_overlap_m2": 577.69
+   },
+   {
+    "lon": 105.4439958,
+    "lat": 10.3797404,
+    "x": 29419.5,
+    "north": -21020.5,
+    "width": 63.75,
+    "depth": 114.0,
+    "style": 1,
+    "road_core_overlap_m2": 318.88,
+    "full_overlap_m2": 688.78
+   },
+   {
+    "lon": 105.2503908,
+    "lat": 10.5392322,
+    "x": 8212.0,
+    "north": -3409.0,
+    "width": 31.5,
+    "depth": 67.5,
+    "style": 6,
+    "road_core_overlap_m2": 315.7,
+    "full_overlap_m2": 532.71
+   },
+   {
+    "lon": 105.4313735,
+    "lat": 10.3847499,
+    "x": 28037.0,
+    "north": -20468.5,
+    "width": 37.0,
+    "depth": 117.5,
+    "style": 6,
+    "road_core_overlap_m2": 314.64,
+    "full_overlap_m2": 514.82
+   },
+   {
+    "lon": 105.4358354,
+    "lat": 10.3777302,
+    "x": 28526.5,
+    "north": -21244.0,
+    "width": 63.75,
+    "depth": 99.5,
+    "style": 1,
+    "road_core_overlap_m2": 305.45,
+    "full_overlap_m2": 515.14
+   }
+  ]
+ }
+}

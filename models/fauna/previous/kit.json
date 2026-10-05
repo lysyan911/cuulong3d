@@ -1,0 +1,1176 @@
+{
+  "version": 2,
+  "axes": "metres, Y up, front +Z, origin feet/waterline",
+  "assets": [
+    {
+      "id": "egret",
+      "lod": 0,
+      "file": "egret-0.glb",
+      "vertices": 320,
+      "triangles": 480,
+      "width": 512,
+      "height": 112,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.6,
+          "start": 16
+        },
+        {
+          "name": "stab-feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "take-off",
+          "duration": 1,
+          "start": 48
+        },
+        {
+          "name": "flap",
+          "duration": 0.7,
+          "start": 64
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 80
+        },
+        {
+          "name": "land",
+          "duration": 1.2,
+          "start": 96
+        }
+      ],
+      "position": "egret-0-position.bin.z",
+      "normal": "egret-0-normal.bin.z"
+    },
+    {
+      "id": "egret",
+      "lod": 1,
+      "file": "egret-1.glb",
+      "vertices": 108,
+      "triangles": 136,
+      "width": 128,
+      "height": 112,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.6,
+          "start": 16
+        },
+        {
+          "name": "stab-feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "take-off",
+          "duration": 1,
+          "start": 48
+        },
+        {
+          "name": "flap",
+          "duration": 0.7,
+          "start": 64
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 80
+        },
+        {
+          "name": "land",
+          "duration": 1.2,
+          "start": 96
+        }
+      ],
+      "position": "egret-1-position.bin.z",
+      "normal": "egret-1-normal.bin.z"
+    },
+    {
+      "id": "duck",
+      "lod": 0,
+      "file": "duck-0.glb",
+      "vertices": 237,
+      "triangles": 400,
+      "width": 256,
+      "height": 48,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "waddle",
+          "duration": 1.2,
+          "start": 0
+        },
+        {
+          "name": "dabble",
+          "duration": 2,
+          "start": 16
+        },
+        {
+          "name": "swim",
+          "duration": 1.8,
+          "start": 32
+        }
+      ],
+      "position": "duck-0-position.bin.z",
+      "normal": "duck-0-normal.bin.z"
+    },
+    {
+      "id": "duck",
+      "lod": 1,
+      "file": "duck-1.glb",
+      "vertices": 72,
+      "triangles": 90,
+      "width": 128,
+      "height": 48,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "waddle",
+          "duration": 1.2,
+          "start": 0
+        },
+        {
+          "name": "dabble",
+          "duration": 2,
+          "start": 16
+        },
+        {
+          "name": "swim",
+          "duration": 1.8,
+          "start": 32
+        }
+      ],
+      "position": "duck-1-position.bin.z",
+      "normal": "duck-1-normal.bin.z"
+    },
+    {
+      "id": "cattle",
+      "lod": 0,
+      "file": "cattle-0.glb",
+      "vertices": 647,
+      "triangles": 1134,
+      "width": 1024,
+      "height": 48,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "graze",
+          "duration": 4,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 2,
+          "start": 16
+        },
+        {
+          "name": "tail-flick",
+          "duration": 2.5,
+          "start": 32
+        }
+      ],
+      "position": "cattle-0-position.bin.z",
+      "normal": "cattle-0-normal.bin.z"
+    },
+    {
+      "id": "cattle",
+      "lod": 1,
+      "file": "cattle-1.glb",
+      "vertices": 184,
+      "triangles": 254,
+      "width": 256,
+      "height": 48,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "graze",
+          "duration": 4,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 2,
+          "start": 16
+        },
+        {
+          "name": "tail-flick",
+          "duration": 2.5,
+          "start": 32
+        }
+      ],
+      "position": "cattle-1-position.bin.z",
+      "normal": "cattle-1-normal.bin.z"
+    },
+    {
+      "id": "sparrow",
+      "lod": 0,
+      "file": "sparrow-0.glb",
+      "vertices": 194,
+      "triangles": 278,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "sparrow-0-position.bin.z",
+      "normal": "sparrow-0-normal.bin.z"
+    },
+    {
+      "id": "sparrow",
+      "lod": 1,
+      "file": "sparrow-1.glb",
+      "vertices": 50,
+      "triangles": 56,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "sparrow-1-position.bin.z",
+      "normal": "sparrow-1-normal.bin.z"
+    },
+    {
+      "id": "myna",
+      "lod": 0,
+      "file": "myna-0.glb",
+      "vertices": 158,
+      "triangles": 212,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "myna-0-position.bin.z",
+      "normal": "myna-0-normal.bin.z"
+    },
+    {
+      "id": "myna",
+      "lod": 1,
+      "file": "myna-1.glb",
+      "vertices": 56,
+      "triangles": 58,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "myna-1-position.bin.z",
+      "normal": "myna-1-normal.bin.z"
+    },
+    {
+      "id": "dove",
+      "lod": 0,
+      "file": "dove-0.glb",
+      "vertices": 200,
+      "triangles": 276,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "dove-0-position.bin.z",
+      "normal": "dove-0-normal.bin.z"
+    },
+    {
+      "id": "dove",
+      "lod": 1,
+      "file": "dove-1.glb",
+      "vertices": 56,
+      "triangles": 58,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "dove-1-position.bin.z",
+      "normal": "dove-1-normal.bin.z"
+    },
+    {
+      "id": "swallow",
+      "lod": 0,
+      "file": "swallow-0.glb",
+      "vertices": 171,
+      "triangles": 236,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "swallow-0-position.bin.z",
+      "normal": "swallow-0-normal.bin.z"
+    },
+    {
+      "id": "swallow",
+      "lod": 1,
+      "file": "swallow-1.glb",
+      "vertices": 62,
+      "triangles": 68,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "swallow-1-position.bin.z",
+      "normal": "swallow-1-normal.bin.z"
+    },
+    {
+      "id": "kingfisher",
+      "lod": 0,
+      "file": "kingfisher-0.glb",
+      "vertices": 152,
+      "triangles": 210,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "kingfisher-0-position.bin.z",
+      "normal": "kingfisher-0-normal.bin.z"
+    },
+    {
+      "id": "kingfisher",
+      "lod": 1,
+      "file": "kingfisher-1.glb",
+      "vertices": 50,
+      "triangles": 56,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "kingfisher-1-position.bin.z",
+      "normal": "kingfisher-1-normal.bin.z"
+    },
+    {
+      "id": "cormorant",
+      "lod": 0,
+      "file": "cormorant-0.glb",
+      "vertices": 170,
+      "triangles": 234,
+      "width": 256,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "cormorant-0-position.bin.z",
+      "normal": "cormorant-0-normal.bin.z"
+    },
+    {
+      "id": "cormorant",
+      "lod": 1,
+      "file": "cormorant-1.glb",
+      "vertices": 59,
+      "triangles": 68,
+      "width": 64,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "cormorant-1-position.bin.z",
+      "normal": "cormorant-1-normal.bin.z"
+    },
+    {
+      "id": "pond-heron",
+      "lod": 0,
+      "file": "pond-heron-0.glb",
+      "vertices": 322,
+      "triangles": 480,
+      "width": 512,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "pond-heron-0-position.bin.z",
+      "normal": "pond-heron-0-normal.bin.z"
+    },
+    {
+      "id": "pond-heron",
+      "lod": 1,
+      "file": "pond-heron-1.glb",
+      "vertices": 110,
+      "triangles": 136,
+      "width": 128,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "pond-heron-1-position.bin.z",
+      "normal": "pond-heron-1-normal.bin.z"
+    },
+    {
+      "id": "cattle-egret",
+      "lod": 0,
+      "file": "cattle-egret-0.glb",
+      "vertices": 320,
+      "triangles": 480,
+      "width": 512,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "cattle-egret-0-position.bin.z",
+      "normal": "cattle-egret-0-normal.bin.z"
+    },
+    {
+      "id": "cattle-egret",
+      "lod": 1,
+      "file": "cattle-egret-1.glb",
+      "vertices": 108,
+      "triangles": 136,
+      "width": 128,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "cattle-egret-1-position.bin.z",
+      "normal": "cattle-egret-1-normal.bin.z"
+    },
+    {
+      "id": "grey-heron",
+      "lod": 0,
+      "file": "grey-heron-0.glb",
+      "vertices": 320,
+      "triangles": 480,
+      "width": 512,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "grey-heron-0-position.bin.z",
+      "normal": "grey-heron-0-normal.bin.z"
+    },
+    {
+      "id": "grey-heron",
+      "lod": 1,
+      "file": "grey-heron-1.glb",
+      "vertices": 108,
+      "triangles": 136,
+      "width": 128,
+      "height": 96,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 3,
+          "start": 0
+        },
+        {
+          "name": "walk",
+          "duration": 1.4,
+          "start": 16
+        },
+        {
+          "name": "feed",
+          "duration": 2.4,
+          "start": 32
+        },
+        {
+          "name": "flap",
+          "duration": 0.65,
+          "start": 48
+        },
+        {
+          "name": "glide",
+          "duration": 2,
+          "start": 64
+        },
+        {
+          "name": "wing-dry",
+          "duration": 4,
+          "start": 80
+        }
+      ],
+      "position": "grey-heron-1-position.bin.z",
+      "normal": "grey-heron-1-normal.bin.z"
+    },
+    {
+      "id": "keeper",
+      "lod": 0,
+      "file": "keeper-0.glb",
+      "vertices": 131,
+      "triangles": 182,
+      "width": 256,
+      "height": 32,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "walk",
+          "duration": 2,
+          "start": 0
+        },
+        {
+          "name": "stand",
+          "duration": 4,
+          "start": 16
+        }
+      ],
+      "position": "keeper-0-position.bin.z",
+      "normal": "keeper-0-normal.bin.z"
+    },
+    {
+      "id": "keeper",
+      "lod": 1,
+      "file": "keeper-1.glb",
+      "vertices": 67,
+      "triangles": 76,
+      "width": 128,
+      "height": 32,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "walk",
+          "duration": 2,
+          "start": 0
+        },
+        {
+          "name": "stand",
+          "duration": 4,
+          "start": 16
+        }
+      ],
+      "position": "keeper-1-position.bin.z",
+      "normal": "keeper-1-normal.bin.z"
+    },
+    {
+      "id": "angler",
+      "lod": 0,
+      "file": "angler-0.glb",
+      "vertices": 127,
+      "triangles": 180,
+      "width": 128,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 4,
+          "start": 0
+        }
+      ],
+      "position": "angler-0-position.bin.z",
+      "normal": "angler-0-normal.bin.z"
+    },
+    {
+      "id": "angler",
+      "lod": 1,
+      "file": "angler-1.glb",
+      "vertices": 63,
+      "triangles": 74,
+      "width": 64,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "stand",
+          "duration": 4,
+          "start": 0
+        }
+      ],
+      "position": "angler-1-position.bin.z",
+      "normal": "angler-1-normal.bin.z"
+    },
+    {
+      "id": "snakehead",
+      "lod": 0,
+      "file": "snakehead-0.glb",
+      "vertices": 71,
+      "triangles": 115,
+      "width": 128,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "gulp",
+          "duration": 2.5,
+          "start": 0
+        }
+      ],
+      "position": "snakehead-0-position.bin.z",
+      "normal": "snakehead-0-normal.bin.z"
+    },
+    {
+      "id": "snakehead",
+      "lod": 1,
+      "file": "snakehead-1.glb",
+      "vertices": 21,
+      "triangles": 23,
+      "width": 32,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "gulp",
+          "duration": 2.5,
+          "start": 0
+        }
+      ],
+      "position": "snakehead-1-position.bin.z",
+      "normal": "snakehead-1-normal.bin.z"
+    },
+    {
+      "id": "perch",
+      "lod": 0,
+      "file": "perch-0.glb",
+      "vertices": 71,
+      "triangles": 115,
+      "width": 128,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "flick",
+          "duration": 1,
+          "start": 0
+        }
+      ],
+      "position": "perch-0-position.bin.z",
+      "normal": "perch-0-normal.bin.z"
+    },
+    {
+      "id": "perch",
+      "lod": 1,
+      "file": "perch-1.glb",
+      "vertices": 21,
+      "triangles": 23,
+      "width": 32,
+      "height": 16,
+      "frames": 16,
+      "clips": [
+        {
+          "name": "flick",
+          "duration": 1,
+          "start": 0
+        }
+      ],
+      "position": "perch-1-position.bin.z",
+      "normal": "perch-1-normal.bin.z"
+    }
+  ],
+  "support_triangles": 144,
+  "credit": "Fauna models and animation: original work for this project"
+}

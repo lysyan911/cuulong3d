@@ -22,12 +22,29 @@ export const QUALITY_MODES = {
                bloom: true, aa: 'smaa' },
 };
 
+const VEIL = /* glsl */ `
+    // rain (render/weather.js): faint falling streaks over the picture, three layers for depth
+    float rainVeil(vec2 uv, float t) {
+      float s = 0.0;
+      for (int i = 0; i < 3; i++) {
+        float fi = float(i), sc = 1.0 + fi * 0.75;
+        vec2 q = vec2(uv.x * 150.0 * sc + uv.y * 16.0 * sc, uv.y * 2.6 * sc);
+        float col = floor(q.x), h = fract(sin(col * 12.9898 + fi * 7.13) * 43758.5453);
+        float y = fract(q.y + t * (1.5 + h) * (1.0 + fi * 0.45) + h * 7.0);
+        float on = step(0.5, fract(h * 13.7));
+        float w = 1.0 - abs(fract(q.x) - 0.5) * 2.0;
+        s += on * smoothstep(0.0, 0.04, y) * (1.0 - smoothstep(0.04, 0.22, y)) * pow(w, 8.0) * (0.55 - fi * 0.14);
+      }
+      return s;
+    }`;
+
 // colour grading in display space: gentle S-curve, saturation, warm highlights / cool shadows, vignette
 const GradeShader = {
-  uniforms: { tDiffuse: { value: null }, uSat: { value: 1.18 }, uWarm: { value: 1.0 }, uVignette: { value: 0.32 },
-              uContrast: { value: 0.22 } },
+  uniforms: { tDiffuse: { value: null }, uSat: { value: 1.2 }, uWarm: { value: 1.5 }, uVignette: { value: 0.32 },
+              uContrast: { value: 0.26 }, uRainVeil: { value: 0 }, uTime: { value: 0 } },
   vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-  fragmentShader: /* glsl */ `uniform sampler2D tDiffuse; uniform float uSat, uWarm, uVignette, uContrast; varying vec2 vUv;
+  fragmentShader: /* glsl */ `uniform sampler2D tDiffuse; uniform float uSat, uWarm, uVignette, uContrast, uRainVeil, uTime; varying vec2 vUv;
+    ${VEIL}
     void main() {
       vec3 c = texture2D(tDiffuse, vUv).rgb;
       c = mix(c, c * c * (3.0 - 2.0 * c), uContrast);
@@ -36,6 +53,7 @@ const GradeShader = {
       c += (vec3(0.028, 0.012, -0.018) * smoothstep(0.45, 1.0, l) + vec3(-0.01, 0.0, 0.018) * (1.0 - smoothstep(0.0, 0.35, l))) * uWarm;
       vec2 d = vUv - 0.5;
       c *= 1.0 - uVignette * dot(d, d) * 1.5;
+      if (uRainVeil > 0.001) c += vec3(0.8, 0.83, 0.86) * rainVeil(vUv, uTime) * 0.11 * uRainVeil;
       gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
     }`,
 };
@@ -44,10 +62,11 @@ const GradeShader = {
 const FinalShader = {
   uniforms: { tDiffuse: { value: null }, uPx: { value: new THREE.Vector2() }, toneMappingExposure: { value: 1 },
               uSat: GradeShader.uniforms.uSat, uWarm: GradeShader.uniforms.uWarm, uVignette: GradeShader.uniforms.uVignette,
-              uContrast: GradeShader.uniforms.uContrast },
+              uContrast: GradeShader.uniforms.uContrast, uRainVeil: { value: 0 }, uTime: { value: 0 } },
   vertexShader: GradeShader.vertexShader,
-  fragmentShader: /* glsl */ `uniform sampler2D tDiffuse; uniform vec2 uPx; uniform float uSat, uWarm, uVignette, uContrast;
-    varying vec2 vUv;   // (three adds the tone mapping + colour space functions to every ShaderMaterial)
+  fragmentShader: /* glsl */ `uniform sampler2D tDiffuse; uniform vec2 uPx; uniform float uSat, uWarm, uVignette, uContrast, uRainVeil, uTime;
+    varying vec2 vUv;
+    ${VEIL}   // (three adds the tone mapping + colour space functions to every ShaderMaterial)
     vec3 tap(vec2 uv) { return sRGBTransferOETF(vec4(ACESFilmicToneMapping(texture2D(tDiffuse, uv).rgb), 1.0)).rgb; }
     void main() {
       const vec3 L = vec3(0.299, 0.587, 0.114);
@@ -72,6 +91,7 @@ const FinalShader = {
       c += (vec3(0.028, 0.012, -0.018) * smoothstep(0.45, 1.0, l) + vec3(-0.01, 0.0, 0.018) * (1.0 - smoothstep(0.0, 0.35, l))) * uWarm;
       vec2 d = vUv - 0.5;
       c *= 1.0 - uVignette * dot(d, d) * 1.5;
+      if (uRainVeil > 0.001) c += vec3(0.8, 0.83, 0.86) * rainVeil(vUv, uTime) * 0.11 * uRainVeil;
       gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
     }`,
 };

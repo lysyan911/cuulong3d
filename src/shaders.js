@@ -229,7 +229,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         float lawnK = smoothstep(0.7, 0.95, cropS4.a), earthK = 1.0 - smoothstep(0.3, 0.55, cropS4.a);   // A: mapped land use
         float riceCover = smoothstep(0.35, 0.85, cropS.r) * uRice * (1.0 - waterF);
         riceCover *= 1.0 - smoothstep(40.0, 140.0, px);             // fields stay a patchwork far out
-        float paddyWet = 0.0, riceStage = 0.5, riceBund = 0.0;
+        float paddyWet = 0.0, riceStage = 0.5, riceBund = 0.0, riceBurnt = 0.0;
         if (riceCover > 0.01) {
         float ca = cos(uField.z), sa = sin(uField.z);
         vec2 f0 = vec2(P.x * ca + P.y * sa, -P.x * sa + P.y * ca);
@@ -261,7 +261,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
                         : stage < 0.92 ? mix(c4, c5, smoothstep(0.8, 0.86, stage)) : c6;
         float standing = step(0.18, stage) * (1.0 - step(0.92, stage));
         // texture: growth patches, rows of young plants, blades close up, wind waves on standing rice
-        float rowVis = 1.0 - smoothstep(0.18, 0.75, px);
+        float rowVis = 1.0 - smoothstep(0.08, 0.2, px);                    // 45 cm rows need 2+ pixels (no moiré)
         float rows = 0.5 + 0.5 * sin(lb * 13.9626);                          // 45 cm rows across the field
         riceColour *= 0.82 + 0.3 * fbm(P / 28.0) + (rows - 0.5) * 0.22 * rowVis * (1.0 - step(0.45, stage));
         riceColour = mix(riceColour, riceColour.gbr * vec3(1.15, 0.85, 0.6) + riceColour * 0.4, 0.12 * (vnoise(P / 9.0) - 0.4) * standing);   // uneven ripening
@@ -271,7 +271,30 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         riceColour *= 1.0 + (wave - 0.5) * 0.26 * standing;
         // seedlings: sparse green dots in the water; harvest: straw rows on stubble
         if (stage < 0.18 && stage >= 0.08) riceColour = mix(c0 * 1.3, c2, 0.35 + 0.35 * rows * rowVis);
-        if (stage >= 0.92) riceColour *= 0.85 + 0.35 * step(0.78, fract(lb / 2.4)) * (1.0 - smoothstep(0.3, 1.2, px));
+        // harvested: rows of cut stubble (gốc rạ) with lines of straw left by the combine harvester along the field,
+        // its wheel tracks; some fields already sprouting green again (lúa chét), some burnt black with grey ash
+        if (stage >= 0.92) {
+          float kind = fract(hf * 7.13), rough = vnoise(P / 6.0) * 0.6 + vnoise(P / 1.7) * 0.4;
+          float hill = (0.5 + 0.5 * sin(la * 25.13)) * (0.5 + 0.5 * sin(lb * 25.13));            // 25 cm stubble hills
+          float hillVis = 1.0 - smoothstep(0.025, 0.07, px);                          // (no moiré further out)
+          vec3 soil = vec3(0.15, 0.105, 0.055), stubble = vec3(0.40, 0.31, 0.115) * (0.85 + 0.3 * rough);
+          vec3 h = mix(soil, stubble, mix(0.72, 0.25 + 0.75 * hill, hillVis));
+          float lane = fract(la / 2.6 + hash12(vec2(hf, 3.0)));                                  // straw swaths along the field
+          float straw = smoothstep(0.66, 0.72, lane) * (1.0 - smoothstep(0.84, 0.92, lane))
+                      * smoothstep(0.25, 0.6, vnoise(vec2(la * 1.3, lb / 3.5))) * (0.55 + 0.45 * vnoise(vec2(la, lb) / vec2(0.4, 0.9)));   // broken, clumpy
+          float laneVis = 1.0 - smoothstep(0.25, 0.7, px);                                   // lines blend to their average
+          h = mix(h, vec3(0.60, 0.49, 0.22) * (0.85 + 0.3 * rough), mix(0.1, straw, laneVis));
+          float track = smoothstep(0.08, 0.0, abs(fract(la / 2.6 + 0.31) - 0.5) - 0.42);        // pressed wheel tracks
+          h *= 1.0 - 0.18 * track * (1.0 - straw) * laneVis;
+          if (kind < 0.32 && kind >= 0.14) h = mix(h, vec3(0.10, 0.21, 0.03) * (0.8 + 0.4 * rough), 0.25 + 0.4 * smoothstep(0.3, 0.8, vnoise(P / 4.0)));
+          if (kind < 0.14) {
+            float ash = smoothstep(0.55, 0.85, vnoise(P / 1.6) * 0.5 + vnoise(P / 0.5) * 0.5);
+            h = mix(vec3(0.03, 0.028, 0.025), vec3(0.16, 0.155, 0.15), ash * 0.45) * (0.85 + 0.3 * rough);
+            h = mix(h, stubble * 0.55, smoothstep(0.75, 0.95, vnoise(vec2(la * 0.4, lb / 6.0))) * 0.5);   // strips that did not burn
+            riceBurnt = 1.0;
+          }
+          riceColour = h;
+        }
         // bunds: grass and weeds; dykes: darker grass, some with a concrete footpath
         vec3 bundC = vec3(0.06, 0.14, 0.03) * (0.8 + 0.4 * vnoise(P / 3.0));
         riceColour = mix(riceColour, bundC, max(bund * 0.9, dyke * 0.95));
@@ -291,6 +314,21 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float vegL = smoothstep(0.0, 0.03, sc.g - max(sc.r, sc.b)) * (1.0 - riceCover) * (1.0 - hillF) * (1.0 - waterF) * (1.0 - townK);
           float lum = dot(sc, vec3(0.2126, 0.7152, 0.0722));
           diffuseColor.rgb = mix(sc, mix(vec3(lum), sc, 1.3) * 1.08, vegL);
+        }
+        // under the 3D trees (within their 500 m near range): the satellite's dark canopy (crowns and their shade)
+        // would be shaded again by the trees' own shadows, near black. There it is the ground of a delta orchard /
+        // village garden instead: leaf litter, bare earth, patches of grass
+        {
+          vec3 sc = diffuseColor.rgb;
+          float lum = dot(sc, vec3(0.2126, 0.7152, 0.0722));
+          float underK = smoothstep(0.0, 0.025, sc.g - max(sc.r, sc.b) * 0.95) * (1.0 - smoothstep(0.05, 0.085, lum))
+                       * (1.0 - riceCover) * (1.0 - hillF) * (1.0 - waterF) * (1.0 - smoothstep(300.0, 500.0, camDist));
+          if (underK > 0.01) {
+            float ln = vnoise(P / 9.0) * 0.6 + vnoise(P / 2.1) * 0.4;
+            vec3 under = mix(vec3(0.11, 0.145, 0.05), vec3(0.17, 0.135, 0.085), smoothstep(0.5, 0.8, ln))
+                       * (0.85 + 0.3 * vnoise(P / 0.9));
+            diffuseColor.rgb = mix(sc, under, underK * 0.85);
+          }
         }
         // unpaved ground in town (empty lots, gardens): grass and dry earth, the satellite colour only as a hint (at
         // 10 m it smudges tree crowns and shade into dark blots)
@@ -328,11 +366,13 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float field = riceCover * (1.0 - riceBund);
           float w[6];
           w[0] = field * step(riceStage, 0.18) + mudBank;                      // flooded / wet mud
-          w[1] = riceCover * riceBund * 0.6 + field * step(0.92, riceStage);    // dry bunds, harvested stubble
+          float harvested = field * step(0.92, riceStage);
+          w[1] = riceCover * riceBund * 0.6 + harvested * 0.2;   // dry bunds; a little soil under stubble
           w[2] = yard * vegG + riceCover * riceBund * 0.4;                     // grass
-          w[3] = yard * (1.0 - vegG) + hillDirt;                               // dirt yards, paths, bare hill flats
+          w[3] = yard * (1.0 - vegG) + hillDirt + harvested * riceBurnt * 0.6;   // dirt yards, paths, bare hill flats, burnt
           w[4] = rockW;                                                        // granite
-          w[5] = field * step(0.18, riceStage) * (1.0 - step(0.92, riceStage)); // young / growing rice
+          w[5] = field * step(0.18, riceStage) * (1.0 - step(0.92, riceStage)) // young / growing rice; harvested: its rows
+               + harvested * 0.5 * (1.0 - riceBurnt);                         // tinted to straw read as stubble rows
           float gLod = log2(max(px / 0.02, 1.0)), gS = exp2(floor(gLod)), gF = fract(gLod);   // ~0.02 m per pixel at s = 1
           vec3 pc = vec3(0.0), pm = vec3(0.0);
           float W = 0.0;
@@ -363,6 +403,8 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         float lake = smoothstep(6.0, 9.0, vWPos.y / uExag);
         vec2 qq = vec2(dot(P, FLOW), dot(P, vec2(-FLOW.y, FLOW.x)));   // along / across the flow
         float streak = smoothstep(0.38, 0.66, fbm(vec2(qq.x / 700.0 - uTime * 0.01, qq.y / 60.0)));
+        // wind: ruffled patches (fine ripples, blurred reflections) between glassy slicks
+        float ruff = smoothstep(0.3, 0.66, fbm(qq / vec2(520.0, 260.0) + vec2(uTime * 0.006, 0.0)));
         vec3 photo = diffuseColor.rgb;
         // Mekong water is silt-laden: milky brown ("nước phù sa"); hill lakes stay clear green
         vec3 tone = mix(vec3(0.30, 0.20, 0.11), vec3(0.025, 0.12, 0.105), lake);
@@ -390,6 +432,30 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float hx = (waveHeight(P + vec2(e, 0.0), nearF) - waveHeight(P - vec2(e, 0.0), nearF)) / (2.0 * e);
           float hy = (waveHeight(P + vec2(0.0, e), nearF) - waveHeight(P - vec2(0.0, e), nearF)) / (2.0 * e);
           vec3 nW = normalize(vec3(-hx * farF, 1.0, hy * farF));     // world z = -north
+          // rain: rings spreading from the drops (cells of 0.7 m, each drop at its own time), close up only
+          float rainF = uWeather.y * (1.0 - smoothstep(0.06, 0.3, px));
+          if (rainF > 0.01) {
+            for (int q = 0; q < 2; q++) {
+              vec2 rp = P / (q == 0 ? 0.7 : 1.13) + float(q) * 7.3, ci = floor(rp), cf = fract(rp) - 0.5;
+              float ph = hash12(ci + float(q) * 31.0), t = fract(uTime * 0.85 + ph);
+              vec2 d = cf - (vec2(hash12(ci + 3.1), hash12(ci + 7.7)) - 0.5) * 0.5;
+              float r = length(d), front = r - t * 0.42;
+              float ring = sin(front * 46.0) * exp(-front * front / 0.0036) * (1.0 - t);
+              vec2 dir = d / max(r, 1e-4);
+              nW = normalize(nW + vec3(dir.x, 0.0, -dir.y) * ring * 0.45 * rainF);
+            }
+          }
+          // fine wind ripples close up (too small for the wave height above), stronger in ruffled patches
+          float capF = (1.0 - smoothstep(0.3, 2.5, px)) * (0.25 + 0.75 * ruff);
+          if (capF > 0.01) {
+            // two sizes, stretched across the wind (wind from the WSW), so they read as wind ripples, not dimples
+            vec2 cq = vec2(dot(P, vec2(0.92, 0.38)) / 0.9, dot(P, vec2(-0.38, 0.92)) / 2.6) + uTime * vec2(0.7, 0.05);
+            float c0 = vnoise(cq), c1 = vnoise(cq + vec2(0.3, 0.0)), c2 = vnoise(cq + vec2(0.0, 0.3));
+            vec2 dq = cq * vec2(2.3, 1.9) + vec2(5.2, 1.3) - uTime * vec2(0.4, 0.2);
+            float d0 = vnoise(dq), d1 = vnoise(dq + vec2(0.3, 0.0)), d2 = vnoise(dq + vec2(0.0, 0.3));
+            vec2 g = vec2(c1 - c0, c2 - c0) + 0.5 * vec2(d1 - d0, d2 - d0);
+            nW = normalize(nW + vec3(-g.x, 0.0, g.y) * 0.45 * capF);
+          }
           vec3 nV = normalize((viewMatrix * vec4(nW, 0.0)).xyz);
           normal = normalize(mix(normal, nV, waterF));
         }
@@ -405,6 +471,10 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           vec3 R = reflect(-wV, wN); R.y = max(R.y, 0.01);
           float cover;
           vec3 skyR = skyRadiance(normalize(R), vWPos, 1.0, cover);
+          // ruffled water blurs the reflected sky and clouds (ripples smaller than a pixel); slicks stay mirror-like
+          float coverD, blurK = ruff * (0.35 + 0.5 * smoothstep(1.0, 12.0, px));
+          vec3 skyD = skyRadiance(normalize(vec3(R.x, max(R.y, 0.0) + 0.3, R.z)), vWPos, 0.0, coverD);
+          skyR = mix(skyR, skyD * 0.9, blurK);
           skyR *= 1.0 - 0.6 * bank;                            // banks and their trees darken the edge reflection
           // mirror image of the banks: follow the reflected ray over the water mask; land (trees, houses ~18 m) that
           // it passes below hides the sky. Group UV runs 0..1 east / north over 26.88 km.
@@ -431,12 +501,12 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           #if NUM_DIR_LIGHTS > 0
             vec3 H = normalize(wV + uSunDir);
             float c = max(dot(wN, H), 1e-3), c2 = c * c;
-            float s2 = mix(0.0025, 0.035, smoothstep(0.5, 25.0, px));    // wider sun path when a pixel spans many ripples
+            float s2 = mix(0.0025, 0.035, smoothstep(0.5, 25.0, px)) * (1.0 + 1.5 * ruff);   // wider sun path over many ripples
             float D = exp((c2 - 1.0) / (c2 * s2)) / (PI * s2 * c2 * c2);
             float Fh = 0.02 + 0.98 * pow(1.0 - max(dot(wV, H), 0.0), 5.0);
             float closeF = 1.0 - smoothstep(0.3, 3.0, px);                  // separate sparkles close up
             float sp = vnoise(P * 1.7 + uTime * vec2(0.9, -0.7)) * vnoise(P * 2.3 - uTime * vec2(0.5, 1.1));
-            glint = directLight.color * D * Fh / (4.0 * NdV) * mix(1.0, 12.0 * pow(sp, 1.5), closeF);
+            glint = directLight.color * D * Fh / (4.0 * NdV) * mix(1.0, 12.0 * pow(sp, 1.5), closeF) * (1.0 - 0.95 * uWeather.x);   // none under rain clouds
           #endif
           vec3 waterLit = totalDiffuse * (1.0 - Fr) + skyR * Fr + glint + totalEmissiveRadiance;
           outgoingLight = mix(outgoingLight, waterLit, waterF);
@@ -445,5 +515,5 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
       `);
     patchCloudShadow(shader, skyUniforms());
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v17';
+  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v22';
 }

@@ -1,0 +1,62 @@
+<!doctype html><meta charset="utf-8"><title>Fauna third-pass checks</title><pre id="result">Loading module imports...</pre>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';import {FaunaLayer} from '/src/fauna.js';
+document.getElementById('result').textContent='Loading animal assets…';
+const report={},errors=[];const old=console.error;console.error=(...a)=>{errors.push(a.map(String).join(' '));old(...a);};
+const assert=(test,msg)=>{if(!test)throw Error(msg);};
+try {
+const surface={waterAt:()=>0,cropAt:()=>1,waterHeight:()=>5},terrain={heightAt:()=>2,ex:1,surface};
+const renderer=new THREE.WebGLRenderer({antialias:false});renderer.setSize(400,400);document.body.append(renderer.domElement);const f=new FaunaLayer(terrain,{renderer});await f.load();document.getElementById('result').textContent='Assets ready; checking fields…';
+// Check real-driver field classification at every authored herd, including all initial animal positions.
+const source=await fetch('/src/shaders.js').then(r=>r.text()),fn=source.slice(source.indexOf('float hash12'),source.indexOf('float fbm'));
+const stage=source.slice(source.indexOf('float ca = cos(uField.z)'),source.indexOf('float lw = min(1.0'));
+const files=f.index.tiles.filter(t=>t.herds).map(t=>t.file);for(const name of files)await f.loadTile(f.index.tiles.find(t=>t.file===name));
+const seeds=[];for(let j=0;j<f.index.tiles.length;j+=24){const batch=f.index.tiles.slice(j,j+24);const data=await Promise.all(batch.map(async t=>JSON.parse(await new Response((await fetch('/data/fauna/'+t.file)).body.pipeThrough(new DecompressionStream('deflate'))).text())));for(const d of data)for(const s of d.sites)if(s.mode==='seedling')for(const p of s.positions)seeds.push(p[0],p[1]);}
+const points=[];for(const tile of f.tiles.values())for(const a of tile.animals)if(a.mode==='field'&&a.id!=='keeper')points.push(a.x,a.n);
+const harvested=points.length/2;points.push(...seeds);const tested=points.length/2,width=128,height=Math.ceil(tested/width),cv=document.createElement('canvas');cv.width=width;cv.height=height;const gl=cv.getContext('webgl2');
+function shader(type,text){const s=gl.createShader(type);gl.shaderSource(s,text);gl.compileShader(s);assert(gl.getShaderParameter(s,gl.COMPILE_STATUS),gl.getShaderInfoLog(s));return s;}
+const vs=shader(gl.VERTEX_SHADER,`#version 300 es
+layout(location=0) in vec2 aPoint;flat out vec2 P;void main(){P=aPoint;vec2 pixel=vec2(gl_VertexID%128,gl_VertexID/128)+.5;gl_Position=vec4(pixel/vec2(128.,${height}.)*2.-1.,0,1);gl_PointSize=1.;}`);
+const fs=shader(gl.FRAGMENT_SHADER,'#version 300 es\nprecision highp float;flat in vec2 P;uniform vec4 uField;out vec4 color;\n'+fn+'\nvoid main(){'+stage+'color=vec4(stage,0,0,1);}');
+const pg=gl.createProgram();gl.attachShader(pg,vs);gl.attachShader(pg,fs);gl.linkProgram(pg);assert(gl.getProgramParameter(pg,gl.LINK_STATUS),gl.getProgramInfoLog(pg));gl.useProgram(pg);gl.uniform4f(gl.getUniformLocation(pg,'uField'),760,1180,.18,0);
+const vb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(points),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);gl.viewport(0,0,width,height);gl.drawArrays(gl.POINTS,0,tested);
+const bytes=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,bytes);let minimum=1;for(let i=0;i<tested;i++)minimum=Math.min(minimum,bytes[i*4]/255);
+minimum=1;let maximumSeedling=0;for(let i=0;i<tested;i++){if(i<harvested)minimum=Math.min(minimum,bytes[i*4]/255);else maximumSeedling=Math.max(maximumSeedling,bytes[i*4]/255);}
+const bad=[];for(let i=harvested;i<tested;i++)if(bytes[i*4]/255>=.18)bad.push({x:points[i*2],north:points[i*2+1],stage:bytes[i*4]/255});report.fieldShader={harvested,seedling:seeds.length/2,minimum,maximumSeedling,invalid:bad.length,examples:bad.slice(0,15)};const rt=new THREE.WebGLRenderTarget(19,17);renderer.setRenderTarget(rt);renderer.setViewport(2,3,11,9);renderer.setScissor(4,5,7,6);renderer.setScissorTest(true);renderer.setClearColor(0x204060,.4);const counters={...renderer.info.render};
+const classified=f.fieldClassifier.classify(seeds);assert(renderer.getRenderTarget()===rt&&renderer.getViewport(new THREE.Vector4()).equals(new THREE.Vector4(2,3,11,9))&&renderer.getScissor(new THREE.Vector4()).equals(new THREE.Vector4(4,5,7,6))&&renderer.getScissorTest()&&Math.abs(renderer.getClearAlpha()-.4)<1e-6&&JSON.stringify(counters)===JSON.stringify(renderer.info.render),'Classifier renderer state');renderer.setRenderTarget(null);renderer.setViewport(0,0,400,400);renderer.setScissorTest(false);rt.dispose();report.fieldStateRestored=true;let mismatch=0,accepted=0,maxAccepted=0;for(let j=0;j<classified.length;j++){if(Math.abs(classified[j]-bytes[(j+harvested)*4])>1)mismatch++;if(classified[j]/255+.5/255<.18){accepted++;maxAccepted=Math.max(maxAccepted,classified[j]/255);}}Object.assign(report.fieldShader,{classifierMismatch:mismatch,accepted,maxAccepted});assert(minimum>.92&&mismatch===0&&maxAccepted<.18&&accepted>seeds.length/2*.95,'Actual GLSL field classification / tile-load filter');
+// Free distant tiles before the pilot checks.
+for(const [key,tile] of f.tiles)if(Math.hypot(tile.t.x-f.pilot.x,tile.t.north-f.pilot.north)>1600)f.tiles.delete(key);
+const scene=new THREE.Scene();scene.add(f.group,new THREE.HemisphereLight(0xffffff,0x454545,2));
+const camera=new THREE.PerspectiveCamera(65,1,.01,1800),p=f.pilot;camera.position.set(p.x+21,15,-p.north+26);camera.lookAt(p.x,2,-p.north);camera.updateMatrixWorld();
+f.update(camera,.1);const pilot=[...f.tiles.values()].flatMap(t=>t.animals);report.pilot={...f.stats};
+assert(f.stats.triangles<150000&&f.stats.calls<=20,'Pilot budget');
+assert(new Set(pilot.filter(a=>a.id==='duck').map(a=>a.coat)).size>=4,'Individual duck plumage');
+assert(pilot.some(a=>a.tether)&&pilot.some(a=>a.cow),'Cow tether/riding egret');
+assert(f.pools.every(p=>p.mesh.userData.noShadow===(p.a.lod>0||['snakehead','perch','pomacea','pila','snail-eggs'].includes(p.a.id))),'Near animal shadows / tiny noShadow');
+const duck=pilot.find(a=>a.id==='duck'),x=duck.x,n=duck.n;for(let i=0;i<100;i++)f.update(camera,.1);report.drift=Math.hypot(duck.x-x,duck.n-n);assert(report.drift>.12,'Collective drift');
+const bird=pilot.find(a=>a.id==='egret');camera.position.set(bird.x,4000,-bird.n);camera.lookAt(bird.x,2,-bird.n);camera.updateMatrixWorld();f.update(camera,.1);assert(!bird.flight,'High camera must not scare birds');
+camera.position.set(bird.x+4,bird.h+4,-bird.n+4);camera.lookAt(bird.x,bird.h,-bird.n);camera.updateMatrixWorld();f.update(camera,.1);assert(bird.flight,'True 3D flee trigger');
+camera.position.set(p.x+21,150,-p.north+26);camera.lookAt(p.x,2,-p.north);camera.updateMatrixWorld();for(let i=0;i<75;i++)f.update(camera,.1);assert(!bird.flight,'Bird landing');
+// Compile every near/far colour and animated depth material using actual exported VATs.
+const pose=new THREE.Matrix4();camera.position.set(2,2,3);camera.lookAt(0,.3,0);camera.updateMatrixWorld();
+for(const pool of f.pools){f.group.traverse(o=>{if(o.isMesh||o.isLineSegments)o.visible=false;});pool.mesh.visible=true;pool.mesh.count=1;pool.mesh.setMatrixAt(0,pose);pool.mesh.instanceMatrix.needsUpdate=true;
+const c=pool.a.clips.find(c=>c.name==='flap')||pool.a.clips[0];pool.clips.setXYZW(0,c.start,1,c.duration,.3);pool.clips.needsUpdate=true;renderer.render(scene,camera);
+const mat=pool.mesh.material;pool.mesh.material=pool.depth;renderer.render(scene,camera);pool.mesh.material=mat;}
+f.group.traverse(o=>{if(o.isMesh||o.isLineSegments)o.visible=false;});f.effects.reset();f.effects.emit(0,0,0,.4,1);f.effects.finish();renderer.render(scene,camera);
+assert(errors.length===0,'Shaders: '+errors.join(';'));
+// Water event pool, short-range perch culling, and simultaneous settlement LOD budgets.
+const synthetic=[];for(const id of ['sparrow','myna','dove','swallow','kingfisher','cormorant','pond-heron','snakehead','perch','splash','trap','angler'])for(let i=0;i<20;i++)synthetic.push({id,x:i*.1,n:0,h:0,baseX:i*.1,baseN:0,phase:0,yaw:0,scale:1,route:0,mode:['snakehead','perch','splash','trap'].includes(id)?'water':'roof',height:0,cooldown:1e9});
+f.tiles.clear();f.wireBirds=[];f.tiles.set('test',{t:{x:0,north:0},animals:synthetic,supports:[],sphere:new THREE.Sphere(new THREE.Vector3(0,0,0),100)});f.time=0;f.nextStream=f.nextWires=1e9;
+camera.position.set(4,4,8);camera.lookAt(0,0,0);camera.updateMatrixWorld();f.update(camera,.1);renderer.render(scene,camera);report.mixed={...f.stats};assert(f.stats.calls<=20&&f.stats.triangles<=150000,'Mixed species budget');
+assert(f.effects.count>0&&f.lookup.get('perch-0').count>0,'Surface rings / close perch');camera.position.set(25,4,20);camera.lookAt(0,0,0);camera.updateMatrixWorld();f.time=0;f.update(camera,.1);assert(f.lookup.get('perch-0').count===0,'Perch invisible past 15m');
+
+// Independent close snail pass: own posts, no shadows, proper distance cutoff.
+const snails=['pomacea','pila','snail-eggs'].map((id,i)=>({id,x:i*.1,n:0,h:.2,baseX:i*.1,baseN:0,phase:0,yaw:0,scale:1,route:0,mode:id==='snail-eggs'?'egg-post':'snail',site:{support:'post',x:i*.1,north:0,waterEdge:true,postHeight:.5},height:.2,cooldown:1e9}));f.tiles.get('test').animals=snails;camera.position.set(1,1,2);camera.lookAt(0,.2,0);camera.updateMatrixWorld();f.update(camera,.1);assert(f.lookup.get('pomacea-0').count===1&&f.lookup.get('pila-0').count===1&&f.lookup.get('snail-eggs-0').count===1,'Tiny fauna close pass');report.snails={...f.stats};camera.position.set(0,1,40);camera.lookAt(0,.2,0);camera.updateMatrixWorld();f.update(camera,.1);assert(f.lookup.get('pomacea-0').count===0&&f.lookup.get('pila-0').count===0&&f.lookup.get('snail-eggs-0').count===1,'Snails 30m / eggs 60m');camera.position.z=65;camera.updateMatrixWorld();f.update(camera,.1);assert(f.lookup.get('snail-eggs-0').count===0,'Egg 60m cutoff');
+report.textureCount=renderer.info.memory.textures;report.atlasMiBWithMips=2048*2048*4*4/3/1048576;report.vatMiB=f.stats.vatBytes/1048576;report.shaders=errors;
+f.dispose();assert(f.group.children.length===0,'Dispose');
+const mobile=new FaunaLayer(terrain,{mobile:true,renderer});await mobile.load();camera.position.set(p.x+21,15,-p.north+26);camera.lookAt(p.x,2,-p.north);camera.updateMatrixWorld();mobile.update(camera,.1);report.mobile={...mobile.stats};assert(mobile.stats.animals<70,'Mobile count');mobile.dispose();renderer.dispose();
+report.pass=true;
+}catch(e){report.pass=false;report.error=e.stack;}
+document.getElementById('result').textContent=JSON.stringify(report,null,2);
+</script>

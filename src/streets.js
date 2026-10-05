@@ -195,7 +195,10 @@ export class StreetFurniture {
    * roads: town streets of one tile, each { P: [[x, north]...], S: along (m), N: unit normals, hw, sh (sidewalk m),
    * cl (class), y: sidewalk heights }. Returns a Group (or null).
    */
-  build(roads, sphere, signals = []) {
+  build(...args) { const g = this.buildSteps(...args); let r; while (!(r = g.next()).done); return r.value; }
+
+  // built in steps (roads3d.js spreads a town tile over a few frames)
+  *buildSteps(roads, sphere, signals = []) {
     const M = { pole: [], lamp: [], bike: [], stall: [], signal: [], car: [], van: [], truck: [], bus: [], rider: [], lamp2: [], nose: [] };
     const C = { bike: [], stall: [], car: [], van: [], truck: [], bus: [], rider: [] }, trees = [], wire = [];
     const at = (R, s) => {                                   // point, normal, height at distance s along a road
@@ -232,7 +235,9 @@ export class StreetFurniture {
       m.setPosition(S.x, S.y, -S.yN);
       M.signal.push(m);
     }
+    let nRoad = 0;
     for (const R of roads) {
+      yield;
       const L = R.S[R.S.length - 1];
       if (L < 18 || R.cl > 6) continue;
       const k0 = Math.round(R.P[0][0] * 3.1) * 7919 + Math.round(R.P[0][1] * 2.3);
@@ -358,20 +363,27 @@ export class StreetFurniture {
       if (!c) { c = { x: (Math.floor(x / CELL) + 0.5) * CELL, z: (Math.floor(z / CELL) + 0.5) * CELL, M: {}, C: {}, wire: [], trees: [], y0: Infinity, y1: -Infinity }; cells.set(key, c); }
       return c;
     };
-    for (const k of Object.keys(M)) M[k].forEach((m, i) => {
-      const c = cellOf(m.elements[12], m.elements[14]);
-      c.y0 = Math.min(c.y0, m.elements[13]); c.y1 = Math.max(c.y1, m.elements[13]);
-      (c.M[k] ||= []).push(m);
-      if (C[k]) (c.C[k] ||= []).push(C[k][i]);
-    });
+    for (const k of Object.keys(M)) {
+      M[k].forEach((m, i) => {
+        const c = cellOf(m.elements[12], m.elements[14]);
+        c.y0 = Math.min(c.y0, m.elements[13]); c.y1 = Math.max(c.y1, m.elements[13]);
+        (c.M[k] ||= []).push(m);
+        if (C[k]) (c.C[k] ||= []).push(C[k][i]);
+      });
+      yield;
+    }
     for (let i = 0; i < wire.length; i += 6) {
+      if (i % 12000 === 11994) yield;
       const c = cellOf(wire[i], wire[i + 2]);
-      c.wire.push(...wire.slice(i, i + 6));
+      c.wire.push(wire[i], wire[i + 1], wire[i + 2], wire[i + 3], wire[i + 4], wire[i + 5]);
       c.y0 = Math.min(c.y0, wire[i + 1] - 10, wire[i + 4] - 10); c.y1 = Math.max(c.y1, wire[i + 1], wire[i + 4]);
     }
     for (const t of trees) { const c = cellOf(t[0], t[2]); c.trees.push(t); c.y0 = Math.min(c.y0, t[1]); c.y1 = Math.max(c.y1, t[1]); }
     const g = new THREE.Group();
+    let nCell = 0;
+    yield;
     for (const c of cells.values()) {
+      yield;
       const cg = new THREE.Group();
       const y = sphere.center.y;
       const cs = new THREE.Sphere(new THREE.Vector3(c.x, y, c.z), CELL * 0.75 + 30);
@@ -397,12 +409,13 @@ export class StreetFurniture {
         wg.boundingSphere = cs.clone();
         const lines = new THREE.LineSegments(wg, this.wireMat);
         lines.userData.noShadow = true;
+        lines.userData.faunaCable = true; // fauna reads the existing sagged cable vertices only
         cg.add(lines);
       }
       if (c.trees.length && this.trees) {
         const T = { cx: c.x, ground: y, cz: c.z };
-        for (const sp of new Set(c.trees.map((t) => t[7])))
-          cg.add(this.trees.mesh(this.trees.models[sp], c.trees.filter((t) => t[7] === sp), this.trees.matNear, T, cs.clone()));
+        this.trees.treeChunk(cg, this.trees.models.map((_, sp) => c.trees.filter(t => t[7] === sp)), T, cs.clone());
+        this.trees.closePosition.set(Infinity, Infinity, Infinity);
       }
       g.add(cg);
     }
@@ -422,6 +435,8 @@ export class StreetFurniture {
   dispose(g) {
     if (!g) return;
     this.group.remove(g);
+    // Tree pools retain original records; drop street-cell registrations before disposing their GPU buffers.
+    if (this.trees) for (const cg of g.children) this.trees.closeChunks.delete(cg);
     g.traverse((o) => {
       if (o.isInstancedMesh) o.dispose();
       else if (o.isLineSegments) o.geometry.dispose();
