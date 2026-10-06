@@ -132,13 +132,25 @@ export function skyMaterial(uniforms, { horizon, zenith }) {
  * is the haze extinction at sea level (per m) and it thins out with height (scale height HAZE_H), so low views over
  * the delta fade to the haze colour within ~10-20 km while views from high above stay clear. Linear Fog still works
  * as before (used under the Trà Sư canopy). Call once, before any material compiles.
- * The haze colour is worked out per pixel from the angle to the sun (sunDir, fixed for the session): fogColor is the
+ * The haze colour is worked out per pixel from the angle to the sun (FOG_SUN, moved by the weather): fogColor is the
  * horizon blue; looking towards the sun the haze glows warm (forward scattering by the humid air), looking away it
  * turns a deeper blue, so far hills fade into blue layers rather than grey.
  */
 export const HAZE_H = 1100;
+/**
+ * Ground mist (render/weather.js "Sương sớm"): a thin second layer on the plain, density x (per m at sea level),
+ * scale height y (m), patchiness z (0-1, banks of mist), so trees and roofs stand out of it. A plain object, not a
+ * Vector4: three copies vectors when it clones a material's uniforms but keeps other objects by reference, so this
+ * one object reaches every built-in material (all of them get it in their ShaderLib uniforms below).
+ */
+export const MIST = { x: 0, y: 9, z: 0.8, w: 0 };
+/** The direction to the sun for the haze glow, shared the same way (render/weather.js moves it with the sun). */
+export const FOG_SUN = { x: 0, y: 1, z: 0 };
 export function installAerialHaze(sunDir) {
   if (THREE.ShaderChunk.fog_fragment.includes('vFogWorld')) return;
+  Object.assign(FOG_SUN, { x: sunDir.x, y: sunDir.y, z: sunDir.z });
+  for (const lib of [THREE.UniformsLib.fog, ...Object.values(THREE.ShaderLib).map((l) => l.uniforms)])
+    if (lib && 'fogDensity' in lib) { lib.fogMist = { value: MIST }; lib.fogSun = { value: FOG_SUN }; }
   THREE.ShaderChunk.fog_pars_vertex = '#ifdef USE_FOG\n  varying float vFogDepth;\n  varying vec3 vFogWorld;\n#endif';
   THREE.ShaderChunk.fog_vertex = `#ifdef USE_FOG
     vFogDepth = - mvPosition.z;
@@ -150,6 +162,8 @@ export function installAerialHaze(sunDir) {
     varying vec3 vFogWorld;
     #ifdef FOG_EXP2
       uniform float fogDensity;
+      uniform vec4 fogMist;
+      uniform vec3 fogSun;
     #else
       uniform float fogNear;
       uniform float fogFar;
@@ -165,7 +179,7 @@ export function installAerialHaze(sunDir) {
                   * (abs(fogK) > 1e-3 ? (1.0 - exp(-fogK)) / fogK : 1.0);
       float fogFactor = 1.0 - exp(-fogOd);
       vec3 fogDir = fogRay / max(fogLen, 1.0);
-      float fogMu = dot(fogDir, vec3(${sunDir.x.toFixed(4)}, ${sunDir.y.toFixed(4)}, ${sunDir.z.toFixed(4)}));
+      float fogMu = dot(fogDir, fogSun);
       float fogMie = 0.42 * pow(max(fogMu, 0.0), 6.0) + 0.16 * max(fogMu, 0.0) * max(fogMu, 0.0);
       // (a little darker than the sky at the horizon, so it keeps its blue through the tone mapping)
       vec3 fogCol = mix(fogColor * vec3(0.76, 0.88, 1.02), vec3(1.0, 0.84, 0.62), clamp(fogMie, 0.0, 1.0));
@@ -175,6 +189,23 @@ export function installAerialHaze(sunDir) {
       float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );
     #endif
     gl_FragColor.rgb = mix( gl_FragColor.rgb, fogCol, fogFactor );
+    #ifdef FOG_EXP2
+      if (fogMist.x > 0.0) {
+        // ground mist: density fogMist.x * exp(-y / fogMist.y), integrated between the camera and the point
+        float mH = fogMist.y, mh0 = max(cameraPosition.y, 0.0), mh1 = max(vFogWorld.y, 0.0);
+        float me0 = exp(-mh0 / mH), me1 = exp(-mh1 / mH);
+        float mOd = abs(mh1 - mh0) > 0.05 ? fogLen * mH * (me1 - me0) / (mh0 - mh1) : fogLen * me1;
+        // in banks: thicker over some fields, thin over others (as it lies at the point seen)
+        vec2 mq = vFogWorld.xz / 380.0, mr = mat2(0.8, -0.6, 0.6, 0.8) * vFogWorld.xz / 157.0;
+        float bank = 0.5 + 0.5 * sin(mq.x * 1.7 + 1.3 * sin(mq.y * 1.1)) * sin(mq.y * 1.9 + 0.8 * sin(mq.x * 0.7));
+        bank = clamp(bank * (0.75 + 0.5 * (0.5 + 0.5 * sin(mr.x + 1.7 * sin(mr.y * 0.6)) * sin(mr.y * 1.3 + sin(mr.x * 0.8)))), 0.0, 1.0);
+        mOd *= fogMist.x * mix(1.0, bank * bank * 2.4, fogMist.z);
+        float mistF = 1.0 - exp(-mOd);
+        // lit by the low sun: bright, warm where it is backlit
+        vec3 mistCol = mix(fogColor * vec3(0.92, 0.94, 0.97) + 0.03, fogColor * vec3(1.3, 1.08, 0.82) + 0.06, clamp(fogMie * 1.8, 0.0, 1.0));
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, mistCol, mistF);
+      }
+    #endif
   #endif`;
 }
 

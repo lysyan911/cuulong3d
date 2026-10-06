@@ -83,6 +83,123 @@ function builder(cells, uvRect) {
   return { limb, ribbon, spray, crownSprays };
 }
 
+
+// Representative BÃƒÂ¡Ã‚ÂºÃ‚Â£y NÃƒÆ’Ã‚Âºi woodland, derived from the owner-approved Sam/CÃƒÂ¡Ã‚ÂºÃ‚Â¥m photos.
+// These are shape categories, not a botanical species survey. Heights are photo estimates.
+// Forking happens low on the bole; overlapping small twig sprays form uneven crown lobes.
+const WOODLAND = [
+  { id: 'forest', fork: 2.2, crown: 5.50, reach: 2.75, tilt: [.26, -.10], stretch: [1, 1], seed: .31 },
+  { id: 'woodlandLobed', fork: 2.45, crown: 6.40, reach: 3.65, tilt: [-.38, .20], stretch: [1.10, .90], seed: 1.13 },
+  { id: 'woodlandLean', fork: 2.8, crown: 8.05, reach: 3.10, tilt: [1.40, -.45], stretch: [.92, 1.08], seed: 2.03 },
+];
+
+export function hillWoodlandSpecies(x, north) {
+  // Twenty-metre local patches avoid a tree-by-tree checkerboard; the same world coordinate
+  // always chooses the same form, independent of chunk loading and near/mid generation.
+  const a = Math.floor(x / 20), b = Math.floor(north / 20);
+  const h = ((Math.imul(a ^ 0x61c88647, 374761393) ^ Math.imul(b, 668265263)) >>> 0) / 4294967296;
+  return h < .44 ? 'forest' : h < .72 ? 'woodlandLobed' : h < .90 ? 'woodlandLean' : 'shrub';
+}
+
+function woodlandNearModels(Model, cells, uvRect) {
+  const { limb, ribbon, spray } = builder(cells, uvRect), models = {};
+  const wood = [.79, .76, .66], leaf = [.91, 1.01, .84];
+  for (const form of WOODLAND) {
+    const m = new Model(), branches = [], f = form.fork, cy = form.crown;
+    const tx = form.tilt[0], tz = form.tilt[1];
+    limb(m, [[0, 0, 0], [tx * .18, 1.05, tz * .18], [tx * .42, f, tz * .42],
+      [tx * .64, f + 1.6, tz * .64]], [.32, .26, .205, .125], wood, 6, 'mangoBark');
+    for (let k = 0; k < 4; k++) {
+      const a = k * Math.PI / 2 + .2;
+      limb(m, [[Math.cos(a) * .70, .015, Math.sin(a) * .70], [tx * .15, .8, tz * .15]],
+        [.045, .135], tint(wood, .93), 2, 'mangoBark');
+    }
+    for (let i = 0; i < 6; i++) {
+      const az = i * GOLDEN + form.seed, r = form.reach * (.84 + (i % 3) * .105);
+      const start = [tx * .43, f + (i % 3) * .30, tz * .43];
+      const elbow = [tx * .68 + Math.cos(az) * r * .55, cy - 1.3 + (i % 2) * .4,
+        tz * .68 + Math.sin(az) * r * .55];
+      const tip = [tx + Math.cos(az) * r * form.stretch[0],
+        cy + 1.08 * Math.sin(i * 2.4 + form.seed), tz + Math.sin(az) * r * form.stretch[1]];
+      limb(m, [start, elbow, tip], [.13, .077, .026], wood, 4, 'mangoBark');
+      branches.push([elbow, tip]);
+      for (let j = 0; j < 2; j++) {
+        const a = az + (j ? .72 : -.66);
+        const end = add(tip, [Math.cos(a) * .78, .48 + .22 * j, Math.sin(a) * .78]);
+        limb(m, [elbow, end], [.043, .010], wood, 3, 'mangoBark');
+      }
+      // Nine small irregular tufts around each branch end, not one crown-sized card.
+      for (let k = 0; k < 9; k++) {
+        const a = k * GOLDEN + i * .51, v = (k / 8 - .5) * 2;
+        const rr = 1.55 * Math.sqrt(1 - v * v * .78);
+        // Tufts occupy a lumpy three-dimensional crown, including lower hanging boughs.
+        const p = add(tip, [Math.cos(a) * rr,
+          1.40 * v + .22 * Math.sin(k * 1.63 + i), Math.sin(a) * rr]);
+        for (let j = 0; j < 3; j++) {
+          const q = a + j * 2.12 + .16 * Math.sin(i + k);
+          const base = add(p, [-Math.cos(q) * .20, j * .055, -Math.sin(q) * .20]);
+          spray(m, base, 1.95 + .17 * ((i + j + k) % 3), 1.62 + .15 * (k % 3), q,
+            -.10 + .24 * j, .20 + j * .87, 'mangoTwig',
+            tint(leaf, .82 + .05 * ((i * 3 + k + j) % 5)));
+        }
+      }
+    }
+    // Centre infill is higher and offset, so the lobes overlap without a level stacked roof.
+    for (let k = 0; k < 7; k++) {
+      const a = k * GOLDEN + form.seed, rr = .85 * Math.sqrt((k + 1) / 7);
+      const p = [tx * .60 + Math.cos(a) * rr, cy + 1.02 + .60 * Math.sin(k * 1.8),
+        tz * .60 + Math.sin(a) * rr];
+      for (let j = 0; j < 3; j++) spray(m, p, 1.82, 1.63, a + j * 2.1,
+        .17, .34 + j * .67, 'mangoTwig', tint(leaf, .89 + j * .04));
+    }
+    models[form.id] = m.geometry();
+  }
+
+  // Woody scrub reused for authored tourist shrubs as well as ten percent of mapped hill cover.
+  // Several stems, low forks and ragged twig tufts replace the previous flat green clump.
+  const shrub = new Model();
+  for (let i = 0; i < 5; i++) {
+    const a = i * GOLDEN, r = .12 + .18 * (i % 2), h = 1.35 + (i % 3) * .21;
+    const tip = [Math.cos(a) * .48, h, Math.sin(a) * .48];
+    limb(shrub, [[Math.cos(a) * r, 0, Math.sin(a) * r], [0, .65, 0], tip],
+      [.065, .045, .015], [.65, .64, .53], 3, 'mangoBark');
+    for (let k = 0; k < 8; k++) {
+      const q = a + k * GOLDEN, rr = .55 * Math.sqrt((k + .5) / 8);
+      const p = add(tip, [Math.cos(q) * rr, .10 + .17 * Math.sin(k), Math.sin(q) * rr]);
+      for (let j = 0; j < 2; j++) spray(shrub, p, 1.02 + .08 * (k % 2), .92,
+        q + j * 2.3, .20, .22 + j * .95, 'mangoTwig',
+        tint([.86, .99, .76], .80 + .07 * ((i + k) % 4)));
+    }
+  }
+  models.shrub = shrub.geometry();
+  return models;
+}
+
+function woodlandOuterModels(Model, cells, uvRect) {
+  // These silhouettes are baked from each exact near mesh, into unused cells of the same atlas.
+  // Crossed side cards and the top view preserve low, uneven crowns for distant forest chunks.
+  // Bark at the lower corners is rigid; only upper crown vertices get wind.
+  const dimensions = {
+    forest: ['woodlandRoundSide', 'woodlandRoundTop', 13, 9.3],
+    woodlandLobed: ['woodlandLobedSide', 'woodlandLobedTop', 15, 10.4],
+    woodlandLean: ['woodlandLeanSide', 'woodlandLeanTop', 15, 12.1],
+    shrub: ['woodlandShrubSide', 'woodlandShrubTop', 4, 2.95],
+  }, models = {};
+  for (const [id, [side, top, w, h]] of Object.entries(dimensions)) {
+    const m = new Model(), r = uvRect(cells[side]), col = [1, 1, 1];
+    for (const a of [0, Math.PI / 2]) {
+      const dx = Math.cos(a) * w / 2, dz = Math.sin(a) * w / 2;
+      const c = [[-dx, 0, -dz], [dx, 0, dz], [dx, h, dz], [-dx, h, -dz]];
+      const uv = [[r[0], r[1]], [r[0]+r[2], r[1]], [r[0]+r[2], r[1]+r[3]], [r[0], r[1]+r[3]]];
+      const ix = c.map((p, j) => m.vert(p, unit([p[0]*.08, .80, p[2]*.08]), uv[j], j < 2 ? 0 : 1, col));
+      m.idx.push(ix[0], ix[1], ix[2], ix[0], ix[2], ix[3]);
+    }
+    m.top(0, 0, w, h*.77, top, [0,h*.60,0], col);
+    models[id] = m.geometry();
+  }
+  return models;
+}
+
 export function nextTreeModels(Model, cells, uvRect, bark) {
   const { limb, ribbon, spray, crownSprays } = builder(cells, uvRect);
   const bamboo = new Model(), shade = verticalModel(Model, 1.175), tram = new Model(), forest = new Model();
@@ -117,7 +234,7 @@ export function nextTreeModels(Model, cells, uvRect, bark) {
       'fineTwig', tint(fineLeaf, .87));
   }
 
-  // Còng / me: low crotches lead into thick horizontal limbs and a wide, shallow umbrella.
+  // CÃƒÆ’Ã‚Â²ng / me: low crotches lead into thick horizontal limbs and a wide, shallow umbrella.
   const shadeSegments = [];
   limb(shade, [[0, 0, 0], [.08, 1.1, .03], [-.12, 2.6, .08], [.05, 4.1, 0]],
     [.57, .46, .40, .27], darkWood, 7, 'mangoBark');
@@ -178,7 +295,7 @@ export function nextTreeModels(Model, cells, uvRect, bark) {
     }
   }
 
-  // Tràm / bạch đàn: a pale narrow bole remains visible through an open, wispy upper crown.
+  // TrÃƒÆ’Ã‚Â m / bÃƒÂ¡Ã‚ÂºÃ‚Â¡ch Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â n: a pale narrow bole remains visible through an open, wispy upper crown.
   const tramStem = [[0, 0, 0], [.08, 3.2, -.04], [.22, 6.8, .05], [.58, 10.3, .14], [.87, 13.15, .19]];
   limb(tram, tramStem, [.18, .15, .12, .078, .028], paleWood, 7, 'paleBark');
   for (let i = 0; i < 14; i++) {
@@ -205,7 +322,7 @@ export function nextTreeModels(Model, cells, uvRect, bark) {
   }
   crownSprays(tram, tramStem.at(-1), .35, 1.15, .80, 'narrowTwig', [.87, 1.0, .84], 3);
 
-  // Dầu / sao-like representative for mixed hill forest, not a surveyed species placement.
+  // DÃƒÂ¡Ã‚ÂºÃ‚Â§u / sao-like representative retained for explicit tall planted trees, not blanket hill cover.
   // A nearly straight bole and buttressed roots; crown begins well above the ground.
   const forestStem = [[0, 0, 0], [.03, 3, .04], [.09, 10, -.03], [.15, 17, .08], [.24, 21.5, .07]];
   limb(forest, forestStem, [.46, .35, .27, .19, .065], [.85, .87, .79], 8, 'paleBark');
@@ -229,7 +346,8 @@ export function nextTreeModels(Model, cells, uvRect, bark) {
   }
   crownSprays(forest, [0, 24, 0], .7, 1.50, 1.1, 'mangoTwig', [.91, 1.04, .84], 3);
   void bark; // Shared palette argument retained for the same builder API as round one.
-  return { bamboo: bamboo.geometry(), shade: shade.geometry(), tram: tram.geometry(), forest: forest.geometry() };
+  return { bamboo: bamboo.geometry(), shade: shade.geometry(), tram: tram.geometry(),
+    dau: forest.geometry(), ...woodlandNearModels(Model, cells, uvRect) };
 }
 
 // Outer trees keep each species' culms, umbrella, open narrow crown or high canopy.
@@ -287,5 +405,6 @@ export function outerTreeModels(Model, cells, uvRect, bark) {
       a, .22, .25 + (i % 3) * .4, 'mangoTwig', [.85, 1.0, .81]);
   }
   void bark;
-  return { bamboo: bamboo.geometry(), shade: shade.geometry(), tram: tram.geometry(), forest: forest.geometry() };
+  return { bamboo: bamboo.geometry(), shade: shade.geometry(), tram: tram.geometry(),
+    dau: forest.geometry(), ...woodlandOuterModels(Model, cells, uvRect) };
 }

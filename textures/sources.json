@@ -596,8 +596,8 @@
       "file": "foliage/tree-atlas.webp",
       "width": 2048,
       "height": 2048,
-      "bytes": 2496058,
-      "sha256": "f50e57b242a64ff8c09b1aa9d88bf3387cbd33315e8363a3796336eb3955e36a",
+      "bytes": 2740348,
+      "sha256": "8f75cfe496aa64ec9b5c527a025fd7cb44cf2df7c6d621602781306fc0b9e52b",
       "sources": [
         "LeafSet022",
         "LeafSet024",
@@ -605,10 +605,11 @@
         "tiger_rock",
         "bark_willow"
       ],
-      "surface": "2K shared tree photo atlas; near mango, coconut, banana, fine/narrow twig and pale bark cells; illustrative species adaptations",
+      "surface": "2K shared tree photo atlas; near mango, coconut, banana, fine/narrow twig and pale bark cells; illustrative species adaptations; eight original exact hill-woodland side/top silhouette renders",
       "metres_per_tile": 0,
       "colour_space": "sRGB",
-      "alpha": true
+      "alpha": true,
+      "hill_woodland": "Eight original exact-mesh side/top renders; no additional texture allocation"
     },
     {
       "file": "wetland/melaleuca-crown.webp",
@@ -798,7 +799,87 @@
       1584,
       384,
       400
-    ]
+    ],
+    "woodlandLobedSide": {
+      "rect": [
+        1376,
+        1248,
+        128,
+        320
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandLobedTop": {
+      "rect": [
+        1776,
+        1584,
+        128,
+        128
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandLeanSide": {
+      "rect": [
+        1504,
+        1248,
+        128,
+        320
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandLeanTop": {
+      "rect": [
+        1904,
+        1584,
+        128,
+        128
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandRoundSide": {
+      "rect": [
+        1248,
+        1248,
+        128,
+        320
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandRoundTop": {
+      "rect": [
+        1648,
+        1584,
+        128,
+        128
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandShrubSide": {
+      "rect": [
+        1648,
+        1728,
+        128,
+        256
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    },
+    "woodlandShrubTop": {
+      "rect": [
+        1792,
+        1728,
+        128,
+        128
+      ],
+      "sources": [],
+      "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
+    }
   },
   "adaptation_note": "LeafSet022/024 and Foliage008 are photo donors. Melaleuca, palm, bamboo, banana, duckweed, water lettuce and young rice are illustrative adaptations, not species-specific photographs.",
   "shipping_bytes": 11736282,
@@ -925,5 +1006,12 @@
     "outside_rgba_identical": true,
     "webp_lossless": true,
     "exact": true
+  },
+  "hill_woodland_patch_check": {
+    "audit": "blender/hill-woodland/atlas-check.json",
+    "outside_patch_pixels_preserved": 3973120,
+    "legacy_cells_preserved": true,
+    "new_texture_allocations": 0,
+    "gpu_rgba8_mips_bytes": 22369621
   }
 }

@@ -13,6 +13,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 import { metricUVs, modelPhotoMaterial } from './photo-textures.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
+import { touristLOD } from './tourist-lod.js';
 
 const MODELS = 'models/';
 // (Claude Code) cloud shade and rain wetness on the models too, as on the terrain and houses (render/atmosphere.js)
@@ -38,7 +39,8 @@ const LANDMARK = {
   'an-giang-university': { x: 651.866, z: 715.784, trueScale: true, authoredUV: true, nearR: 1100, farR: 1300, lod: 'an-giang-university-lod' },
   'long-xuyen-canal-courtyard': { x: 217.16, z: 175.70, trueScale: true, authoredUV: true, lod: 'long-xuyen-canal-courtyard-lod' },
 };
-const authoredMaps = id => id.startsWith('long-xuyen-cathedral') || LANDMARK[id.replace(/-lod$/, '')]?.authoredUV;
+const landmarkSpec = id => LANDMARK[id.replace(/-(lod|mid)$/, '')];
+const authoredMaps = id => id.startsWith('long-xuyen-cathedral') || landmarkSpec(id)?.authoredUV;
 const BOAT = {   // length, beam, speed (m/s)
   'open-cargo-boat': { L: 17, B: 4.8, v: 3.2 },
   'covered-cargo-boat': { L: 21, B: 5.6, v: 3.0 },
@@ -74,10 +76,16 @@ class Library {
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
         mat.side = mat.alphaTest > 0 ? THREE.DoubleSide : THREE.FrontSide;
         // Full and far authored exports use identical baked maps: upload each only once.
-        if (authoredMaps(id) && mat.map) {
-          const shared = this.surfaceMaps.get(mat.name);
-          if (shared) { const redundant = mat.map; mat.map = shared; redundant.dispose(); }
-          else this.surfaceMaps.set(mat.name, mat.map);
+        if (authoredMaps(id)) {
+          const discarded = new Set();
+          for (const channel of ['map', 'roughnessMap', 'metalnessMap']) {
+            const tex = mat[channel];
+            if (!tex) continue;
+            const key = mat.name + ':' + channel, shared = this.surfaceMaps.get(key);
+            if (shared) { mat[channel] = shared; if (tex !== shared) discarded.add(tex); }
+            else this.surfaceMaps.set(key, tex);
+          }
+          for (const tex of discarded) if (![mat.map, mat.roughnessMap, mat.metalnessMap].includes(tex)) tex.dispose();
         }
         const geometry = mergeGeometries(geos); geos.forEach(g => g.dispose());
         return { geometry, material: weathered(modelPhotoMaterial(mat, id)) };
@@ -101,6 +109,7 @@ class Instanced {
       const m = new THREE.InstancedMesh(geometry, material, cap);
       m.frustumCulled = false;
       m.count = 0;
+      m.visible = false;
       m.raycast = () => {};
       parent.add(m);
       return m;
@@ -118,6 +127,7 @@ class Instanced {
     for (const m of this.meshes) {
       for (let i = 0; i < n; i++) m.setMatrixAt(i, matrices[i]);
       m.count = n;
+      m.visible = n > 0;
       m.instanceMatrix.needsUpdate = true;
     }
     if (!this.occ) return;
@@ -178,6 +188,16 @@ export class PropsLayer {
     const model = this.lib.get(id);
     if (!model) return null;
     it = new Instanced(model, cap, BOAT[id] ? this.boatGroup : this.group, !BOAT[id]);
+    const spec = landmarkSpec(id);
+    if (spec?.tourist) for (const m of it.meshes) {
+      m.name = id;
+      if (id === spec.lod || spec.lake) m.userData.noShadow = true;
+      if (spec.lake) {
+        m.name = 'nui-cam-lake'; m.userData.lakeWater = true;
+        // Keep the existing water until Claude replaces this tagged placeholder material.
+        if (spec.lakeShaderPending) { m.material.visible = false; m.userData.lakeShaderPending = true; }
+      }
+    }
     this.inst.set(id, it);
     return it;
   }
@@ -186,12 +206,16 @@ export class PropsLayer {
   setLandmarks(list) {
     const ex = this.meta.vert_exag;
     for (const L of list) {
+      // Tourist export metadata is produced with the models, avoiding a second size table.
+      if (L.asset?.tourist) LANDMARK[L.model] = { x: L.width, z: L.depth, trueScale: true,
+        authoredUV: true, tourist: true, mid: L.asset.mid, lod: L.asset.far, lake: !!L.asset.lake, lakeShaderPending: !!L.asset.lakeShaderPending,
+        nearR: L.asset.nearR, midR: L.asset.midR, maxR: L.asset.maxR };
       const spec = LANDMARK[L.model];
       if (!spec) continue;
       const x = L.x, z = -L.y;
       // Bridge origin uses bank ground; its authored piers extend below ground into the water.
       const samples = L.groundAt || [[L.x, L.y]];
-      const y = Math.max(...samples.map(([east, north]) => this.terrain.heightAt(east, north))) * ex;
+      const y = (Number.isFinite(L.groundLevel) ? L.groundLevel : Math.max(...samples.map(([east, north]) => this.terrain.heightAt(east, north)))) * ex;
       const sx = L.width / spec.x, sz = L.depth / spec.z, sy = spec.trueScale ? 1 : clamp(Math.sqrt(sx * sz) * 0.75, 0.9, 1.25);
       // the front faces `front`; the long side runs across it
       const along = L.front + Math.PI / 2;
@@ -378,7 +402,7 @@ export class PropsLayer {
         continue;
       }
       // Hysteresis avoids repeated swaps near the LOD boundary; hidden versions draw zero instances.
-      const want = d > 5000 ? null : d < (spec.nearR || 800) ? L.id : d > (spec.farR || 1000) ? spec.lod : (L.active || spec.lod);
+      const want = spec.mid ? touristLOD(L.id, spec, d, L.active) : d > 5000 ? null : d < (spec.nearR || 800) ? L.id : d > (spec.farR || 1000) ? spec.lod : (L.active || spec.lod);
       if (want === L.active) continue;
       const it = want && this.instancer(want, 1);
       if (want && !it) continue;   // keep the old silhouette while the next GLB loads

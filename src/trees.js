@@ -1,7 +1,7 @@
 // Trees planted from the 10 m tree map (scripts/trees.py: ESA WorldCover tree cover + local species by zone).
 //
 //   near (< ~1 km): every tree, a real model per species built from leaf cards: coconut and areca fronds,
-//                     sugar-palm (thốt nốt) fan crowns, banana leaves, bamboo clumps, nipa palms, tràm, fruit and
+//                     sugar-palm (thÃ¡Â»â€˜t nÃ¡Â»â€˜t) fan crowns, banana leaves, bamboo clumps, nipa palms, trÃƒÂ m, fruit and
 //                     shade trees. Foliage sways in the wind.
 //   mid (to ~6 km):   one sprite tree per 30 m of canopy (crossed cards + a top card), species-correct.
 //   beyond:           the satellite imagery already shows the canopy.
@@ -12,18 +12,19 @@ import { photoTexture } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 import { closeTreeModels, outerCloseTreeModels, selectCloseTrees, CLOSE_TREE_RADIUS } from './near-tree-models.js';
-import { nextTreeModels, outerTreeModels } from './near-tree-species.js';
+import { nextTreeModels, outerTreeModels, hillWoodlandSpecies } from './near-tree-species.js';
+import { compileTreeExclusions, exclusionsInBounds, treeExcluded } from './tree-exclusions.js';
 
-const SPECIES = ['fruit', 'shade', 'coconut', 'areca', 'banana', 'bamboo', 'thotnot', 'tram', 'nipa', 'forest', 'shrub', 'boulder'];
+const SPECIES = ['fruit', 'shade', 'coconut', 'areca', 'banana', 'bamboo', 'thotnot', 'tram', 'nipa', 'forest', 'shrub', 'boulder', 'woodlandLobed', 'woodlandLean', 'dau'];
 const NS = SPECIES.length;
 const S = Object.fromEntries(SPECIES.map((s, i) => [s, i]));
 // expected trees per 10 m pixel of canopy (near)
 const CH = 4;   // near chunks per tile side (960 m)
-const DENSITY = [0.8, 0.22, 0.5, 0.7, 1.0, 0.3, 0.7, 1.5, 0.6, 0.85, 1.2, 0.8];
+const DENSITY = [0.8, 0.22, 0.5, 0.7, 1.0, 0.3, 0.7, 1.5, 0.6, 0.85, 1.2, 0.8, 0, 0, 0];
 // foliage tint (linear multiplier on the leaf textures)
 const TINT = [[0.78, 0.9, 0.7], [0.88, 1.0, 0.78], [1.08, 1.04, 0.72], [0.98, 1.0, 0.74], [1.15, 1.15, 0.68],
               [0.82, 1.0, 0.62], [0.82, 0.95, 0.8], [0.92, 0.94, 0.86], [0.98, 1.0, 0.7], [0.7, 0.84, 0.64],
-              [0.86, 0.92, 0.62], [1, 1, 1]];
+              [0.86, 0.92, 0.62], [1, 1, 1], [0.73, 0.86, 0.66], [0.78, 0.91, 0.71], [0.7, 0.84, 0.64]];
 
 // ---------------------------------------------------------------- leaf atlas (canvas)
 const AS = 2048;
@@ -39,6 +40,12 @@ const CELL = {
   fineTwig: [800, 1248, 432, 288], narrowTwig: [304, 1552, 480, 224],
   paleBark: [800, 1552, 128, 432], bananaStem: [944, 1552, 128, 432], bananaBlade: [304, 1792, 480, 224],
   mangoOuter: [1248, 1584, 384, 400],
+  // Original exact-model silhouettes, isolated in previously unused atlas pixels.
+  woodlandRoundSide: [1248, 1248, 128, 320], woodlandLobedSide: [1376, 1248, 128, 320],
+  woodlandLeanSide: [1504, 1248, 128, 320],
+  woodlandRoundTop: [1648, 1584, 128, 128], woodlandLobedTop: [1776, 1584, 128, 128],
+  woodlandLeanTop: [1904, 1584, 128, 128],
+  woodlandShrubSide: [1648, 1728, 128, 256], woodlandShrubTop: [1792, 1728, 128, 128],
 };
 const uvRect = ([x, y, w, h]) => [x / AS, 1 - (y + h) / AS, w / AS, h / AS];   // u0, v0, du, dv (flipY)
 
@@ -193,7 +200,7 @@ function speciesModels() {
   { const m = new Model();                       // nipa: fronds straight from the mud, no trunk
     for (let i = 0; i < 8; i++) m.frond([0, 0.1, 0], (i / 8) * Math.PI * 2, 1.15 - (i % 2) * 0.2, 5.5, 1.2, 0.32, 'frond', ONE);
     M[S.nipa] = m.geometry(); }
-  { const m = new Model();                       // thốt nốt: tall straight trunk, dense ball of fan leaves (~7 m)
+  { const m = new Model();                       // thÃ¡Â»â€˜t nÃ¡Â»â€˜t: tall straight trunk, dense ball of fan leaves (~7 m)
     m.trunk(15.5, 0.32, 0.24, BARK.sugar, { rings: 1, segs: 5 });
     const c = [0, 17.4, 0];
     for (let i = 0; i < 26; i++) {
@@ -225,7 +232,11 @@ const SPRITE = {   // side cell, top cell, width, height
   fruit: ['mangoOuter', 'mangoTwig', 7, 8.22], shade: ['broadSide', 'broadTop', 14, 15], coconut: ['palmSprite', 'palmTop', 9, 13.5],
   areca: ['arecaSprite', 'palmTop', 4.5, 12], banana: ['bananaSprite', 'bananaBlade', 5.5, 5], bamboo: ['bambooSide', 'broadTop', 7, 12.5],
   thotnot: ['thotnotSprite', 'fan', 6, 19], tram: ['tramSide', 'broadTop', 3.6, 14], nipa: ['nipaSprite', 'palmTop', 6.5, 5.5],
-  forest: ['broadSide', 'mangoTwig', 9, 25], shrub: ['broadSide', 'broadTop', 3.2, 2.4], boulder: ['rockSprite', 'rockSprite', 2.6, 1.8],
+  forest: ['woodlandRoundSide', 'woodlandRoundTop', 13, 9.3],
+  shrub: ['woodlandShrubSide', 'woodlandShrubTop', 4, 2.95], boulder: ['rockSprite', 'rockSprite', 2.6, 1.8],
+  woodlandLobed: ['woodlandLobedSide', 'woodlandLobedTop', 15, 10.4],
+  woodlandLean: ['woodlandLeanSide', 'woodlandLeanTop', 15, 12.1],
+  dau: ['broadSide', 'mangoTwig', 9, 25],
 };
 function midModel() {
   const m = new Model();
@@ -317,7 +328,7 @@ function treeMaterial(atlas, lod, uniforms) {
 
 // ---------------------------------------------------------------- layer
 const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 5, bamboo: 12.5, thotnot: 19, tram: 14,
-                       nipa: 5.5, forest: 25, shrub: 2.4, boulder: 1.8 };   // m at scale 1 (as the mid sprites)
+                       nipa: 5.5, forest: 9.088, shrub: 2.680, boulder: 1.8, woodlandLobed: 10.120, woodlandLean: 11.761, dau: 24.708 };   // actual near-mesh metres at scale1; sprite frames include alpha padding
 
 export class TreeLayer {
   /** terrain: for ground heights; nearR: full trees within (m); farR: sprite trees within (m). */
@@ -363,6 +374,24 @@ export class TreeLayer {
     void span;
     this.loading = 0;
     this.frame = 0;
+    this.treeExclusions = [];
+  }
+
+  // Optional late-loaded site clearings: rebuild only affected mapped tiles, preserving authored trees.
+  setExclusions(zones = []) {
+    const previous = this.treeExclusions;
+    this.treeExclusions = compileTreeExclusions(zones);
+    let invalidated = 0;
+    for (const T of this.tiles) {
+      const old = exclusionsInBounds(previous, T.x0, T.y0 - this.tileM, T.x0 + this.tileM, T.y0);
+      T.treeExclusions = exclusionsInBounds(this.treeExclusions, T.x0, T.y0 - this.tileM, T.x0 + this.tileM, T.y0);
+      if (!old.length && !T.treeExclusions.length) continue;
+      if (T.midMesh) { this.dispose(T.midMesh); T.midMesh = null; }
+      if (T.chunks) { for (const g of T.chunks.values()) this.dispose(g); T.chunks.clear(); }
+      invalidated++;
+    }
+    this.closePosition.set(Infinity, Infinity, Infinity);
+    return { zones: this.treeExclusions.length, tiles: invalidated };
   }
 
   async load(T) {
@@ -392,9 +421,13 @@ export class TreeLayer {
     const n = T.n, cell = this.tileM / n, ex = this.meta.vert_exag, P = [], Sv = [], perSpecies = near ? SPECIES.map(() => []) : null;
     const hash = (a, b) => { let h = Math.imul(a, 374761393) ^ Math.imul(b, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
     const add = (x, yN, sp, scale, k) => {
+      if (treeExcluded(T.treeExclusions || [], x, yN)) return;
       if (this.terrain.wetland && this.terrain.wetland.floodAt(x, yN) > .6) return;
       const water = this.terrain.surface;
       if (water && water.waterAt(x, yN) > 0.65 && water.shoreAt(x, yN) < -12) return;
+      // Cached map codes stay unchanged: only the broad forest category gets a stable
+      // lower woodland mix. Explicitly planted tall dÃ¡ÂºÂ§u/sao remain a separate species.
+      if (sp === S.forest) { sp = S[hillWoodlandSpecies(x, yN)]; scale = Math.min(scale, 1.18); }
       const y = this.terrain.heightAt(x, yN) * ex - 0.2;
       const rec = [x, y, -yN, hash(k, 3) * Math.PI * 2, scale, 0.82 + hash(k, 4) * 0.36, hash(k, 5), sp];
       if (near) perSpecies[sp].push(rec); else { P.push(rec); }
@@ -483,7 +516,7 @@ export class TreeLayer {
     this.closePosition.copy(camera.position);
     this.closeNearR = this.uniforms.uNearR.value;
     for (const [group, chunk] of this.closeChunks) {
-      // A cheap instance bound skips scanning distant chunks. Disable detail too when entering Trà Sư.
+      // A cheap instance bound skips scanning distant chunks. Disable detail too when entering TrÃƒÂ  SÃ†Â°.
       const p = camera.position, b = chunk.bounds;
       const distance = Math.hypot(Math.max(b[0] - p.x, p.x - b[3], 0), Math.max(b[1] - p.y, p.y - b[4], 0),
         Math.max(b[2] - p.z, p.z - b[5], 0));
@@ -522,9 +555,12 @@ export class TreeLayer {
     const ex = this.meta.vert_exag, water = this.terrain.surface, recs = [];
     let k = 0;
     for (const t of list) {
-      const sp = SPECIES.indexOf(t.species);
+      const species = t.species === 'forest'
+        ? (t.height_m >= 18 ? 'dau' : hillWoodlandSpecies(t.x, t.y)) : t.species;
+      const sp = SPECIES.indexOf(species);
       if (sp < 0 || (water && water.waterAt(t.x, t.y) > 0.5)) continue;
-      const y = this.terrain.heightAt(t.x, t.y) * ex - 0.2, sc = (t.height_m || MODEL_HEIGHT[t.species]) / MODEL_HEIGHT[t.species];
+      const ground = Number.isFinite(t.ground_m) ? t.ground_m : this.terrain.heightAt(t.x, t.y);
+      const y = ground * ex - 0.2, sc = (t.height_m || MODEL_HEIGHT[species]) / MODEL_HEIGHT[species];
       recs.push([t.x, y, -t.y, (k * 2.399) % 6.283, sc, 0.9 + (k % 7) * 0.03, (k * 0.618) % 1, sp]);
       k++;
     }

@@ -31,6 +31,17 @@ function vnoise(x, y) {
   return a + (b - a) * su + (c - a) * sv + (a - b - c + d) * su * sv;
 }
 const smooth01 = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t); };
+// signed distance (m) from (x, y) to a polygon [[x, y], ...]: negative inside
+function polyDist(P, x, y) {
+  let d = Infinity, inside = false;
+  for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+    const [ax, ay] = P[j], [bx, by] = P[i];
+    if ((by > y) !== (ay > y) && x < (ax - bx) * (y - by) / (ay - by) + bx) inside = !inside;
+    const dx = bx - ax, dy = by - ay, t = Math.min(Math.max(((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1), 0), 1);
+    d = Math.min(d, Math.hypot(x - ax - dx * t, y - ay - dy * t));
+  }
+  return inside ? -d : d;
+}
 
 export class Terrain {
   constructor(meta, heights, textures, shared, { dataUrl, maxDetail = 10, anisotropy = 4, imagery = null, surface = null } = {}) {
@@ -181,7 +192,65 @@ export class Terrain {
   heightAt(x, y) {
     const raw = this.heightAtRaw(x, y);
     const sceneHeight = this.surface ? this.surface.sceneHeight(x, y, raw) : raw * this.ex;
-    return (this.wetland ? this.wetland.sceneHeight(x, y, sceneHeight) : sceneHeight) / this.ex;
+    const h = (this.wetland ? this.wetland.sceneHeight(x, y, sceneHeight) : sceneHeight) / this.ex;
+    return this.patches ? this.patched(x, y, h) : h;
+  }
+
+  /**
+   * Ground edits handed over with the tourist places (web/data/tourist-terrain-handoff.json): temple courts and
+   * terraces cut / filled to their level, stair ramps, the bank around Hồ Thủy Liêm (Núi Cấm). The 30 m DEM runs
+   * smoothly through what are engineered terraces. Courts get a margin of about half a mesh cell (20 m near) so the
+   * old slope can't poke through them, then a feathered edge. Later patches win where they overlap. Call before
+   * anything samples heights (true scale only).
+   */
+  setPatches(data) {
+    if (this.ex !== 1 || !data?.places) return;
+    const list = [], mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const add = (poly, o) => {
+      const r = (o.margin || 0) + (o.feather || 0), xs = poly.map((p) => p[0]), ys = poly.map((p) => p[1]);
+      list.push({ poly, ...o, box: [Math.min(...xs) - r, Math.min(...ys) - r, Math.max(...xs) + r, Math.max(...ys) + r] });
+    };
+    for (const place of data.places) {
+      for (const m of place.masks || []) if (m.kind === 'flat-court')
+        add(m.polygon_scene_EN, { h: m.target_height_m - 0.15, margin: 8, feather: Math.max(m.feather_m || 3, 12) });
+      for (const p of place.patches || []) {
+        if (p.kind === 'terrace') add(p.polygon_scene_EN, { h: p.height_m, margin: 0, feather: Math.max(p.blend_outside_m || 1.5, 4) });
+        else if (p.kind === 'linear-ramp') {
+          // the flight runs along the pair of sides as long as it; its two ends are the other sides, the lower end low
+          const P = p.polygon_scene_EN, len = Math.abs(p.local_end_Y - p.local_start_Y);
+          const L0 = Math.hypot(P[1][0] - P[0][0], P[1][1] - P[0][1]), L1 = Math.hypot(P[2][0] - P[1][0], P[2][1] - P[1][1]);
+          const along1 = Math.abs(L1 - len) < Math.abs(L0 - len);
+          let a = along1 ? mid(P[0], P[1]) : mid(P[1], P[2]), b = along1 ? mid(P[2], P[3]) : mid(P[3], P[0]);
+          if (this.heightAt(a[0], a[1]) > this.heightAt(b[0], b[1])) [a, b] = [b, a];
+          add(P, { h: Math.min(p.start_height_m, p.end_height_m), h1: Math.max(p.start_height_m, p.end_height_m), a, b,
+                   margin: 0, feather: Math.max(p.blend_outside_m || 0.6, 2) });
+        }
+      }
+      // the lake itself is the map's water (surface.js, already at its level); only its bank rises around it
+      if (place.lake?.polygon_scene_EN && place.banks?.top_height_m) {
+        const B = place.banks;
+        add(place.lake.polygon_scene_EN, { h: B.top_height_m, margin: B.width_m || 2.8, feather: Math.max(B.feather_m || 3, 10), ring: true });
+      }
+    }
+    this.patches = list;
+  }
+
+  patched(x, y, h) {
+    for (const p of this.patches) {
+      const b = p.box;
+      if (x < b[0] || x > b[2] || y < b[1] || y > b[3]) continue;
+      const d = polyDist(p.poly, x, y);
+      if (p.ring && d < 0) continue;
+      const w = p.feather ? 1 - smooth01(p.margin, p.margin + p.feather, d) : d <= p.margin ? 1 : 0;
+      if (w <= 0) continue;
+      let t = p.h;
+      if (p.a) {
+        const [ax, ay] = p.a, dx = p.b[0] - ax, dy = p.b[1] - ay;
+        t += (p.h1 - p.h) * Math.min(Math.max(((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1), 0), 1);
+      }
+      h += (t - h) * w;
+    }
+    return h;
   }
 
   heightAtGrid(i, j) { return this.heightAt(this.wx(j), -this.wz(i)); }

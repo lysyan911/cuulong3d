@@ -170,6 +170,7 @@ async function main() {
                               { dataUrl: DATA, maxDetail: QUALITY.maxDetail, anisotropy: maxAniso, imagery, surface });
   terrain.wetland = wetland;
   await terrain.loadRelief();                  // 30 m hills: before anything places houses, trees or roads
+  terrain.setPatches(await getJSON('tourist-terrain-handoff.json').catch(() => null));   // temple courts, terraces, lake bank
   terrain.lodBias = QUALITY.lodBias;
   scene.add(terrain.group);
 
@@ -267,12 +268,32 @@ async function main() {
   const at = (x, z, dx, dh, dz, lift = 8) => { const g = terrain.heightAt(x, -z) * ex; return { target: V(x, g + lift, z), pos: V(x + dx, g + dh, z + dz) }; };
   views.lxCathedral = at(28946, 20810, 70, 60, 95, 14);
   views.agu = at(28032, 21988, 420, 260, 380, 10);
+  // Tourist postcard poses use the source Blender entrance basis (X right, Y back, Z up).
+  for (const L of heroData.heroes) if (L.asset?.tourist && L.postcard) {
+    const g = (L.groundLevel ?? terrain.heightAt(L.x, L.y)) * ex, t = L.front;
+    const p = ([x, y, h]) => V(L.x - x * Math.sin(t) - y * Math.cos(t), g + h,
+                              -L.y - x * Math.cos(t) + y * Math.sin(t));
+    views[L.model] = { pos: p(L.postcard.pos), target: p(L.postcard.target) };
+  }
   if (fauna.pilot) views.faunaPilot = at(fauna.pilot.x, -fauna.pilot.north, 21, 12, 26, .6);
   // hand-placed trees (Codex: Long Xuyên medians, canal banks and courtyards)
   const placedTrees = new THREE.Group();
   scene.add(placedTrees);
   layers.trees = [].concat(layers.trees, placedTrees);
   getJSON('long-xuyen-greenery.json').then((d) => placedTrees.add(trees.placed(d.trees || []))).catch(() => {});
+  getJSON('tourist-greenery.json').then(d => {
+    trees.setExclusions((d.places || []).flatMap(site => site.treeExclusions || []));
+    const batches = new Map();
+    for (const site of d.places || []) {
+      const id = site.renderGroup || site.id;
+      if (!batches.has(id)) batches.set(id, []);
+      batches.get(id).push(...(site.trees || []));
+    }
+    for (const [id, list] of batches) {
+      const group = trees.placed(list); group.name = `tourist-greenery:${id}`;
+      placedTrees.add(group);
+    }
+  }).catch(() => {});
   if (trasu) {
     Object.assign(views, trasu.views);
     layers.trasu = trasu.group;

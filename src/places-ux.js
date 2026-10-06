@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { track } from './analytics.js';
 import { fold, encodeView, decodeView, searchPlaces } from './place-links.js';
+import { landmarkReplaced } from './tourist-lod.js';
 
 const TEXT = {
   vi: {
@@ -45,8 +46,8 @@ export class PlacesUX {
     };
     for (const l of labels) add({ name: l.text, type: 'town', x: l.x, n: l.y, h: l.z, featured: ['city', 'town'].includes(l.kind) });
     for (const l of villages) add({ name: l.text, type: 'village', x: l.x, n: l.y, h: l.z });
-    for (const l of landmarks) add({ name: l.name, type: 'landmark', x: l.x, n: l.y, h: l.z });
-    for (const l of heroes) add({ name: l.name, type: 'landmark', x: l.x, n: l.y, h: terrain.heightAt(l.x, l.y), featured: true, alias: l.model });
+    for (const l of landmarks) if (!landmarkReplaced(l, heroes)) add({ name: l.name, type: 'landmark', x: l.x, n: l.y, h: l.z });
+    for (const l of heroes) add({ name: l.name, en: l.en, type: 'landmark', x: l.x, n: l.y, h: terrain.heightAt(l.x, l.y), featured: true, alias: l.model });
     for (const p of extraPlaces) add({ ...p, type: 'landmark' });
     for (const s of sites) add({ name: s.short || s.name_vi || s.name, en: s.name, type: 'story', x: s.x, n: s.y, h: s.z, story: true, site: s });
     for (const [id, v] of Object.entries(views)) add({ name: ui.viewName(id), en: ui.viewName(id, 'en'), type: 'view', x: v.target.x, n: -v.target.z, view: v, story: id === 'sites', alias: id, featured: ['trasu', 'lxCathedral', 'agu'].includes(id) });

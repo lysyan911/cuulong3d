@@ -187,6 +187,10 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         vec3 aN = abs(nW);
         vec2 rockP = aN.x > aN.y && aN.x > aN.z ? vWPos.zy : (aN.y > aN.z ? P : vWPos.xy);   // dominant plane
         vec2 rockGx = dFdx(rockP), rockGy = dFdy(rockP), groundGx = dFdx(P), groundGy = dFdy(P);
+        vec4 cropS4 = texture2D(uCrop, vGroupUv);
+        vec3 cropS = cropS4.rgb;                         // R rice (surface.py), G paved, B town density (urban.py)
+        // built-up ground on the hills (temples, Núi Sam's foot, Núi Cấm's lake town): no bare granite there
+        float builtK = smoothstep(0.1, 0.5, max(cropS.g, cropS.b));
         if (hillF > 0.01) {
           vec3 base = diffuseColor.rgb;
           #ifdef USE_MAP
@@ -210,22 +214,45 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float crownK = forestF * mix(0.35, 1.0, smoothstep(0.8, 3.0, px));
           vec3 forest = base * mix(1.0, mix(0.42, 1.28, crown), crownK) * (0.86 + 0.28 * grove);
           // bare granite where the imagery is bright and not green (Núi Dài, Núi Tô, summit rocks)
-          float rockF = (1.0 - green) * smoothstep(0.09, 0.2, bright) * (0.6 + 0.4 * steepF);
+          float rockF = (1.0 - green) * smoothstep(0.09, 0.2, bright) * (0.6 + 0.4 * steepF) * (1.0 - builtK);
           vec3 granCol = mix(base, vec3(0.30, 0.285, 0.255), 0.45) * mix(0.55, 1.15, rock);
           vec3 hillCol = mix(forest, granCol, rockF);
-          diffuseColor.rgb = mix(diffuseColor.rgb, hillCol, hillF * (0.6 + 0.4 * steepF));
+          diffuseColor.rgb = mix(diffuseColor.rgb, hillCol, hillF * (0.6 + 0.4 * steepF) * (1.0 - builtK * (1.0 - steepF)));
           hillBump = mix((crown * 2.6 + clumps * 4.0) * crownK, rock * 0.9, rockF);
           hillBumpK = hillF * (1.0 - smoothstep(4.0, 14.0, px));
           rockW = hillF * rockF * smoothstep(0.08, 0.4, steepF);   // rock photo on slopes; bare flats are dirt
           hillDirt = hillF * rockF - rockW;
+          // near the camera the photo stops working on the hills: at 0.3-1 m per pixel it shows the real roofs, roads
+          // and their shadows smeared over the slope, and forest crowns printed on the ground under the 3D trees.
+          // There it gives way to the ground of Bảy Núi: undergrowth and grass under the trees, pale sandy earth and
+          // granite grit (a little laterite red) where the land is bare or built on; rock stays on steep faces only.
+          float nearHill = hillF * (1.0 - smoothstep(900.0, 1600.0, camDist));
+          if (nearHill > 0.01) {
+            vec3 lo = base;
+            #ifdef USE_MAP
+              lo = texture2D(map, vMapUv, 5.0).rgb;                 // the photo without its detail: green or bare here
+            #endif
+            // bare only where the photo is clearly bright and not green (cleared lots, courts, quarries); else green
+            float greenL = smoothstep(-0.01, 0.03, lo.g - max(lo.r, lo.b) * 0.93);
+            float bareL = (1.0 - greenL) * smoothstep(0.075, 0.15, dot(lo, vec3(0.2126, 0.7152, 0.0722)));
+            float n1 = vnoise(P / 31.0), n2 = vnoise(P / 9.0), n3 = vnoise(P / 2.3);
+            vec3 under = mix(vec3(0.075, 0.105, 0.04), vec3(0.12, 0.155, 0.055), n1) * (0.9 + 0.2 * n3);   // undergrowth, grass
+            under = mix(under, vec3(0.14, 0.12, 0.075), smoothstep(0.7, 0.88, n2) * 0.35);  // leaf litter, trodden earth
+            vec3 earth = mix(vec3(0.29, 0.26, 0.2), vec3(0.31, 0.22, 0.14), smoothstep(0.62, 0.9, n1)) * (0.88 + 0.2 * n3);
+            earth = mix(earth, under, smoothstep(0.5, 0.72, n2) * 0.45);                    // weeds in the bare ground
+            float rockKeep = rockF * smoothstep(0.3, 0.65, steepF) * (1.0 - builtK);
+            vec3 groundC = mix(under, earth, bareL * 0.85);
+            diffuseColor.rgb = mix(diffuseColor.rgb, groundC, nearHill * (1.0 - rockKeep) * 0.92);
+            hillBumpK *= 1.0 - nearHill * (1.0 - rockKeep);   // no canopy / rock relief under the 3D trees
+            rockW *= rockKeep / max(rockF, 1e-3);
+            hillDirt *= 1.0 - nearHill;
+          }
         }
 
         // Lowland rice: canal blocks cut into long strips and fields (layout as surface.js: fieldWarped, blockLayout),
         // each field at its own stage (flooded, seedlings, young lime green, deep green, heading, golden, harvested);
         // neighbours tend to be sown together. Bunds between fields, wider dykes with footpaths round the blocks,
         // wind waves over standing rice. The satellite colour stays only as a light hint (it is dull at 10 m).
-        vec4 cropS4 = texture2D(uCrop, vGroupUv);
-        vec3 cropS = cropS4.rgb;                         // R rice (surface.py), G paved, B town density (urban.py)
         float lawnK = smoothstep(0.7, 0.95, cropS4.a), earthK = 1.0 - smoothstep(0.3, 0.55, cropS4.a);   // A: mapped land use
         float riceCover = smoothstep(0.35, 0.85, cropS.r) * uRice * (1.0 - waterF);
         riceCover *= 1.0 - smoothstep(40.0, 140.0, px);             // fields stay a patchwork far out
@@ -306,7 +333,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
 
         // paved ground: concrete between the houses of a town, packed-earth yards around village houses. Replaces the
         // satellite image there (its roof prints and shadows would lie on the ground under the 3D houses)
-        float paved = cropS.g * (1.0 - waterF) * (1.0 - riceCover) * (1.0 - hillF * 0.8);
+        float paved = cropS.g * (1.0 - waterF) * (1.0 - riceCover) * (1.0 - hillF * 0.85);
         float townK = smoothstep(0.15, 0.7, cropS.b);
         // other green lowland (grass banks, verges, gardens): livelier than the dull 10 m satellite colour
         {
@@ -515,5 +542,5 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
       `);
     patchCloudShadow(shader, skyUniforms());
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v22';
+  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v25';
 }

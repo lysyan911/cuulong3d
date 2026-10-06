@@ -1,0 +1,1318 @@
+{
+ "version": 1,
+ "places": [
+  {
+   "id": "ba-chua-xu",
+   "renderGroup": "ba-chua-xu",
+   "trees": [
+    {
+     "x": -10416.047950883461,
+     "y": 12418.3170575648,
+     "species": "shade",
+     "height_m": 17,
+     "ground_m": 19.230073
+    },
+    {
+     "x": -10463.778073219852,
+     "y": 12400.238467416422,
+     "species": "shade",
+     "height_m": 15,
+     "ground_m": 19.230073
+    },
+    {
+     "x": -10373.82903366906,
+     "y": 12387.94333488806,
+     "species": "forest",
+     "height_m": 13,
+     "ground_m": 19.230073
+    },
+    {
+     "x": -10458.462215086982,
+     "y": 12453.686962739595,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 19.230073
+    }
+   ],
+   "source_notes": "Large court trees visible VOV2024 and Tinviet aerial; positions/heights estimated, shade/forest represent forms rather than surveyedspecies.",
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -10432.528255947162,
+     "y": 12394.4549632517,
+     "front": -2.1752180915595307,
+     "width": 112,
+     "depth": 79,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/ba-chua-xu/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10432.528255947162,
+     "y": 12394.4549632517,
+     "front": -2.1752180915595307,
+     "width": 112,
+     "depth": 80,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/ba-chua-xu/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "tay-an",
+   "renderGroup": "tay-an",
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -10328.045911151674,
+     "y": 12279.158621005012,
+     "front": 0.724453717430792,
+     "width": 20.82,
+     "depth": 35.64,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10309.221552670713,
+     "y": 12286.51031392435,
+     "front": 0.724453717430792,
+     "width": 6.7,
+     "depth": 2.65,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10318.459959405298,
+     "y": 12296.94944420452,
+     "front": 0.724453717430792,
+     "width": 6.7,
+     "depth": 2.65,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10307.288217304038,
+     "y": 12297.528735515483,
+     "front": 0.724453717430792,
+     "width": 12.0,
+     "depth": 3.1,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10309.909232797625,
+     "y": 12295.209192935064,
+     "front": 0.724453717430792,
+     "width": 26,
+     "depth": 7,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10313.653540645606,
+     "y": 12291.895560677322,
+     "front": 0.724453717430792,
+     "width": 8,
+     "depth": 3,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/tay-an/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "thoai-ngoc-hau",
+   "renderGroup": "thoai-ngoc-hau",
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -10550.172098363402,
+     "y": 12342.38316219369,
+     "front": 0.9886699957716562,
+     "width": 16.7,
+     "depth": 21.95,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/thoai-ngoc-hau/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10560.276008030844,
+     "y": 12326.077725694406,
+     "front": 0.9886699957716562,
+     "width": 20.25,
+     "depth": 11.299999999999997,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/thoai-ngoc-hau/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10555.821306649477,
+     "y": 12333.80050114128,
+     "front": 0.9886699957716562,
+     "width": 4.3,
+     "depth": 6.5,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/thoai-ngoc-hau/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10534.901154891793,
+     "y": 12346.667892113637,
+     "front": 0.9886699957716562,
+     "width": 4.4,
+     "depth": 4.6,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/thoai-ngoc-hau/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -10537.163311917924,
+       12346.959689284833
+      ],
+      [
+       -10551.112746426465,
+       12356.141370878742
+      ],
+      [
+       -10563.18088480888,
+       12337.806635102548
+      ],
+      [
+       -10549.23145030034,
+       12328.624953508639
+      ]
+     ],
+     "reason": "Authored grave court, rear hall or separate narrow stair flight",
+     "source": "blender/places/thoai-ngoc-hau/build.py; references.md; mapped grave outline",
+     "confidence": "photo-estimated authored footprint; no terrain feather included"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -10548.712263994643,
+       12325.230407061765
+      ],
+      [
+       -10565.626997455596,
+       12336.363883245998
+      ],
+      [
+       -10571.839752067044,
+       12326.925044327047
+      ],
+      [
+       -10554.92501860609,
+       12315.791568142813
+      ]
+     ],
+     "reason": "Authored grave court, rear hall or separate narrow stair flight",
+     "source": "blender/places/thoai-ngoc-hau/build.py; references.md; mapped grave outline",
+     "confidence": "photo-estimated authored footprint; no terrain feather included"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -10552.23856716603,
+       12335.333138669774
+      ],
+      [
+       -10555.830337728108,
+       12337.697284229884
+      ],
+      [
+       -10559.404046132924,
+       12332.267863612788
+      ],
+      [
+       -10555.812275570846,
+       12329.903718052678
+      ]
+     ],
+     "reason": "Authored grave court, rear hall or separate narrow stair flight",
+     "source": "blender/places/thoai-ngoc-hau/build.py; references.md; mapped grave outline",
+     "confidence": "photo-estimated authored footprint; no terrain feather included"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -10536.59293293086,
+       12351.37298372449
+      ],
+      [
+       -10547.284715069141,
+       12358.410440275511
+      ],
+      [
+       -10549.483920241335,
+       12355.069258357298
+      ],
+      [
+       -10538.792138103054,
+       12348.031801806277
+      ]
+     ],
+     "reason": "Authored grave court, rear hall or separate narrow stair flight",
+     "source": "blender/places/thoai-ngoc-hau/build.py; references.md; mapped grave outline",
+     "confidence": "photo-estimated authored footprint; no terrain feather included"
+    }
+   ]
+  },
+  {
+   "id": "nui-sam",
+   "renderGroup": "nui-sam",
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -10809.188586662089,
+     "y": 11871.454129630358,
+     "front": -0.7853981633974483,
+     "width": 21.27,
+     "depth": 8.529,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/nui-sam/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -10805.11246962194,
+     "y": 11867.378012590209,
+     "front": -0.7853981633974483,
+     "width": 4,
+     "depth": 3,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/nui-sam/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "van-linh",
+   "renderGroup": "nui-cam",
+   "trees": [
+    {
+     "x": -21234.1,
+     "y": -7421.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 523.262306,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21260.1,
+     "y": -7422.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 527.341503,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21282.1,
+     "y": -7422.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 530.170345,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21304.1,
+     "y": -7422.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 533.001024,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21234.1,
+     "y": -7341.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 521.495548,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21260.1,
+     "y": -7340.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 524.533464,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21282.1,
+     "y": -7340.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 525.948192,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21304.1,
+     "y": -7340.0,
+     "species": "shade",
+     "height_m": 8.5,
+     "ground_m": 528.734061,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21223.1,
+     "y": -7399.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 520.825154,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21228.1,
+     "y": -7399.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21242.1,
+     "y": -7418.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 524.172639,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21252.1,
+     "y": -7418.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 525.714254,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21261.1,
+     "y": -7392.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 526.941392,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21223.1,
+     "y": -7363.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 521.94468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21228.1,
+     "y": -7363.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21242.1,
+     "y": -7344.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 522.982418,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21252.1,
+     "y": -7344.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 524.169358,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21261.1,
+     "y": -7370.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 527.102177,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21225.1,
+     "y": -7395.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21229.1,
+     "y": -7395.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21256.1,
+     "y": -7393.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21261.1,
+     "y": -7396.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 526.626946,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21225.1,
+     "y": -7418.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 521.606406,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21266.1,
+     "y": -7419.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 527.722932,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21316.1,
+     "y": -7420.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 534.941648,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21225.1,
+     "y": -7367.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21229.1,
+     "y": -7367.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21256.1,
+     "y": -7369.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.192468,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21261.1,
+     "y": -7366.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 526.789773,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21225.1,
+     "y": -7344.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 520.537763,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21266.1,
+     "y": -7343.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 525.1962,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21316.1,
+     "y": -7342.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 531.248531,
+     "confidence": "photo-estimated"
+    }
+   ],
+   "source_notes": "https://phatgiao.org.vn/chua-van-linh-tren-dinh-nui-cam-chon-binh-yen-giua-thien-nhien-ky-vi-d72738.html; positions/heights estimated from court/edge vegetation, not a species survey. Existing kit fruit/shade/areca/forest/shrub representatives only; distinctive conifer rows at VạnLinh remain a documented mismatch. Roots exclude OSM lake+3m and near hall roofs. No forest is cleared.",
+   "validation": {
+    "accepted": 32,
+    "rejected": []
+   },
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -21286.1,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 31,
+     "depth": 41,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21236.1,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 13.3,
+     "depth": 13.3,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21251.1,
+     "y": -7405.0,
+     "front": 0.0,
+     "width": 15,
+     "depth": 15,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21251.1,
+     "y": -7357.0,
+     "front": 0.0,
+     "width": 13,
+     "depth": 13,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21286.1,
+     "y": -7407.0,
+     "front": 0.0,
+     "width": 13,
+     "depth": 38,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21322.1,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 35,
+     "depth": 17,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21293.1,
+     "y": -7353.0,
+     "front": 0.0,
+     "width": 12,
+     "depth": 27,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21281.5,
+     "y": -7430.5,
+     "front": 0,
+     "width": 2,
+     "depth": 2,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21242.6,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 60,
+     "depth": 37,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21288.6,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 50,
+     "depth": 47,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21219.949999999997,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 11.0,
+     "depth": 7.7,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21261.25,
+     "y": -7381.0,
+     "front": 0.0,
+     "width": 14,
+     "depth": 7.700000000000003,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/van-linh/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "phat-lon",
+   "renderGroup": "nui-cam",
+   "trees": [
+    {
+     "x": -20841.0,
+     "y": -7303.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 516.046395,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20826.0,
+     "y": -7302.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 517.531897,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20808.0,
+     "y": -7302.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 517.993907,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20788.0,
+     "y": -7303.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 516.390599,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20841.0,
+     "y": -7391.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 513.040998,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20826.0,
+     "y": -7392.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 514.080658,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20808.0,
+     "y": -7392.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 515.957707,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20788.0,
+     "y": -7391.0,
+     "species": "fruit",
+     "height_m": 7,
+     "ground_m": 517.172489,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20856.0,
+     "y": -7316.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 513.461381,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20855.0,
+     "y": -7326.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 513.502921,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20854.0,
+     "y": -7347.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 516.609047,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20854.0,
+     "y": -7359.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 513.143003,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20858.0,
+     "y": -7388.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 513.125642,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20848.0,
+     "y": -7388.0,
+     "species": "areca",
+     "height_m": 9,
+     "ground_m": 513.073006,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20852.0,
+     "y": -7313.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 514.089214,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20848.0,
+     "y": -7323.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.609047,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20848.0,
+     "y": -7333.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.609047,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20848.0,
+     "y": -7344.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.609047,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20852.0,
+     "y": -7356.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 513.176556,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20852.0,
+     "y": -7366.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 513.126552,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20852.0,
+     "y": -7377.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 513.119447,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20852.0,
+     "y": -7387.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 513.096149,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20835.0,
+     "y": -7309.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.567277,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20815.0,
+     "y": -7309.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 517.73533,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20817.0,
+     "y": -7390.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 514.861334,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20796.0,
+     "y": -7389.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.416403,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20790.0,
+     "y": -7352.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 516.609047,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -20788.0,
+     "y": -7347.0,
+     "species": "shrub",
+     "height_m": 1.3,
+     "ground_m": 515.627507,
+     "confidence": "photo-estimated"
+    }
+   ],
+   "source_notes": "https://www.tad.vn/du-an/cong-trinh-van-hoa-the-thao/chua-phat-lon.html; positions/heights estimated from court/edge vegetation, not a species survey. Existing kit fruit/shade/areca/forest/shrub representatives only; distinctive conifer rows at VạnLinh remain a documented mismatch. Roots exclude OSM lake+3m and near hall roofs. No forest is cleared.",
+   "validation": {
+    "accepted": 28,
+    "rejected": []
+   },
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -20825.0,
+     "y": -7333.0,
+     "front": 3.141592653589793,
+     "width": 31,
+     "depth": 29,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20803.0,
+     "y": -7364.0,
+     "front": 3.141592653589793,
+     "width": 25,
+     "depth": 27,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20798.0,
+     "y": -7327.0,
+     "front": 3.141592653589793,
+     "width": 20,
+     "depth": 20,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20831.0,
+     "y": -7371.0,
+     "front": 3.141592653589793,
+     "width": 22,
+     "depth": 38,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20810.0,
+     "y": -7319.0,
+     "front": 3.141592653589793,
+     "width": 12,
+     "depth": 38,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20790.0,
+     "y": -7347.0,
+     "front": 0,
+     "width": 2,
+     "depth": 2,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20819.0,
+     "y": -7349.0,
+     "front": 3.141592653589793,
+     "width": 74,
+     "depth": 60,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20861.7,
+     "y": -7349.0,
+     "front": 3.141592653589793,
+     "width": 12,
+     "depth": 6.6,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/phat-lon/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "nui-cam-maitreya",
+   "renderGroup": "nui-cam",
+   "trees": [
+    {
+     "x": -21061.910101,
+     "y": -7098.269078,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 528.130195,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21055.54614,
+     "y": -7093.319331,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 529.203999,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21049.182179,
+     "y": -7086.955369,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 530.319792,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21039.98979,
+     "y": -7079.177195,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 531.359201,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21030.797402,
+     "y": -7078.470088,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 531.409407,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21025.140548,
+     "y": -7135.038631,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 524.648898,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21020.190801,
+     "y": -7128.67467,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 525.419812,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21013.826839,
+     "y": -7122.310709,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 526.023907,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21006.048665,
+     "y": -7113.11832,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 526.259483,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21005.341558,
+     "y": -7103.925932,
+     "species": "forest",
+     "height_m": 12,
+     "ground_m": 526.889953,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21069.688275,
+     "y": -7101.804612,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 527.044705,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21063.324314,
+     "y": -7089.783797,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 528.696982,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21048.475072,
+     "y": -7076.348768,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 531.157647,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21028.676082,
+     "y": -7142.816805,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 523.703462,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21016.655267,
+     "y": -7136.452844,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 524.195642,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21003.220238,
+     "y": -7121.603602,
+     "species": "shade",
+     "height_m": 8,
+     "ground_m": 525.201095,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21066.859848,
+     "y": -7114.532534,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 526.145183,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21065.445634,
+     "y": -7107.461466,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 526.951541,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21043.525324,
+     "y": -7084.126942,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 530.915565,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21033.625829,
+     "y": -7082.712729,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 531.190526,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21035.74715,
+     "y": -7076.348768,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 531.611331,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21041.404004,
+     "y": -7139.988378,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 524.219259,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21034.332936,
+     "y": -7138.574164,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 524.353074,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21010.998412,
+     "y": -7116.653854,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 526.509947,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21009.584199,
+     "y": -7106.754359,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 527.275633,
+     "confidence": "photo-estimated"
+    },
+    {
+     "x": -21003.220238,
+     "y": -7108.87568,
+     "species": "shrub",
+     "height_m": 1.5,
+     "ground_m": 526.216356,
+     "confidence": "photo-estimated"
+    }
+   ],
+   "source_notes": "https://chuaxaloi.vn/thong-tin/phat-di-lac-va-pho-tuong-o-nui-cam/1183.html; positions/heights estimated from court/edge vegetation, not a species survey. Existing kit fruit/shade/areca/forest/shrub representatives only; distinctive conifer rows at VạnLinh remain a documented mismatch. Roots exclude OSM lake+3m and near hall roofs. No forest is cleared.",
+   "validation": {
+    "accepted": 26,
+    "rejected": []
+   },
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -21038.575577,
+     "y": -7111.704107,
+     "front": -2.356194490192345,
+     "width": 28,
+     "depth": 28,
+     "reason": "Authored building roof/footprint",
+     "source": "blender/places/nui-cam-maitreya/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21037.797759354587,
+     "y": -7110.926289354591,
+     "front": -2.356194490192345,
+     "width": 38,
+     "depth": 37.8,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/nui-cam-maitreya/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -21052.647001759506,
+     "y": -7125.775531759508,
+     "front": -2.356194490192345,
+     "width": 15.0,
+     "depth": 4.2,
+     "reason": "Photographed open stone court or narrow entry/step footprint",
+     "source": "blender/places/nui-cam-maitreya/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  },
+  {
+   "id": "nui-cam",
+   "renderGroup": "nui-cam",
+   "treeExclusions": [
+    {
+     "type": "rect",
+     "x": -17232.034,
+     "y": -8261.274,
+     "front": -1.5707963267948966,
+     "width": 32,
+     "depth": 40,
+     "reason": "Mapped cable terminal authored roof/foundation; remaining line/forest untouched",
+     "source": "blender/places/nui-cam/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    },
+    {
+     "type": "rect",
+     "x": -20614.77,
+     "y": -7545.49,
+     "front": -1.5707963267948966,
+     "width": 24,
+     "depth": 35,
+     "reason": "Mapped cable terminal authored roof/foundation; remaining line/forest untouched",
+     "source": "blender/places/nui-cam/build.py; research.md/references.md",
+     "confidence": "photo-estimated authored footprint; root exclusion only"
+    }
+   ]
+  }
+ ]
+}

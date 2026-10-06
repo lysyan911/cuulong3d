@@ -15,7 +15,8 @@ const T = {
     views: 'Góc nhìn', places: 'Địa điểm trong truyện', layers: 'Lớp hiển thị', quality: 'Chất lượng hình ảnh',
     qualityModes: { fast: 'Nhanh', good: 'Đẹp', cinematic: 'Điện ảnh' },
     qualityNote: 'Điện ảnh: bóng nắng sắc nét, che khuất ánh sáng đầy đủ — dành cho cận cảnh, máy mạnh.',
-    weather: 'Thời tiết', weatherModes: { clear: 'Quang', cloudy: 'Ít mây', overcast: 'U ám', rain: 'Mưa rào', auto: 'Tự động' },
+    weather: 'Thời tiết', weatherModes: { clear: 'Quang', cloudy: 'Ít mây', overcast: 'U ám', rain: 'Mưa rào', mist: 'Sương sớm', auto: 'Tự động' },
+    timeOfDay: 'Giờ trong ngày', timeModes: { sunrise: 'Bình minh', morning: 'Buổi sáng', noon: 'Trưa', afternoon: 'Chiều', sunset: 'Hoàng hôn' },
     weatherNote: 'Tự động: chiều miền Tây, phần lớn nắng ráo, thỉnh thoảng mây kéo đến thành cơn mưa rào rồi tạnh.', credits: 'Nguồn dữ liệu', close: 'Đóng',
     m_real: 'Có thật', m_embellished: 'Có thật + hư cấu', m_fictional: 'Hư cấu', m_reference: 'Tham khảo',
     m_road_note: 'Ghi chú đường', m_conflict: 'Truyện khác thực tế',
@@ -33,7 +34,12 @@ const T = {
              boundaries: 'Ranh giới', paddies: 'Ruộng lúa', trasu: 'Rừng ngập nước Trà Sư', fauna: 'Động vật' },
     view: { faunaPilot: 'Động vật – ruộng Tri Tôn', overview: 'Toàn tỉnh', baynui: 'Bảy Núi', sites: 'Các địa điểm', tapa: 'Tà Pạ – Tri Tôn', nuiket: 'Từ đỉnh Núi Két', paddies: 'Ruộng lúa – Tri Tôn',
             trasu: 'Trà Sư – toàn cảnh', trasuCanal: 'Trà Sư – dưới tán tràm', trasuBirds: 'Trà Sư – chim nước', river: 'Sông Hậu – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
-            lxCathedral: 'Nhà thờ Long Xuyên', agu: 'Đại học An Giang' },
+            lxCathedral: 'Nhà thờ Long Xuyên', agu: 'Đại học An Giang',
+            'ba-chua-xu': 'Miếu Bà Chúa Xứ Núi Sam', 'tay-an': 'Chùa Tây An',
+            'thoai-ngoc-hau': 'Lăng Thoại Ngọc Hầu', 'nui-sam': 'Núi Sam – toàn cảnh',
+            'van-linh': 'Chùa Vạn Linh', 'phat-lon': 'Chùa Phật Lớn',
+            'nui-cam-maitreya': 'Phật Di Lặc Núi Cấm', 'nui-cam': 'Núi Cấm – toàn cảnh',
+            'nui-cam-lake': 'Hồ Thủy Liêm' },
   },
   en: {
     title: 'Cửu Long Project', subtitle: '3D map of Bảy Núi – An Giang (pre-2025)',
@@ -43,7 +49,8 @@ const T = {
     views: 'Views', places: 'Places in the story', layers: 'Layers', quality: 'Picture quality',
     qualityModes: { fast: 'Fast', good: 'Good', cinematic: 'Cinematic' },
     qualityNote: 'Cinematic: sharp sun shadows and full ambient occlusion, for close-ups on a strong computer.',
-    weather: 'Weather', weatherModes: { clear: 'Clear', cloudy: 'Partly cloudy', overcast: 'Overcast', rain: 'Rain shower', auto: 'Auto' },
+    weather: 'Weather', weatherModes: { clear: 'Clear', cloudy: 'Partly cloudy', overcast: 'Overcast', rain: 'Rain shower', mist: 'Morning mist', auto: 'Auto' },
+    timeOfDay: 'Time of day', timeModes: { sunrise: 'Sunrise', morning: 'Morning', noon: 'Noon', afternoon: 'Afternoon', sunset: 'Sunset' },
     weatherNote: 'Auto: a delta afternoon, mostly fair; now and then clouds build into a short shower, then it clears.', credits: 'Data sources', close: 'Close',
     m_real: 'Real place', m_embellished: 'Real + invented', m_fictional: 'Invented', m_reference: 'Reference',
     m_road_note: 'Road note', m_conflict: 'Story differs from reality',
@@ -61,7 +68,12 @@ const T = {
              landmarks: 'Pagodas, churches…', boundaries: 'Boundaries', boats: 'Boats', paddies: 'Rice fields', trasu: 'Trà Sư flooded forest', fauna: 'Wildlife' },
     view: { faunaPilot: 'Wildlife – Tri Tôn fields', overview: 'Whole province', baynui: 'Seven Mountains', sites: 'Story places', tapa: 'Tà Pạ – Tri Tôn',
             nuiket: 'From Núi Két summit', paddies: 'Tri Tôn rice fields', trasu: 'Trà Sư – aerial', trasuCanal: 'Trà Sư – forest canal', trasuBirds: 'Trà Sư – waterbirds', river: 'Hậu River – Châu Đốc', longxuyen: 'Long Xuyên', chaudoc: 'Châu Đốc',
-            lxCathedral: 'Long Xuyên Cathedral', agu: 'An Giang University' },
+            lxCathedral: 'Long Xuyên Cathedral', agu: 'An Giang University',
+            'ba-chua-xu': 'Lady of the Realm Shrine – Sam Mountain', 'tay-an': 'Tay An Pagoda',
+            'thoai-ngoc-hau': 'Thoai Ngoc Hau Tomb', 'nui-sam': 'Sam Mountain – panorama',
+            'van-linh': 'Van Linh Pagoda', 'phat-lon': 'Big Buddha Pagoda',
+            'nui-cam-maitreya': 'Maitreya Buddha – Cam Mountain', 'nui-cam': 'Cam Mountain – panorama',
+            'nui-cam-lake': 'Thuy Liem Lake' },
   },
 };
 
@@ -70,6 +82,7 @@ export class UI {
     this.lang = 'vi';
     this.cb = { onView, onSite, onLayer, onLang, onMode, onQuality, onWeather };
     this.weather = 'clear';
+    this.timeOfDay = 'afternoon';
     this.mode = 'study';
     try { if (localStorage.getItem('cuulong-mode') === 'novel') this.mode = 'novel'; } catch { /* private mode */ }
     this.credits = credits;
@@ -78,8 +91,22 @@ export class UI {
     this.$('infoClose').onclick = () => this.hideInfo();
     this.$('creditsBtn').onclick = () => this.$('credits').showModal();
     this.$('menuBtn').setAttribute('aria-controls', 'sidebar');
-    this.$('menuBtn').setAttribute('aria-expanded', 'false');
-    this.$('menuBtn').onclick = () => { const open = this.$('sidebar').classList.toggle('open'); this.$('menuBtn').setAttribute('aria-expanded', String(open)); };
+    // phones: the menu opens the panel over the map; computers: it slides the side panel away and back (remembered)
+    const phone = () => matchMedia('(max-width: 760px)').matches;
+    let hidden = false;
+    try { hidden = localStorage.getItem('cuulong-sidebar-hidden') === '1'; } catch { /* private mode */ }
+    const applyDesk = () => {
+      this.$('sidebar').classList.toggle('collapsed', hidden);
+      if (!phone()) this.$('menuBtn').setAttribute('aria-expanded', String(!hidden));
+    };
+    applyDesk();
+    this.$('menuBtn').setAttribute('aria-expanded', phone() ? 'false' : String(!hidden));
+    this.$('menuBtn').onclick = () => {
+      if (phone()) { const open = this.$('sidebar').classList.toggle('open'); this.$('menuBtn').setAttribute('aria-expanded', String(open)); return; }
+      hidden = !hidden;
+      try { localStorage.setItem('cuulong-sidebar-hidden', hidden ? '1' : '0'); } catch { /* private mode */ }
+      applyDesk();
+    };
     setTimeout(() => (this.$('hint').style.opacity = '0'), 12000);
   }
 
@@ -186,7 +213,7 @@ export class UI {
     const w = this.$('weather');
     if (w) {
       w.innerHTML = '';
-      for (const id of ['clear', 'cloudy', 'overcast', 'rain', 'auto']) {
+      for (const id of ['clear', 'cloudy', 'overcast', 'rain', 'mist', 'auto']) {
         const b = document.createElement('button');
         b.textContent = T[this.lang].weatherModes[id];
         b.className = this.weather === id ? 'on' : '';
@@ -198,6 +225,20 @@ export class UI {
       note.className = 'seg-note';
       note.textContent = T[this.lang].weatherNote;
       w.append(note);
+    }
+
+    const tod = this.$('timeOfDay');
+    if (tod) {
+      tod.innerHTML = '';
+      for (const id of ['sunrise', 'morning', 'noon', 'afternoon', 'sunset']) {
+        const b = document.createElement('button');
+        b.textContent = T[this.lang].timeModes[id];
+        b.className = this.timeOfDay === id ? 'on' : '';
+        b.setAttribute('aria-pressed', this.timeOfDay === id);
+        // (render/weather.js takes the time of day through the weather hook: 'time:<id>')
+        b.onclick = () => { this.timeOfDay = id; this.cb.onWeather?.('time:' + id); this.render(); };
+        tod.append(b);
+      }
     }
 
     this.$('creditsList').innerHTML = this.credits.filter((c) => novel || !isStoryCredit(c)).map((c) => `<li>${escapeHtml(c)}</li>`).join('');

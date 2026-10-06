@@ -1,0 +1,741 @@
+{
+ "version": 1,
+ "applied": false,
+ "note": "Measured source context and estimated terrace targets; Claude applies terrain/lake renderer changes.",
+ "places": [
+  {
+   "id": "ba-chua-xu",
+   "applied": false,
+   "reason": "Photos show a flat court; current DEM varies by ~6.4m over the mapped compound.",
+   "masks": [
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10501.338238156877,
+       12393.36576708077
+      ],
+      [
+       -10409.181184258,
+       12329.717692351998
+      ],
+      [
+       -10363.718273737448,
+       12395.544159422627
+      ],
+      [
+       -10455.875327636326,
+       12459.192234151398
+      ]
+     ],
+     "target_height_m": 19.230073,
+     "feather_m": 4,
+     "certainty": "photo-estimated; existing entrance datum"
+    }
+   ],
+   "current_local_height_range_m": [
+    -4.712,
+    1.71
+   ],
+   "source": "OSM1159104301 and surrounding galleries; VOVJuly2024 court photos; exact renderer samples"
+  },
+  {
+   "id": "thoai-ngoc-hau",
+   "schema": 1,
+   "place_id": "thoai-ngoc-hau",
+   "crs": "scene east,north metres",
+   "origin_scene_EN_height": [
+    -10541.938824,
+    12354.891712,
+    24.32353
+   ],
+   "status": "estimated terrain adjustment request; terrain owner applies, no shared mask changed",
+   "rationale": "OSM/Overture court is photo-flat; coarse current renderer DEM slopes through it. Keep measured source outline and authentic9step approach. Heights of terraces are photo-scale estimates, not surveys.",
+   "vertical_exaggeration": 1,
+   "source": [
+    "spatial.json",
+    "references.md",
+    "terrain-patch.json"
+   ],
+   "patches": [
+    {
+     "id": "grave-court",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10537.163311917924,
+       12346.959689284833
+      ],
+      [
+       -10551.112746426465,
+       12356.141370878742
+      ],
+      [
+       -10563.18088480888,
+       12337.806635102548
+      ],
+      [
+       -10549.23145030034,
+       12328.624953508639
+      ]
+     ],
+     "height_m": 25.91353,
+     "model_surface_m": 26.033530000000003,
+     "blend_outside_m": 1.5,
+     "estimated": true
+    },
+    {
+     "id": "rear-hall",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10548.712263994643,
+       12325.230407061765
+      ],
+      [
+       -10565.626997455596,
+       12336.363883245998
+      ],
+      [
+       -10571.839752067044,
+       12326.925044327047
+      ],
+      [
+       -10554.92501860609,
+       12315.791568142813
+      ]
+     ],
+     "height_m": 28.99353,
+     "model_surface_m": 29.29353,
+     "blend_outside_m": 1.5,
+     "estimated": true
+    },
+    {
+     "id": "hall-flight",
+     "kind": "linear-ramp",
+     "polygon_scene_EN": [
+      [
+       -10552.23856716603,
+       12335.333138669774
+      ],
+      [
+       -10555.830337728108,
+       12337.697284229884
+      ],
+      [
+       -10559.404046132924,
+       12332.267863612788
+      ],
+      [
+       -10555.812275570846,
+       12329.903718052678
+      ]
+     ],
+     "local_start_Y": 22,
+     "local_end_Y": 28.5,
+     "start_height_m": 25.91353,
+     "end_height_m": 28.99353,
+     "blend_outside_m": 0.6,
+     "estimated": true
+    },
+    {
+     "id": "approach",
+     "kind": "linear-ramp",
+     "polygon_scene_EN": [
+      [
+       -10536.59293293086,
+       12351.37298372449
+      ],
+      [
+       -10547.284715069141,
+       12358.410440275511
+      ],
+      [
+       -10549.483920241335,
+       12355.069258357298
+      ],
+      [
+       -10538.792138103054,
+       12348.031801806277
+      ]
+     ],
+     "local_start_Y": 0,
+     "local_end_Y": 4,
+     "start_height_m": 24.263530000000003,
+     "end_height_m": 25.91353,
+     "blend_outside_m": 0.7,
+     "estimated": true
+    }
+   ],
+   "note": "Ramp targets support geometry below step tops. Priority: hall-flight overrides overlapping court, approach overrides courtyard boundary. Do not flatten roads, neighbours or whole hillside. Review live-map ground before application."
+  },
+  {
+   "id": "nui-sam",
+   "schema": 1,
+   "place_id": "nui-sam",
+   "origin_scene_EN_height": [
+    -10806.173129793719,
+    11868.438672761988,
+    223.80735680957974
+   ],
+   "status": "estimated terrain request; Claude applies; no web masks/heights changed",
+   "vertical_exaggeration": 1,
+   "rationale": "Photo-flat small sandstone worship terrace crosses coarse renderer DEM. Keep patch only beneath authored precinct; do not flatten published5,041m² project area or raise mountain by63m.",
+   "patches": [
+    {
+     "id": "summit-stone-precinct",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10813.668461674297,
+       11860.660498168936
+      ],
+      [
+       -10798.394955200667,
+       11875.934004642566
+      ],
+      [
+       -10804.709418756662,
+       11882.24846819856
+      ],
+      [
+       -10819.982925230292,
+       11866.97496172493
+      ]
+     ],
+     "height_m": 223.85735680957976,
+     "model_surface_m": 223.95735680957975,
+     "blend_outside_m": 1.5,
+     "estimated": true,
+     "source": "OSM1189393345 namedoutline; contemporary2024 stone/stela photographs"
+    }
+   ],
+   "peak_handoff": {
+    "reported_m": 284,
+    "source": "OSM peak4293357289 / official guide",
+    "rendered_peak_m": 221.100434,
+    "difference_m": 62.89956599999999,
+    "action": "Do not raise asset or mountain automatically. Coarse DEM peak bias is a terrain-owner task."
+   },
+   "source": [
+    "research.md",
+    "spatial.json",
+    "terrain-patch.json"
+   ],
+   "preview_note": "Own Blender review includes this requested narrow terrace only. Source true renderer terrain context remains unmodified and excludedGLB. Live-map clipping must be checked until request is implemented."
+  },
+  {
+   "id": "van-linh",
+   "applied": false,
+   "reason": "Reference courts are engineered terraces; current terrain is a smooth DEM. Model retains supported foundations; apply these estimated grades/feathered cuts without changing reported architectural heights.",
+   "masks": [
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -21224.1,
+       -7411.0
+      ],
+      [
+       -21224.1,
+       -7351.0
+      ],
+      [
+       -21261.1,
+       -7351.0
+      ],
+      [
+       -21261.1,
+       -7411.0
+      ]
+     ],
+     "target_height_m": 525.152468,
+     "feather_m": 3,
+     "certainty": "photo-estimated terrace; renderer DEM baseline",
+     "current_local_height_range_m": [
+      -0.259,
+      6.672
+     ]
+    },
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -21265.1,
+       -7406.0
+      ],
+      [
+       -21265.1,
+       -7356.0
+      ],
+      [
+       -21312.1,
+       -7356.0
+      ],
+      [
+       -21312.1,
+       -7406.0
+      ]
+     ],
+     "target_height_m": 529.352468,
+     "feather_m": 3,
+     "certainty": "photo-estimated terrace; renderer DEM baseline",
+     "current_local_height_range_m": [
+      5.299,
+      12.109
+     ]
+    }
+   ],
+   "source": "https://phatgiao.org.vn/chua-van-linh-tren-dinh-nui-cam-chon-binh-yen-giua-thien-nhien-ky-vi-d72738.html",
+   "height_origin_m": 520.852468
+  },
+  {
+   "id": "phat-lon",
+   "applied": false,
+   "reason": "Reference courts are engineered terraces; current terrain is a smooth DEM. Model retains supported foundations; apply these estimated grades/feathered cuts without changing reported architectural heights.",
+   "masks": [
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -20849.0,
+       -7312.0
+      ],
+      [
+       -20849.0,
+       -7386.0
+      ],
+      [
+       -20789.0,
+       -7386.0
+      ],
+      [
+       -20789.0,
+       -7312.0
+      ]
+     ],
+     "target_height_m": 516.569047,
+     "feather_m": 3,
+     "certainty": "photo-estimated terrace; renderer DEM baseline",
+     "current_local_height_range_m": [
+      -0.193,
+      4.509
+     ]
+    },
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -20858.4,
+       -7341.0
+      ],
+      [
+       -20858.4,
+       -7353.0
+      ],
+      [
+       -20849.0,
+       -7353.0
+      ],
+      [
+       -20849.0,
+       -7341.0
+      ]
+     ],
+     "target_height_m": 516.569047,
+     "feather_m": 3,
+     "certainty": "photo-estimated terrace; renderer DEM baseline",
+     "current_local_height_range_m": [
+      -0.027,
+      0.54
+     ]
+    }
+   ],
+   "source": "https://www.tad.vn/du-an/cong-trinh-van-hoa-the-thao/chua-phat-lon.html",
+   "height_origin_m": 513.169047
+  },
+  {
+   "id": "nui-cam-maitreya",
+   "applied": false,
+   "reason": "Reference courts are engineered terraces; current terrain is a smooth DEM. Model retains supported foundations; apply these estimated grades/feathered cuts without changing reported architectural heights.",
+   "masks": [
+    {
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -21064.597106,
+       -7110.855579
+      ],
+      [
+       -21037.727049,
+       -7137.725636
+      ],
+      [
+       -21010.998412,
+       -7110.997
+      ],
+      [
+       -21037.86847,
+       -7084.126942
+      ]
+     ],
+     "target_height_m": 528.070067,
+     "feather_m": 3,
+     "certainty": "photo-estimated terrace; renderer DEM baseline",
+     "current_local_height_range_m": [
+      -1.093,
+      5.543
+     ]
+    }
+   ],
+   "source": "https://chuaxaloi.vn/thong-tin/phat-di-lac-va-pho-tuong-o-nui-cam/1183.html",
+   "height_origin_m": 525.589573
+  },
+  {
+   "id": "nui-cam",
+   "applied": false,
+   "lake": {
+    "name": "nui-cam-lake",
+    "level_m": 511.6,
+    "area_m2": 42010.752,
+    "polygon_scene_EN": [
+     [
+      -21139.362,
+      -7269.245
+     ],
+     [
+      -21131.352,
+      -7266.039
+     ],
+     [
+      -21119.48,
+      -7264.437
+     ],
+     [
+      -21100.856,
+      -7272.885
+     ],
+     [
+      -21082.233,
+      -7274.899
+     ],
+     [
+      -21060.37,
+      -7275.696
+     ],
+     [
+      -21037.709,
+      -7272.48
+     ],
+     [
+      -21023.538,
+      -7264.442
+     ],
+     [
+      -21007.344,
+      -7259.611
+     ],
+     [
+      -21004.509,
+      -7252.778
+     ],
+     [
+      -20998.436,
+      -7251.164
+     ],
+     [
+      -20992.363,
+      -7243.934
+     ],
+     [
+      -20983.051,
+      -7238.295
+     ],
+     [
+      -20983.05,
+      -7234.282
+     ],
+     [
+      -20976.573,
+      -7236.283
+     ],
+     [
+      -20966.451,
+      -7235.079
+     ],
+     [
+      -20952.281,
+      -7239.104
+     ],
+     [
+      -20937.706,
+      -7245.54
+     ],
+     [
+      -20927.99,
+      -7245.142
+     ],
+     [
+      -20913.01,
+      -7240.72
+     ],
+     [
+      -20902.078,
+      -7238.299
+     ],
+     [
+      -20899.66,
+      -7233.07
+     ],
+     [
+      -20881.846,
+      -7235.083
+     ],
+     [
+      -20868.081,
+      -7235.493
+     ],
+     [
+      -20858.364,
+      -7239.916
+     ],
+     [
+      -20853.101,
+      -7242.735
+     ],
+     [
+      -20845.813,
+      -7238.711
+     ],
+     [
+      -20842.981,
+      -7271.693
+     ],
+     [
+      -20847.03,
+      -7278.924
+     ],
+     [
+      -20861.201,
+      -7295.42
+     ],
+     [
+      -20878.523,
+      -7310.003
+     ],
+     [
+      -20884.082,
+      -7312.491
+     ],
+     [
+      -20888.306,
+      -7318.948
+     ],
+     [
+      -20886.14,
+      -7330.413
+     ],
+     [
+      -20887.027,
+      -7345.638
+     ],
+     [
+      -20885.058,
+      -7361.007
+     ],
+     [
+      -20884.906,
+      -7372.606
+     ],
+     [
+      -20884.479,
+      -7382.17
+     ],
+     [
+      -20887.401,
+      -7393.26
+     ],
+     [
+      -20890.827,
+      -7403.796
+     ],
+     [
+      -20888.541,
+      -7416.656
+     ],
+     [
+      -20868.2,
+      -7440.428
+     ],
+     [
+      -20867.358,
+      -7446.089
+     ],
+     [
+      -20866.516,
+      -7456.416
+     ],
+     [
+      -20881.858,
+      -7471.829
+     ],
+     [
+      -20897.231,
+      -7470.623
+     ],
+     [
+      -20912.528,
+      -7454.678
+     ],
+     [
+      -20920.187,
+      -7435.218
+     ],
+     [
+      -20941.469,
+      -7429.014
+     ],
+     [
+      -20961.427,
+      -7423.629
+     ],
+     [
+      -20982.633,
+      -7420.786
+     ],
+     [
+      -20998.642,
+      -7420.929
+     ],
+     [
+      -21009.65,
+      -7422.443
+     ],
+     [
+      -21021.172,
+      -7425.074
+     ],
+     [
+      -21028.919,
+      -7420.054
+     ],
+     [
+      -21042.586,
+      -7413.773
+     ],
+     [
+      -21049.578,
+      -7409.361
+     ],
+     [
+      -21056.493,
+      -7398.447
+     ],
+     [
+      -21062.106,
+      -7391.039
+     ],
+     [
+      -21066.438,
+      -7384.129
+     ],
+     [
+      -21079.985,
+      -7379.307
+     ],
+     [
+      -21089.701,
+      -7373.933
+     ],
+     [
+      -21091.517,
+      -7370.052
+     ],
+     [
+      -21095.041,
+      -7369.09
+     ],
+     [
+      -21111.421,
+      -7359.956
+     ],
+     [
+      -21114.408,
+      -7355.589
+     ],
+     [
+      -21120.054,
+      -7356.838
+     ],
+     [
+      -21129.103,
+      -7357.324
+     ],
+     [
+      -21140.111,
+      -7349.583
+     ],
+     [
+      -21141.533,
+      -7341.368
+     ],
+     [
+      -21140.033,
+      -7333.507
+     ],
+     [
+      -21135.601,
+      -7323.556
+     ],
+     [
+      -21133.357,
+      -7309.979
+     ],
+     [
+      -21134.768,
+      -7296.589
+     ],
+     [
+      -21139.823,
+      -7288.263
+     ],
+     [
+      -21141.978,
+      -7281.927
+     ],
+     [
+      -21139.756,
+      -7273.779
+     ],
+     [
+      -21139.362,
+      -7269.245
+     ]
+    ],
+    "source": "OSM934549621; current renderer SurfaceMap water-level511.6m",
+    "lakeWater": true,
+    "shader_owner": "Claude Code"
+   },
+   "banks": {
+    "top_height_m": 512.38,
+    "width_m": 2.8,
+    "feather_m": 3,
+    "certainty": "photo estimated height/profile; exact mapped lake outline"
+   },
+   "bridge": {
+    "endpoints_scene_EN": [
+     [
+      -21135,
+      -7356
+     ],
+     [
+      -20963,
+      -7430
+     ]
+    ],
+    "certainty": "photo/Esri estimate, not surveyed OSMbridge"
+   },
+   "note": "No terrain or shader edits applied. Flatten only lake basin/bank strip; preserve mountain slopes. Statue and temple courts have separate requests."
+  }
+ ]
+}

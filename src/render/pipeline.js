@@ -96,8 +96,17 @@ const FinalShader = {
     }`,
 };
 
+// Dynamic resolution: the GPU time of the picture (timer query around render()) steers a scale on the pixel ratio.
+// Heavy views (village streets, forests) draw fewer pixels, down to DYN_MIN, light ones go back up; steps of 0.1, at
+// most once a second, so it never flickers. Cinematic mode (screenshots) always draws full resolution. Without the timer extension a slow frame rate lowers it (and it tries
+// going back up now and then).
+const DYN_MIN = 0.7;
+const DYN_GPU = [8, 13];          // ms of GPU time for the picture: below -> finer, above -> coarser
+
 export class RenderPipeline {
   constructor(renderer, scene, camera, shadows, { mobile = false, reflection = null } = {}) {
+    this.dyn = { scale: 1, ext: renderer.getContext().getExtension('EXT_disjoint_timer_query_webgl2'), q: null, pending: [],
+                 ms: [], last: performance.now(), changed: performance.now(), cap: null };
     this.reflection = reflection;
     this.renderer = renderer;
     this.scene = scene;
@@ -173,7 +182,8 @@ export class RenderPipeline {
 
   /** Temporarily lower the pixel ratio (e.g. dense forest views); restores on the next call with null. */
   limitPixelRatio(max) {
-    const want = max ? Math.min(this.pixelRatio, max) : this.pixelRatio;
+    this.dyn.cap = max;
+    const want = (max ? Math.min(this.pixelRatio, max) : this.pixelRatio) * this.dyn.scale;
     if (this.renderer.getPixelRatio() !== want) {
       this.renderer.setPixelRatio(want);
       if (this.composer) { this.composer.setPixelRatio(want); this.composer.setSize(this.size.x, this.size.y); }
@@ -188,7 +198,41 @@ export class RenderPipeline {
   }
 
   render() {
+    const D = this.dyn, gl = this.renderer.getContext();
+    const timing = D.ext && !D.q && D.pending.length < 3;
+    if (timing) { D.q = gl.createQuery(); gl.beginQuery(D.ext.TIME_ELAPSED_EXT, D.q); }
     if (this.composer) this.composer.render();
     else this.renderer.render(this.scene, this.camera);
+    if (timing) { gl.endQuery(D.ext.TIME_ELAPSED_EXT); D.pending.push(D.q); D.q = null; }
+    this.adapt();
+  }
+
+  // dynamic resolution (see DYN_MIN): read finished timer queries, adjust the scale once a second
+  adapt() {
+    const D = this.dyn, gl = this.renderer.getContext(), now = performance.now();
+    if (D.ext) {
+      while (D.pending.length && gl.getQueryParameter(D.pending[0], gl.QUERY_RESULT_AVAILABLE)) {
+        const q = D.pending.shift();
+        if (!gl.getParameter(D.ext.GPU_DISJOINT_EXT)) D.ms.push(gl.getQueryParameter(q, gl.QUERY_RESULT) / 1e6);
+        gl.deleteQuery(q);
+      }
+    } else {
+      const dt = now - D.last;
+      if (dt < 100) D.ms.push(dt);                    // (a hidden tab or a long stall says nothing about the GPU)
+    }
+    D.last = now;
+    if (this.mode === 'cinematic') {
+      if (D.scale !== 1) { D.scale = 1; this.limitPixelRatio(D.cap); }
+      D.ms = [];
+      return;
+    }
+    if (now - D.changed < (D.ext ? 1000 : 4000) || D.ms.length < 20) return;
+    const sorted = D.ms.sort((a, b) => a - b), med = sorted[sorted.length >> 1];
+    D.ms = [];
+    let k = D.scale;
+    if (D.ext) k = med > DYN_GPU[1] ? k - 0.1 : med < DYN_GPU[0] ? k + 0.1 : k;
+    else k = med > 21 ? k - 0.1 : med < 17.5 && now - D.changed > 15000 ? k + 0.1 : k;   // 60 fps for 15 s: try finer
+    k = Math.round(Math.min(1, Math.max(DYN_MIN, k)) * 10) / 10;
+    if (k !== D.scale) { D.scale = k; D.changed = now; this.limitPixelRatio(D.cap); }
   }
 }
