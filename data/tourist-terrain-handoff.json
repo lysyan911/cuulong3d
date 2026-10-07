@@ -1,12 +1,13 @@
 {
  "version": 1,
  "applied": false,
- "note": "Measured source context and estimated terrace targets; Claude applies terrain/lake renderer changes.",
+ "note": "Supported A/B court/terrace/ramp/bank formats are applied by Claude terrain.setPatches; unresolved terrain requests are marked per place.",
  "places": [
   {
    "id": "ba-chua-xu",
-   "applied": false,
-   "reason": "Photos show a flat court; current DEM varies by ~6.4m over the mapped compound.",
+   "applied": true,
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js",
+   "reason": "Photographed flat court is supported by the existing terrain patch hook.",
    "masks": [
     {
      "kind": "flat-court",
@@ -45,129 +46,571 @@
    "place_id": "thoai-ngoc-hau",
    "crs": "scene east,north metres",
    "origin_scene_EN_height": [
-    -10541.938824,
-    12354.891712,
-    24.32353
+    -10501.084031674722,
+    12387.859665288888,
+    20.001974
    ],
-   "status": "estimated terrain adjustment request; terrain owner applies, no shared mask changed",
-   "rationale": "OSM/Overture court is photo-flat; coarse current renderer DEM slopes through it. Keep measured source outline and authentic9step approach. Heights of terraces are photo-scale estimates, not surveys.",
+   "applied": true,
+   "status": "source-based replacement for round1; root targeted integration pending",
    "vertical_exaggeration": 1,
    "source": [
     "spatial.json",
     "references.md",
     "terrain-patch.json"
    ],
+   "rationale": "Main street-step entrance origin; world levels unchanged. Flat photographed plaza/grave court/museum with separate red hall steps and laterite street approach. Road-foot20.001974m plus nine0.19m risers reaches plaza21.711974m. Roadside lateral grading remains estimated; do not flatten woodland/neighbours.",
+   "road_datum": {
+    "old_plaza_datum_m": 24.32353,
+    "new_plaza_datum_m": 21.711974,
+    "entrance_ground_m": 20.001974,
+    "foot_sample_scene_EN": [
+     -10501.084031674722,
+     12387.859665288888
+    ],
+    "foot_sample_local_XY": [
+     0,
+     0
+    ],
+    "foot_height_m": 20.001974,
+    "sampling": "Exact cached rawrenderer bilinear sample, not surveyed",
+    "steps": 9,
+    "rise_per_step_m": 0.19,
+    "run_per_step_m": 0.43333333333333335,
+    "width_m": 73
+   },
    "patches": [
+    {
+     "id": "plaza",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10496.96354062096,
+       12380.478503220766
+      ],
+      [
+       -10534.13418946108,
+       12404.944660761426
+      ],
+      [
+       -10545.625036485795,
+       12387.486985238762
+      ],
+      [
+       -10508.454387645676,
+       12363.020827698101
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Open grey paving between street approach and two arched gates, VOV2024 + VNA dusk aerial",
+     "height_m": 21.591974,
+     "model_surface_m": 21.711974
+    },
     {
      "id": "grave-court",
      "kind": "terrace",
      "polygon_scene_EN": [
       [
-       -10537.163311917924,
-       12346.959689284833
+       -10508.454387645676,
+       12363.020827698101
       ],
       [
-       -10551.112746426465,
-       12356.141370878742
+       -10545.625036485795,
+       12387.486985238762
       ],
       [
-       -10563.18088480888,
-       12337.806635102548
+       -10561.129432949765,
+       12363.93165271536
       ],
       [
-       -10549.23145030034,
-       12328.624953508639
+       -10523.958784109645,
+       12339.4654951747
       ]
      ],
-     "height_m": 25.91353,
-     "model_surface_m": 26.033530000000003,
+     "estimated": true,
      "blend_outside_m": 1.5,
-     "estimated": true
+     "rationale": "Broad white-walled grave court, not the16m OSM hall rectangle; maintain side neighbourhood",
+     "height_m": 21.691974000000002,
+     "model_surface_m": 21.811974000000003
     },
     {
-     "id": "rear-hall",
+     "id": "front-hall",
      "kind": "terrace",
      "polygon_scene_EN": [
       [
-       -10548.712263994643,
-       12325.230407061765
+       -10537.205076691902,
+       12346.987179349484
       ],
       [
-       -10565.626997455596,
-       12336.363883245998
+       -10551.070981652487,
+       12356.113880814091
       ],
       [
-       -10571.839752067044,
-       12326.925044327047
+       -10563.166610099555,
+       12337.73738026392
       ],
       [
-       -10554.92501860609,
-       12315.791568142813
+       -10549.30070513897,
+       12328.610678799312
       ]
      ],
-     "height_m": 28.99353,
-     "model_surface_m": 29.29353,
+     "estimated": true,
      "blend_outside_m": 1.5,
-     "estimated": true
+     "rationale": "OSM1159104315 main worship hall:16.4×21.9m. Earlier grave-court interpretation is superseded",
+     "height_m": 23.301974,
+     "model_surface_m": 23.421974000000002
     },
     {
-     "id": "hall-flight",
+     "id": "rear-hall-wing",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10548.232776894221,
+       12326.23170228323
+      ],
+      [
+       -10564.938686485286,
+       12337.227728144202
+      ],
+      [
+       -10572.251043682832,
+       12326.118298266145
+      ],
+      [
+       -10555.545134091768,
+       12315.122272405173
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Mapped Overture602a8fb7… rear wing; three successive brown hip roofs are photo-confirmed",
+     "height_m": 24.291974,
+     "model_surface_m": 24.411974
+    },
+    {
+     "id": "museum-main",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10493.894556109011,
+       12325.48319583854
+      ],
+      [
+       -10519.371068235387,
+       12342.252135276522
+      ],
+      [
+       -10526.023663881275,
+       12332.145059973927
+      ],
+      [
+       -10500.5471517549,
+       12315.376120535946
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "OSM1159104316 museum main wing; original L outline retained in spatial/features",
+     "height_m": 21.871974,
+     "model_surface_m": 21.991974000000003
+    },
+    {
+     "id": "museum-front-wing",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10492.602523070347,
+       12327.44614021549
+      ],
+      [
+       -10501.039007413834,
+       12332.999133275282
+      ],
+      [
+       -10502.331040452498,
+       12331.036188898332
+      ],
+      [
+       -10493.894556109011,
+       12325.48319583854
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "OSM1159104316 L extension; no rectangular compound-wide deletion",
+     "height_m": 21.871974,
+     "model_surface_m": 21.991974000000003
+    },
+    {
+     "id": "museum-porch",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10491.975548353332,
+       12329.308102273168
+      ],
+      [
+       -10516.86735364402,
+       12345.692180806014
+      ],
+      [
+       -10519.204009139476,
+       12342.142175017912
+      ],
+      [
+       -10494.312203848787,
+       12325.758096485066
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Low white-column porch and two white gable crests shown by VOV2024",
+     "height_m": 21.871974,
+     "model_surface_m": 21.991974000000003
+    },
+    {
+     "id": "hall-front-steps",
      "kind": "linear-ramp",
      "polygon_scene_EN": [
       [
-       -10552.23856716603,
-       12335.333138669774
+       -10537.4356438884,
+       12353.184706176204
       ],
       [
-       -10555.830337728108,
-       12337.697284229884
+       -10544.702714560513,
+       12357.967977425726
       ],
       [
-       -10559.404046132924,
-       12332.267863612788
+       -10547.479211090407,
+       12353.749735253981
       ],
       [
-       -10555.812275570846,
-       12329.903718052678
+       -10540.212140418294,
+       12348.96646400446
       ]
      ],
-     "local_start_Y": 22,
-     "local_end_Y": 28.5,
-     "start_height_m": 25.91353,
-     "end_height_m": 28.99353,
-     "blend_outside_m": 0.6,
-     "estimated": true
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Separate broad red hall stair, not the reported nine laterite street steps",
+     "local_start_Y": 48.95,
+     "local_end_Y": 54.0,
+     "start_height_m": 21.691974000000002,
+     "end_height_m": 23.301974
     },
     {
-     "id": "approach",
+     "id": "street-nine-steps",
      "kind": "linear-ramp",
      "polygon_scene_EN": [
       [
-       -10536.59293293086,
-       12351.37298372449
+       -10470.595746671026,
+       12367.791918092615
       ],
       [
-       -10547.284715069141,
-       12358.410440275511
+       -10531.572316678416,
+       12407.92741248516
       ],
       [
-       -10549.483920241335,
-       12355.069258357298
+       -10533.716541721304,
+       12404.669760114903
       ],
       [
-       -10538.792138103054,
-       12348.031801806277
+       -10472.739971713914,
+       12364.534265722357
       ]
      ],
-     "local_start_Y": 0,
-     "local_end_Y": 4,
-     "start_height_m": 24.263530000000003,
-     "end_height_m": 25.91353,
-     "blend_outside_m": 0.7,
-     "estimated": true
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Nine laterite approach steps at street edge; count official2024 guide, position VNA/VOV",
+     "local_start_Y": 0.0,
+     "local_end_Y": 3.8999999999999986,
+     "start_height_m": 19.881974,
+     "end_height_m": 21.591974
+    },
+    {
+     "id": "west-park-path",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10492.584039230647,
+       12376.219105660988
+      ],
+      [
+       -10495.92522114886,
+       12378.418310833182
+      ],
+      [
+       -10516.54276963818,
+       12347.094730349934
+      ],
+      [
+       -10513.201587719966,
+       12344.89552517774
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Narrow4m west paved circulation; park lawns and mature-tree areas are retained",
+     "height_m": 21.591974,
+     "model_surface_m": 21.711974
+    },
+    {
+     "id": "west-cross-path",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10480.36001639263,
+       12353.866795586735
+      ],
+      [
+       -10499.154164682577,
+       12366.237324680327
+      ],
+      [
+       -10500.803568561721,
+       12363.731438241666
+      ],
+      [
+       -10482.009420271774,
+       12351.360909148074
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Narrow3m cross path through photographed side garden, not a blanket park clearing",
+     "height_m": 21.591974,
+     "model_surface_m": 21.711974
+    },
+    {
+     "id": "west-lamp-island",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -10478.618714412136,
+       12364.33330729851
+      ],
+      [
+       -10484.79990096083,
+       12368.40183686707
+      ],
+      [
+       -10488.86843052939,
+       12362.220650318375
+      ],
+      [
+       -10482.687243980696,
+       12358.152120749815
+      ]
+     ],
+     "estimated": true,
+     "blend_outside_m": 1.5,
+     "rationale": "Tight extent of photographed round paved lamp/monument island, surrounding lawn retained",
+     "height_m": 21.591974,
+     "model_surface_m": 21.711974
     }
    ],
-   "note": "Ramp targets support geometry below step tops. Priority: hall-flight overrides overlapping court, approach overrides courtyard boundary. Do not flatten roads, neighbours or whole hillside. Review live-map ground before application."
+   "masks": [
+    {
+     "id": "plaza-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10496.96354062096,
+       12380.478503220766
+      ],
+      [
+       -10534.13418946108,
+       12404.944660761426
+      ],
+      [
+       -10545.625036485795,
+       12387.486985238762
+      ],
+      [
+       -10508.454387645676,
+       12363.020827698101
+      ]
+     ],
+     "target_height_m": 21.711974,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "grave-court-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10508.454387645676,
+       12363.020827698101
+      ],
+      [
+       -10545.625036485795,
+       12387.486985238762
+      ],
+      [
+       -10561.129432949765,
+       12363.93165271536
+      ],
+      [
+       -10523.958784109645,
+       12339.4654951747
+      ]
+     ],
+     "target_height_m": 21.811974000000003,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "museum-main-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10493.894556109011,
+       12325.48319583854
+      ],
+      [
+       -10519.371068235387,
+       12342.252135276522
+      ],
+      [
+       -10526.023663881275,
+       12332.145059973927
+      ],
+      [
+       -10500.5471517549,
+       12315.376120535946
+      ]
+     ],
+     "target_height_m": 21.991974000000003,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "museum-front-wing-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10492.602523070347,
+       12327.44614021549
+      ],
+      [
+       -10501.039007413834,
+       12332.999133275282
+      ],
+      [
+       -10502.331040452498,
+       12331.036188898332
+      ],
+      [
+       -10493.894556109011,
+       12325.48319583854
+      ]
+     ],
+     "target_height_m": 21.991974000000003,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "museum-porch-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10491.975548353332,
+       12329.308102273168
+      ],
+      [
+       -10516.86735364402,
+       12345.692180806014
+      ],
+      [
+       -10519.204009139476,
+       12342.142175017912
+      ],
+      [
+       -10494.312203848787,
+       12325.758096485066
+      ]
+     ],
+     "target_height_m": 21.991974000000003,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "west-park-path-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10492.584039230647,
+       12376.219105660988
+      ],
+      [
+       -10495.92522114886,
+       12378.418310833182
+      ],
+      [
+       -10516.54276963818,
+       12347.094730349934
+      ],
+      [
+       -10513.201587719966,
+       12344.89552517774
+      ]
+     ],
+     "target_height_m": 21.711974,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "west-cross-path-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10480.36001639263,
+       12353.866795586735
+      ],
+      [
+       -10499.154164682577,
+       12366.237324680327
+      ],
+      [
+       -10500.803568561721,
+       12363.731438241666
+      ],
+      [
+       -10482.009420271774,
+       12351.360909148074
+      ]
+     ],
+     "target_height_m": 21.711974,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    },
+    {
+     "id": "west-lamp-island-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -10478.618714412136,
+       12364.33330729851
+      ],
+      [
+       -10484.79990096083,
+       12368.40183686707
+      ],
+      [
+       -10488.86843052939,
+       12362.220650318375
+      ],
+      [
+       -10482.687243980696,
+       12358.152120749815
+      ]
+     ],
+     "target_height_m": 21.711974,
+     "feather_m": 3,
+     "rationale": "Existing 20m terrain mesh support for photographed paving/porch; masks do not clear trees or houses."
+    }
+   ],
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
   },
   {
    "id": "nui-sam",
@@ -222,7 +665,9 @@
     "spatial.json",
     "terrain-patch.json"
    ],
-   "preview_note": "Own Blender review includes this requested narrow terrace only. Source true renderer terrain context remains unmodified and excludedGLB. Live-map clipping must be checked until request is implemented."
+   "preview_note": "Own Blender review includes this requested narrow terrace only. Source true renderer terrain context remains unmodified and excludedGLB. Live-map clipping must be checked until request is implemented.",
+   "applied": true,
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
   },
   {
    "id": "van-linh",
@@ -356,7 +801,7 @@
   },
   {
    "id": "nui-cam-maitreya",
-   "applied": false,
+   "applied": true,
    "reason": "Reference courts are engineered terraces; current terrain is a smooth DEM. Model retains supported foundations; apply these estimated grades/feathered cuts without changing reported architectural heights.",
    "masks": [
     {
@@ -389,11 +834,12 @@
     }
    ],
    "source": "https://chuaxaloi.vn/thong-tin/phat-di-lac-va-pho-tuong-o-nui-cam/1183.html",
-   "height_origin_m": 525.589573
+   "height_origin_m": 525.589573,
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
   },
   {
    "id": "nui-cam",
-   "applied": false,
+   "applied": true,
    "lake": {
     "name": "nui-cam-lake",
     "level_m": 511.6,
@@ -735,7 +1181,1189 @@
     ],
     "certainty": "photo/Esri estimate, not surveyed OSMbridge"
    },
-   "note": "No terrain or shader edits applied. Flatten only lake basin/bank strip; preserve mountain slopes. Statue and temple courts have separate requests."
+   "note": "Claude terrain.setPatches applies mapped bank ring at512.38m; existing surface.js water remains511.6m. This model adds town promenade/lowwall and natural grass slope, with bridge access gaps. No water/shader edit. Statue and temple courts have separate requests.",
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
+  },
+  {
+   "id": "ta-pa",
+   "applied": false,
+   "ownership": "Claude terrain/water; Codex original rock model only",
+   "pit": {
+    "kind": "pit",
+    "polygon_scene_EN": [
+     [
+      -20452.601608,
+      -17273.828376
+     ],
+     [
+      -20456.888055,
+      -17283.149184
+     ],
+     [
+      -20470.523798,
+      -17284.940002
+     ],
+     [
+      -20473.025403,
+      -17290.73954
+     ],
+     [
+      -20483.548337,
+      -17293.731614
+     ],
+     [
+      -20483.126706,
+      -17312.057127
+     ],
+     [
+      -20473.026519,
+      -17317.677356
+     ],
+     [
+      -20462.534751,
+      -17309.14424
+     ],
+     [
+      -20457.399199,
+      -17307.554096
+     ],
+     [
+      -20449.604211,
+      -17311.176
+     ],
+     [
+      -20449.340781,
+      -17312.123876
+     ],
+     [
+      -20449.344034,
+      -17312.125897
+     ],
+     [
+      -20453.323059,
+      -17313.37693
+     ],
+     [
+      -20465.447551,
+      -17312.571635
+     ],
+     [
+      -20466.80598,
+      -17333.280669
+     ],
+     [
+      -20460.14235,
+      -17336.863019
+     ],
+     [
+      -20459.378063,
+      -17344.602871
+     ],
+     [
+      -20458.431801,
+      -17349.62223
+     ],
+     [
+      -20460.260565,
+      -17351.008796
+     ],
+     [
+      -20464.904784,
+      -17355.232419
+     ],
+     [
+      -20466.7292,
+      -17365.498109
+     ],
+     [
+      -20452.359708,
+      -17372.415669
+     ],
+     [
+      -20446.017836,
+      -17368.574588
+     ],
+     [
+      -20438.236003,
+      -17370.896159
+     ],
+     [
+      -20429.371705,
+      -17365.102023
+     ],
+     [
+      -20425.739959,
+      -17367.430919
+     ],
+     [
+      -20411.200016,
+      -17362.182843
+     ],
+     [
+      -20397.129415,
+      -17351.857287
+     ],
+     [
+      -20393.900837,
+      -17337.400409
+     ],
+     [
+      -20395.424215,
+      -17327.731023
+     ],
+     [
+      -20398.235533,
+      -17319.862455
+     ],
+     [
+      -20400.598013,
+      -17304.721818
+     ],
+     [
+      -20405.565633,
+      -17295.464427
+     ],
+     [
+      -20400.732902,
+      -17288.597519
+     ],
+     [
+      -20408.314076,
+      -17283.407676
+     ],
+     [
+      -20413.001289,
+      -17279.027948
+     ],
+     [
+      -20429.203116,
+      -17273.899745
+     ],
+     [
+      -20433.12504,
+      -17277.424666
+     ],
+     [
+      -20436.909867,
+      -17273.828946
+     ],
+     [
+      -20452.601608,
+      -17273.828376
+     ]
+    ],
+    "rim_polygon_scene_EN": [
+     [
+      -20452.601608,
+      -17273.828376
+     ],
+     [
+      -20456.888055,
+      -17283.149184
+     ],
+     [
+      -20470.523798,
+      -17284.940002
+     ],
+     [
+      -20473.025403,
+      -17290.73954
+     ],
+     [
+      -20483.548337,
+      -17293.731614
+     ],
+     [
+      -20483.126706,
+      -17312.057127
+     ],
+     [
+      -20473.026519,
+      -17317.677356
+     ],
+     [
+      -20462.534751,
+      -17309.14424
+     ],
+     [
+      -20457.399199,
+      -17307.554096
+     ],
+     [
+      -20449.604211,
+      -17311.176
+     ],
+     [
+      -20449.340781,
+      -17312.123876
+     ],
+     [
+      -20449.344034,
+      -17312.125897
+     ],
+     [
+      -20453.323059,
+      -17313.37693
+     ],
+     [
+      -20465.447551,
+      -17312.571635
+     ],
+     [
+      -20466.80598,
+      -17333.280669
+     ],
+     [
+      -20460.14235,
+      -17336.863019
+     ],
+     [
+      -20459.378063,
+      -17344.602871
+     ],
+     [
+      -20458.431801,
+      -17349.62223
+     ],
+     [
+      -20460.260565,
+      -17351.008796
+     ],
+     [
+      -20464.904784,
+      -17355.232419
+     ],
+     [
+      -20466.7292,
+      -17365.498109
+     ],
+     [
+      -20452.359708,
+      -17372.415669
+     ],
+     [
+      -20446.017836,
+      -17368.574588
+     ],
+     [
+      -20438.236003,
+      -17370.896159
+     ],
+     [
+      -20429.371705,
+      -17365.102023
+     ],
+     [
+      -20425.739959,
+      -17367.430919
+     ],
+     [
+      -20411.200016,
+      -17362.182843
+     ],
+     [
+      -20397.129415,
+      -17351.857287
+     ],
+     [
+      -20393.900837,
+      -17337.400409
+     ],
+     [
+      -20395.424215,
+      -17327.731023
+     ],
+     [
+      -20398.235533,
+      -17319.862455
+     ],
+     [
+      -20400.598013,
+      -17304.721818
+     ],
+     [
+      -20405.565633,
+      -17295.464427
+     ],
+     [
+      -20400.732902,
+      -17288.597519
+     ],
+     [
+      -20408.314076,
+      -17283.407676
+     ],
+     [
+      -20413.001289,
+      -17279.027948
+     ],
+     [
+      -20429.203116,
+      -17273.899745
+     ],
+     [
+      -20433.12504,
+      -17277.424666
+     ],
+     [
+      -20436.909867,
+      -17273.828946
+     ],
+     [
+      -20452.601608,
+      -17273.828376
+     ]
+    ],
+    "rim_height_m": 56.254999999999995,
+    "rim_height_per_vertex_m": [
+     57.9,
+     57.9,
+     60.4,
+     60.4,
+     60.4,
+     60.4,
+     53.4,
+     53.4,
+     53.4,
+     58.9,
+     58.9,
+     58.9,
+     58.9,
+     53.4,
+     53.4,
+     58.4,
+     58.4,
+     58.4,
+     53.4,
+     53.4,
+     57.4,
+     57.4,
+     53.4,
+     53.199999999999996,
+     53.199999999999996,
+     53.199999999999996,
+     53.199999999999996,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     59.4,
+     59.4,
+     59.4,
+     59.4,
+     53.4,
+     57.9,
+     57.9
+    ],
+    "water_height_m": 50.4,
+    "floor_height_m": 48.4,
+    "floor_certainty": "2m visual clearance proxy, not surveyed bathymetry;17m/7m reported only",
+    "renderer_rim_height_per_vertex_m": [
+     57.9,
+     57.9,
+     60.4,
+     60.4,
+     60.4,
+     60.4,
+     53.4,
+     53.4,
+     53.4,
+     58.9,
+     58.9,
+     58.9,
+     58.9,
+     53.4,
+     53.4,
+     58.4,
+     58.4,
+     58.4,
+     53.4,
+     53.4,
+     57.4,
+     57.4,
+     53.4,
+     53.199999999999996,
+     53.199999999999996,
+     53.199999999999996,
+     53.199999999999996,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     53.4,
+     59.4,
+     59.4,
+     59.4,
+     59.4,
+     53.4,
+     57.9,
+     57.9
+    ],
+    "renderer_floor_height_m": 48.4,
+    "runtime_rule": "Default viewer uses true-scale terrain (main.js overrides cached meta.vert_exag3 to1). Origin50.4m plus true meshZ; use the physical rim/floor heights at scale1. Optional exagURL is outside this source review; never assume cached metadata is runtime scale.",
+    "height_certainty": "rim/benches photo estimated; datum is current software value; actual wall sectors interrupted by low shelves"
+   },
+   "lake": {
+    "polygon_scene_EN": [
+     [
+      -20449.077282,
+      -17279.328504
+     ],
+     [
+      -20453.16024,
+      -17288.20683
+     ],
+     [
+      -20466.710713,
+      -17289.986449
+     ],
+     [
+      -20469.009444,
+      -17295.315661
+     ],
+     [
+      -20477.951934,
+      -17297.858354
+     ],
+     [
+      -20477.700597,
+      -17308.782316
+     ],
+     [
+      -20473.607099,
+      -17311.060134
+     ],
+     [
+      -20465.178882,
+      -17304.205335
+     ],
+     [
+      -20457.00257,
+      -17301.673667
+     ],
+     [
+      -20444.984719,
+      -17307.257706
+     ],
+     [
+      -20442.938195,
+      -17314.621497
+     ],
+     [
+      -20447.03187,
+      -17317.164373
+     ],
+     [
+      -20452.657876,
+      -17318.933229
+     ],
+     [
+      -20460.319645,
+      -17318.424343
+     ],
+     [
+      -20461.086254,
+      -17330.111175
+     ],
+     [
+      -20454.956943,
+      -17333.406276
+     ],
+     [
+      -20453.928455,
+      -17343.821661
+     ],
+     [
+      -20452.396394,
+      -17351.948341
+     ],
+     [
+      -20456.741847,
+      -17355.243058
+     ],
+     [
+      -20459.817613,
+      -17358.040273
+     ],
+     [
+      -20460.583952,
+      -17362.352331
+     ],
+     [
+      -20452.659604,
+      -17366.16716
+     ],
+     [
+      -20446.781781,
+      -17362.607139
+     ],
+     [
+      -20439.109121,
+      -17364.896141
+     ],
+     [
+      -20429.400301,
+      -17358.549984
+     ],
+     [
+      -20425.055068,
+      -17361.336411
+     ],
+     [
+      -20413.813974,
+      -17357.279028
+     ],
+     [
+      -20402.047341,
+      -17348.644214
+     ],
+     [
+      -20399.496658,
+      -17337.222802
+     ],
+     [
+      -20400.776986,
+      -17329.096133
+     ],
+     [
+      -20403.589681,
+      -17321.223712
+     ],
+     [
+      -20405.887698,
+      -17306.496198
+     ],
+     [
+      -20412.016721,
+      -17295.07448
+     ],
+     [
+      -20408.437395,
+      -17289.988556
+     ],
+     [
+      -20411.764716,
+      -17287.710772
+     ],
+     [
+      -20415.847215,
+      -17283.896089
+     ],
+     [
+      -20427.865128,
+      -17280.092179
+     ],
+     [
+      -20433.228546,
+      -17284.912678
+     ],
+     [
+      -20439.106024,
+      -17279.328866
+     ],
+     [
+      -20449.077282,
+      -17279.328504
+     ]
+    ],
+    "level_m": 50.4,
+    "certainty": "Mapped seasonal outline; software water datum, no survey",
+    "request": "Draw exact pool mask, set local level, restrained jade/olive colour and reflect authored walls; no duplicate GLB water"
+   },
+   "patches": [],
+   "model_origin_scene_EN_height": [
+    -20433.197796,
+    -17321.642448,
+    50.4
+   ],
+   "model_vertical_scale": 1,
+   "runtime_vert_exag": 1,
+   "note": "Pending pit/lake integration must be logged by Claude. Existing mapped pool stays active meanwhile; unsupported cut never marked applied.",
+   "implementation": "Claude pending: quarry cut, explicit lake mask/level and jade reflections; authored walls are ready"
+  },
+  {
+   "id": "chua-ta-pa",
+   "ownership": "Claude terrain; Codex elevated hall model",
+   "masks": [],
+   "patches": [
+    {
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -20007.0,
+       -17152.0
+      ],
+      [
+       -19979.0,
+       -17152.0
+      ],
+      [
+       -19979.0,
+       -17114.0
+      ],
+      [
+       -20007.0,
+       -17114.0
+      ]
+     ],
+     "height_m": 62.55052619192598,
+     "feather_m": 4,
+     "reason": "Photo-estimated west court, small cut terrace at model paving underside; does not fill the hall column space"
+    }
+   ],
+   "note": "Only the real west court is flattened. Elevated main hall, causeway and stair remain on their authored support columns against unscaled default viewer terrain; never raise ground to main platform underneath its columns.",
+   "model_origin_scene_EN_height": [
+    -19881.0,
+    -17068.0,
+    36.31315544095638
+   ],
+   "runtime_vert_exag": 1,
+   "model_vertical_scale": 1,
+   "desired_platform_runtime_height_m": 62.80052619192598,
+   "height_certainty": "Default viewer terrain and model use metres at scale1. Support feet and review terrain use unscaled cached DEM differences. Deck is hall-centre DEM+14m, a photo estimate giving12.187–17.176m structural supports; no surveyed terrace elevation is claimed.",
+   "applied": true,
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
+  },
+  {
+   "id": "xvay-ton",
+   "stage": 6,
+   "applied": true,
+   "runtime_vert_exag": 1,
+   "source_ground_height_m": 5.953075655460696,
+   "pond_water": {
+    "name": "xvay-ton-lake",
+    "separate_hero": true,
+    "level_m": 5.65,
+    "polygon_scene_EN": [
+     [
+      -19138,
+      -16250
+     ],
+     [
+      -19100,
+      -16248
+     ],
+     [
+      -19099,
+      -16287
+     ],
+     [
+      -19137,
+      -16288
+     ],
+     [
+      -19138,
+      -16250
+     ]
+    ],
+    "water_shader_status": "Original matte preview fallback; physical lake shader/reflections pending Claude",
+    "survey_status": "Unknown water elevation/depth;5.65m is an estimated compatibility surface"
+   },
+   "requirements": [
+    {
+     "kind": "terrace",
+     "name": "Estimated pond basin compatibility surface",
+     "polygon_scene_EN": [
+      [
+       -19138,
+       -16250
+      ],
+      [
+       -19100,
+       -16248
+      ],
+      [
+       -19099,
+       -16287
+      ],
+      [
+       -19137,
+       -16288
+      ],
+      [
+       -19138,
+       -16250
+      ]
+     ],
+     "target_height_m": 5.4,
+     "blend_m": 0.6,
+     "effective_minimum_blend_m": 4,
+     "reason": "Conservative pond preview would be occluded by software DEM~6m; lower only the candidate open-water interior, preserve west-bank roofs and court. Estimated basin visibility surface, not bathymetry survey.",
+     "activation_status": "Activated in stage6 through the existing supported terrace data hook; narrow4m feather only. Final live visibility acceptance is recorded in the stage6 review.",
+     "preserved_roof_ids": [
+      "effa98f4-d70d-49a4-9804-692d7f855430",
+      "ea622bac-1159-4d2e-a286-65c816282ac0"
+     ],
+     "minimum_clearance_to_preserved_roofs_m": {
+      "effa98f4-d70d-49a4-9804-692d7f855430": 5.006661428348646,
+      "ea622bac-1159-4d2e-a286-65c816282ac0": 6.300950187091682
+     },
+     "bank_hook_45m_flattening_authorized": false,
+     "existing_hook_proposal": {
+      "kind": "terrace",
+      "polygon_scene_EN": [
+       [
+        -19138,
+        -16250
+       ],
+       [
+        -19100,
+        -16248
+       ],
+       [
+        -19099,
+        -16287
+       ],
+       [
+        -19137,
+        -16288
+       ],
+       [
+        -19138,
+        -16250
+       ]
+      ],
+      "height_m": 5.4,
+      "feather_m": 0.6,
+      "effective_minimum_feather_m": 4,
+      "reason": "Estimated pond basin compatibility surface; conservative open-water candidate only, not surveyed bathymetry"
+     }
+    }
+   ],
+   "notes": [
+    "No terrain/shader/renderer code changes.",
+    "Main temple must not carry lake flag.",
+    "Court/monastery research zone is not a clearing/terrain mask.",
+    "The raised court/hall split1.35+0.45m is estimated, total1.8m reported; own masonry geometry supplies the rise."
+   ],
+   "patches": [
+    {
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -19138,
+       -16250
+      ],
+      [
+       -19100,
+       -16248
+      ],
+      [
+       -19099,
+       -16287
+      ],
+      [
+       -19137,
+       -16288
+      ],
+      [
+       -19138,
+       -16250
+      ]
+     ],
+     "height_m": 5.4,
+     "blend_outside_m": 4,
+     "reason": "Narrow estimated pond basin compatibility surface, not surveyed bathymetry; minimum4m feather clears both preserved west-bank roofs. No broad bank hook."
+    }
+   ],
+   "water_shader_pending": true,
+   "acceptance_limit": "Matte pond preview is partly terrain-clipped along west/south edges at20m grid and may disappear at coarse terrain LOD. Explicit pond cut/mask and lake shader/reflections remain Claude work; level/depth are unsurveyed.",
+   "live_mesh_diagnostics": {
+    "status": "QUALIFIED_TERRAIN_EDGE_CLIPPING",
+    "water_level_m": 5.65,
+    "interior_target_m": 5.4,
+    "outside_feather_m": 4,
+    "near_grid_m": 20,
+    "sample_count": 121,
+    "samples_under_water": 72,
+    "maximum_rendered_terrain_height_m": 6.100943470001221,
+    "cause": "Existing mesh evaluates the patch at vertices and interpolates triangles; CPU heightAt inside the pond is not the rendered terrain height.",
+    "decision": "Retain the exact water-only polygon, 5.4m target and4m feather. A deeper basin would depress rendered ground beneath preserved west-bank roofs; coarser triangles can have no influenced vertex.",
+    "claude_follow_up": "Provide a terrain-conforming explicit pond cut/mask retaining western buildings, true1x ground and court; verify visible water at all terrain LODs. Survey water level/depth and implement the lake shader/reflections.",
+    "reference": "notes/places-review/xvay-ton/pond-mesh-depth-audit.json"
+   },
+   "implementation": "Existing terrace hook applies only the water-interior5.4m compatibility patch with4m feather. The separate matte pond remains partly clipped by20m terrain interpolation; deeper patching would lower ground under preserved west roofs. Claude explicit pond cut/mask, surveyed level/depth and water shader/reflections remain pending; see live_mesh_diagnostics."
+  },
+  {
+   "id": "bung-binh-thien",
+   "applied": true,
+   "ownership": "Claude terrain/water; Codex original mosque and gate geometry only",
+   "water_shader_pending": false,
+   "lake": {
+    "polygon_scene_EN": [
+     [
+      -11538.904267121165,
+      38829.33481613058
+     ],
+     [
+      -11312.32509246195,
+      38912.514525069855
+     ],
+     [
+      -11082.007978823152,
+      38987.7025045061
+     ],
+     [
+      -10957.973330884066,
+      39032.85676871543
+     ],
+     [
+      -10779.049337182892,
+      39111.67187496438
+     ],
+     [
+      -10606.143112878955,
+      39175.29407544667
+     ],
+     [
+      -10478.114402027277,
+      39235.36709039984
+     ],
+     [
+      -10399.423120500694,
+      39258.054778115125
+     ],
+     [
+      -10319.280459033558,
+      39287.53204424796
+     ],
+     [
+      -10158.09593415365,
+      39333.29640365136
+     ],
+     [
+      -10054.058410164318,
+      39371.18417914468
+     ],
+     [
+      -9977.173222005833,
+      39402.894896653714
+     ],
+     [
+      -9854.885035187704,
+      39198.49623765214
+     ],
+     [
+      -9964.241152601724,
+      39148.919103313005
+     ],
+     [
+      -10000.494051768153,
+      39097.106944211526
+     ],
+     [
+      -9964.21130143851,
+      39041.94260155107
+     ],
+     [
+      -9913.771608885203,
+      39043.08452868438
+     ],
+     [
+      -9871.282346640655,
+      39066.73635045439
+     ],
+     [
+      -9845.218951757764,
+      39098.27828171244
+     ],
+     [
+      -9820.28644648759,
+      39110.10527555924
+     ],
+     [
+      -9794.222381578293,
+      39100.54836393008
+     ],
+     [
+      -9799.301018128463,
+      39053.24505815655
+     ],
+     [
+      -9831.015235688363,
+      38949.643001194345
+     ],
+     [
+      -9819.664301117184,
+      38919.80336493743
+     ],
+     [
+      -9866.697075164062,
+      38887.70264874003
+     ],
+     [
+      -9934.012766998436,
+      38862.05360663077
+     ],
+     [
+      -10058.670497724495,
+      38820.35616717092
+     ],
+     [
+      -10181.071802939172,
+      38797.7994848392
+     ],
+     [
+      -10328.396328352625,
+      38767.35292848991
+     ],
+     [
+      -10459.862918449915,
+      38726.78300158447
+     ],
+     [
+      -10568.653861817264,
+      38679.46367719886
+     ],
+     [
+      -10681.97590449045,
+      38616.36521150987
+     ],
+     [
+      -10830.428171754524,
+      38546.51347468537
+     ],
+     [
+      -11028.749255046307,
+      38458.63822401618
+     ],
+     [
+      -11159.075723445858,
+      38394.42046694318
+     ],
+     [
+      -11292.801127961837,
+      38330.191361128585
+     ],
+     [
+      -11394.801123033045,
+      38297.51586707705
+     ],
+     [
+      -11548.931570613582,
+      38244.55008320231
+     ],
+     [
+      -11724.600077359239,
+      38237.7541627367
+     ],
+     [
+      -11898.02081631712,
+      38245.59913075459
+     ],
+     [
+      -12053.290700375626,
+      38252.32110402873
+     ],
+     [
+      -12208.573345440265,
+      38268.055252789054
+     ],
+     [
+      -12307.1727750891,
+      38272.53479498066
+     ],
+     [
+      -12443.185044192127,
+      38263.506394573255
+     ],
+     [
+      -12555.39049605222,
+      38274.73972825194
+     ],
+     [
+      -12644.932995354291,
+      38289.36135630659
+     ],
+     [
+      -12703.869393588335,
+      38313.00065966137
+     ],
+     [
+      -12700.860935105826,
+      38351.33584261546
+     ],
+     [
+      -12639.985776984307,
+      38524.93157427828
+     ],
+     [
+      -12601.525214949856,
+      38544.04569598078
+     ],
+     [
+      -12285.783195470518,
+      38617.37372487085
+     ],
+     [
+      -12127.098300945654,
+      38626.96046601143
+     ],
+     [
+      -11957.21074725606,
+      38676.36666003917
+     ],
+     [
+      -11744.047781721689,
+      38757.62759663048
+     ],
+     [
+      -11538.904267121165,
+      38829.33481613058
+     ]
+    ],
+    "level_m": 0.0,
+    "osm_way": 142266443,
+    "outline_status": "Measured cached OSM outline, not an observed seasonal shoreline",
+    "level_status": "Stored water-level entries at136 cached polygon-interior points are0m;100 points are currently wet and36 dry. This is an estimated software compatibility datum, not a surveyed absolute2020–24 dry/flood level",
+    "vertical_datum": "Software scene datum; survey datum unknown",
+    "season": "Static software value; seasonal time unknown",
+    "measured_cached_area_m2": 1352615.171792965,
+    "cached_mask_compatibility": {
+     "polygon_interior_samples": 136,
+     "wet_at_confidence_ge_half": 100,
+     "dry": 36,
+     "CPU_ground_range_m": [
+      0,
+      1.78
+     ],
+     "stored_water_level_entries_m": [
+      0.0
+     ],
+     "qualification": "Mixed cached land/water cells; the explicit lake mask and tint are pending Claude"
+    }
+   },
+   "masks": [],
+   "patches": [],
+   "requests": [
+    {
+     "id": "main-hall-compatibility-support",
+     "kind": "flat-court",
+     "polygon_scene_EN": [
+      [
+       -12244.982991150522,
+       38160.76159197814
+      ],
+      [
+       -12240.60724493541,
+       38190.19622428529
+      ],
+      [
+       -12266.997952317412,
+       38194.12698257924
+      ],
+      [
+       -12271.384648962005,
+       38164.69235154218
+      ],
+      [
+       -12244.982991150522,
+       38160.76159197814
+      ]
+     ],
+     "target_height_m": 1.8413494983923044,
+     "feather_m": 4,
+     "reason": "Exact cached main candidate quadrilateral seeds an unapplied compatibility support proposal; the nominal authored rectangle differs by up to6.015mm. Activate only after Claude validates actual terrain triangles and the original near foundation."
+    },
+    {
+     "id": "graded-core-court-support",
+     "kind": "linear-ramp",
+     "polygon_scene_EN": [
+      [
+       -12260.30070786276,
+       38237.10806759184
+      ],
+      [
+       -12234.492178169257,
+       38233.265614721655
+      ],
+      [
+       -12240.367848637208,
+       38193.800611281236
+      ],
+      [
+       -12266.17637833071,
+       38197.64306415142
+      ],
+      [
+       -12260.30070786276,
+       38237.10806759184
+      ]
+     ],
+     "local_start_Y": -47.248496,
+     "local_end_Y": -3.3,
+     "start_height_m": 1.4887539985821234,
+     "end_height_m": 1.8113494983923044,
+     "blend_outside_m": 4,
+     "reason": "Under the declared 3 cm graded court slab; court patch inset0.30m to preserve close east roof under4m feather"
+    },
+    {
+     "id": "graded-core-path-support",
+     "kind": "linear-ramp",
+     "polygon_scene_EN": [
+      [
+       -12248.72372570499,
+       38239.17426425012
+      ],
+      [
+       -12255.195577335518,
+       38195.704902198966
+      ],
+      [
+       -12251.43700557929,
+       38195.145314535344
+      ],
+      [
+       -12244.96515394876,
+       38238.6146765865
+      ],
+      [
+       -12248.72372570499,
+       38239.17426425012
+      ]
+     ],
+     "local_start_Y": -47.248496,
+     "local_end_Y": -3.3,
+     "start_height_m": 1.4887539985821234,
+     "end_height_m": 1.8113494983923044,
+     "blend_outside_m": 4,
+     "reason": "Narrow3.8m source path to adopted bank-road gate; no street-width or compound flattening"
+    }
+   ],
+   "requirements": [
+    "Create explicit lake water mask/level and blue-green lake tint distinct from the silty river; no placeholder water mesh exists",
+    "Keep west connection to Sông Bình Di at the shared mapped boundary segment, no fabricated east inlet",
+    "Implement bounded hall/court/path support only after actual terrain-triangle checks; these requests are currently inactive",
+    "Court support is inset0.30m so a nominal4m feather avoids preserved east roofs in plan; coarse live terrain effect still needs Claude verification",
+    "No surveyed seasonal absolute level was found; retain level_m:0.0 explicitly as a software estimate, never as a reported field measurement"
+   ],
+   "river_connection": {
+    "osm_way": 279507394,
+    "name": "Sông Bình Di",
+    "shared_boundary_scene_EN": [
+     [
+      -12703.869394,
+      38313.00066
+     ],
+     [
+      -12700.860935,
+      38351.335843
+     ]
+    ],
+    "length_m": 38.453,
+    "status": "Measured adjacent mapped polygon boundary; hydraulic/seasonal passage unmeasured"
+   },
+   "small_lake": {
+    "name": "Búng Bình Thiên Nhỏ",
+    "reported_area_ha": 10,
+    "polygon_scene_EN": null,
+    "status": "Reported separately; no named verified cached outline or exact connecting channel, no invented polygon"
+   },
+   "source": "blender/places/bung-binh-thien/research.md; spatial.json; terrain-compatibility-plan.json; blockout-geometry-proof.json",
+   "implementation": "Applied by Claude (terrain.js setPatches): the 55-point outline drawn into the CPU and GPU water masks at level_m 0 (waterHeight override within 20 m), clear blue-green tint (mask blue 0.7, shaders.js), trees on old dry patches inside the outline dropped (terrain.inLake); the three requests applied as patches (flat-court at target - 0.1 m, margin 2, feather 4; the two linear ramps as handed over). Checked live from the three postcard views and an oblique."
   }
  ]
 }

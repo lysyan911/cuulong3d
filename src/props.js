@@ -14,6 +14,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { metricUVs, modelPhotoMaterial } from './photo-textures.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 import { touristLOD } from './tourist-lod.js';
+import { BungLakeLife } from './bung-lake-life.js';
 
 const MODELS = 'models/';
 // (Claude Code) cloud shade and rain wetness on the models too, as on the terrain and houses (render/atmosphere.js)
@@ -40,7 +41,7 @@ const LANDMARK = {
   'long-xuyen-canal-courtyard': { x: 217.16, z: 175.70, trueScale: true, authoredUV: true, lod: 'long-xuyen-canal-courtyard-lod' },
 };
 const landmarkSpec = id => LANDMARK[id.replace(/-(lod|mid)$/, '')];
-const authoredMaps = id => id.startsWith('long-xuyen-cathedral') || landmarkSpec(id)?.authoredUV;
+const authoredMaps = id => id === 'canal-access/moored-blue-sampan' || id.startsWith('bung-raft-') || id.startsWith('bung-stake') || id.startsWith('long-xuyen-cathedral') || landmarkSpec(id)?.authoredUV;
 const BOAT = {   // length, beam, speed (m/s)
   'open-cargo-boat': { L: 17, B: 4.8, v: 3.2 },
   'covered-cargo-boat': { L: 21, B: 5.6, v: 3.0 },
@@ -66,7 +67,7 @@ class Library {
         // Authored landmarks have baked metric UVs; preserve them and embedded maps.
         const g = authoredMaps(id) ? original : metricUVs(original);
         if (g !== original) original.dispose();
-        for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv') g.deleteAttribute(k);
+        for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv' && !(id === 'canal-access/moored-blue-sampan' && k === 'color')) g.deleteAttribute(k);
         if (!g.index) g.setIndex([...Array(g.attributes.position.count).keys()]);
         const mats = Array.isArray(o.material) ? o.material : [o.material];
         const mat = mats[0];
@@ -74,7 +75,8 @@ class Library {
         byMat.get(mat.uuid).geos.push(g);
       });
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
-        mat.side = mat.alphaTest > 0 ? THREE.DoubleSide : THREE.FrontSide;
+        const xvaySheets = id.replace(/-(lod|mid)$/, '') === 'xvay-ton' && mat.side === THREE.DoubleSide;
+        mat.side = mat.alphaTest > 0 || xvaySheets ? THREE.DoubleSide : THREE.FrontSide;
         // Full and far authored exports use identical baked maps: upload each only once.
         if (authoredMaps(id)) {
           const discarded = new Set();
@@ -193,9 +195,10 @@ export class PropsLayer {
       m.name = id;
       if (id === spec.lod || spec.lake) m.userData.noShadow = true;
       if (spec.lake) {
-        m.name = 'nui-cam-lake'; m.userData.lakeWater = true;
-        // Keep the existing water until Claude replaces this tagged placeholder material.
-        if (spec.lakeShaderPending) { m.material.visible = false; m.userData.lakeShaderPending = true; }
+        m.name = id.replace(/-(lod|mid)$/, ''); m.userData.lakeWater = true;
+        // (Claude Code) the tourist lakes and ponds are the map's own water now (terrain.js setPatches: mask, level,
+        // water shader), so these placeholder surfaces stay hidden
+        m.material.visible = false; m.userData.lakeShaderPending = !!spec.lakeShaderPending;
       }
     }
     this.inst.set(id, it);
@@ -206,6 +209,10 @@ export class PropsLayer {
   setLandmarks(list) {
     const ex = this.meta.vert_exag;
     for (const L of list) {
+      if (L.asset?.lakeLife) {
+        this.placeLayers.push(new BungLakeLife(this.group, this.lib, Instanced, this.terrain, L.asset.lakeLife));
+        continue; // Distributed static instances; no anchor mesh or house clearing.
+      }
       // Tourist export metadata is produced with the models, avoiding a second size table.
       if (L.asset?.tourist) LANDMARK[L.model] = { x: L.width, z: L.depth, trueScale: true,
         authoredUV: true, tourist: true, mid: L.asset.mid, lod: L.asset.far, lake: !!L.asset.lake, lakeShaderPending: !!L.asset.lakeShaderPending,
@@ -220,9 +227,10 @@ export class PropsLayer {
       // the front faces `front`; the long side runs across it
       const along = L.front + Math.PI / 2;
       const hx = x + Math.cos(L.front) * (L.hideFront || 0), hz = z - Math.sin(L.front) * (L.hideFront || 0);
+      if (L.hidePolygons) for (const p of L.hidePolygons) this.houses.hideInPolygon(p.polygon_scene_EN);
       if (L.hideRects) {
         for (const r of L.hideRects) this.houses.hideInRect(r.x, -r.y, -(r.front + Math.PI / 2), r.width / 2, r.depth / 2);
-      } else this.houses.hideInRect(hx, hz, -along, (L.hideWidth || L.width + 12) / 2, (L.hideDepth || L.depth + 12) / 2);
+      } else if (!L.hidePolygons) this.houses.hideInRect(hx, hz, -along, (L.hideWidth || L.width + 12) / 2, (L.hideDepth || L.depth + 12) / 2);
       this.landmarks.push({ id: L.model, x, z, matrix: placed(x, y, z, L.front, spec.trueScale ? 1 : sx, sy, spec.trueScale ? 1 : sz) });
     }
   }

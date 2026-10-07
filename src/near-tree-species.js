@@ -408,3 +408,35 @@ export function outerTreeModels(Model, cells, uvRect, bark) {
   return { bamboo: bamboo.geometry(), shade: shade.geometry(), tram: tram.geometry(),
     dau: forest.geometry(), ...woodlandOuterModels(Model, cells, uvRect) };
 }
+
+// Borassus: connected stiff petioles and individually tilted costapalmate fans.
+// Dimensions are a representative mature field palm, not an individual survey.
+export function sugarPalmModel(Model, cells, uvRect, bark) {
+  const m = new Model(), white = uvRect(cells.white), fan = uvRect(cells.fan);
+  const woodUV = [white[0] + white[2] * .5, white[1] + white[3] * .5];
+  m.trunk(15.5, .32, .24, bark.sugar, { rings: 1, segs: 5 });
+  const leaf = (az, elev, length, width, y, dry = false) => {
+    const along = [Math.cos(az) * Math.cos(elev), Math.sin(elev), Math.sin(az) * Math.cos(elev)];
+    const across = [-Math.sin(az), 0, Math.cos(az)];
+    const root = [Math.cos(az) * .18, y, Math.sin(az) * .18];
+    const tip = add(root, mul(along, 1.15));
+    const bladeElev = dry ? elev : elev > -.1 ? Math.min(1.35, elev+.48) : Math.max(-1.2, elev-.25);
+    const blade = [Math.cos(az)*Math.cos(bladeElev), Math.sin(bladeElev), Math.sin(az)*Math.cos(bladeElev)];
+    const col = dry ? [1.06, .70, .36] : [.91, .99, .92];
+    const ribbon = [add(root, mul(across, -.045)), add(tip, mul(across, -.027)),
+      add(tip, mul(across, .027)), add(root, mul(across, .045))];
+    m.quadP(ribbon, [woodUV[0], woodUV[1], 0, 0], () => unit([Math.cos(az)*.4,.9,Math.sin(az)*.4]),
+      0, dry ? [.29,.23,.14] : [.22,.29,.16]);
+    // The fan's basal notch sits just beyond the petiole; its split margin stays visible.
+    const base = add(tip, mul(along, -.10));
+    const end = add(base, mul(blade, length));
+    m.quadP([add(base, mul(across, -width/2)), add(base, mul(across, width/2)),
+      add(end, mul(across, width/2)), add(end, mul(across, -width/2))], fan,
+      p => unit([p[0]*.18, .90, p[2]*.18]), 1, col);
+  };
+  for (let i = 0; i < 22; i++) leaf(i*GOLDEN+.15,
+    1.10 - i/21*1.84 + .11*Math.sin(i*1.7),
+    2.35+.15*(i%3)/2, 2.8+.2*(i%2), 15.55-i/21*.40);
+  for (let i = 0; i < 5; i++) leaf(i*Math.PI*2/5+.4, -1.18, 1.95, 2.05, 14.95, true);
+  return m.geometry();
+}

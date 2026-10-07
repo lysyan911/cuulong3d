@@ -45,6 +45,9 @@ const fract=n=>n-Math.floor(n);
 // static props (pen, posts, traps): cloud shade like everything else
 const shaded=m=>{m.onBeforeCompile=s=>patchCloudShadow(s,cloudUniforms());m.customProgramCacheKey=()=>'fauna-prop-cloud-'+m.type;return m;};
 function rand(seed){let s=seed>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};}
+// (Claude Code, owner's request 2026-10-07) people are off for now until detailed models exist: the duck herder and the
+// angler; an empty set brings them back
+const PEOPLE_HIDDEN=new Set(['keeper','angler']);
 const CAPS={duck:240,cattle:12,egret:56,'cattle-egret':12,sparrow:80,myna:24,dove:16,swallow:32,kingfisher:12,cormorant:10,'pond-heron':24,'grey-heron':10,keeper:4,angler:3,snakehead:12,perch:12,pomacea:24,pila:16,'snail-eggs':48};
 const BIRDS=new Set(['egret','cattle-egret','sparrow','myna','dove','swallow','kingfisher','cormorant','pond-heron','grey-heron']);
 const FISH=new Set(['snakehead','perch']);
@@ -132,7 +135,7 @@ export class FaunaLayer {
         const cows=animals.filter(a=>a.group===group&&a.id==='cattle');
         for(const cow of cows){const x=cow.x+.8,n=cow.n+.5;if(this.valid(x,n))animals.push(animal('cattle-egret',x,n,random,{group,mode:'field',route:.10}));}
         // One occasional riding egret, attached to its cow until it flushes.
-        if(cows.length&&(g.seed%2||g.x===this.pilot.x&&g.north===this.pilot.north))animals.push(animal('cattle-egret',cows[0].x,cows[0].n,random,{group,mode:'ride',cow:cows[0],height:1.43}));
+        if(cows.length&&(g.seed%2||g.x===this.pilot.x&&g.north===this.pilot.north))animals.push(animal('cattle-egret',cows[0].x,cows[0].n,random,{group,mode:'ride',cow:cows[0],height:this.lookup.get('cattle-0').a.ride_anchor_m?.[1]||1.084}));
         const kx=keeper.x-dn*4,kn=keeper.n+dx*4;
         animals.push(animal('keeper',this.valid(kx,kn)?kx:keeper.x,this.valid(kx,kn)?kn:keeper.n,random,{group,mode:'field',route:.5}));
       }
@@ -153,7 +156,7 @@ export class FaunaLayer {
         const field=animals.filter(a=>a.mode==='seedling'||a.mode==='field'||a.mode==='snail'&&!a.site?.waterEdge),points=field.flatMap(a=>[a.x,a.n]);
         if(field.length){const stage=this.fieldClassifier.classify(points),invalid=new Set();for(let i=0;i<field.length;i++){const a=field[i],k=stage[i]/255;if(a.mode==='field'?k<=.92+FIELD_MARGIN:k>=.18-FIELD_MARGIN)invalid.add(a);}filtered=animals.filter(a=>!invalid.has(a));this.stats.fieldRejected=(this.stats.fieldRejected||0)+invalid.size;}
       }
-      this.tiles.set(t.file,{t,animals:filtered,supports,groups,sphere:new THREE.Sphere(new THREE.Vector3(t.x,this.height(t.x,t.north),-t.north),data.sites.some(s=>s.mode==='sky')?Math.max(t.radius,990):t.radius)});
+      this.tiles.set(t.file,{t,animals:filtered.filter(a=>!PEOPLE_HIDDEN.has(a.id)),supports,groups,sphere:new THREE.Sphere(new THREE.Vector3(t.x,this.height(t.x,t.north),-t.north),data.sites.some(s=>s.mode==='sky')?Math.max(t.radius,990):t.radius)});
     }).catch(e=>{this.retry.set(t.file,this.time+30);console.warn('Fauna:',e.message);}).finally(()=>this.pending.delete(t.file));this.pending.set(t.file,task);return task;
   }
   stream(camera){
@@ -185,6 +188,12 @@ export class FaunaLayer {
     this.matrix.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.matrix);
     for(const p of this.pools)p.count=0;this.support.count=0;this.posts.count=0;this.traps.count=0;this.effects.reset();this.ropeCount=0;const tinyPosts=new Set();
     let tri=0,calls=0,animals=0;const used={};
+    const cattleAnchor=(a,kind,clip)=>{
+      const asset=this.lookup.get('cattle-0').a,c=asset.clips.find(c=>c.name===clip)||asset.clips[0],table=asset[kind+'_anchors_m'];
+      if(!table)return kind==='ride'?[0,1.084,0]:[0,.64,1.0];
+      const f=fract(this.time/c.duration+a.phase)*asset.frames,k=Math.floor(f),p=table[c.start+k],q=table[c.start+(k+1)%asset.frames];
+      return p.map((v,i)=>THREE.MathUtils.lerp(v,q[i],fract(f)));
+    };
     const emit=(a,y,clip)=>{
       const d=Math.hypot(a.x-camera.position.x,y-camera.position.y,a.n+camera.position.z);
       if(d>Math.min(RANGE[a.id]||0,this.mobile?150:650))return;
@@ -243,7 +252,10 @@ export class FaunaLayer {
       }else if(a.mode==='skim'){
         const t=this.time*.7+a.phase*6.283;a.x=a.baseX+Math.sin(t)*7;a.n=a.baseN+Math.cos(t)*3;
         y=this.height(a.x,a.n)+1.7+Math.sin(t*2)*.25;a.yaw=Math.atan2(Math.cos(t)*7,Math.sin(t)*3);clip=fract(t/6.283)<.65?'flap':'glide';
-      }else if(a.cow){a.x=a.cow.x;a.n=a.cow.n;y=a.cow.h+1.43;}
+      }else if(a.cow){
+        const cow=a.cow,cycle=fract(this.time/14+cow.phase),clip=cycle<.3&&cow.route>0?'walk':cycle>.86?'tail-flick':'graze',anchor=cattleAnchor(cow,'ride',clip);
+        a.x=cow.x;a.n=cow.n;y=cow.h+anchor[1]*cow.scale;a.h=y;
+      }
       else{
         const cycle=fract(this.time/14+a.phase),walk=cycle<.3&&a.route>0,ang=cycle/.3*Math.PI*2;
         let dx=walk?Math.sin(ang)*a.route:0,dn=walk?Math.cos(ang)*a.route:0;
@@ -262,9 +274,9 @@ export class FaunaLayer {
       if(a.tether&&d<80&&this.ropeCount<12){
         const sx=a.baseX-1.1,sn=a.baseN-.5,sh=this.height(sx,sn);
         if(this.posts.count<40)this.matrixAt(this.posts,this.posts.count++,sx,sh,sn,0,.6);
-        const mx=a.x+Math.sin(a.yaw)*1.1,mn=a.n-Math.cos(a.yaw)*1.1;
+        const anchor=cattleAnchor(a,'tether',clip),mx=a.x+(Math.cos(a.yaw)*anchor[0]+Math.sin(a.yaw)*anchor[2])*a.scale,mn=a.n+(Math.sin(a.yaw)*anchor[0]-Math.cos(a.yaw)*anchor[2])*a.scale,mh=y+anchor[1]*a.scale;
         for(let j=0;j<5;j++){const q=j/5,r=(j+1)/5,o=(this.ropeCount*5+j)*6;
-          for(const [t,k] of [[q,0],[r,3]]){this.ropeArray[o+k]=THREE.MathUtils.lerp(sx,mx,t);this.ropeArray[o+k+1]=THREE.MathUtils.lerp(sh+.45,y+.85,t)-.18*Math.sin(t*Math.PI);this.ropeArray[o+k+2]=-THREE.MathUtils.lerp(sn,mn,t);}}
+          for(const [t,k] of [[q,0],[r,3]]){this.ropeArray[o+k]=THREE.MathUtils.lerp(sx,mx,t);this.ropeArray[o+k+1]=THREE.MathUtils.lerp(sh+.45,mh,t)-.18*Math.sin(t*Math.PI);this.ropeArray[o+k+2]=-THREE.MathUtils.lerp(sn,mn,t);}}
         this.ropeCount++;
       }
     };

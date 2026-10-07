@@ -608,6 +608,22 @@
      2
     ]
    },
+   "postcards": [
+    {
+     "id": "ba-chua-xu-street",
+     "pos": [
+      8,
+      -21,
+      1.65
+     ],
+     "target": [
+      0,
+      25,
+      0.8
+     ],
+     "eyeLevel": true
+    }
+   ],
    "source_notes": "OSM hall/galleries measured; visitor gate and separate NW hall facade/photo heights estimated. Origin visitor gate ground, front +Z."
   },
   {
@@ -684,44 +700,108 @@
    "name": "Lăng Thoại Ngọc Hầu",
    "en": "Thoai Ngoc Hau Mausoleum",
    "replaces": [
-    "Lăng Thoại Ngọc Hầu"
+    "Lăng Thoại Ngọc Hầu",
+    "Nhà trưng bày cổ vật"
    ],
    "osm_way": 1159104315,
    "osm_node": 1814474846,
-   "x": -10541.938824,
-   "y": 12354.891712,
+   "x": -10501.084031674722,
+   "y": 12387.859665288888,
    "front": 0.9886699957716562,
-   "groundLevel": 24.32353,
-   "width": 26.6,
-   "depth": 40.7,
+   "groundLevel": 20.001974,
+   "width": 78,
+   "depth": 90.7,
    "hideRects": [
     {
-     "x": -10550.172098363402,
-     "y": 12342.38316219369,
+     "x": -10521.29428855338,
+     "y": 12383.982744229763,
      "front": 0.9886699957716562,
-     "width": 16.7,
-     "depth": 21.95
+     "width": 44.5,
+     "depth": 20.900000000000002
     },
     {
-     "x": -10560.276008030844,
-     "y": 12326.077725694406,
+     "x": -10534.791910297721,
+     "y": 12363.47624020673,
      "front": 0.9886699957716562,
-     "width": 20.25,
-     "depth": 11.299999999999997
+     "width": 44.5,
+     "depth": 28.2
     },
     {
-     "x": -10555.821306649477,
-     "y": 12333.80050114128,
+     "x": -10550.18584339573,
+     "y": 12342.3622798067,
      "front": 0.9886699957716562,
-     "width": 4.3,
-     "depth": 6.5
+     "width": 16.6,
+     "depth": 22
     },
     {
-     "x": -10534.901154891793,
-     "y": 12346.667892113637,
+     "x": -10560.241910288529,
+     "y": 12326.175000274689,
      "front": 0.9886699957716562,
-     "width": 4.4,
-     "depth": 4.6
+     "width": 20.0,
+     "depth": 13.300000000000004
+    },
+    {
+     "x": -10509.959109995143,
+     "y": 12328.814127906233,
+     "front": 0.9886699957716562,
+     "width": 30.499999999999996,
+     "depth": 12.1
+    },
+    {
+     "x": -10497.466781761424,
+     "y": 12329.24116455691,
+     "front": 0.9886699957716562,
+     "width": 10.099999999999994,
+     "depth": 2.35
+    },
+    {
+     "x": -10505.589778746404,
+     "y": 12335.72513864554,
+     "front": 0.9886699957716562,
+     "width": 29.799999999999997,
+     "depth": 4.25
+    },
+    {
+     "x": -10526.516897729989,
+     "y": 12378.32175020147,
+     "front": 0.9886699957716562,
+     "width": 6.6,
+     "depth": 5.899999999999999
+    },
+    {
+     "x": -10542.457427489402,
+     "y": 12353.467220715092,
+     "front": 0.9886699957716562,
+     "width": 8.7,
+     "depth": 5.05
+    },
+    {
+     "x": -10502.156144196166,
+     "y": 12386.230839103759,
+     "front": 0.9886699957716562,
+     "width": 73.0,
+     "depth": 3.8999999999999986
+    },
+    {
+     "x": -10504.563404434415,
+     "y": 12361.656918005461,
+     "front": 0.9886699957716562,
+     "width": 4.0,
+     "depth": 37.5
+    },
+    {
+     "x": -10490.581792477176,
+     "y": 12358.7991169142,
+     "front": 0.9886699957716562,
+     "width": 22.5,
+     "depth": 3
+    },
+    {
+     "x": -10483.743572470763,
+     "y": 12363.27697880844,
+     "front": 0.9886699957716562,
+     "width": 7.400000000000006,
+     "depth": 7.400000000000006
     }
    ],
    "asset": {
@@ -732,21 +812,41 @@
     "midR": 650,
     "maxR": 3500
    },
-   "source_notes": "Origin at photo-estimated9step approach foot; court outline fromOSM, rear hall fromOverture. Gate/wall/grave/terrace heights and inner positions estimated. This record is integration data only; root handles props and no terrain masks changed.",
+   "source_notes": "Round2: main visitor street-step foot origin, zero local ground. World geometry unchanged from approved full precinct. Mapped hall/museum; court/plaza/twin arches/rises photo-estimated. Exact separate roof/paving rectangles preserve neighbours.",
    "terrain_request": "blender/places/thoai-ngoc-hau/terrain-handoff.json",
    "postcard": {
     "pos": [
-     34,
-     -29,
-     31
+     19.0,
+     -60.0,
+     68.71
     ],
     "target": [
-     0,
-     19,
-     4.2
+     4.0,
+     44.0,
+     3.41
     ],
-    "coordinates": "Blender local XYZ,front-Y; transform via spatial local_basis"
-   }
+    "coordinates": "Blender local XYZ front−Y; main street-step foot origin; transform spatial local_basis"
+   },
+   "source_osm_way_ids": [
+    1159104315,
+    1159104316
+   ],
+   "postcards": [
+    {
+     "id": "thoai-ngoc-hau-plaza",
+     "pos": [
+      16,
+      6,
+      3.36
+     ],
+     "target": [
+      16,
+      33,
+      2.3
+     ],
+     "eyeLevel": true
+    }
+   ]
   },
   {
    "model": "nui-sam",
@@ -784,16 +884,16 @@
    "source_notes": "Mapped precinct anchor with estimated entry/interior orientation and representational boulders/scrub. Asset extents are155×125m; this is not a scaling request. Hide rectangle restricted to mapped worship outline, not slope neighbours. No extra unverified temple roofs authored.",
    "postcard": {
     "pos": [
-     38,
-     -45,
-     34
+     59,
+     -64,
+     66
     ],
     "target": [
      0,
-     4,
-     1.2
+     12,
+     11
     ],
-    "coordinates": "Blender localXYZ,front-Y; transform via localbasis; daylightestimate"
+    "coordinates": "Blender localXYZ; estimated oblique includes summit precinct, approach road and plain beyond"
    }
   },
   {
@@ -1007,15 +1107,17 @@
    },
    "postcard": {
     "pos": [
-     54,
-     -45,
-     23
+     0,
+     -40,
+     1.65
     ],
     "target": [
      0,
      22,
      17
-    ]
+    ],
+    "note": "Open front court at eye level. Scoped postcard camera floor1.65m within150m; normal navigation clearance unchanged.",
+    "eyeLevel": true
    },
    "source_notes": "OSM label/site/entrance datum, calibrated permitted Esri aerial with real camera view-offset and3+OSM road controls, circa2020-2024 photographic proportions. Individual roofs/entrance/facing are estimates; the large compound polygon is not a roof. The exact unnamed landmark mean-coordinate of OSM way696707612 is the mapped statue-base worship footprint and is replaced by this authored base, not a separate shrine.",
    "replaceAt": [
@@ -1095,6 +1197,1885 @@
    },
    "replaces": [],
    "source_notes": "OSM bank outline/line/station/pylon positions; original photoscaled station shells,28m towers and SW bridge estimate. Regional origin lake datum, companion temples use entrance origins."
+  },
+  {
+   "model": "ta-pa",
+   "name": "Hồ Tà Pạ",
+   "en": "Ta Pa lake",
+   "x": -20433.197796,
+   "y": -17321.642448,
+   "front": -1.5707963267948966,
+   "groundLevel": 50.4,
+   "width": 95.6475,
+   "depth": 104.5873,
+   "hideRects": [],
+   "hidePolygons": [
+    {
+     "polygon_scene_EN": [
+      [
+       -20452.601608,
+       -17273.828376
+      ],
+      [
+       -20456.888055,
+       -17283.149184
+      ],
+      [
+       -20470.523798,
+       -17284.940002
+      ],
+      [
+       -20473.025403,
+       -17290.73954
+      ],
+      [
+       -20483.548337,
+       -17293.731614
+      ],
+      [
+       -20483.126706,
+       -17312.057127
+      ],
+      [
+       -20473.026519,
+       -17317.677356
+      ],
+      [
+       -20462.534751,
+       -17309.14424
+      ],
+      [
+       -20457.399199,
+       -17307.554096
+      ],
+      [
+       -20449.604211,
+       -17311.176
+      ],
+      [
+       -20449.340781,
+       -17312.123876
+      ],
+      [
+       -20449.344034,
+       -17312.125897
+      ],
+      [
+       -20453.323059,
+       -17313.37693
+      ],
+      [
+       -20465.447551,
+       -17312.571635
+      ],
+      [
+       -20466.80598,
+       -17333.280669
+      ],
+      [
+       -20460.14235,
+       -17336.863019
+      ],
+      [
+       -20459.378063,
+       -17344.602871
+      ],
+      [
+       -20458.431801,
+       -17349.62223
+      ],
+      [
+       -20460.260565,
+       -17351.008796
+      ],
+      [
+       -20464.904784,
+       -17355.232419
+      ],
+      [
+       -20466.7292,
+       -17365.498109
+      ],
+      [
+       -20452.359708,
+       -17372.415669
+      ],
+      [
+       -20446.017836,
+       -17368.574588
+      ],
+      [
+       -20438.236003,
+       -17370.896159
+      ],
+      [
+       -20429.371705,
+       -17365.102023
+      ],
+      [
+       -20425.739959,
+       -17367.430919
+      ],
+      [
+       -20411.200016,
+       -17362.182843
+      ],
+      [
+       -20397.129415,
+       -17351.857287
+      ],
+      [
+       -20393.900837,
+       -17337.400409
+      ],
+      [
+       -20395.424215,
+       -17327.731023
+      ],
+      [
+       -20398.235533,
+       -17319.862455
+      ],
+      [
+       -20400.598013,
+       -17304.721818
+      ],
+      [
+       -20405.565633,
+       -17295.464427
+      ],
+      [
+       -20400.732902,
+       -17288.597519
+      ],
+      [
+       -20408.314076,
+       -17283.407676
+      ],
+      [
+       -20413.001289,
+       -17279.027948
+      ],
+      [
+       -20429.203116,
+       -17273.899745
+      ],
+      [
+       -20433.12504,
+       -17277.424666
+      ],
+      [
+       -20436.909867,
+       -17273.828946
+      ],
+      [
+       -20452.601608,
+       -17273.828376
+      ]
+     ],
+     "reason": "Narrow mapped-water/photo-estimated quarry pit replacement; neighbouring houses retained",
+     "source": "blender/places/ta-pa/spatial.json; OSM1176760613 buffered5.5m"
+    }
+   ],
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "mid": "ta-pa-mid",
+    "far": "ta-pa-lod",
+    "nearR": 600,
+    "midR": 2400,
+    "maxR": 16000,
+    "reference": "blender/places/ta-pa/references.md",
+    "textures": "Original procedural granite/ochre palette; no reference photo pixels"
+   },
+   "research": {
+    "period": "2020–2024",
+    "water_outline": "OSM1176760613",
+    "water_level": "existing software datum, not surveyed",
+    "rim_heights": "photo estimates +/-4m",
+    "reported_depth_m": [
+     17,
+     7
+    ],
+    "depth_verified": false
+   },
+   "postcard": {
+    "pos": [
+     44,
+     13,
+     14
+    ],
+    "target": [
+     -8,
+     1,
+     1.8
+    ],
+    "eyeLevel": false
+   },
+   "postcards": [
+    {
+     "id": "tapa",
+     "pos": [
+      1800,
+      -1900,
+      1000
+     ],
+     "target": [
+      -550,
+      -320,
+      100
+     ],
+     "eyeLevel": false
+    }
+   ],
+   "aliases": [
+    "Ta Pa quarry lake",
+    "Tapa lake"
+   ]
+  },
+  {
+   "model": "chua-ta-pa",
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "mid": "chua-ta-pa-mid",
+    "far": "chua-ta-pa-lod",
+    "nearR": 650,
+    "midR": 2600,
+    "maxR": 16000,
+    "reference": "blender/places/chua-ta-pa/references.md",
+    "textures": "Original procedural palette atlas"
+   },
+   "name": "Chùa Tà Pạ",
+   "en": "Ta Pa Pagoda",
+   "x": -19881.0,
+   "y": -17068.0,
+   "groundLevel": 36.31315544095638,
+   "front": -1.5707963267948966,
+   "width": 129,
+   "depth": 84.7,
+   "replaces": [
+    "Chùa Tà Pạ"
+   ],
+   "hidePolygons": [
+    {
+     "polygon_scene_EN": [
+      [
+       -19953.0,
+       -17152.0
+      ],
+      [
+       -19909.0,
+       -17152.0
+      ],
+      [
+       -19909.0,
+       -17118.0
+      ],
+      [
+       -19953.0,
+       -17118.0
+      ]
+     ],
+     "reason": "Replace generated geometry inside main elevated platform",
+     "source": "private2024reference14, photo-calibrated polygon"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -20007.0,
+       -17152.0
+      ],
+      [
+       -19979.0,
+       -17152.0
+      ],
+      [
+       -19979.0,
+       -17114.0
+      ],
+      [
+       -20007.0,
+       -17114.0
+      ]
+     ],
+     "reason": "Replace generated geometry inside real west court",
+     "source": "private2024reference14, photo-calibrated polygon"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19983.0,
+       -17137.0
+      ],
+      [
+       -19953.0,
+       -17137.0
+      ],
+      [
+       -19953.0,
+       -17133.0
+      ],
+      [
+       -19983.0,
+       -17133.0
+      ]
+     ],
+     "reason": "Replace generated geometry inside narrow west causeway",
+     "source": "private2024reference14, photo-calibrated polygon"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19947.0,
+       -17105.0
+      ],
+      [
+       -19926.0,
+       -17105.0
+      ],
+      [
+       -19926.0,
+       -17089.0
+      ],
+      [
+       -19947.0,
+       -17089.0
+      ]
+     ],
+     "reason": "Replace generated geometry inside middle subsidiary pavilion",
+     "source": "private2024reference14, photo-calibrated polygon"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19935.0,
+       -17080.0
+      ],
+      [
+       -19923.0,
+       -17080.0
+      ],
+      [
+       -19923.0,
+       -17068.0
+      ],
+      [
+       -19935.0,
+       -17068.0
+      ]
+     ],
+     "reason": "Replace generated geometry inside north shrine",
+     "source": "private2024reference14, photo-calibrated polygon"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19910.141119558222,
+       -17120.003040773114
+      ],
+      [
+       -19903.879842855466,
+       -17116.42516837154
+      ],
+      [
+       -19898.855179760714,
+       -17102.35611170623
+      ],
+      [
+       -19894.903528499417,
+       -17100.380286075582
+      ],
+      [
+       -19889.973879641857,
+       -17084.605409731394
+      ],
+      [
+       -19886.08299879559,
+       -17081.687249096693
+      ],
+      [
+       -19883.255335554088,
+       -17067.54893288918
+      ],
+      [
+       -19878.744664445912,
+       -17068.45106711082
+      ],
+      [
+       -19881.91700120441,
+       -17084.312750903307
+      ],
+      [
+       -19886.026120358143,
+       -17087.394590268606
+      ],
+      [
+       -19891.096471500583,
+       -17103.619713924418
+      ],
+      [
+       -19895.144820239286,
+       -17105.64388829377
+      ],
+      [
+       -19900.120157144534,
+       -17119.57483162846
+      ],
+      [
+       -19907.858880441778,
+       -17123.996959226886
+      ]
+     ],
+     "reason": "Keep narrow photographed stair corridor open",
+     "source": "private2024references16/17; estimated3.8m visible flight"
+    }
+   ],
+   "postcard": {
+    "pos": [
+     16.0,
+     -149.0,
+     67.4873707509696
+    ],
+    "target": [
+     -50.0,
+     -56.0,
+     35.4873707509696
+    ],
+    "eyeLevel": false
+   },
+   "aliases": [
+    "Ta Pa temple",
+    "Tapa pagoda",
+    "Chùa Núi",
+    "Chùa Chưn-Num",
+    "Chun Num"
+   ]
+  },
+  {
+   "x": -19126.686787467363,
+   "y": -16217.891627036348,
+   "groundLevel": 5.953075655460696,
+   "front": 0.23995329164287926,
+   "replaces": [],
+   "hideRects": [],
+   "model": "xvay-ton",
+   "name": "Chùa Xvay Ton (Xà Tón)",
+   "en": "Xvay Ton Pagoda",
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "nearR": 650,
+    "midR": 2600,
+    "maxR": 16000,
+    "reference": "blender/places/xvay-ton/references.md",
+    "textures": "Original procedural/glyph atlas; accepted2K near, derived1K mid/512far; no private-photo pixels",
+    "mid": "xvay-ton-mid",
+    "far": "xvay-ton-lod",
+    "lake": false
+   },
+   "width": 116.5926284790039,
+   "depth": 122.82604598999023,
+   "hidePolygons": [
+    {
+     "polygon_scene_EN": [
+      [
+       -19152.479,
+       -16234.497
+      ],
+      [
+       -19122.368,
+       -16227.13
+      ],
+      [
+       -19127.121,
+       -16207.703
+      ],
+      [
+       -19157.232,
+       -16215.07
+      ],
+      [
+       -19152.479,
+       -16234.497
+      ]
+     ],
+     "reason": "Authored main hall lower roof",
+     "source_overture_id": "70065c9d-b420-4fcd-9bf1-a539876d59a8",
+     "houseOnly": false,
+     "source": "Accepted target-era photographic correlation and cached individual Overture/house-centre proof; see integration-mask-evidence.json",
+     "confidence": "Photo-correlated individual authored roof; positions/proportions estimated",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_2.bin",
+       "binary_index": 40703,
+       "scene_EN": [
+        -19145.0,
+        -16221.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19180.623968990898,
+       -16199.302727800521
+      ],
+      [
+       -19180.754999931778,
+       -16196.095970575656
+      ],
+      [
+       -19171.83906163707,
+       -16195.733153448937
+      ],
+      [
+       -19171.149004656647,
+       -16212.01415137137
+      ],
+      [
+       -19180.65735847273,
+       -16212.398701677977
+      ],
+      [
+       -19180.723338415875,
+       -16210.818182130832
+      ],
+      [
+       -19193.616219990912,
+       -16211.349177253484
+      ],
+      [
+       -19194.09766083437,
+       -16199.866756762129
+      ],
+      [
+       -19180.623968990898,
+       -16199.302727800521
+      ]
+     ],
+     "reason": "Ornate northwest two-storey ancillary candidate",
+     "source_overture_id": "23cee35f-f691-4190-aeaa-7677fcb34e8d",
+     "houseOnly": false,
+     "source": "Accepted target-era photographic correlation and cached individual Overture/house-centre proof; see integration-mask-evidence.json",
+     "confidence": "Photo-correlated individual authored roof; positions/proportions estimated",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_2.bin",
+       "binary_index": 40820,
+       "scene_EN": [
+        -19182.5,
+        -16204.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19188.018575719332,
+       -16216.591724834307
+      ],
+      [
+       -19186.68335429873,
+       -16224.396070109044
+      ],
+      [
+       -19202.52243326209,
+       -16227.05532057181
+      ],
+      [
+       -19203.857636663513,
+       -16219.249884200015
+      ],
+      [
+       -19188.018575719332,
+       -16216.591724834307
+      ]
+     ],
+     "reason": "Low west ancillary roof segment candidate",
+     "source_overture_id": "052e12c1-83db-499c-8b93-e2a9d6d18ce5",
+     "houseOnly": false,
+     "source": "Accepted target-era photographic correlation and cached individual Overture/house-centre proof; see integration-mask-evidence.json",
+     "confidence": "Photo-correlated individual authored roof; positions/proportions estimated",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_2.bin",
+       "binary_index": 45665,
+       "scene_EN": [
+        -19195.5,
+        -16222.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -19142.909,
+       -16247.016
+      ],
+      [
+       -19134.701,
+       -16245.291
+      ],
+      [
+       -19136.091,
+       -16238.668
+      ],
+      [
+       -19144.299,
+       -16240.393
+      ],
+      [
+       -19142.909,
+       -16247.016
+      ]
+     ],
+     "reason": "Root-adopted estimated false approach proxy",
+     "source_overture_id": "bfa9045b-bf5b-4229-bc6c-0aaf4a2d2de3",
+     "houseOnly": true,
+     "source": "Accepted target-era photographic correlation and cached individual Overture/house-centre proof; see integration-mask-evidence.json",
+     "confidence": "Medium estimated false approach proxy; alignment +/-8m; literal stair covers17.1percent of footprint",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_2.bin",
+       "binary_index": 43806,
+       "scene_EN": [
+        -19139.5,
+        -16243.0
+       ]
+      }
+     ]
+    }
+   ],
+   "postcard": {
+    "pos": [
+     -72.56147402633877,
+     2.6334233944220298,
+     1.9696325719303367
+    ],
+    "target": [
+     0.5785407716481341,
+     23.859309367691974,
+     0
+    ],
+    "fov": 45,
+    "render_size": [
+     1192,
+     795
+    ],
+    "time": 14,
+    "weather": "clear",
+    "eyeLevel": true
+   },
+   "aliases": [
+    "Chùa Xvay Ton",
+    "Chùa Xà Tón",
+    "Xvay Ton pagoda",
+    "Xà Tón",
+    "Xa Ton pagoda",
+    "Xvayton",
+    "Svay Ton",
+    "Wat Svay Ton"
+   ],
+   "postcard_status": "Ground pond/sourceview3 pos and XY target; targetZ0 base anchor avoids production maxPolarAngle1.54 raising source photo aimZ5. eyeLevel true. Source photo3 remains unchanged in cameras.json; actual approx.0.38m residual lift/minDistance25/near5/sky estimates remain stage7 rootQA.",
+   "research": {
+    "period": "2020–2024 pre-restoration",
+    "dimensions": "Photo/imagery estimates, not surveyed",
+    "origin_ground": "Exact cached default1 renderer software sample; not geodetic survey",
+    "gate_position_precision_m_est": 15,
+    "replaces_note": "No generic Xvay landmark exists in cached roster; exact individual house masks retire mapped combined hall/court and two ancillary primitives plus houseOnly false approach proxy"
+   },
+   "root_exclusions": "tree-root-exclusions.json eight actual hard-surface zones plus the three non-houseOnly individual roof masks; whole bfa/gate/compound absent"
+  },
+  {
+   "x": -19126.686787467363,
+   "y": -16217.891627036348,
+   "groundLevel": 5.953075655460696,
+   "front": 0.23995329164287926,
+   "replaces": [],
+   "hideRects": [],
+   "model": "xvay-ton-lake",
+   "name": "Hồ trong chùa Xvay Ton",
+   "en": "Xvay Ton pond",
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "nearR": 650,
+    "midR": 2600,
+    "maxR": 16000,
+    "reference": "blender/places/xvay-ton/references.md",
+    "textures": "Original procedural/glyph atlas; accepted2K near, derived1K mid/512far; no private-photo pixels",
+    "mid": "xvay-ton-lake-mid",
+    "far": "xvay-ton-lake-lod",
+    "lake": true,
+    "lakeShaderPending": false,
+    "noShadow": true
+   },
+   "width": 45.20854949951172,
+   "depth": 45.446205139160156,
+   "hidePolygons": [],
+   "aliases": [],
+   "surface_level_m_est": 5.65,
+   "mesh_local_water_Z": -0.30307565546069526,
+   "origin_note": "Shares hall entrance datum/basis; local negative Z plus groundLevel yields5.65m. Do not set groundLevel5.65 again.",
+   "research": {
+    "level": "Estimated matte compatibility fallback, not surveyed",
+    "physical_water_shader": "Pending Claude; keep visible original matte fallback",
+    "clearing": "Explicit empty lists prevent companion fallback bounding-box clearing; water root polygon is already one exact parent hard-surface zone"
+   }
+  },
+  {
+   "model": "bung-binh-thien",
+   "name": "Búng Bình Thiên – Al Khairiyah",
+   "en": "Bung Binh Thien – Al Khairiyah mosque",
+   "x": -12253.80224916528,
+   "y": 38192.16108552622,
+   "groundLevel": 1.8413494983923044,
+   "front": 1.4229989198040824,
+   "width": 26.693,
+   "depth": 77.01,
+   "replaces": [],
+   "hideRects": [],
+   "hidePolygons": [
+    {
+     "polygon_scene_EN": [
+      [
+       -12244.982991150522,
+       38160.76159197814
+      ],
+      [
+       -12240.60724493541,
+       38190.19622428529
+      ],
+      [
+       -12266.997952317412,
+       38194.12698257924
+      ],
+      [
+       -12271.384648962005,
+       38164.69235154218
+      ],
+      [
+       -12244.982991150522,
+       38160.76159197814
+      ]
+     ],
+     "source_overture_id": "78f83e18-dd9f-4eea-890e-d4003ac258f2",
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Original authored Khairiyah main mosque replacement",
+     "source": "Exact cached footprint/instance-centre proof; root private unlit Esri and primary north-front photographic correlation",
+     "confidence": "Exact cached polygon and selection high; geographic/photo correspondence medium +/-8m, not cadastral survey",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_0.bin",
+       "binary_index": 16272,
+       "scene_EN": [
+        -12256.0,
+        38177.5
+       ]
+      }
+     ],
+     "source_geometry_coverage_status": "Historical blockout hard-surface coverage is recorded in blockout-geometry-proof.json; final GLB proof separately includes the small projected ornament contour changes"
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -12255.426591671596,
+       38198.176264406415
+      ],
+      [
+       -12253.104713115841,
+       38225.25532593136
+      ],
+      [
+       -12265.846379845752,
+       38226.3472998871
+      ],
+      [
+       -12268.168268749781,
+       38199.26823929814
+      ],
+      [
+       -12255.426591671596,
+       38198.176264406415
+      ]
+     ],
+     "source_overture_id": "fa4f74e7-f958-4646-bda3-00a69edb73b3",
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Root-adopted false open-court roof proxy retirement",
+     "source": "Exact cached footprint/instance-centre proof; root private unlit Esri and primary north-front photographic correlation",
+     "confidence": "Exact cached polygon and selection high; geographic/photo correspondence medium +/-8m, not cadastral survey",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_0.bin",
+       "binary_index": 14924,
+       "scene_EN": [
+        -12260.5,
+        38212.5
+       ]
+      }
+     ],
+     "source_geometry_coverage_status": "Historical blockout hard-surface coverage is recorded in blockout-geometry-proof.json; final GLB proof separately includes the small projected ornament contour changes"
+    }
+   ],
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "nearR": 650,
+    "midR": 2600,
+    "maxR": 16000,
+    "lake": false,
+    "mid": "bung-binh-thien-mid",
+    "far": "bung-binh-thien-lod",
+    "reference": "blender/places/bung-binh-thien/references.md",
+    "textures": "Original scalar-palette procedural plaster, metal, mosaic and paving; reference photo pixels remain private"
+   },
+   "aliases": [
+    "Búng Bình Thiên",
+    "Búng Bình Thiên Lớn",
+    "Hồ Nước Trời",
+    "Bung Binh Thien lake",
+    "Masjid Al Khairiyah",
+    "Thánh đường Al Khairiyah",
+    "Nhơn Hội"
+   ],
+   "research": {
+    "period": "2020–2024",
+    "mosque": "Al Khairiyah, Nhơn Hội; one separate gate, not a second mosque",
+    "dimensions": "Cached roof envelope; all heights and gate position are photo estimates, not survey",
+    "gate_position_uncertainty_depth_m": 8,
+    "scope": "One mosque plus lake; regional house, cage, boat, landing and flora kits deferred under brief stopping exception",
+    "water_level": "0.0m cached software compatibility datum; surveyed seasonal level unresolved"
+   },
+   "postcard": {
+    "pos": [
+     20,
+     -64,
+     1.45
+    ],
+    "target": [
+     0,
+     12.5,
+     -1
+    ],
+    "eyeLevel": true
+   },
+   "postcards": [
+    {
+     "id": "bung-binh-thien-aerial",
+     "pos": [
+      -714.2949709594749,
+      1482.698001659178,
+      1898.1586505016078
+     ],
+     "target": [
+      -998.5078552088897,
+      -682.7633894597283,
+      -1.8413494983923044
+     ],
+     "eyeLevel": false
+    },
+    {
+     "id": "bung-binh-thien-water",
+     "pos": [
+      0,
+      -180,
+      -0.19134949839230453
+     ],
+     "target": [
+      0,
+      -130,
+      -1.8413494983923044
+     ],
+     "eyeLevel": true
+    }
+   ]
+  },
+  {
+   "model": "bung-binh-thien-gate",
+   "name": "Cổng thánh đường Al Khairiyah",
+   "en": "Al Khairiyah mosque gate",
+   "x": -12246.844439814391,
+   "y": 38238.894470502164,
+   "groundLevel": 1.5187539986557355,
+   "front": 1.4229989198040824,
+   "width": 9.45,
+   "depth": 2.46105,
+   "replaces": [],
+   "hideRects": [],
+   "hidePolygons": [],
+   "asset": {
+    "tourist": true,
+    "trueScale": true,
+    "nearR": 650,
+    "midR": 2600,
+    "maxR": 16000,
+    "lake": false,
+    "mid": "bung-binh-thien-gate-mid",
+    "far": "bung-binh-thien-gate-lod",
+    "reference": "blender/places/bung-binh-thien/references.md",
+    "textures": "Original scalar-palette procedural plaster, metal, mosaic and paving; reference photo pixels remain private"
+   },
+   "aliases": [
+    "Al Khairiyah gate"
+   ]
+  },
+  {
+   "model": "bung-binh-thien-life",
+   "name": "Búng Bình Thiên – bè cá (ước tính 2018)",
+   "en": "Búng Bình Thiên – fish rafts (2018 approximation)",
+   "aliases": [
+    "Bung Binh Thien fish rafts",
+    "be ca Bung Binh Thien",
+    "bè cá",
+    "Khánh Bình",
+    "Nhơn Hội"
+   ],
+   "x": -11773.727401417484,
+   "y": 38305.029992299416,
+   "groundLevel": 0,
+   "front": 1.5707963267948966,
+   "width": 220,
+   "depth": 200,
+   "hidePolygons": [],
+   "hideRects": [],
+   "asset": {
+    "tourist": true,
+    "authoredUV": true,
+    "lakeLife": {
+     "version": 1,
+     "waterline_m": 0,
+     "layout_capture_date": "2018-07-31 historical approximation",
+     "rafts": [
+      {
+       "evidence_id": "W01",
+       "cluster": "W",
+       "model": "bung-raft-0-rust",
+       "x": -11844.583699275856,
+       "north": 38305.23255468905,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "W02",
+       "cluster": "W",
+       "model": "bung-raft-0-grey",
+       "x": -11831.102010955045,
+       "north": 38308.730008759536,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "W03",
+       "cluster": "W",
+       "model": "bung-raft-3-green",
+       "x": -11797.690118795435,
+       "north": 38313.97914340533,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.6,
+       "length_m": 10.8
+      },
+      {
+       "evidence_id": "W04",
+       "cluster": "W",
+       "model": "bung-raft-0-blue",
+       "x": -11789.47780187719,
+       "north": 38288.93735441868,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "W05",
+       "cluster": "W",
+       "model": "bung-raft-1-white",
+       "x": -11775.41813988454,
+       "north": 38329.1267742028,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "W06",
+       "cluster": "W",
+       "model": "bung-raft-0-rust",
+       "x": -11791.83755436336,
+       "north": 38355.91392048006,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "W07",
+       "cluster": "W",
+       "model": "bung-raft-0-grey",
+       "x": -11682.7923940334,
+       "north": 38297.69753658143,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "W08",
+       "cluster": "W",
+       "model": "bung-raft-0-green",
+       "x": -11676.917492155044,
+       "north": 38240.62264585844,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "M01",
+       "cluster": "M",
+       "model": "bung-raft-1-blue",
+       "x": -11253.72022160911,
+       "north": 38389.81831982429,
+       "level_m": 0,
+       "heading_rad": 0.45,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E01",
+       "cluster": "E",
+       "model": "bung-raft-0-white",
+       "x": -10603.135920509463,
+       "north": 38735.34722689213,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E02",
+       "cluster": "E",
+       "model": "bung-raft-2-rust",
+       "x": -10591.407493408711,
+       "north": 38717.2957922949,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 5.0,
+       "length_m": 8.0
+      },
+      {
+       "evidence_id": "E03",
+       "cluster": "E",
+       "model": "bung-raft-1-grey",
+       "x": -10559.171312514052,
+       "north": 38733.02906049439,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E04",
+       "cluster": "E",
+       "model": "bung-raft-0-green",
+       "x": -10544.518014864647,
+       "north": 38738.27450992167,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E05",
+       "cluster": "E",
+       "model": "bung-raft-0-blue",
+       "x": -10497.03888839198,
+       "north": 38745.85818596091,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E06",
+       "cluster": "E",
+       "model": "bung-raft-1-white",
+       "x": -10489.421221826575,
+       "north": 38756.34342897753,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E07",
+       "cluster": "E",
+       "model": "bung-raft-1-rust",
+       "x": -10456.601094070647,
+       "north": 38780.2305581742,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E08",
+       "cluster": "E",
+       "model": "bung-raft-0-grey",
+       "x": -10455.426415068447,
+       "north": 38771.49484151928,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E09",
+       "cluster": "E",
+       "model": "bung-raft-0-green",
+       "x": -10443.705004534218,
+       "north": 38780.23396616499,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E10",
+       "cluster": "E",
+       "model": "bung-raft-0-blue",
+       "x": -10284.27216385142,
+       "north": 38816.38540274324,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E11",
+       "cluster": "E",
+       "model": "bung-raft-2-white",
+       "x": -10259.652382533939,
+       "north": 38816.39204185479,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 5.0,
+       "length_m": 8.0
+      },
+      {
+       "evidence_id": "E12",
+       "cluster": "E",
+       "model": "bung-raft-1-rust",
+       "x": -10254.381436031254,
+       "north": 38833.86549449456,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E13",
+       "cluster": "E",
+       "model": "bung-raft-1-grey",
+       "x": -10226.830111343763,
+       "north": 38831.543347059516,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 4.5,
+       "length_m": 6.6
+      },
+      {
+       "evidence_id": "E14",
+       "cluster": "E",
+       "model": "bung-raft-0-green",
+       "x": -10213.348488530028,
+       "north": 38833.876607144484,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      },
+      {
+       "evidence_id": "E15",
+       "cluster": "E",
+       "model": "bung-raft-0-blue",
+       "x": -10215.700972814288,
+       "north": 38862.41359644872,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "width_m": 3.8,
+       "length_m": 5.4
+      }
+     ],
+     "poles": [
+      {
+       "x": -11841.405280147836,
+       "north": 38300.57735846906,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11849.49839522312,
+       "north": 38302.47230764468,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11827.923591827024,
+       "north": 38304.07481253955,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11836.016706902308,
+       "north": 38305.96976171517,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11826.18731500778,
+       "north": 38311.4902558039,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11794.66892202158,
+       "north": 38306.476815096496,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11803.727914160709,
+       "north": 38308.597917975465,
+       "level_m": 0,
+       "height_m": 6.7,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11786.29938274917,
+       "north": 38284.282158198694,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11794.392497824454,
+       "north": 38286.177107374315,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11784.563105929927,
+       "north": 38291.69760146305,
+       "level_m": 0,
+       "height_m": 6.25,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11771.959407515773,
+       "north": 38323.76506790711,
+       "level_m": 0,
+       "height_m": 6.7,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11780.897665021923,
+       "north": 38325.85790157317,
+       "level_m": 0,
+       "height_m": 8.05,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11788.659135235339,
+       "north": 38351.25872426007,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11796.752250310623,
+       "north": 38353.15367343569,
+       "level_m": 0,
+       "height_m": 6.25,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11786.922858416096,
+       "north": 38358.67416752443,
+       "level_m": 0,
+       "height_m": 7.6,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11679.61397490538,
+       "north": 38293.04234036144,
+       "level_m": 0,
+       "height_m": 8.05,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11687.707089980664,
+       "north": 38294.93728953706,
+       "level_m": 0,
+       "height_m": 4.45,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11672.00279620778,
+       "north": 38243.38289290281,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11247.65940216213,
+       "north": 38387.82403006823,
+       "level_m": 0,
+       "height_m": 4.45,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -11255.925506561727,
+       "north": 38383.83104646509,
+       "level_m": 0,
+       "height_m": 5.8,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10599.957501381443,
+       "north": 38730.692030672144,
+       "level_m": 0,
+       "height_m": 7.6,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10608.050616456727,
+       "north": 38732.586979847765,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10598.2212245622,
+       "north": 38738.1074739365,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10587.812892094626,
+       "north": 38711.15458383135,
+       "level_m": 0,
+       "height_m": 5.8,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10597.35482276568,
+       "north": 38713.38876356199,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10555.712580145286,
+       "north": 38727.6673541987,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10564.650837651436,
+       "north": 38729.760187864755,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10553.691787376669,
+       "north": 38736.29793312402,
+       "level_m": 0,
+       "height_m": 6.7,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10541.339595736627,
+       "north": 38733.61931370168,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10549.43271081191,
+       "north": 38735.5142628773,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10493.86046926396,
+       "north": 38741.20298974092,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10501.953584339244,
+       "north": 38743.097938916544,
+       "level_m": 0,
+       "height_m": 6.7,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10492.124192444717,
+       "north": 38748.61843300528,
+       "level_m": 0,
+       "height_m": 8.05,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10485.962489457808,
+       "north": 38750.98172268184,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10494.900746963958,
+       "north": 38753.0745563479,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10453.14236170188,
+       "north": 38774.868851878506,
+       "level_m": 0,
+       "height_m": 6.7,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10462.08061920803,
+       "north": 38776.961685544564,
+       "level_m": 0,
+       "height_m": 8.05,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10451.121568933264,
+       "north": 38783.49943080383,
+       "level_m": 0,
+       "height_m": 4.45,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10452.247995940426,
+       "north": 38766.83964529929,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10460.34111101571,
+       "north": 38768.73459447491,
+       "level_m": 0,
+       "height_m": 6.25,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10440.526585406198,
+       "north": 38775.578769945,
+       "level_m": 0,
+       "height_m": 8.05,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10448.619700481482,
+       "north": 38777.47371912062,
+       "level_m": 0,
+       "height_m": 4.45,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10438.790308586955,
+       "north": 38782.99421320936,
+       "level_m": 0,
+       "height_m": 5.8,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10281.0937447234,
+       "north": 38811.73020652325,
+       "level_m": 0,
+       "height_m": 6.25,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10289.186859798683,
+       "north": 38813.62515569887,
+       "level_m": 0,
+       "height_m": 7.6,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10256.057781219853,
+       "north": 38810.25083339124,
+       "level_m": 0,
+       "height_m": 4.45,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10265.599711890907,
+       "north": 38812.485013121885,
+       "level_m": 0,
+       "height_m": 5.8,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10253.705053176971,
+       "north": 38820.2990705877,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10250.922703662487,
+       "north": 38828.50378819887,
+       "level_m": 0,
+       "height_m": 7.6,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10259.860961168637,
+       "north": 38830.59662186493,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.8,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10223.371378974996,
+       "north": 38826.181640763825,
+       "level_m": 0,
+       "height_m": 5.8,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10232.309636481146,
+       "north": 38828.27447442988,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10221.35058620638,
+       "north": 38834.81221968915,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 0.92,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10210.170069402007,
+       "north": 38829.221410924496,
+       "level_m": 0,
+       "height_m": 4.0,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10218.263184477291,
+       "north": 38831.11636010012,
+       "level_m": 0,
+       "height_m": 5.35,
+       "lean_x_rad": -0.06,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.04,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10212.522553686267,
+       "north": 38857.75840022873,
+       "level_m": 0,
+       "height_m": 7.15,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10220.615668761551,
+       "north": 38859.653349404354,
+       "level_m": 0,
+       "height_m": 8.5,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": 0.04,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      },
+      {
+       "x": -10210.786276867024,
+       "north": 38865.17384349309,
+       "level_m": 0,
+       "height_m": 4.9,
+       "lean_x_rad": 0.025,
+       "lean_z_rad": -0.03,
+       "diameter_scale": 1.1600000000000001,
+       "basis": "representative photo-supported cage/mooring stakes; exact positions unmeasured"
+      }
+     ],
+     "boats": [
+      {
+       "model": "canal-access/moored-blue-sampan",
+       "x": -11793.892819854915,
+       "north": 38313.09003106355,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "basis": "existing quiet one-material blue wooden sampan, no people/oars, uncrewed static reuse"
+      },
+      {
+       "model": "canal-access/moored-blue-sampan",
+       "x": -11788.42972198084,
+       "north": 38355.11599914769,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "basis": "existing quiet one-material blue wooden sampan, no people/oars, uncrewed static reuse"
+      },
+      {
+       "model": "canal-access/moored-blue-sampan",
+       "x": -10485.672606205804,
+       "north": 38755.46571551192,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "basis": "existing quiet one-material blue wooden sampan, no people/oars, uncrewed static reuse"
+      },
+      {
+       "model": "canal-access/moored-blue-sampan",
+       "x": -10250.632820410483,
+       "north": 38832.98778102895,
+       "level_m": 0,
+       "heading_rad": -0.23,
+       "basis": "existing quiet one-material blue wooden sampan, no people/oars, uncrewed static reuse"
+      }
+     ],
+     "houses": [],
+     "landings": [],
+     "terrain_requests": [],
+     "lods": {
+      "near_m": 350,
+      "mid_m": 950,
+      "max_m": 2200,
+      "pole_max_m": 900,
+      "boat_max_m": 450
+     },
+     "scope": "Permitted rafts/poles/bank-greenery stopping scope; no unverified individual bank house replacements"
+    },
+    "maxR": 2200
+   },
+   "postcard": {
+    "pos": [
+     130,
+     30,
+     1.65
+    ],
+    "target": [
+     0,
+     0,
+     -2.8
+    ],
+    "eyeLevel": true
+   },
+   "postcards": [
+    {
+     "id": "bung-rafts-bank",
+     "pos": [
+      -60,
+      20,
+      1.65
+     ],
+     "target": [
+      10,
+      -20,
+      -0.95
+     ],
+     "eyeLevel": true
+    }
+   ]
   }
  ],
  "suppressedLandmarks": [

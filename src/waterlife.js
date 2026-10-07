@@ -51,7 +51,7 @@ function flowerSpike() {
 export class WaterLife {
   constructor(meta, terrain, props, { mobile = false, time } = {}) {
     this.meta = meta; this.terrain = terrain; this.surface = terrain.surface; this.props = props;
-    this.R = mobile ? 140 : 260; this.cap = mobile ? 800 : 3000;
+    this.R = mobile ? 140 : 260; this.cap = mobile ? 1000 : 4500;   // (rosettes, 42 triangles each)
     this.cells = new Map(); this.key = '';
     this.group = new THREE.Group(); this.group.name = 'waterlife';
     const sway = { uTime: time };
@@ -120,14 +120,16 @@ export class WaterLife {
   }
 
   build(ci, cj) {
-    const S = this.surface, W = this.terrain.wetland, x0 = ci * CELL, y0 = cj * CELL, out = [];
+    const S = this.surface, T = this.terrain, W = T.wetland, x0 = ci * CELL, y0 = cj * CELL, out = [];
     for (let r = 0; r < 4; r++) {                                        // up to four tries for a raft in this cell
       const h1 = hash12(ci * 13 + r, cj * 5), h2 = hash12(cj * 11 - r, ci * 3), h3 = hash12(ci + r * 7, cj + r * 3);
       const rx = x0 + h1 * CELL, ry = y0 + h2 * CELL;
       if (S.waterAt(rx, ry) < 0.8 || (W && W.floodAt(rx, ry) > 0.1)) continue;
-      const nearBank = S.shoreAt(rx, ry) > -25;                         // negative: metres into the water
-      if (hash12(ci * 3 + r, cj * 7 - r) > (nearBank ? 0.4 : 0.05)) continue;   // rafts mostly along the banks
-      const len = 3 + h3 * (nearBank ? 14 : 8), wid = 1.5 + h3 * 4, ang = h1 * 6.283;
+      // (the tourist lakes, terrain.js setPatches, are still water with their own outline: rafts thick along their banks
+      // and scattered over the open water, as on Búng Bình Thiên)
+      const lake = T.inLake?.(rx, ry), nearBank = lake ? !T.inLake(rx, ry, 35) : S.shoreAt(rx, ry) > -25;   // shoreAt < 0: metres into the water
+      if (hash12(ci * 3 + r, cj * 7 - r) > (nearBank ? (lake ? 0.75 : 0.4) : (lake ? 0.25 : 0.05))) continue;   // rafts mostly along the banks
+      const len = 3 + h3 * (nearBank ? 14 : 8) * (lake ? 1.4 : 1), wid = 1.5 + h3 * (lake ? 6 : 4), ang = h1 * 6.283;
       const n = Math.round(len * wid * 2.2);                               // dense mats, rosettes touching
       for (let i = 0; i < n; i++) {
         const a = hash12(i * 17 + ci, r * 31 + cj), b = hash12(i * 29 + cj, r * 13 + ci), u = (a - 0.5) * len, v = (b - 0.5) * wid * (1 - 1.6 * (a - 0.5) ** 2);

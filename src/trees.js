@@ -12,7 +12,7 @@ import { photoTexture } from './photo-textures.js';
 import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 import { closeTreeModels, outerCloseTreeModels, selectCloseTrees, CLOSE_TREE_RADIUS } from './near-tree-models.js';
-import { nextTreeModels, outerTreeModels, hillWoodlandSpecies } from './near-tree-species.js';
+import { nextTreeModels, outerTreeModels, hillWoodlandSpecies, sugarPalmModel } from './near-tree-species.js';
 import { compileTreeExclusions, exclusionsInBounds, treeExcluded } from './tree-exclusions.js';
 
 const SPECIES = ['fruit', 'shade', 'coconut', 'areca', 'banana', 'bamboo', 'thotnot', 'tram', 'nipa', 'forest', 'shrub', 'boulder', 'woodlandLobed', 'woodlandLean', 'dau'];
@@ -46,6 +46,7 @@ const CELL = {
   woodlandRoundTop: [1648, 1584, 128, 128], woodlandLobedTop: [1776, 1584, 128, 128],
   woodlandLeanTop: [1904, 1584, 128, 128],
   woodlandShrubSide: [1648, 1728, 128, 256], woodlandShrubTop: [1792, 1728, 128, 128],
+  thotnotTop: [1920, 1728, 112, 112],
 };
 const uvRect = ([x, y, w, h]) => [x / AS, 1 - (y + h) / AS, w / AS, h / AS];   // u0, v0, du, dv (flipY)
 
@@ -200,21 +201,7 @@ function speciesModels() {
   { const m = new Model();                       // nipa: fronds straight from the mud, no trunk
     for (let i = 0; i < 8; i++) m.frond([0, 0.1, 0], (i / 8) * Math.PI * 2, 1.15 - (i % 2) * 0.2, 5.5, 1.2, 0.32, 'frond', ONE);
     M[S.nipa] = m.geometry(); }
-  { const m = new Model();                       // thÃ¡Â»â€˜t nÃ¡Â»â€˜t: tall straight trunk, dense ball of fan leaves (~7 m)
-    m.trunk(15.5, 0.32, 0.24, BARK.sugar, { rings: 1, segs: 5 });
-    const c = [0, 17.4, 0];
-    for (let i = 0; i < 26; i++) {
-      const phi = Math.acos(1 - 2 * ((i + 0.5) / 26)), th = i * 2.4;
-      const d = [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)];
-      const p = [d[0] * 2.9, c[1] + d[1] * 2.2, d[2] * 2.9];
-      const a = Math.atan2(d[2], d[0]) + Math.PI / 2;
-      m.card(p[0], p[2], a, 4.2, p[1] - 2.0, p[1] + 2.0, 'fan', c, i % 9 === 4 ? DEAD : ONE);
-    }
-    for (let i = 0; i < 6; i++) {                 // skirt of dead fronds hanging under the crown
-      const th = i * 1.047 + 0.3;
-      m.card(Math.cos(th) * 1.1, Math.sin(th) * 1.1, th + Math.PI / 2, 2.6, c[1] - 3.6, c[1] - 1.6, 'fan', c, DEAD);
-    }
-    M[S.thotnot] = m.geometry(); }
+  M[S.thotnot] = sugarPalmModel(Model, CELL, uvRect, BARK);
   { const m = new Model();                       // banana: green pseudo-stem, big arching leaves
     m.trunk(2.0, 0.13, 0.1, BARK.stem, { rings: 1, segs: 5 });
     for (let i = 0; i < 6; i++) m.frond([0, 1.9, 0], i * 1.05, 0.9 - (i % 3) * 0.3, 2.6, 0.8, 0.5, 'banana', ONE, 2);
@@ -231,7 +218,7 @@ function speciesModels() {
 const SPRITE = {   // side cell, top cell, width, height
   fruit: ['mangoOuter', 'mangoTwig', 7, 8.22], shade: ['broadSide', 'broadTop', 14, 15], coconut: ['palmSprite', 'palmTop', 9, 13.5],
   areca: ['arecaSprite', 'palmTop', 4.5, 12], banana: ['bananaSprite', 'bananaBlade', 5.5, 5], bamboo: ['bambooSide', 'broadTop', 7, 12.5],
-  thotnot: ['thotnotSprite', 'fan', 6, 19], tram: ['tramSide', 'broadTop', 3.6, 14], nipa: ['nipaSprite', 'palmTop', 6.5, 5.5],
+  thotnot: ['thotnotSprite', 'thotnotTop', 7.8, 19], tram: ['tramSide', 'broadTop', 3.6, 14], nipa: ['nipaSprite', 'palmTop', 6.5, 5.5],
   forest: ['woodlandRoundSide', 'woodlandRoundTop', 13, 9.3],
   shrub: ['woodlandShrubSide', 'woodlandShrubTop', 4, 2.95], boulder: ['rockSprite', 'rockSprite', 2.6, 1.8],
   woodlandLobed: ['woodlandLobedSide', 'woodlandLobedTop', 15, 10.4],
@@ -327,7 +314,7 @@ function treeMaterial(atlas, lod, uniforms) {
 }
 
 // ---------------------------------------------------------------- layer
-const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 5, bamboo: 12.5, thotnot: 19, tram: 14,
+const MODEL_HEIGHT = { fruit: 8, shade: 15, coconut: 13.5, areca: 12, banana: 5, bamboo: 12.5, thotnot: 18.842856, tram: 14,
                        nipa: 5.5, forest: 9.088, shrub: 2.680, boulder: 1.8, woodlandLobed: 10.120, woodlandLean: 11.761, dau: 24.708 };   // actual near-mesh metres at scale1; sprite frames include alpha padding
 
 export class TreeLayer {
@@ -425,6 +412,7 @@ export class TreeLayer {
       if (this.terrain.wetland && this.terrain.wetland.floodAt(x, yN) > .6) return;
       const water = this.terrain.surface;
       if (water && water.waterAt(x, yN) > 0.65 && water.shoreAt(x, yN) < -12) return;
+      if (this.terrain.inLake?.(x, yN, 3)) return;      // (old dry patches inside a redrawn lake: open water now)
       // Cached map codes stay unchanged: only the broad forest category gets a stable
       // lower woodland mix. Explicitly planted tall dÃ¡ÂºÂ§u/sao remain a separate species.
       if (sp === S.forest) { sp = S[hillWoodlandSpecies(x, yN)]; scale = Math.min(scale, 1.18); }

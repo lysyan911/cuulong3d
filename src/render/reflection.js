@@ -13,6 +13,9 @@ import { GLOBALS } from './globals.js';
 
 const BIAS = new THREE.Matrix4().set(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1);
 
+/** Names of models that reflect in the water even inside a group the reflection skips (e.g. the Tà Pạ quarry walls). */
+export const REFLECT_ALWAYS = new Set();
+
 export class WaterReflection {
   constructor(renderer, scene, { range = 4000, maxHeight = 1500 } = {}) {
     this.hooks = [];
@@ -45,6 +48,13 @@ export class WaterReflection {
    * @param hide    objects to hide during the pass (sky dome, overlays)
    */
   update(camera, waterY, hide = []) {
+    // groups to hide that hold a model which should still reflect (REFLECT_ALWAYS): hide their other parts instead
+    if (REFLECT_ALWAYS.size) {
+      const keep = (o) => REFLECT_ALWAYS.has(o.name);
+      const has = (o) => keep(o) || o.children.some(has);
+      const expand = (o) => (!has(o) ? [o] : keep(o) ? [] : o.children.flatMap(expand));
+      hide = hide.flatMap(expand);
+    }
     const R = GLOBALS.uRefl.value;
     const h = camera.position.y - waterY;
     if (!this.scale || !(h > 0) || h > this.maxHeight) { R.x = 0; this.lastY = NaN; return; }

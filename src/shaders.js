@@ -435,7 +435,14 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         vec3 photo = diffuseColor.rgb;
         // Mekong water is silt-laden: milky brown ("nước phù sa"); hill lakes stay clear green
         vec3 tone = mix(vec3(0.30, 0.20, 0.11), vec3(0.025, 0.12, 0.105), lake);
-        vec3 wcol = mix(photo, tone, 0.8 - 0.08 * shallowF) * mix(0.95, 1.06, streak);
+        float jadeK = msk.b;                                             // quarry lakes (terrain.js setPatches): milky jade
+        tone = mix(tone, vec3(0.06, 0.2, 0.15), jadeK);
+        // (mask blue ~0.7: a clear blue-green natural lake, Búng Bình Thiên; ~0.4 an olive temple pond, 1 quarry jade)
+        tone = mix(tone, vec3(0.04, 0.17, 0.16), smoothstep(0.5, 0.68, jadeK) * (1.0 - smoothstep(0.78, 0.92, jadeK)));
+        // sheltered lakes and ponds (no current, little fetch): mostly glassy, mirror-like, few wind patches
+        float calmK = smoothstep(0.3, 0.6, jadeK);
+        ruff *= 1.0 - 0.75 * calmK;
+        vec3 wcol = mix(photo, tone, mix(0.8 - 0.08 * shallowF, 0.95, jadeK)) * mix(0.95, 1.06, streak);
         diffuseColor.rgb = mix(photo, wcol, waterF);
         // clear river bank: darken the water edge slightly
         float bankVis = bank * (1.0 - smoothstep(4000.0, 20000.0, camDist));
@@ -458,7 +465,8 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           float e = 3.0;
           float hx = (waveHeight(P + vec2(e, 0.0), nearF) - waveHeight(P - vec2(e, 0.0), nearF)) / (2.0 * e);
           float hy = (waveHeight(P + vec2(0.0, e), nearF) - waveHeight(P - vec2(0.0, e), nearF)) / (2.0 * e);
-          vec3 nW = normalize(vec3(-hx * farF, 1.0, hy * farF));     // world z = -north
+          float waveK = farF * (1.0 - 0.85 * calmK);
+          vec3 nW = normalize(vec3(-hx * waveK, 1.0, hy * waveK));   // world z = -north
           // rain: rings spreading from the drops (cells of 0.7 m, each drop at its own time), close up only
           float rainF = uWeather.y * (1.0 - smoothstep(0.06, 0.3, px));
           if (rainF > 0.01) {
@@ -473,7 +481,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
             }
           }
           // fine wind ripples close up (too small for the wave height above), stronger in ruffled patches
-          float capF = (1.0 - smoothstep(0.3, 2.5, px)) * (0.25 + 0.75 * ruff);
+          float capF = (1.0 - smoothstep(0.3, 2.5, px)) * (0.25 + 0.75 * ruff) * (1.0 - 0.6 * calmK);
           if (capF > 0.01) {
             // two sizes, stretched across the wind (wind from the WSW), so they read as wind ripples, not dimples
             vec2 cq = vec2(dot(P, vec2(0.92, 0.38)) / 0.9, dot(P, vec2(-0.38, 0.92)) / 2.6) + uTime * vec2(0.7, 0.05);
@@ -542,5 +550,5 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
       `);
     patchCloudShadow(shader, skyUniforms());
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v25';
+  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v29';
 }

@@ -14,6 +14,9 @@ import { GLOBALS } from './render/globals.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 
 const SHOW_R = 900;
+// people and vehicles are off for now (owner, 2026-10-07): placeholder models, weight without purpose until detailed
+// ones are made; true brings back moving traffic, parked cars and parked motorbikes
+const PEOPLE_AND_VEHICLES = false;
 const CAR_R = 550, RIDER_R = 380;                       // traffic: smaller, so shown less far
 const CELL = 300;                                        // m, culling cells
 const TREE_SPECIES = 1;                                  // 'shade' in trees.js
@@ -198,7 +201,7 @@ export class StreetFurniture {
   build(...args) { const g = this.buildSteps(...args); let r; while (!(r = g.next()).done); return r.value; }
 
   // built in steps (roads3d.js spreads a town tile over a few frames)
-  *buildSteps(roads, sphere, signals = []) {
+  *buildSteps(roads, sphere, signals = [], onOther = null) {
     const M = { pole: [], lamp: [], bike: [], stall: [], signal: [], car: [], van: [], truck: [], bus: [], rider: [], lamp2: [], nose: [] };
     const C = { bike: [], stall: [], car: [], van: [], truck: [], bus: [], rider: [] }, trees = [], wire = [];
     const at = (R, s) => {                                   // point, normal, height at distance s along a road
@@ -235,8 +238,37 @@ export class StreetFurniture {
       m.setPosition(S.x, S.y, -S.yN);
       M.signal.push(m);
     }
+    // where roads meet, what one road places (vehicles, poles, lamps, trees, bikes, stalls) must not stand on another
+    // road's carriageway (roads3d.js onOther): each road's new items are checked once it is done
+    let mark = null;
+    const sweep = () => {
+      if (!mark || !onOther) return;
+      const c = mark.c, gone = [];
+      for (const k of Object.keys(M)) {
+        if (k === 'signal') continue;
+        const margin = ['car', 'van', 'truck', 'bus', 'rider'].includes(k) ? -0.6 : 0.3;
+        const keep = [], keepC = [];
+        for (let i = mark.n[k]; i < M[k].length; i++) {
+          const m = M[k][i], x = m.elements[12], yN = -m.elements[14];
+          if (onOther(x, yN, c, margin)) { if (k === 'pole') gone.push([x, yN]); continue; }
+          keep.push(m); if (C[k]) keepC.push(C[k][i]);
+        }
+        M[k].length = mark.n[k]; M[k].push(...keep);
+        if (C[k]) { C[k].length = mark.n[k]; C[k].push(...keepC); }
+      }
+      const tk = trees.slice(mark.t).filter((t) => !onOther(t[0], -t[2], c, 0.3));
+      trees.length = mark.t; trees.push(...tk);
+      if (gone.length) {                                  // the cables of a pole that was left out go with it
+        const near = (x, z) => gone.some(([gx, gy]) => Math.hypot(x - gx, -z - gy) < 1.6);
+        const w = wire.slice(mark.w), kept = [];
+        for (let i = 0; i < w.length; i += 6) if (!near(w[i], w[i + 2]) && !near(w[i + 3], w[i + 5])) kept.push(...w.slice(i, i + 6));
+        wire.length = mark.w; wire.push(...kept);
+      }
+    };
     let nRoad = 0;
     for (const R of roads) {
+      sweep();
+      mark = { c: R.c, n: Object.fromEntries(Object.keys(M).map((k) => [k, M[k].length])), t: trees.length, w: wire.length };
       yield;
       const L = R.S[R.S.length - 1];
       if (L < 18 || R.cl > 6) continue;
@@ -249,7 +281,7 @@ export class StreetFurniture {
       const nearJ = (s) => R.J && R.J.some(([js, rr]) => Math.abs(s - js) < rr);
       // traffic, keeping right: riders in swarms, cars, vans, trucks, coaches; parked cars at the kerb of wide streets
       const town = !R.rural, paved = R.surf === 0 || R.surf === 1;
-      if (this.traffic && paved && R.hw >= 1.4) for (const sd of [-1, 1]) {
+      if (this.traffic && PEOPLE_AND_VEHICLES && paved && R.hw >= 1.4) for (const sd of [-1, 1]) {
         if (R.hw < 2.2 && sd > 0 && h(21, 1) < 0.5) continue;                    // narrow lanes: one way only here
         // parked cars at the kerb of wide town streets (one side, both on the widest); moving traffic keeps clear
         const parks = town && R.surf === 0 && R.hw >= 4 && !(Md && sd > 0) && (R.hw >= 5.5 || Md || (sd > 0) === (h(39, 1) < 0.5));
@@ -338,7 +370,7 @@ export class StreetFurniture {
                            : [x, q.y - 0.2, -yN, h(5, j) * 6.283, (main ? 0.32 : 0.24) + h(6, j) * 0.14, 0.85 + h(7, j) * 0.3, h(8, j), TREE_SPECIES]);
       }
       // parked motorbikes in front of shops (nose to the kerb), in rows
-      if (R.sh >= 1.2) for (const sd of sides) for (let s = 4 + h(9, sd + 2) * 10, j = 0; s < L - 4; s += 18 + h(10, j) * 20, j++) {
+      if (PEOPLE_AND_VEHICLES && R.sh >= 1.2) for (const sd of sides) for (let s = 4 + h(9, sd + 2) * 10, j = 0; s < L - 4; s += 18 + h(10, j) * 20, j++) {
         if (h(11, j * 5 + sd + 2) > (main ? 0.6 : 0.4)) continue;
         const n = 2 + Math.floor(h(12, j) * 6);
         for (let b = 0; b < n && s + b * 0.8 < L - 3; b++) {
@@ -355,6 +387,7 @@ export class StreetFurniture {
         C.stall.push(UMBRELLA_COLOURS[Math.floor(h(20, j) * UMBRELLA_COLOURS.length)]);
       }
     }
+    sweep();
     // bucket everything into CELL m cells: far cells are not drawn at all (see update), near ones are frustum-culled
     const cells = new Map();
     const cellOf = (x, z) => {

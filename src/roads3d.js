@@ -232,6 +232,35 @@ export class Road3DLayer {
     const D = T.data, ex = this.meta.vert_exag;
     const pos = [], uv = [], info = [], idx = [], townRoads = [], signals = [];
     const J = D.junc || (yield* this.junctionSteps(D));
+    // the carriageways of this tile, so that where roads meet or run side by side (big town junctions, slip roads, dual
+    // carriageways) one road's sidewalks, kerbs, verges, markings, crossings, lights and street furniture don't land on
+    // another road's carriageway
+    const segs = new Map(), SC = 24, cellKey = (x, y) => Math.floor(x / SC) * 100003 + Math.floor(y / SC);
+    for (let c = T.first; c < T.first + T.count; c++) {
+      if ((c - T.first) % 60 === 59) yield;
+      const np = D.npts[c], s0 = D.starts[c], hw = D.width[c] / 8;
+      let px = D.cx + D.xy[s0 * 2] / 2, py = D.cy + D.xy[s0 * 2 + 1] / 2;
+      for (let i = 1; i < np; i++) {
+        const qx = D.cx + D.xy[(s0 + i) * 2] / 2, qy = D.cy + D.xy[(s0 + i) * 2 + 1] / 2, seg = [px, py, qx, qy, hw, c];
+        for (let gx = Math.floor((Math.min(px, qx) - hw - 3) / SC); gx <= Math.floor((Math.max(px, qx) + hw + 3) / SC); gx++)
+          for (let gy = Math.floor((Math.min(py, qy) - hw - 3) / SC); gy <= Math.floor((Math.max(py, qy) + hw + 3) / SC); gy++) {
+            const k = gx * 100003 + gy;
+            if (!segs.has(k)) segs.set(k, []);
+            segs.get(k).push(seg);
+          }
+        px = qx; py = qy;
+      }
+    }
+    /** Is (x, north) on the carriageway of a road other than chunk c (within its half width + margin)? */
+    const onOther = (x, y, c, margin = 0) => {
+      const list = segs.get(cellKey(x, y));
+      if (list) for (const [ax, ay, bx, by, hw, o] of list) {
+        if (o === c) continue;
+        const dx = bx - ax, dy = by - ay, t = Math.min(Math.max(((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1), 0), 1);
+        if (Math.hypot(x - ax - dx * t, y - ay - dy * t) < hw + margin) return true;
+      }
+      return false;
+    };
     let v = 0;
     const vert = (x, y, yN, along, across, hw, surf, lanes, part) => {
       pos.push(x, y, -yN); uv.push(along, across); info.push(hw, surf, lanes, part);
@@ -277,21 +306,35 @@ export class Road3DLayer {
       const offs = [-(hw + sh + run), -(hw + sh), -hw, hw, dual ? hw + med : hw + sh, hw + sh + run];
       const rise = [0, e, e, e, e, 0];
       const parts = [PART.slope, town ? PART.walk : PART.shoulder, PART.road, dual ? PART.road : town ? PART.walk : PART.shoulder, PART.slope];
-      let prev = null;
+      // per row: is this side's sidewalk / verge on another road (that strip is left out), are the markings inside
+      // another road (then none: they would cross it); the more important road draws on top where they overlap
+      const blocked = (i, sd) => onOther(P[i][0] + N[i][0] * sd * (hw + sh * 0.5), P[i][1] + N[i][1] * sd * (hw + sh * 0.5), c, 0.2);
+      const blockL = P.map((_, i) => blocked(i, -1)), blockR = P.map((_, i) => blocked(i, 1));
+      const roadLift = (8 - Math.min(cl, 8)) * 0.004;
+      let prev = null, ks = [];
       for (let i = 0; i < np; i++) {
         const [x, y] = P[i], [nx, ny] = N[i];
         const yTop = bridge ? top[i] : ground[i];
+        const rowLanes = lanes && onOther(x, y, c, -0.5) ? 0 : lanes;
         const row = [];
+        ks = [];
         for (let k = 0; k < 5; k++) {                // 5 strips, own vertices each so every part keeps its colour
           if (bridge && (k === 0 || k === 4)) continue;
           if (dual && k === 4) continue;             // (the median is drawn below)
+          ks.push(k);
+          const isRoad = k === 2 || (dual && k === 3);
           for (const j of [k, k + 1]) {
             // town: street just above the ground, sidewalks a kerb higher, outer edge back down to the ground
-            const yy = bridge ? yTop : !street ? yTop + rise[j] : k === 2 || (dual && k === 3) ? yTop + 0.06 : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
-            row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, lanes, parts[k]));
+            const yy = bridge ? yTop : !street ? yTop + rise[j] + (isRoad ? roadLift : 0)
+                     : isRoad ? yTop + 0.06 + roadLift : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
+            row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, isRoad ? rowLanes : lanes, parts[k]));
           }
         }
-        if (prev) for (let k = 0; k < row.length; k += 2) strip([prev[k], prev[k + 1]], [row[k], row[k + 1]]);
+        if (prev) for (let n = 0; n < row.length; n += 2) {
+          const k = ks[n / 2], isRoad = k === 2 || (dual && k === 3);
+          if (!bridge && !isRoad && ((k < 2 && (blockL[i] || blockL[i - 1])) || (k > 2 && (blockR[i] || blockR[i - 1])))) continue;
+          strip([prev[n], prev[n + 1]], [row[n], row[n + 1]]);
+        }
         prev = row;
       }
       const jS = [];
@@ -299,11 +342,12 @@ export class Road3DLayer {
         // kerb faces between the street and the sidewalks
         for (const sd of dual ? [-1] : [-1, 1]) {
           let pr = null;
+          const blk = sd < 0 ? blockL : blockR;
           for (let i = 0; i < np; i++) {
             const [x, y] = P[i], [nx, ny] = N[i], o = sd * hw;
             const r = [vert(x + nx * o, ground[i] + 0.06, y + ny * o, S[i], o, hw, surf, 0, PART.kerb),
                        vert(x + nx * o, ground[i] + 0.06 + KERB, y + ny * o, S[i], o, hw, surf, 0, PART.kerb)];
-            if (pr) strip(pr, r);
+            if (pr && !blk[i] && !blk[i - 1]) strip(pr, r);
             pr = r;
           }
         }
@@ -328,6 +372,8 @@ export class Road3DLayer {
             if (segL < r0 + 6) continue;
             const ux = (P[k][0] - P[i][0]) / segL, uy = (P[k][1] - P[i][1]) / segL, nx = -uy, ny = ux;
             const at = (a, b, lift) => [P[i][0] + ux * a + nx * b, ground[i] + (ground[k] - ground[i]) * a / segL + lift, P[i][1] + uy * a + ny * b];
+            const mid = at(r0 + 2.2, 0, 0);
+            if (onOther(mid[0], mid[2], c, -0.5)) continue;                // (inside the junction: on another road)
             const q = [r0, r0 + 4.4].map((a) => [-1, 1].map((sd) => {
               const [x, y, yN] = at(a, sd * (hw - 0.15), 0.09);
               return vert(x, y, yN, a - r0, sd * (hw - 0.15), hw, surf, lanes, PART.mark);
@@ -335,7 +381,7 @@ export class Road3DLayer {
             idx.push(q[0][0], q[0][1], q[1][1], q[0][0], q[1][1], q[1][0]);
             if (signal) {
               const [x, y, yN] = at(r0 + 4.8, hw + 0.45, 0.06 + KERB);
-              signals.push({ x, y, yN, ux, uy, nx, ny });
+              if (!onOther(x, yN, c, 0.5)) signals.push({ x, y, yN, ux, uy, nx, ny });
             }
           }
         }
@@ -392,7 +438,7 @@ export class Road3DLayer {
         const ddx = P[np - 1][0] - P[0][0];
         medInfo.owner = ddx > 0 || (ddx === 0 && P[np - 1][1] > P[0][1]);
       }
-      const way = { oneway: !!(fl & ONEWAY), median: medInfo, palms: !!(fl & PALMS) };
+      const way = { oneway: !!(fl & ONEWAY), median: medInfo, palms: !!(fl & PALMS), c };
       if (street) townRoads.push({ P, S, N, hw, sh, cl, surf, J: jS, y: ground.map((g) => g + 0.06 + KERB), ry: ground.map((g) => g + 0.06), ...way });
       // country roads: power lines run along most of them (on the shoulder), traffic on all but tracks and paths
       if (!town && !bridge && cl <= 6) townRoads.push({ P, S, N, hw, sh, cl, surf, rural: true, noPoles: cl < 3, y: ground.map((g) => g + e), ...way });
@@ -440,7 +486,7 @@ export class Road3DLayer {
     m.raycast = () => {};
     if (this.streets && townRoads.length) {
       yield;
-      T.furn = yield* this.streets.buildSteps(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200), signals);
+      T.furn = yield* this.streets.buildSteps(townRoads, new THREE.Sphere(new THREE.Vector3(T.cx, T.ground, T.cz), this.tileM * 0.75 + 200), signals, onOther);
     }
     return m;
   }

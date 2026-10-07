@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import { patchTerrainMaterial } from './shaders.js';
 import { splitShoreSteps } from './shore.js';
+import { REFLECT_ALWAYS } from './render/reflection.js';
 
 const MAX_LOD = 4;
 const REBUILDS_PER_FRAME = 10;
@@ -42,6 +43,17 @@ function polyDist(P, x, y) {
   }
   return inside ? -d : d;
 }
+// value of per-vertex numbers V along polygon P at its edge nearest to (x, y)
+function polyEdgeValue(P, V, x, y) {
+  let best = Infinity, v = V[0];
+  for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+    const [ax, ay] = P[j], [bx, by] = P[i], dx = bx - ax, dy = by - ay;
+    const t = Math.min(Math.max(((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1), 0), 1);
+    const d = Math.hypot(x - ax - dx * t, y - ay - dy * t);
+    if (d < best) { best = d; v = V[j] + (V[i] - V[j]) * t; }
+  }
+  return v;
+}
 
 export class Terrain {
   constructor(meta, heights, textures, shared, { dataUrl, maxDetail = 10, anisotropy = 4, imagery = null, surface = null } = {}) {
@@ -58,6 +70,7 @@ export class Terrain {
     this.H = meta.height_m;
     this.lodBias = 0;
     this.shared = shared;
+    this.waterTex = textures.water;           // (setPatches may redraw tourist lakes into them)
     this.dataUrl = dataUrl;
     this.maxDetail = maxDetail;
     this.anisotropy = anisotropy;
@@ -198,14 +211,14 @@ export class Terrain {
 
   /**
    * Ground edits handed over with the tourist places (web/data/tourist-terrain-handoff.json): temple courts and
-   * terraces cut / filled to their level, stair ramps, the bank around Hồ Thủy Liêm (Núi Cấm). The 30 m DEM runs
+   * terraces cut / filled to their level, stair ramps, the low bank around Hồ Thủy Liêm (Núi Cấm). The 30 m DEM runs
    * smoothly through what are engineered terraces. Courts get a margin of about half a mesh cell (20 m near) so the
    * old slope can't poke through them, then a feathered edge. Later patches win where they overlap. Call before
    * anything samples heights (true scale only).
    */
   setPatches(data) {
     if (this.ex !== 1 || !data?.places) return;
-    const list = [], mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const list = [], lakes = [], mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
     const add = (poly, o) => {
       const r = (o.margin || 0) + (o.feather || 0), xs = poly.map((p) => p[0]), ys = poly.map((p) => p[1]);
       list.push({ poly, ...o, box: [Math.min(...xs) - r, Math.min(...ys) - r, Math.max(...xs) + r, Math.max(...ys) + r] });
@@ -213,7 +226,10 @@ export class Terrain {
     for (const place of data.places) {
       for (const m of place.masks || []) if (m.kind === 'flat-court')
         add(m.polygon_scene_EN, { h: m.target_height_m - 0.15, margin: 8, feather: Math.max(m.feather_m || 3, 12) });
-      for (const p of place.patches || []) {
+      // (court supports a place hands over as requests, to be checked live: applied the same way, with their own feather)
+      for (const m of place.requests || []) if (m.kind === 'flat-court')
+        add(m.polygon_scene_EN, { h: m.target_height_m - 0.1, margin: 2, feather: Math.max(m.feather_m || 3, 4) });
+      for (const p of [...(place.patches || []), ...(place.requests || [])]) {
         if (p.kind === 'terrace') add(p.polygon_scene_EN, { h: p.height_m, margin: 0, feather: Math.max(p.blend_outside_m || 1.5, 4) });
         else if (p.kind === 'linear-ramp') {
           // the flight runs along the pair of sides as long as it; its two ends are the other sides, the lower end low
@@ -226,13 +242,133 @@ export class Terrain {
                    margin: 0, feather: Math.max(p.blend_outside_m || 0.6, 2) });
         }
       }
-      // the lake itself is the map's water (surface.js, already at its level); only its bank rises around it
+      // the lake itself is the map's water (surface.js, already at its level). Its shore follows the 20 m water mask
+      // (the water shading does too), up to ~30 m off the mapped outline, so near the lake the land on the mask's dry
+      // side is one low bank at the authored height, not the generic +1.5 m delta bank (and no ledges where the two
+      // outlines disagree). Water points are left alone.
       if (place.lake?.polygon_scene_EN && place.banks?.top_height_m) {
-        const B = place.banks;
-        add(place.lake.polygon_scene_EN, { h: B.top_height_m, margin: B.width_m || 2.8, feather: Math.max(B.feather_m || 3, 10), ring: true });
+        add(place.lake.polygon_scene_EN, { h: place.banks.top_height_m, margin: 30, feather: 15, lake: true });
+        lakes.push({ poly: place.lake.polygon_scene_EN, reach: 30, out: 0, jade: 0 });
+      }
+      // a natural lake with its own level and no authored banks (Búng Bình Thiên): the mapped outline drawn into the
+      // water masks at that level, clear blue-green (mask blue 0.7), while the river outside it stays silty brown
+      else if (place.lake?.polygon_scene_EN && place.lake.level_m != null && !place.pit)
+        lakes.push({ poly: place.lake.polygon_scene_EN, reach: 20, out: 0, jade: 0.7, level: place.lake.level_m });
+      // a quarry lake (Hồ Tà Pạ): water up to the pit outline, the ground just outside at the rim heights (the 30 m DEM
+      // smooths the pit away), feathered back to the DEM. The shore split then makes a vertical cliff at the outline,
+      // just behind the authored rock walls (the mask is drawn 1 m outside); jade water (mask blue channel)
+      if (place.pit?.polygon_scene_EN) {
+        const Q = place.pit, P = Q.polygon_scene_EN, R = Q.renderer_rim_height_per_vertex_m || Q.rim_height_per_vertex_m;
+        add(P, { pit: true, rim: R || P.map(() => Q.rim_height_m), water: Q.water_height_m, margin: 8, feather: 30 });
+        lakes.push({ poly: P, reach: 30, out: 1, jade: 1 });
+        REFLECT_ALWAYS.add(place.id);                   // its walls show in the water
+      }
+      // a small pond with its own level (Chùa Xvay Ton): map water drawn to its outline at that level, so it gets the
+      // water shader (reflections, ripples, rain) instead of a flat placeholder mesh
+      if (place.pond_water?.polygon_scene_EN) {
+        const W = place.pond_water;
+        lakes.push({ poly: W.polygon_scene_EN, reach: 12, out: 0, jade: 0.4, level: W.level_m });   // (olive temple pond, not silt)
+        // (the terrain mesh is 20 m: the ground is held at the water level up to 3 m outside, under the authored rim walls,
+        // and no bank wall is raised at the mask edge, so the small square basin doesn't come out as a pentagon of walls)
+        add(W.polygon_scene_EN, { pit: true, pond: true, flat: 3, water: W.level_m, margin: 0, feather: 0 });
       }
     }
     this.patches = list;
+    // the mapped lake outline replaces the 20 m water mask's (up to ~30 m off) within 30 m of it: in the CPU surface
+    // grid (mesh, houses, trees) and the water textures (shading; 10 m detail ones as they load)
+    for (const L of lakes) {
+      const xs = L.poly.map((p) => p[0]), ys = L.poly.map((p) => p[1]), r = L.reach;
+      L.box = [Math.min(...xs) - r, Math.min(...ys) - r, Math.max(...xs) + r, Math.max(...ys) + r];
+    }
+    this.lakes = lakes;
+    if (!lakes.length) return;
+    const S = this.surface;
+    // water level inside lakes that bring their own (the 60 m level grid can't hold a 40 m pond)
+    const levelled = lakes.filter((L) => L.level != null);
+    if (S && levelled.length && !S.levelOverride) {
+      const base = S.waterHeight.bind(S);
+      S.levelOverride = levelled;
+      S.waterHeight = (x, y) => {
+        for (const L of levelled) {
+          const b = L.box;
+          if (x >= b[0] && x <= b[2] && y >= b[1] && y <= b[3] && polyDist(L.poly, x, y) < L.reach) return L.level * this.ex;
+        }
+        return base(x, y);
+      };
+    }
+    if (S) for (const L of this.lakes) {
+      const [x0, y0, x1, y1] = L.box, n = S.n, gw = this.meta.groups[0] * n, gh = this.meta.groups[1] * n;
+      for (let r = Math.max(0, Math.floor((S.top - y1) / S.res)); r <= Math.min(gh - 1, Math.ceil((S.top - y0) / S.res)); r++) {
+        for (let c = Math.max(0, Math.floor((x0 - S.left) / S.res)); c <= Math.min(gw - 1, Math.ceil((x1 - S.left) / S.res)); c++) {
+          const d = polyDist(L.poly, S.left + (c + 0.5) * S.res, S.top - (r + 0.5) * S.res) - L.out;
+          if (d > L.reach) continue;
+          S.groups[Math.floor(r / n)][Math.floor(c / n)][((r % n) * n + c % n) * 3] = Math.round(Math.min(Math.max(0.5 - d / S.res, 0), 1) * 255);
+        }
+      }
+    }
+    for (let gy = 0; gy < this.meta.groups[1]; gy++) for (let gx = 0; gx < this.meta.groups[0]; gx++)
+      this.paintLakes(this.waterTex[gy][gx], gx * this.G, gy * this.G, this.G, this.G);
+  }
+
+  // redraw the tourist lakes into a water mask texture covering grid cells [J0, J0 + spanJ) x [I0, I0 + spanI)
+  paintLakes(tex, J0, I0, spanJ, spanI) {
+    const img = tex?.image;
+    if (!this.lakes?.length || !img?.width) return;
+    const w = img.width, h = img.height, res = this.res, pm = spanJ * res / w;
+    const toCol = (x) => ((x + this.W / 2) / res - 0.5 - J0) / spanJ * w - 0.5;
+    const toRow = (y) => ((this.H / 2 - y) / res - 0.5 - I0) / spanI * h - 0.5;
+    let ctx = null, data = null;
+    for (const L of this.lakes) {
+      const [x0, y0, x1, y1] = L.box;
+      const c0 = Math.max(0, Math.floor(toCol(x0))), c1 = Math.min(w - 1, Math.ceil(toCol(x1)));
+      const r0 = Math.max(0, Math.floor(toRow(y1))), r1 = Math.min(h - 1, Math.ceil(toRow(y0)));
+      if (c0 > c1 || r0 > r1) continue;
+      if (!ctx) {
+        const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+        ctx = cv.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0);
+        data = ctx.getImageData(0, 0, w, h);
+      }
+      for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
+        const j = J0 + (c + 0.5) / w * spanJ, i = I0 + (r + 0.5) / h * spanI;
+        const d = polyDist(L.poly, -this.W / 2 + (j + 0.5) * res, this.H / 2 - (i + 0.5) * res) - L.out;
+        if (d > L.reach) continue;
+        const k = Math.min(Math.max(0.5 - d / pm, 0), 1), o = (r * w + c) * 4;
+        data.data[o] = Math.round(k * 255);
+        if (L.jade) data.data[o + 2] = Math.round(Math.min(Math.max(0.5 - (d - 3) / pm, 0), 1) * 255 * L.jade);
+      }
+    }
+    if (!ctx) return;
+    ctx.putImageData(data, 0, 0);
+    tex.image = ctx.canvas;
+    tex.needsUpdate = true;
+  }
+
+  /** Is (x, north) inside a redrawn tourist lake (setPatches), at least `inset` m in from its outline? */
+  inLake(x, y, inset = 0) {
+    for (const L of this.lakes || []) {
+      const b = L.box;
+      if (x >= b[0] && x <= b[2] && y >= b[1] && y <= b[3] && polyDist(L.poly, x, y) < -inset) return true;
+    }
+    return false;
+  }
+
+  /** Height of the bank above the water at a shore: the delta default, or an authored lake bank (setPatches). */
+  bankAbove(x, y) {
+    const def = this.meta.surface.bank_height_m;
+    if (!this.patches) return def;
+    for (const p of this.patches) {
+      if (p.pond) {
+        const b = p.box;
+        if (x >= b[0] - 10 && x <= b[2] + 10 && y >= b[1] - 10 && y <= b[3] + 10 && polyDist(p.poly, x, y) < 10) return 0.03;
+        continue;
+      }
+      if (!p.lake) continue;
+      const b = p.box;
+      if (x < b[0] || x > b[2] || y < b[1] || y > b[3]) continue;
+      if (polyDist(p.poly, x, y) < p.margin + p.feather) return Math.min(def, Math.max(0.2, p.h - this.waterHeightAt(x, y)));
+    }
+    return def;
   }
 
   patched(x, y, h) {
@@ -240,7 +376,14 @@ export class Terrain {
       const b = p.box;
       if (x < b[0] || x > b[2] || y < b[1] || y > b[3]) continue;
       const d = polyDist(p.poly, x, y);
-      if (p.ring && d < 0) continue;
+      if (p.lake && (this.surface?.waterAt(x, y) ?? 0) >= 0.5) continue;
+      if (p.pit) {
+        if (d < (p.flat || 0) || (this.surface?.waterAt(x, y) ?? 0) >= 0.5) { h = p.water; continue; }   // the water (mask drawn to it)
+        if (!p.feather) continue;                         // (a pond: its banks stay as they are)
+        const w = 1 - smooth01(p.margin, p.margin + p.feather, d);
+        if (w > 0) h += (polyEdgeValue(p.poly, p.rim, x, y) - h) * w;
+        continue;
+      }
       const w = p.feather ? 1 - smooth01(p.margin, p.margin + p.feather, d) : d <= p.margin ? 1 : 0;
       if (w <= 0) continue;
       let t = p.h;
@@ -339,7 +482,7 @@ export class Terrain {
       yield;
       const clipped = yield* splitShoreSteps(pos, nor, uv, idx, confidence, (nx - 1) * (ny - 1) * 6,
         (x, y) => this.waterHeightAt(x, y),
-        (x, y) => Math.max(this.heightAt(x, y) * ex, this.waterHeightAt(x, y) + this.meta.surface.bank_height_m * ex));
+        (x, y) => Math.max(this.heightAt(x, y) * ex, this.waterHeightAt(x, y) + this.bankAbove(x, y) * ex));
       pos = clipped.position; nor = clipped.normal; uv = clipped.uv; idx = clipped.indices;
       surfaceIndexCount = clipped.surfaceIndexCount; bankIndexCount = clipped.bankIndexCount;
     }
@@ -396,6 +539,7 @@ export class Terrain {
         img.repeat.set(G / spanU, G / spanV);                       // group UV -> sub-tile UV
         img.offset.set((-c0 * T) / spanU, 1 - G / spanV + (r0 * T) / spanV);
         water.colorSpace = THREE.NoColorSpace;
+        this.paintLakes(water, t.gx * G + c0 * T, t.gy * G + r0 * T, spanU, spanV);
         const m = new THREE.MeshStandardMaterial({ map: img, roughness: 0.95, metalness: 0, side: THREE.DoubleSide });
         const maskXf = [img.repeat.x, img.repeat.y, img.offset.x, img.offset.y];   // same mapping as the imagery
         patchTerrainMaterial(m, water, this.shared, { maskXf, texelM: 10, crop: t.crop });

@@ -15,6 +15,7 @@
 // Geometry is parametric: each vertex = unit position (scaled by width W, eaves height H, depth D)
 //   + offset in metres + flags (roof rise R, stilt lift L, hip inset) — so one model fits every footprint.
 import * as THREE from 'three';
+import { compileTreeExclusions, treeExcluded } from './tree-exclusions.js';
 import { warm } from './render/warmup.js';
 import { GroupLayer, groupCentre } from './world.js';
 import { photoTexture } from './photo-textures.js';
@@ -867,6 +868,22 @@ export class HouseLayer extends GroupLayer {
         if (Math.abs(dx * ca + dz * sa) < halfA && Math.abs(-dx * sa + dz * ca) < halfB) this.setHidden(T, i, 2);
       }
     }
+  }
+
+  /** Exact authored footprint replacement; points use scene east/north metres. */
+  hideInPolygon(points) {
+    const zones = compileTreeExclusions([{ type: 'polygon', polygon_scene_EN: points }]);
+    if (!zones.length) return 0;
+    const b = zones[0].bounds, half = this.tileM / 2;
+    let matched = 0;
+    for (const T of this.tiles) {
+      if (T.cx + half < b[0] || T.cx - half > b[2] || -T.cz + half < b[1] || -T.cz - half > b[3]) continue;
+      for (const [, start, count] of T.ranges) for (let i = start; i < start + count; i++) {
+        if (!treeExcluded(zones, T.data.iA[i * 4], -T.data.iA[i * 4 + 2])) continue;
+        this.setHidden(T, i, 2); matched++;
+      }
+    }
+    return matched;
   }
 
   update(camera) {

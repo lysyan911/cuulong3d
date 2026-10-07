@@ -33,7 +33,7 @@ import { skyMaterial, cloudUniforms, installAerialHaze } from './render/atmosphe
 import { SunShadows } from './render/shadows.js';
 import { RenderPipeline } from './render/pipeline.js';
 import { Weather } from './render/weather.js';
-import { WaterReflection } from './render/reflection.js';
+import { WaterReflection, REFLECT_ALWAYS } from './render/reflection.js';
 import { loadGround } from './render/ground.js';
 import { initAnalytics, track, trackOnce, trackReady, trackFps } from './analytics.js';
 
@@ -273,7 +273,8 @@ async function main() {
     const g = (L.groundLevel ?? terrain.heightAt(L.x, L.y)) * ex, t = L.front;
     const p = ([x, y, h]) => V(L.x - x * Math.sin(t) - y * Math.cos(t), g + h,
                               -L.y - x * Math.cos(t) + y * Math.sin(t));
-    views[L.model] = { pos: p(L.postcard.pos), target: p(L.postcard.target) };
+    views[L.model] = { pos: p(L.postcard.pos), target: p(L.postcard.target), eyeLevel: !!L.postcard.eyeLevel };
+    for (const v of L.postcards || []) views[v.id] = { pos: p(v.pos), target: p(v.target), eyeLevel: !!v.eyeLevel };
   }
   if (fauna.pilot) views.faunaPilot = at(fauna.pilot.x, -fauna.pilot.north, 21, 12, 26, .6);
   // hand-placed trees (Codex: Long Xuyên medians, canal banks and courtyards)
@@ -308,13 +309,14 @@ async function main() {
   }
   applyMode();
 
-  let flight = null;
+  let flight = null, postcardEye = null;
   // tall (portrait) screens need to stand further back to fit the same area
   const fit = (v) => {
     const k = Math.max(1, 1.25 / camera.aspect) ** 0.8;
     return { target: v.target, pos: v.target.clone().add(v.pos.clone().sub(v.target).multiplyScalar(k)) };
   };
   function flyTo(v, ms = 1800) {
+    postcardEye = v.eyeLevel ? { x: v.pos.x, z: v.pos.z } : null;
     v = fit(v);
     flight = { t0: performance.now(), ms, p0: camera.position.clone(), t0v: controls.target.clone(), p1: v.pos.clone(), t1: v.target.clone() };
   }
@@ -400,6 +402,7 @@ async function main() {
   };
   if (!MOBILE) loadGround().catch((e) => console.warn('Ground photos unavailable:', e.message));
   // left out of the water reflection: the sky (the shader reflects it), flat lines/labels, detailed hero models
+  REFLECT_ALWAYS.add('bung-lake-life');   // (models inside props that still mirror in the water: Búng Bình Thiên rafts, poles, boats)
   const reflSkip = [sky, ...['roads', 'boundaries', 'route', 'rings', 'sites', 'landmarks', 'props']
     .map((n) => scene.getObjectByName(n)).filter(Boolean)];
   window.__cl = { scene, sky, renderer, camera, controls, terrain, trees, buildings, buildingKit, occlusion, roads, roads3d, props, paddies, grass, waterLife, yards, fauna, surface, trasu, views, shared, pipeline, shadows, sun, reflection, weather };  // debugging handle
@@ -449,7 +452,8 @@ async function main() {
     weather.update((now - weatherLast) / 1000, camera); weatherLast = now;   // clouds, rain, wet ground, light (after the fog)
     // stay above the ground
     const inWetland = wetland && wetland.floodAt(camera.position.x, -camera.position.z) > .8;
-    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : 8);   // street-level views allowed
+    const eyePostcard = postcardEye && Math.hypot(camera.position.x - postcardEye.x, camera.position.z - postcardEye.z) < 150;
+    const g = terrain.heightAt(camera.position.x, -camera.position.z) * ex + (inWetland ? 2.4 : eyePostcard ? 1.65 : 8);
     controls.minDistance = inWetland ? 18 : 25;
     const nearPlane = inWetland ? .35 : 5;
     if (camera.near !== nearPlane) { camera.near = nearPlane; camera.updateProjectionMatrix(); }

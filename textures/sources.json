@@ -596,8 +596,8 @@
       "file": "foliage/tree-atlas.webp",
       "width": 2048,
       "height": 2048,
-      "bytes": 2740348,
-      "sha256": "8f75cfe496aa64ec9b5c527a025fd7cb44cf2df7c6d621602781306fc0b9e52b",
+      "bytes": 2781888,
+      "sha256": "2c547faa528010af33f9e40e15c2d2d08fa0860f2e4c7531a522e9725ebb4b74",
       "sources": [
         "LeafSet022",
         "LeafSet024",
@@ -605,11 +605,12 @@
         "tiger_rock",
         "bark_willow"
       ],
-      "surface": "2K shared tree photo atlas; near mango, coconut, banana, fine/narrow twig and pale bark cells; illustrative species adaptations; eight original exact hill-woodland side/top silhouette renders",
+      "surface": "2K shared tree photo atlas; near mango, coconut, banana, fine/narrow twig and pale bark cells; illustrative species adaptations; eight original exact hill-woodland side/top silhouette renders; original segmented sugar-palm fan and exact near-model side/top bakes",
       "metres_per_tile": 0,
       "colour_space": "sRGB",
       "alpha": true,
-      "hill_woodland": "Eight original exact-mesh side/top renders; no additional texture allocation"
+      "hill_woodland": "Eight original exact-mesh side/top renders; no additional texture allocation",
+      "sugar_palm": "Original procedural costapalmate fan + exact 118-triangle palm side/top renders; no photo reference pixels"
     },
     {
       "file": "wetland/melaleuca-crown.webp",
@@ -879,10 +880,16 @@
       ],
       "sources": [],
       "note": "Original orthographic render of exact woodland mesh; existing original/CC0 donor atlas, no reference pixels."
-    }
+    },
+    "thotnotTop": [
+      1920,
+      1728,
+      112,
+      112
+    ]
   },
   "adaptation_note": "LeafSet022/024 and Foliage008 are photo donors. Melaleuca, palm, bamboo, banana, duckweed, water lettuce and young rice are illustrative adaptations, not species-specific photographs.",
-  "shipping_bytes": 11736282,
+  "shipping_bytes": 12022112,
   "gpu_note": "RGBA8 decoded GPU upper bound per loaded image: width*height*4*4/3 (mipmaps); disk size is not GPU memory.",
   "near_tree_atlas_cells": {
     "mangoTwig": {
@@ -1013,5 +1020,52 @@
     "legacy_cells_preserved": true,
     "new_texture_allocations": 0,
     "gpu_rgba8_mips_bytes": 22369621
+  },
+  "sugar_palm_patch_check": {
+    "size": [
+      2048,
+      2048
+    ],
+    "atlas_bytes": 2781888,
+    "before_bytes": 2740348,
+    "sha256": "2c547faa528010af33f9e40e15c2d2d08fa0860f2e4c7531a522e9725ebb4b74",
+    "changed_cells": {
+      "fan": [
+        1648,
+        16,
+        384,
+        384
+      ],
+      "thotnotSprite": [
+        1008,
+        752,
+        320,
+        480
+      ],
+      "thotnotTop": [
+        1920,
+        1728,
+        112,
+        112
+      ]
+    },
+    "outside_owned_rgba_texels_preserved": 3880704,
+    "outside_owned_changed_texels": 0,
+    "gpu_rgba8_mips_bytes": 22369621,
+    "additional_texture_allocations": 0,
+    "original_cells": {
+      "fan": {
+        "rgba_sha256": "f7276ef53d9beb657c98ebcd72c67569c08dc421a0261be1f4dcf5c0767ef98b",
+        "alpha_coverage": 0.4427490234375
+      },
+      "thotnotSprite": {
+        "rgba_sha256": "e8d9cac5b4b30dec789f848bf26401871928b7c9e2f377783aa4fd86bde2a0af",
+        "alpha_coverage": 0.19165364583333333
+      },
+      "thotnotTop": {
+        "rgba_sha256": "12b14f5f16b7743cccb46312d3052e69c14cca9adffa33e22814a3746e49c365",
+        "alpha_coverage": 0.44140625
+      }
+    }
   }
 }
