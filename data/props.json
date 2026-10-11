@@ -3076,6 +3076,1943 @@
      "eyeLevel": true
     }
    ]
+  },
+  {
+   "model": "co-to",
+   "name": "Núi Cô Tô – biểu tượng TRI TÔN",
+   "en": "Co To Mountain – TRI TÔN sign",
+   "x": -19570.11,
+   "y": -19884.864,
+   "front": 0.8726646259971648,
+   "groundLevel": 175.846,
+   "width": 1800,
+   "depth": 2000,
+   "hideRects": [],
+   "hidePolygons": [],
+   "aliases": [
+    "Núi Cô Tô",
+    "Cô Tô",
+    "Phụng Hoàng Sơn",
+    "Tri Tôn sign",
+    "Biểu tượng Tri Tôn",
+    "Co To Mountain"
+   ],
+   "asset": {
+    "tourist": true,
+    "authoredUV": true,
+    "trueScale": true,
+    "mid": "co-to-mid",
+    "far": "co-to-lod",
+    "nearR": 600,
+    "midR": 2200,
+    "maxR": 16000,
+    "reference": "blender/places/co-to/references.md",
+    "textures": "Original seed614 granite atlas; numeric palette, no reference pixels"
+   },
+   "postcard": {
+    "pos": [
+     -70,
+     -220,
+     70
+    ],
+    "target": [
+     0,
+     -6,
+     28
+    ],
+    "eyeLevel": false
+   },
+   "postcards": [
+    {
+     "id": "co-to-plain",
+     "pos": [
+      878.7437829284694,
+      -2245.324536578303,
+      274.154
+     ],
+     "target": [
+      -622.6117279745267,
+      1367.7595006318086,
+      154.154
+     ],
+     "eyeLevel": false
+    },
+    {
+     "id": "co-to-summit",
+     "pos": [
+      -618.6489945217431,
+      1331.922090881909,
+      459.507
+     ],
+     "target": [
+      394.6651610098834,
+      -1085.0262111626812,
+      -125.846
+     ],
+     "eyeLevel": false
+    }
+   ],
+   "research": {
+    "sign_position": "Photo-estimated +/-25m; physical rock anchor2018 imagery",
+    "facing": "40deg northeast +/-20deg, photo/terrain inferred",
+    "elevation": "Platform218.85m photo/DEM fit, +/-20m or more; not surveyed",
+    "scope": "Sign, boulder and northern-flank outcrops; full summit/route deferred",
+    "postcards": "Northern plain footprint at cached4.22m; oblique camera450m to respect native orbit constraint above330m mountain target. Summit camera36m above cached ground clears canopy. Camera poses inferred, not surveyed/photo calibrated."
+   }
+  },
+  {
+   "model": "da-phuoc",
+   "name": "Làng Chăm Đa Phước – Al Ehsan và nghề dệt",
+   "en": "Da Phuoc Cham village – Al Ehsan and weaving",
+   "x": -5576,
+   "y": 17083,
+   "front": -0.3665191429188092,
+   "groundLevel": 2.288828620904497,
+   "width": 19,
+   "depth": 35,
+   "hideRects": [],
+   "hidePolygons": [
+    {
+     "polygon_scene_EN": [
+      [
+       -5564.044396743935,
+       17134.533058733214
+      ],
+      [
+       -5539.460406606959,
+       17126.040275735315
+      ],
+      [
+       -5537.778452758212,
+       17130.839641577564
+      ],
+      [
+       -5562.373374246468,
+       17139.33241891209
+      ],
+      [
+       -5564.044396743935,
+       17134.533058733214
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-1",
+     "source_overture_id": "00993545-0e70-4f01-ae7b-63d5bd5aa7ba",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16136,
+       "scene_EN": [
+        -5551.0,
+        17132.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5575.660465522669,
+       17116.70467773336
+      ],
+      [
+       -5577.572343083622,
+       17112.634974762565
+      ],
+      [
+       -5553.479314901924,
+       17101.488332913956
+      ],
+      [
+       -5551.567439589358,
+       17105.5580372524
+      ],
+      [
+       -5575.660465522669,
+       17116.70467773336
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-2",
+     "source_overture_id": "d6851f25-526a-4b40-9b7f-c45b12e4deeb",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16152,
+       "scene_EN": [
+        -5564.5,
+        17109.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5518.392959662888,
+       17079.952705402393
+      ],
+      [
+       -5514.379518920381,
+       17078.704907716718
+      ],
+      [
+       -5512.020750001771,
+       17086.25771158142
+      ],
+      [
+       -5524.585979398573,
+       17090.14463162911
+      ],
+      [
+       -5536.877813998784,
+       17093.95426903013
+      ],
+      [
+       -5538.548624585848,
+       17088.635234627174
+      ],
+      [
+       -5526.147435057617,
+       17084.80352721736
+      ],
+      [
+       -5526.562404864759,
+       17083.47653380409
+      ],
+      [
+       -5518.109032665496,
+       17080.85948445066
+      ],
+      [
+       -5518.392959662888,
+       17079.952705402393
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-3",
+     "source_overture_id": "86712420-9ae4-4cb8-923e-0b3ac34431d4",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16146,
+       "scene_EN": [
+        -5524.5,
+        17086.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5544.253441128938,
+       17027.366776332725
+      ],
+      [
+       -5556.326656692254,
+       17031.2981351309
+      ],
+      [
+       -5557.975734455278,
+       17026.299760134192
+      ],
+      [
+       -5545.8915828628815,
+       17022.368405166315
+      ],
+      [
+       -5544.253441128938,
+       17027.366776332725
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-4",
+     "source_overture_id": "6f2e5bfc-068c-4575-9693-e2417c59978f",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16157,
+       "scene_EN": [
+        -5551.0,
+        17027.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5567.918340132106,
+       17007.167344011366
+      ],
+      [
+       -5555.6817182271625,
+       17004.761895917356
+      ],
+      [
+       -5554.5031789614,
+       17010.644630486146
+      ],
+      [
+       -5566.739803294418,
+       17013.061135009862
+      ],
+      [
+       -5567.918340132106,
+       17007.167344011366
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-5",
+     "source_overture_id": "b1df8fee-5174-42f4-aba5-8c0a5210618c",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16239,
+       "scene_EN": [
+        -5561.0,
+        17009.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5572.9406141574145,
+       16988.43496729969
+      ],
+      [
+       -5558.2980211702525,
+       16985.079599638702
+      ],
+      [
+       -5557.07548784127,
+       16990.33210996911
+      ],
+      [
+       -5571.718078679987,
+       16993.687477084575
+      ],
+      [
+       -5572.9406141574145,
+       16988.43496729969
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-6",
+     "source_overture_id": "d2f2dec1-054c-4e1d-9b78-1bcf35bb9b1f",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16240,
+       "scene_EN": [
+        -5565.0,
+        16989.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5586.757008148066,
+       17003.732099781744
+      ],
+      [
+       -5610.86925346608,
+       17008.15617784718
+      ],
+      [
+       -5611.807570139354,
+       17003.080694066826
+      ],
+      [
+       -5587.706255773897,
+       16998.65661088773
+      ],
+      [
+       -5586.757008148066,
+       17003.732099781744
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-7",
+     "source_overture_id": "5b1c31a1-e29a-4469-9ca0-bf023bd6e680",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16246,
+       "scene_EN": [
+        -5599.5,
+        17003.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5582.899756364466,
+       17010.190872656647
+      ],
+      [
+       -5582.167988218018,
+       17012.269860756584
+      ],
+      [
+       -5587.38445536379,
+       17014.092138208915
+      ],
+      [
+       -5585.647865828185,
+       17019.01314889104
+      ],
+      [
+       -5604.709284680139,
+       17025.661694604903
+      ],
+      [
+       -5607.177646083059,
+       17018.661697347416
+      ],
+      [
+       -5582.899756364466,
+       17010.190872656647
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for craft-house-8",
+     "source_overture_id": "a5779844-fe08-4521-9d7b-9d666eed6960",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16279,
+       "scene_EN": [
+        -5595.5,
+        17018.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5513.649029544438,
+       17164.705585331423
+      ],
+      [
+       -5515.112285776297,
+       17159.895250047324
+      ],
+      [
+       -5504.613992577128,
+       17156.770418211585
+      ],
+      [
+       -5503.1616720983875,
+       17161.580749515444
+      ],
+      [
+       -5513.649029544438,
+       17164.705585331423
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-9",
+     "source_overture_id": "0f5251bf-0774-40f7-80d5-c408fabae75d",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16142,
+       "scene_EN": [
+        -5509.0,
+        17160.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5516.367299563019,
+       17153.879799887305
+      ],
+      [
+       -5497.032134392415,
+       17146.14784177183
+      ],
+      [
+       -5494.956679562165,
+       17151.268019283656
+      ],
+      [
+       -5514.291846788081,
+       17159.01103307586
+      ],
+      [
+       -5516.367299563019,
+       17153.879799887305
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-10",
+     "source_overture_id": "d330a85d-b8c8-4c25-84fa-9a4c572151ea",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16143,
+       "scene_EN": [
+        -5505.5,
+        17152.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5501.524618867668,
+       17142.320336512057
+      ],
+      [
+       -5518.233935648575,
+       17146.128171979683
+      ],
+      [
+       -5519.6420052662725,
+       17140.046318618814
+      ],
+      [
+       -5502.932681147999,
+       17136.227425559424
+      ],
+      [
+       -5501.524618867668,
+       17142.320336512057
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-11",
+     "source_overture_id": "3141b02c-0971-494d-9894-a5fcf8b3e747",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16144,
+       "scene_EN": [
+        -5510.5,
+        17141.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5506.606304453395,
+       17135.396667200606
+      ],
+      [
+       -5520.703203382785,
+       17141.427997424267
+      ],
+      [
+       -5524.002302227251,
+       17133.808471100638
+      ],
+      [
+       -5509.90540073131,
+       17127.7771394928
+      ],
+      [
+       -5506.606304453395,
+       17135.396667200606
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-12",
+     "source_overture_id": "868be208-0467-4c23-ac3f-03f08095eefe",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 17400,
+       "scene_EN": [
+        -5515.5,
+        17134.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5528.963069428399,
+       17125.29266419937
+      ],
+      [
+       -5507.823686064279,
+       17117.49509042292
+      ],
+      [
+       -5505.245977190789,
+       17124.417741989484
+      ],
+      [
+       -5526.374417951796,
+       17132.20426169713
+      ],
+      [
+       -5528.963069428399,
+       17125.29266419937
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-13",
+     "source_overture_id": "eab82b46-0178-44f1-9765-d883f3028394",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 19283,
+       "scene_EN": [
+        -5517.0,
+        17125.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5521.780567017035,
+       17101.81077383901
+      ],
+      [
+       -5518.06237620872,
+       17100.607083423296
+      ],
+      [
+       -5515.222960689338,
+       17109.309997359524
+      ],
+      [
+       -5518.930211744213,
+       17110.502635022392
+      ],
+      [
+       -5521.780567017035,
+       17101.81077383901
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-14",
+     "source_overture_id": "fd1b8e43-45e6-4f6b-bd23-b8197cd40dbd",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16145,
+       "scene_EN": [
+        -5518.5,
+        17105.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5535.915453132009,
+       17066.655233320547
+      ],
+      [
+       -5547.6714408686385,
+       17070.299238783773
+      ],
+      [
+       -5549.145698849461,
+       17065.63264027238
+      ],
+      [
+       -5537.378775227466,
+       17061.988638719078
+      ],
+      [
+       -5535.915453132009,
+       17066.655233320547
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-16",
+     "source_overture_id": "a0f1cd8c-8a55-4da5-900c-c7972e80a249",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16153,
+       "scene_EN": [
+        -5542.5,
+        17066.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5537.22522712464,
+       17060.838785908185
+      ],
+      [
+       -5519.629310919205,
+       17054.886266696965
+      ],
+      [
+       -5518.056610748114,
+       17059.46445146762
+      ],
+      [
+       -5535.652529341984,
+       17065.42802672251
+      ],
+      [
+       -5537.22522712464,
+       17060.838785908185
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-18",
+     "source_overture_id": "3ea2a2d7-1543-4f53-8c53-2ac024c104d4",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16164,
+       "scene_EN": [
+        -5527.5,
+        17060.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5547.423565953446,
+       17052.232404748444
+      ],
+      [
+       -5508.993768073618,
+       17036.978446521796
+      ],
+      [
+       -5506.568770864862,
+       17043.005428650882
+      ],
+      [
+       -5544.9985630312,
+       17058.2593840973
+      ],
+      [
+       -5547.423565953446,
+       17052.232404748444
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-19",
+     "source_overture_id": "de20e297-765d-462f-aade-5bdacf6874b6",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16165,
+       "scene_EN": [
+        -5527.0,
+        17047.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5575.639551677683,
+       16983.801045836648
+      ],
+      [
+       -5560.876346905192,
+       16979.627517051296
+      ],
+      [
+       -5559.609757495462,
+       16984.095006974647
+      ],
+      [
+       -5574.36202155723,
+       16988.257482742425
+      ],
+      [
+       -5575.639551677683,
+       16983.801045836648
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-20",
+     "source_overture_id": "362b4940-3dc6-4daf-8c21-108dc2f1c4bf",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16241,
+       "scene_EN": [
+        -5567.5,
+        16984.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5595.426173623651,
+       16999.13999692304
+      ],
+      [
+       -5606.1213984504575,
+       17002.441687851446
+      ],
+      [
+       -5607.661180666124,
+       16997.542871422134
+      ],
+      [
+       -5602.2042077060905,
+       16995.85337033891
+      ],
+      [
+       -5602.586427345697,
+       16994.648016812513
+      ],
+      [
+       -5597.348169457226,
+       16993.024769538548
+      ],
+      [
+       -5595.426173623651,
+       16999.13999692304
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-21",
+     "source_overture_id": "08626c49-a3bb-465c-a8ca-4cda4304aa14",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16247,
+       "scene_EN": [
+        -5601.5,
+        16998.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5607.818398692354,
+       16980.68107408029
+      ],
+      [
+       -5597.374909503211,
+       16977.99846597947
+      ],
+      [
+       -5596.228554050031,
+       16982.366394075332
+      ],
+      [
+       -5606.672041984042,
+       16985.049001813633
+      ],
+      [
+       -5607.818398692354,
+       16980.68107408029
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-23",
+     "source_overture_id": "eaf087b2-bbb9-4a66-9673-da98f44dede6",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 19244,
+       "scene_EN": [
+        -5602.0,
+        16981.5
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5612.543451849197,
+       17038.329714646796
+      ],
+      [
+       -5615.187179339468,
+       17032.357936619548
+      ],
+      [
+       -5590.142881738953,
+       17021.38856189605
+      ],
+      [
+       -5587.499157782877,
+       17027.360341892578
+      ],
+      [
+       -5612.543451849197,
+       17038.329714646796
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Exact roof replacement for street-house-24",
+     "source_overture_id": "0b1e88da-e225-4b9b-b237-d88e2f932ed7",
+     "source": "Cached Microsoft roof; private Maxar2022 correlation; round2/research.md",
+     "confidence": "Position +/-5m; representative type, individual construction unverified",
+     "expected_retired_instances": [
+      {
+       "file": "web/data/inst/bld_1_1.bin",
+       "binary_index": 16277,
+       "scene_EN": [
+        -5601.5,
+        17030.0
+       ]
+      }
+     ]
+    },
+    {
+     "polygon_scene_EN": [
+      [
+       -5579.181942640426,
+       17074.152670401018
+      ],
+      [
+       -5572.444625188974,
+       17091.703982419167
+      ],
+      [
+       -5595.410703680805,
+       17100.51983397798
+      ],
+      [
+       -5602.148021132258,
+       17082.968521959832
+      ]
+     ],
+     "houseOnly": true,
+     "padding_m": 0,
+     "reason": "Authored Ehsan hall roof and entrance replacement",
+     "source": "Private Maxar2022 archive manual mosque correlation; Vntrip2020 front; owner gate reference",
+     "confidence": "photo estimate +/-5m",
+     "expected_retired_instances": []
+    }
+   ],
+   "replaces": [
+    "Nhà thờ Hồi giáo Ehsan"
+   ],
+   "aliases": [
+    "Làng Chăm Đa Phước",
+    "Đa Phước",
+    "Cham village Da Phuoc",
+    "dệt thổ cẩm Chăm",
+    "Cham brocade weaving",
+    "Masjid Al Ehsan",
+    "Al Ehsan mosque",
+    "Thánh đường Ehsan"
+   ],
+   "asset": {
+    "tourist": true,
+    "authoredUV": true,
+    "trueScale": true,
+    "mid": "da-phuoc-mid",
+    "far": "da-phuoc-lod",
+    "nearR": 270,
+    "midR": 900,
+    "maxR": 6000,
+    "reference": "blender/places/da-phuoc/references.md"
+   },
+   "postcard": {
+    "pos": [
+     0,
+     -44,
+     14
+    ],
+    "target": [
+     0,
+     9,
+     8
+    ],
+    "eyeLevel": true,
+    "closeUp": true,
+    "fov": 42
+   },
+   "postcards": [
+    {
+     "id": "da-phuoc-street",
+     "pos": [
+      49.09403828961508,
+      -21.858074124172255,
+      1.564845379095503
+     ],
+     "target": [
+      68.94978339878374,
+      -30.723819488594867,
+      3.5113323790955033
+     ],
+     "eyeLevel": true,
+     "eyeHeight": 1.6,
+     "closeUp": true,
+     "fov": 55
+    },
+    {
+     "id": "da-phuoc-weaving",
+     "pos": [
+      21.46666606861416,
+      -40.04348402813132,
+      1.4868913790955034
+     ],
+     "target": [
+      21.252026636104144,
+      -36.750471429083646,
+      0.9371453790955031
+     ],
+     "eyeLevel": true,
+     "eyeHeight": 1.6,
+     "closeUp": true,
+     "fov": 55
+    },
+    {
+     "id": "da-phuoc-river",
+     "pos": [
+      -358.7549514462265,
+      -315.52319219483,
+      5.711171379095504
+     ],
+     "target": [
+      -372.98699195757933,
+      -231.01018122679494,
+      1.7111713790955032
+     ],
+     "eyeLevel": false,
+     "eyeHeight": null,
+     "closeUp": false,
+     "fov": 42
+    }
+   ],
+   "research": {
+    "scope": "Bounded kit/eight representative craft arrangements/Ehsan, not complete village",
+    "household_assignment": "Unverified; official2024 count two looms, three weavers",
+    "height_uncertainty": "Photo estimates +/-20%",
+    "position_uncertainty_m": 5,
+    "landing": "Unverified; deferred, no landing/boat fabricated",
+    "river_camera": {
+     "scene_EN": [
+      -5230,
+      16995
+     ],
+     "cached_height_m": 0.0,
+     "water_confidence": 0.8784313725490196
+    }
+   }
+  },
+  {
+   "model": "da-phuoc-life",
+   "name": "Làng Chăm Đa Phước – nhà sàn và dệt minh hoạ",
+   "en": "Da Phuoc Cham village – representative weaving houses",
+   "x": -5576,
+   "y": 17083,
+   "width": 250,
+   "depth": 250,
+   "front": -0.3665191429188092,
+   "hidePolygons": [],
+   "hideRects": [],
+   "replaces": [],
+   "asset": {
+    "tourist": true,
+    "chamVillage": {
+     "instances": [
+      {
+       "id": "craft-house-1",
+       "kind": "house",
+       "model": "da-phuoc-house-0",
+       "far": "da-phuoc-house-4-lod",
+       "x": -5538.609961410147,
+       "north": 17128.435920127722,
+       "front": 5.950560823859139,
+       "level_m": 2.26666753222734,
+       "scale_x": 1.059480352091677,
+       "scale_z": 1.0412905652307836,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-4-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-1-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-0",
+       "far": null,
+       "x": -5538.824774475536,
+       "north": 17129.039124360912,
+       "front": 5.950560823859139,
+       "level_m": 2.26666753222734,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-0-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-1-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5540.4359003488125,
+       "north": 17127.744221499514,
+       "front": 5.950560823859139,
+       "level_m": 2.26666753222734,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-1-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "x": -5539.194267447091,
+       "north": 17127.050789644632,
+       "front": 5.950560823859139,
+       "level_m": 2.26666753222734,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-2",
+       "kind": "house",
+       "model": "da-phuoc-house-0",
+       "far": "da-phuoc-house-4-lod",
+       "x": -5552.511422229109,
+       "north": 17103.517653972216,
+       "front": 5.849861497167142,
+       "level_m": 2.274290745623294,
+       "scale_x": 0.9367373429453019,
+       "scale_z": 1.0629174823878058,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-4-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-2-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-1",
+       "far": null,
+       "x": -5552.888011418803,
+       "north": 17104.132617859126,
+       "front": 5.849861497167142,
+       "level_m": 2.274290745623294,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-1-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-2-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5554.851434647376,
+       "north": 17103.22296450454,
+       "front": 5.849861497167142,
+       "level_m": 2.274290745623294,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-2-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "x": -5552.924532384232,
+       "north": 17102.386574841592,
+       "front": 5.849861497167142,
+       "level_m": 2.274290745623294,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-3",
+       "kind": "house",
+       "model": "da-phuoc-house-1",
+       "far": "da-phuoc-house-5-lod",
+       "x": -5536.939172260116,
+       "north": 17090.560945367826,
+       "front": 2.8401617923438036,
+       "level_m": 2.205974321533069,
+       "scale_x": 1.0411257293325875,
+       "scale_z": 1.0415063485561982,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-5-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-3-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-2",
+       "far": null,
+       "x": -5536.51606414455,
+       "north": 17091.68605848327,
+       "front": 2.8401617923438036,
+       "level_m": 5.405974321533069,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-0-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-3-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5537.185100880107,
+       "north": 17089.433107119727,
+       "front": 2.8401617923438036,
+       "level_m": 5.405974321533069,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-3-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "x": -5535.9901756215595,
+       "north": 17093.512268017083,
+       "front": 2.8401617923438036,
+       "level_m": 5.405974321533069,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-4",
+       "kind": "house",
+       "model": "da-phuoc-house-3",
+       "far": "da-phuoc-house-7-lod",
+       "x": -5557.158929646044,
+       "north": 17028.801980076998,
+       "front": 2.8267942209961356,
+       "level_m": 2.191687479169233,
+       "scale_x": 0.9398829087281925,
+       "scale_z": 0.9083991997338821,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-7-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-4-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-3",
+       "far": null,
+       "x": -5555.582225898081,
+       "north": 17029.44541250636,
+       "front": 2.8267942209961356,
+       "level_m": 2.191687479169233,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-1-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-4-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5556.805151731706,
+       "north": 17027.950604021822,
+       "front": 2.8267942209961356,
+       "level_m": 2.191687479169233,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-4-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "x": -5555.652944606106,
+       "north": 17030.520121241014,
+       "front": 4.397590547791032,
+       "level_m": 2.191687479169233,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-5",
+       "kind": "house",
+       "model": "da-phuoc-house-2",
+       "far": "da-phuoc-house-6-lod",
+       "x": -5567.337934434539,
+       "north": 17010.118841731986,
+       "front": 2.946620086190009,
+       "level_m": 2.2368006157547127,
+       "scale_x": 1.001741755286392,
+       "scale_z": 0.8919496956759722,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-6-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-5-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-4",
+       "far": null,
+       "x": -5566.78805056816,
+       "north": 17009.806387361725,
+       "front": 2.946620086190009,
+       "level_m": 2.2368006157547127,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-0-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-5-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5566.11821646635,
+       "north": 17008.552863418576,
+       "front": 2.946620086190009,
+       "level_m": 2.2368006157547127,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-5-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "x": -5565.950028243217,
+       "north": 17011.985313377656,
+       "front": 4.517416412984906,
+       "level_m": 2.2368006157547127,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-6",
+       "kind": "house",
+       "model": "da-phuoc-house-3",
+       "far": "da-phuoc-house-7-lod",
+       "x": -5572.338332298639,
+       "north": 16991.06328126145,
+       "front": 2.91633057553607,
+       "level_m": 2.2637263093412945,
+       "scale_x": 0.9630135885546807,
+       "scale_z": 1.0743253006585376,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-7-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-6-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-5",
+       "far": null,
+       "x": -5571.680403865783,
+       "north": 16992.14361925358,
+       "front": 2.91633057553607,
+       "level_m": 2.2637263093412945,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-1-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-6-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5572.040822050101,
+       "north": 16990.12307508618,
+       "front": 2.91633057553607,
+       "level_m": 2.2637263093412945,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-6-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "x": -5571.6438603300485,
+       "north": 16992.750796797627,
+       "front": 4.487126902330966,
+       "level_m": 2.2637263093412945,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-7",
+       "kind": "house",
+       "model": "da-phuoc-house-0",
+       "far": "da-phuoc-house-4-lod",
+       "x": -5587.225056390775,
+       "north": 17001.192837208833,
+       "front": 6.101644402854308,
+       "level_m": 2.3348931822477947,
+       "scale_x": 1.0757216473272115,
+       "scale_z": 0.9808515698428225,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-4-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-7-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-6",
+       "far": null,
+       "x": -5587.23974244601,
+       "north": 17001.500545381914,
+       "front": 6.101644402854308,
+       "level_m": 5.534893182247795,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-0-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-7-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5587.594231110446,
+       "north": 16999.7355417596,
+       "front": 6.101644402854308,
+       "level_m": 5.534893182247795,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-7-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "x": -5587.534408712889,
+       "north": 16999.67372525088,
+       "front": 6.101644402854308,
+       "level_m": 5.534893182247795,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-8",
+       "kind": "house",
+       "model": "da-phuoc-house-1",
+       "far": "da-phuoc-house-5-lod",
+       "x": -5583.423565090717,
+       "north": 17014.09702727704,
+       "front": 5.947480902746498,
+       "level_m": 2.3157224146254785,
+       "scale_x": 0.9769055033238958,
+       "scale_z": 1.028770856311843,
+       "near_m": 35,
+       "mid_m": 300,
+       "max_m": 2500,
+       "mid_model": "da-phuoc-house-5-mid",
+       "detail_group": "house"
+      },
+      {
+       "id": "craft-house-8-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-7",
+       "far": null,
+       "x": -5584.923369497583,
+       "north": 17013.13755516116,
+       "front": 5.947480902746498,
+       "level_m": 2.3157224146254785,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "mid_model": "da-phuoc-loom-1-mid",
+       "detail_group": "loom"
+      },
+      {
+       "id": "craft-house-8-tools",
+       "kind": "tools",
+       "model": "da-phuoc-tools-0",
+       "far": null,
+       "x": -5583.491508229827,
+       "north": 17016.027152591585,
+       "front": 5.947480902746498,
+       "level_m": 2.3157224146254785,
+       "near_m": 65,
+       "mid_m": 65,
+       "max_m": 65,
+       "near_only": true
+      },
+      {
+       "id": "craft-house-8-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "x": -5584.789539491459,
+       "north": 17011.396265544394,
+       "front": 5.947480902746498,
+       "level_m": 2.3157224146254785,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "near_only": true
+      },
+      {
+       "id": "street-house-9",
+       "kind": "house",
+       "model": "da-phuoc-house-4",
+       "far": "da-phuoc-house-4-lod",
+       "scale_x": 0.9174955930382859,
+       "scale_z": 0.42863852865259844,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5514.249686638686,
+       "north": 17162.260201589772,
+       "front": 2.852291913715931,
+       "level_m": 2.2261409359795845
+      },
+      {
+       "id": "street-house-9-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5513.7225651698445,
+       "north": 17162.103303138196,
+       "front": 2.852291913715931,
+       "level_m": 2.2261409359795845
+      },
+      {
+       "id": "street-house-10",
+       "kind": "house",
+       "model": "da-phuoc-house-5",
+       "far": "da-phuoc-house-5-lod",
+       "scale_x": 0.6684833674940284,
+       "scale_z": 0.8143377594305434,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5515.076809274853,
+       "north": 17156.347055768256,
+       "front": 2.7606874376444877,
+       "level_m": 2.2088819010448972
+      },
+      {
+       "id": "street-house-11",
+       "kind": "house",
+       "model": "da-phuoc-house-6",
+       "far": "da-phuoc-house-6-lod",
+       "scale_x": 0.9361492430131391,
+       "scale_z": 1.175021656520971,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5518.542049630553,
+       "north": 17142.999445033107,
+       "front": 2.9169031562108914,
+       "level_m": 2.1890936556515337
+      },
+      {
+       "id": "street-house-11-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5518.26056523177,
+       "north": 17142.935112160678,
+       "front": 2.9169031562108914,
+       "level_m": 2.1890936556515337
+      },
+      {
+       "id": "street-house-12",
+       "kind": "house",
+       "model": "da-phuoc-house-7",
+       "far": "da-phuoc-house-7-lod",
+       "scale_x": 1.3221350786323596,
+       "scale_z": 1.052664542802544,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5522.030545293422,
+       "north": 17137.480378340602,
+       "front": 2.7373121699922534,
+       "level_m": 2.1977710354017246
+      },
+      {
+       "id": "street-house-13",
+       "kind": "house",
+       "model": "da-phuoc-house-4",
+       "far": "da-phuoc-house-4-lod",
+       "scale_x": 1.3479853369520833,
+       "scale_z": 0.881029362981991,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5527.391382190634,
+       "north": 17128.647497679638,
+       "front": 2.788211634531509,
+       "level_m": 2.2136193023658444
+      },
+      {
+       "id": "street-house-13-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5527.023942668688,
+       "north": 17128.51196218499,
+       "front": 2.788211634531509,
+       "level_m": 2.2136193023658444
+      },
+      {
+       "id": "street-house-14",
+       "kind": "house",
+       "model": "da-phuoc-house-5",
+       "far": "da-phuoc-house-5-lod",
+       "scale_x": 0.4720002924599885,
+       "scale_z": 0.35794301285129393,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5519.881864276133,
+       "north": 17101.31836732175,
+       "front": 4.39701758411725,
+       "level_m": 2.1309755391493725
+      },
+      {
+       "id": "street-house-16",
+       "kind": "house",
+       "model": "da-phuoc-house-7",
+       "far": "da-phuoc-house-7-lod",
+       "scale_x": 0.7792760936806022,
+       "scale_z": 0.8449039852651256,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5548.137862289821,
+       "north": 17067.880897257506,
+       "front": 2.8412773530894317,
+       "level_m": 2.2051489890981966
+      },
+      {
+       "id": "street-house-16-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5547.75167309926,
+       "north": 17067.76130151137,
+       "front": 2.8412773530894317,
+       "level_m": 2.2051489890981966
+      },
+      {
+       "id": "street-house-18",
+       "kind": "house",
+       "model": "da-phuoc-house-5",
+       "far": "da-phuoc-house-5-lod",
+       "scale_x": 0.5858949523916667,
+       "scale_z": 0.7263843956813787,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5536.209008558565,
+       "north": 17063.058344543337,
+       "front": 2.814824260595861,
+       "level_m": 2.144253800211458
+      },
+      {
+       "id": "street-house-19",
+       "kind": "house",
+       "model": "da-phuoc-house-6",
+       "far": "da-phuoc-house-6-lod",
+       "scale_x": 0.9725263546393861,
+       "scale_z": 2.8340336795940546,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5545.303252605926,
+       "north": 17054.8855562513,
+       "front": 2.763735209573115,
+       "level_m": 2.1742452149515774
+      },
+      {
+       "id": "street-house-19-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5545.574572125133,
+       "north": 17054.993251239055,
+       "front": 2.763735209573115,
+       "level_m": 2.1742452149515774
+      },
+      {
+       "id": "street-house-20",
+       "kind": "house",
+       "model": "da-phuoc-house-7",
+       "far": "da-phuoc-house-7-lod",
+       "scale_x": 0.7394212945507734,
+       "scale_z": 1.0510474539975416,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5574.649275797278,
+       "north": 16985.931528371675,
+       "front": 2.86608383225003,
+       "level_m": 2.27927386757492
+      },
+      {
+       "id": "street-house-21",
+       "kind": "house",
+       "model": "da-phuoc-house-4",
+       "far": "da-phuoc-house-4-lod",
+       "scale_x": 1.169720942131464,
+       "scale_z": 0.438262388748214,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5596.139109920415,
+       "north": 16996.309727317595,
+       "front": 5.9837596915498725,
+       "level_m": 2.3625501526529127
+      },
+      {
+       "id": "street-house-21-display",
+       "kind": "display",
+       "model": "da-phuoc-display-1",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5596.661397340999,
+       "north": 16996.470961108047,
+       "front": 5.9837596915498725,
+       "level_m": 2.3625501526529127
+      },
+      {
+       "id": "street-house-23",
+       "kind": "house",
+       "model": "da-phuoc-house-6",
+       "far": "da-phuoc-house-6-lod",
+       "scale_x": 0.6760166361234266,
+       "scale_z": 0.7401458499039919,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5597.041206200814,
+       "north": 16980.243943514168,
+       "front": 6.031752271555475,
+       "level_m": 2.369256609093798
+      },
+      {
+       "id": "street-house-24",
+       "kind": "house",
+       "model": "da-phuoc-house-7",
+       "far": "da-phuoc-house-7-lod",
+       "scale_x": 1.0399292587468953,
+       "scale_z": 1.874450842421775,
+       "near_m": 70,
+       "mid_m": 300,
+       "max_m": 2500,
+       "x": -5589.410176151701,
+       "north": 17024.632501550725,
+       "front": 5.870356196028942,
+       "level_m": 2.3317453377523787
+      },
+      {
+       "id": "street-house-24-display",
+       "kind": "display",
+       "model": "da-phuoc-display-0",
+       "far": null,
+       "near_only": true,
+       "near_m": 225,
+       "mid_m": 225,
+       "max_m": 225,
+       "x": -5589.450426747765,
+       "north": 17024.6501312674,
+       "front": 5.870356196028942,
+       "level_m": 2.3317453377523787
+      },
+      {
+       "id": "craft-house-3-under-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-0",
+       "mid_model": "da-phuoc-loom-0-mid",
+       "far": null,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "detail_group": "loom",
+       "x": -5534.0744342714215,
+       "north": 17089.67028479492,
+       "front": 2.8401617923438036,
+       "level_m": 2.205974321533069
+      },
+      {
+       "id": "craft-house-8-under-loom",
+       "kind": "loom",
+       "model": "da-phuoc-loom-1",
+       "mid_model": "da-phuoc-loom-1-mid",
+       "far": null,
+       "near_m": 40,
+       "mid_m": 90,
+       "max_m": 90,
+       "detail_group": "loom",
+       "x": -5586.256100557386,
+       "north": 17015.085330282225,
+       "front": 5.947480902746498,
+       "level_m": 2.3157224146254785
+      }
+     ],
+     "source": "blender/places/da-phuoc/spatial.json",
+     "scope": "21 representative local house types on traced roofs;198m bounded corridor, not a household census",
+     "nearLimits": {
+      "house": 2,
+      "loom": 2
+     },
+     "weavingHost": "craft-house-3",
+     "weavingSubject": "craft-house-3-under-loom"
+    }
+   }
   }
  ],
  "suppressedLandmarks": [

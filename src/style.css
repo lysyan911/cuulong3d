@@ -112,13 +112,54 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   padding: 2px 7px; border-radius: 4px; z-index: 3; pointer-events: none; }
 .img-credit.hidden { display: none; }
 
-.loading { position: fixed; inset: 0; display: grid; place-items: center; background: radial-gradient(#1c2622, #0b0f0d); z-index: 20; transition: opacity 0.6s; }
+/* loading screen: 19th-century natural-history plates of the delta spread over old paper around the title, like a
+   naturalist's page: insects and the kingfisher in the sky, birds and the river's culture (stilt houses, Khmer stupa) at
+   the sides, plants, the buffalo, a boat in the flooded forest and the cá lóc along the bottom. Plates are multiplied
+   onto the paper colour, so their white paper disappears and only the inks remain (web/ui/loading, CREDITS.md). */
+.loading { --paper: #efe6d2; --ink: #3b3024; --ink-soft: #7a6a54; position: fixed; inset: 0; z-index: 20;
+  background: var(--paper); color: var(--ink); transition: opacity 0.8s; overflow: hidden; }
+.loading::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(120, 90, 50, 0.22) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.36 0 0 0 0 0.22 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .loading.done { opacity: 0; pointer-events: none; }
-.loading-card { width: min(360px, 86vw); text-align: center; }
-.loading-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.3px; }
+/* (no transforms or opacity on containers: they would isolate the plates from the paper and break the multiply) */
+/* plates are laid out on a page at most 21:9 wide (wider screens: plain paper either side) */
+.lp-page { position: absolute; top: 0; bottom: 0; left: max(0px, calc(50% - 117vh)); right: max(0px, calc(50% - 117vh)); }
+.lp-item { --t: translate(-50%, -50%) rotate(var(--r, 0deg)); position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%);
+  width: calc(var(--w) * min(1vh, 0.5625vw)); height: auto; mix-blend-mode: multiply;   /* (narrower than 16:9: sized as at 16:9) */ transform: var(--t); opacity: 0;
+  animation: lpIn 1.1s ease-out var(--d, 0s) forwards; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+.lp-flutter { animation: lpIn 1.1s ease-out var(--d, 0s) forwards, lpFlutter 5.5s ease-in-out calc(var(--d, 0s) + 1.1s) infinite; }
+.lp-swim { animation: lpIn 1.1s ease-out var(--d, 0s) forwards, lpSwim 7s ease-in-out calc(var(--d, 0s) + 1.1s) infinite; }
+@keyframes lpIn { from { opacity: 0; transform: var(--t) translateY(10px); } to { opacity: 1; transform: var(--t); } }
+@keyframes lpFlutter { 0%, 100% { opacity: 1; transform: var(--t); } 50% { opacity: 1; transform: var(--t) rotate(2.5deg) translate(3px, -6px); } }
+@keyframes lpSwim { 0%, 100% { opacity: 1; transform: var(--t); } 50% { opacity: 1; transform: var(--t) rotate(-1.5deg) translateX(8px); } }
+@keyframes lpInPlain { from { opacity: 0; } to { opacity: 1; } }
+.lp-card { --cw: min(460px, 30vw); position: absolute; left: calc(50% - var(--cw) / 2); top: 0; bottom: 6vh; width: var(--cw);
+  display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.lp-card > * { opacity: 0; animation: lpInPlain 1.2s ease-out 0.5s forwards; }
+.lp-palms { display: block; width: 86%; height: auto; margin: 0 auto 16px; mix-blend-mode: multiply; }
+.lp-brocade { display: block; width: 100%; height: 10px; margin-bottom: 18px; opacity: 0.9; }
+.loading-title { font-family: "EB Garamond", Garamond, "Times New Roman", serif; font-weight: 500; font-size: clamp(34px, 4.4vw, 64px);
+  line-height: 1.02; letter-spacing: -0.01em; margin: 0 0 26px; color: var(--ink); }
+.loading .bar { height: 2px; background: rgba(59, 48, 36, 0.16); border-radius: 0; overflow: hidden; }
+.loading .bar > div { background: #7d2a22; transition: width 0.4s ease-out; }
+.lp-status { display: flex; justify-content: space-between; gap: 12px; margin-top: 9px; }
 .loading-text { font-size: 13px; color: var(--muted); margin-bottom: 14px; min-height: 18px; }
-.bar { height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
-.bar > div { height: 100%; width: 0; background: var(--accent); transition: width 0.25s; }
+.loading .loading-text { font-family: "EB Garamond", Garamond, serif; font-size: 15px; color: var(--ink-soft); margin: 0; letter-spacing: 0.02em; }
+.lp-credit { margin: 18px 0 0; font-family: "EB Garamond", Garamond, serif; font-size: 11px; line-height: 1.35; color: rgba(59, 48, 36, 0.5); }
+@media (max-aspect-ratio: 1/1) {      /* portrait / phone: plates above and below, the title in the lower middle */
+  .lp-item { left: calc(var(--mx) * 1%); top: calc(var(--my) * 1%); width: calc(var(--mw) * 1vw); }
+  .lp-desk { display: none; }
+  .lp-card { --cw: auto; left: 24px; right: 24px; width: auto; top: 50%; bottom: max(13%, 36vw); justify-content: center; }   /* (above the plants) */
+  .lp-palms { display: none; }
+  .loading-title { font-size: clamp(34px, 9.5vw, 84px); margin-bottom: 4vw; }
+  .loading .loading-text { font-size: clamp(15px, 2.3vw, 22px); }
+  .lp-credit { font-size: clamp(9.5px, 1.45vw, 14px); margin-top: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-item, .lp-card > * { animation: none !important; opacity: 1; }
+}
 
 .credits { color: var(--text); max-width: min(560px, 92vw); padding: 18px 20px; background: var(--panel-solid); }
 .credits::backdrop { background: rgba(0, 0, 0, 0.45); }
@@ -200,3 +241,95 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   .sidebar { top: 112px; }
 }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; } }
+
+/* ---- antique plate theme (Claude Code, owner's request 2026-10-11): the interface as a 19th-century hand-coloured
+   atlas of Indochina, matching the loading screen and the map table: parchment panels with a double ink rule, ink text
+   in EB Garamond, small-caps headings, vermilion for the chosen buttons, round paper medallions for the map tools, a
+   Cham brocade band under the title, serif map labels with a paper halo. Variables first, then the components. */
+:root, :root[data-theme="light"] {
+  --paper: #efe6d2; --paper-2: #e5d7b8; --ink: #3b3024; --ink-soft: #77664f; --vermilion: #7d2a22; --gold: #b6873a;
+  --bg: #d9ccb0;
+  --panel: rgba(239, 230, 210, 0.95);
+  --panel-solid: #efe6d2;
+  --line: rgba(59, 48, 36, 0.26);
+  --text: #3b3024;
+  --muted: #77664f;
+  --accent: #7d2a22;
+  --real: #3d7a68; --embellished: #a5432f; --fictional: #6c4a8c; --reference: #6b7a80; --warn: #c99331;
+  --radius: 4px;
+  --font: "EB Garamond", Garamond, "Palatino Linotype", "Times New Roman", serif;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.36 0 0 0 0 0.22 0 0 0 0.13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --brocade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10'%3E%3Crect width='24' height='10' fill='%237d2a22'/%3E%3Crect width='24' height='1.5' fill='%232f2a3a'/%3E%3Crect y='8.5' width='24' height='1.5' fill='%232f2a3a'/%3E%3Cpath d='M0 5L6 2L12 5L6 8ZM12 5L18 2L24 5L18 8Z' fill='%23d9a441'/%3E%3Cpath d='M3 5L6 3.6L9 5L6 6.4ZM15 5L18 3.6L21 5L18 6.4Z' fill='%232f2a3a'/%3E%3C/svg%3E");
+  --rule: inset 0 0 0 3px var(--paper), inset 0 0 0 4px rgba(59, 48, 36, 0.32);
+  --lift: 0 6px 22px rgba(45, 30, 12, 0.32), 0 1px 2px rgba(45, 30, 12, 0.25);
+}
+html, body { font-size: 15px; }
+.panel, .title, .ux-dialog, .credits, .welcome, .hint, .map-status:not(:empty) {
+  background: var(--grain), var(--panel); color: var(--text); border: 1px solid rgba(59, 48, 36, 0.55);
+  border-radius: var(--radius); box-shadow: var(--rule), var(--lift); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.sidebar { scrollbar-width: thin; scrollbar-color: rgba(59, 48, 36, 0.38) transparent; padding: 8px 16px 14px; }
+.info { scrollbar-width: thin; scrollbar-color: rgba(59, 48, 36, 0.38) transparent; padding: 18px 20px 20px; }
+
+/* title: the cartouche, with a brocade band */
+.title { position: relative; padding: 9px 18px 15px; }
+.title::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 6px; height: 5px; background: var(--brocade) repeat-x center / auto 5px; opacity: 0.92; }
+.title h1 { font-family: var(--font); font-weight: 500; font-size: 21px; letter-spacing: 0.01em; color: var(--ink); }
+.title p { font-style: italic; font-size: 13px; color: var(--ink-soft); margin-top: 0; }
+
+/* headings: small capitals with a rubric rule */
+.sidebar h2, .info h4 { font-family: var(--font); font-variant: small-caps; text-transform: lowercase; font-weight: 500;
+  letter-spacing: 0.12em; font-size: 15.5px; color: var(--vermilion); display: flex; align-items: center; gap: 8px; }
+.sidebar h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(125, 42, 34, 0.45), transparent); }
+.sidebar section { border-bottom: 1px solid rgba(59, 48, 36, 0.16); }
+
+/* buttons: paper slips with a thin ink edge; chosen ones in vermilion */
+.btn-grid button, .seg button, .chip, .ux-dialog input, .place-result {
+  font-family: var(--font); color: var(--ink); background: rgba(255, 250, 238, 0.55); border: 1px solid rgba(59, 48, 36, 0.3); border-radius: 3px; }
+.btn-grid button, .seg button { font-size: 14px; line-height: 1.2; }
+.btn-grid button:hover, .seg button:hover, .chip:hover, .place-result:hover { border-color: var(--vermilion); background: rgba(255, 250, 238, 0.9); }
+.seg button.on { background: var(--vermilion); border-color: var(--vermilion); color: #f6eedc; box-shadow: inset 0 0 0 2px rgba(246, 238, 220, 0.25); }
+.chip { font-weight: 600; letter-spacing: 0.04em; }
+.layers label { font-size: 14px; }
+.layers input { accent-color: var(--vermilion); }
+.link { color: var(--vermilion); font-family: var(--font); font-size: 13.5px; text-decoration: underline; text-decoration-color: rgba(125, 42, 34, 0.35); text-underline-offset: 3px; }
+.small, .small p { color: var(--ink-soft); font-size: 13px; }
+.legend { color: var(--ink-soft); font-size: 13px; }
+
+/* map tools: round paper medallions with a double ring */
+.icon-btn { color: var(--ink); background: var(--grain), var(--panel); border: 1px solid rgba(59, 48, 36, 0.55); border-radius: 50%;
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px rgba(59, 48, 36, 0.3), var(--lift); font-family: var(--font); }
+.icon-btn:hover { border-color: var(--vermilion); color: var(--vermilion); }
+.map-tools svg { stroke-width: 1.6; }
+#compassNeedle span { color: var(--vermilion); }
+.topbar .map-tools + .chip { border-radius: 999px; background: var(--grain), var(--panel); border-color: rgba(59, 48, 36, 0.55);
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4px rgba(59, 48, 36, 0.3), var(--lift); padding: 8px 14px; }
+.info .close { border-radius: 50%; }
+
+/* story sites and the info card */
+.site-list li { font-size: 15px; border-radius: 3px; }
+.site-list li:hover, .site-list li.active { background: rgba(125, 42, 34, 0.08); }
+.site-id { font-family: var(--font); font-weight: 600; box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px rgba(59, 48, 36, 0.45); }
+.info h3 { font-family: var(--font); font-weight: 500; font-size: 25px; line-height: 1.15; color: var(--ink); }
+.info .sub { font-style: italic; color: var(--ink-soft); font-size: 14.5px; }
+.info p { font-size: 15.5px; line-height: 1.5; }
+.info .conflict { background: rgba(201, 147, 49, 0.14); border-left: 3px solid var(--warn); border-radius: 2px; }
+.badge { font-family: var(--font); font-size: 13px; border-radius: 3px; letter-spacing: 0.02em; }
+.hint { font-style: italic; font-size: 14px; border-radius: 999px; }
+.ux-dialog::backdrop, .credits::backdrop { background: rgba(40, 28, 14, 0.35); backdrop-filter: blur(2px); }
+.dialog-head h2, .welcome h2 { font-family: var(--font); font-weight: 500; font-size: 23px; color: var(--ink); }
+.control-list dt { color: var(--vermilion); }
+.ux-dialog input::placeholder { color: var(--ink-soft); font-style: italic; }
+:focus-visible { outline: 2px solid var(--vermilion); }
+
+/* map labels: engraved serif names with a paper halo; story sites as paper tags */
+.lbl { font-family: var(--font); color: #2e261c; font-weight: 600;
+  text-shadow: 0 0 3px #f3ead6, 0 0 3px #f3ead6, 0 0 7px rgba(243, 234, 214, 0.9); }
+.lbl.city { font-size: 18px; font-weight: 600; letter-spacing: 0.02em; }
+.lbl.town { font-size: 14.5px; }
+.lbl.village { font-size: 13px; font-weight: 500; color: #3d3326; }
+.lbl.peak { font-size: 13.5px; color: #5a3a24; }
+.lbl.river { font-size: 14px; color: #2f5a6a; }
+.lbl.region { font-size: 15px; color: #6b5a44; letter-spacing: 0.3em; font-variant: small-caps; }
+.site-lbl { background: var(--grain), rgba(239, 230, 210, 0.95); color: var(--ink); font: 600 14px var(--font);
+  border: 1px solid rgba(59, 48, 36, 0.5); box-shadow: 0 3px 10px rgba(45, 30, 12, 0.35); }
+.site-lbl.small { font-size: 12.5px; background: rgba(239, 230, 210, 0.85); }

@@ -174,9 +174,11 @@ export function installAerialHaze(sunDir) {
       // optical depth through haze of density fogDensity * exp(-y / H) along the view ray
       vec3 fogRay = vFogWorld - cameraPosition;
       float fogLen = length(fogRay), fogB = 1.0 / ${HAZE_H.toFixed(1)};
-      float fogK = fogRay.y * fogB;
-      float fogOd = fogDensity * exp(-max(cameraPosition.y, 0.0) * fogB) * fogLen
-                  * (abs(fogK) > 1e-3 ? (1.0 - exp(-fogK)) / fogK : 1.0);
+      // (as a difference of the densities at both ends: exp(-k) alone overflows to inf for cameras above ~97 km,
+      // and inf * 0 turned the whole view black when zoomed far out)
+      float fogK = fogRay.y * fogB, fogH0 = max(cameraPosition.y, 0.0) * fogB;
+      float fogE0 = exp(-fogH0);
+      float fogOd = fogDensity * fogLen * (abs(fogK) > 1e-3 ? (fogE0 - exp(-(fogH0 + fogK))) / fogK : fogE0);
       float fogFactor = 1.0 - exp(-fogOd);
       vec3 fogDir = fogRay / max(fogLen, 1.0);
       float fogMu = dot(fogDir, fogSun);

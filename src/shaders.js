@@ -16,6 +16,7 @@ import * as THREE from 'three';
 import { FIELD } from './surface.js';
 import { skyUniforms, patchCloudShadow, SKY_GLSL } from './render/atmosphere.js';
 import { GROUND } from './render/ground.js';
+import { MAP_GLSL } from './render/maptable.js';
 const NO_CROP = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
 NO_CROP.needsUpdate = true;
 
@@ -134,7 +135,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
   };
   material.userData.terrainUniforms = uniforms;
   material.onBeforeCompile = (shader) => {
-    Object.assign(shader.uniforms, uniforms, GROUND, { uTime: shared.uTime, uExag: shared.uExag });
+    Object.assign(shader.uniforms, uniforms, GROUND, { uTime: shared.uTime, uExag: shared.uExag }, shared.mapTable || {});
     const img = material.map && material.map.image;
     if (img && img.width) uniforms.uTexel.value.set(1 / img.width, 1 / img.height);
 
@@ -146,7 +147,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         '#include <project_vertex>\nvWPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
 
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON)
+      .replace('#include <common>', '#include <common>\n' + GLSL_COMMON + MAP_GLSL)
       .replace('#include <map_fragment>', /* glsl */ `
         #include <map_fragment>
         vec2 P = vec2(vWPos.x, -vWPos.z);                 // map coords (east, north)
@@ -157,9 +158,35 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         float bank = smoothstep(0.05, 0.3, msk.r) * (1.0 - smoothstep(0.55, 0.9, msk.r));   // thin edge band
         float shallowF = msk.g;
 
+        // cumulus left in the Sentinel-2 mosaic: bright, colourless to
+        // greenish (thin cloud over vegetation) and much brighter than the land ~2 km around it. Bare rock, quarries,
+        // sand and dry fields are warm (red >= green) and keep their brightness; towns are only half affected. A cloud
+        // takes the colour of the land around it.
+        float cloudK = 0.0;
+        vec3 cloudUnder = vec3(0.0);
+        #ifdef USE_MAP
+          // (Sentinel-2 imagery only, 10-20 m: in the streamed 2.4 m photos bright roofs, roads and dry fields read
+          // as cloud and whole tiles were turned to their average beige)
+          if (waterF < 0.5 && uTexelM > 7.0) {
+            vec3 c0 = diffuseColor.rgb;
+            float l0 = dot(c0, vec3(0.2126, 0.7152, 0.0722));
+            if (l0 > 0.2) {
+              vec3 lo = textureLod(map, vMapUv, log2(2000.0 / uTexelM)).rgb;   // ~2 km around (clouds are up to ~1 km)
+              float lL = dot(lo, vec3(0.2126, 0.7152, 0.0722));
+              float chroma = (max(c0.r, max(c0.g, c0.b)) - min(c0.r, min(c0.g, c0.b))) / max(max(c0.r, max(c0.g, c0.b)), 1e-3);
+              vec3 crop0 = texture2D(uCrop, vGroupUv).rgb;
+              float townC = smoothstep(0.1, 0.4, max(crop0.g, crop0.b));     // (3D houses cover the roofs there)
+              cloudK = smoothstep(0.2, 0.34, l0) * smoothstep(-0.03, 0.0, c0.g - c0.r) * (1.0 - smoothstep(0.3, 0.45, chroma))
+                     * smoothstep(1.4, 2.2, l0 / max(lL, 1e-3)) * (1.0 - 0.5 * townC);
+              cloudUnder = mix(lo * min(1.0, 0.09 / max(lL, 1e-3)), vec3(0.06, 0.09, 0.035), 0.4);   // the land around
+              diffuseColor.rgb = mix(c0, cloudUnder, cloudK);
+            }
+          }
+        #endif
+
         // crispness 1: unsharp mask when an imagery texel covers several screen pixels
         #ifdef USE_MAP
-          float sharpF = smoothstep(1.5, 4.0, uTexelM / px);
+          float sharpF = smoothstep(1.5, 4.0, uTexelM / px) * (1.0 - cloudK);
           if (sharpF > 0.0) {
             vec3 blur = 0.25 * (texture2D(map, vMapUv + vec2(uTexel.x, 0.0)).rgb + texture2D(map, vMapUv - vec2(uTexel.x, 0.0)).rgb
                               + texture2D(map, vMapUv + vec2(0.0, uTexel.y)).rgb + texture2D(map, vMapUv - vec2(0.0, uTexel.y)).rgb);
@@ -195,6 +222,7 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
           vec3 base = diffuseColor.rgb;
           #ifdef USE_MAP
             base = mix(base, texture2D(map, vMapUv, 3.0).rgb, steepF * 0.9);
+            base = mix(base, cloudUnder, cloudK);
           #endif
           float green = smoothstep(-0.005, 0.035, base.g - max(base.r, base.b) * 0.93);
           float bright = dot(base, vec3(0.333));
@@ -447,6 +475,15 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         // clear river bank: darken the water edge slightly
         float bankVis = bank * (1.0 - smoothstep(4000.0, 20000.0, camDist));
         diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.11, 0.085, 0.047), bankVis * 0.45);
+
+        // seen from high up, the land outside the province is the antique map the 3D map lies on (render/maptable.js):
+        // paper and ink, no water sheen, no relief bumps; the province keeps its colour
+        float mapOut = uMapMode > 0.001 ? uMapMode * mtOutside(P) : 0.0;
+        if (mapOut > 0.001) {
+          diffuseColor.rgb = mix(diffuseColor.rgb, oldMap(P, px), mapOut);
+          waterF *= 1.0 - mapOut; paddyWet *= 1.0 - mapOut; groundWet *= 1.0 - mapOut;
+          hillBumpK *= 1.0 - mapOut; groundN *= 1.0 - mapOut;
+        }
       `)
       .replace('#include <lights_pars_begin>', `${SKY_GLSL}\n#include <lights_pars_begin>`)
       .replace('#include <roughnessmap_fragment>', /* glsl */ `
@@ -549,6 +586,9 @@ export function patchTerrainMaterial(material, maskTexture, shared, { maskXf = [
         #include <opaque_fragment>
       `);
     patchCloudShadow(shader, skyUniforms());
+    // (cloud shadows barely touch the old map: it is a sheet of paper, not land)
+    shader.fragmentShader = shader.fragmentShader.replace('float cloudShade = cloudShadow(cloudWP);',
+      'float cloudShade = mix(cloudShadow(cloudWP), 1.0, mapOut * 0.85);');
   };
-  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v29';
+  material.customProgramCacheKey = () => 'cuulong-terrain-rice-v35';
 }

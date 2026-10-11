@@ -15,6 +15,7 @@ import { metricUVs, modelPhotoMaterial } from './photo-textures.js';
 import { cloudUniforms, patchCloudShadow } from './render/atmosphere.js';
 import { touristLOD } from './tourist-lod.js';
 import { BungLakeLife } from './bung-lake-life.js';
+import { ChamVillage } from './cham-village.js';
 
 const MODELS = 'models/';
 // (Claude Code) cloud shade and rain wetness on the models too, as on the terrain and houses (render/atmosphere.js)
@@ -41,7 +42,7 @@ const LANDMARK = {
   'long-xuyen-canal-courtyard': { x: 217.16, z: 175.70, trueScale: true, authoredUV: true, lod: 'long-xuyen-canal-courtyard-lod' },
 };
 const landmarkSpec = id => LANDMARK[id.replace(/-(lod|mid)$/, '')];
-const authoredMaps = id => id === 'canal-access/moored-blue-sampan' || id.startsWith('bung-raft-') || id.startsWith('bung-stake') || id.startsWith('long-xuyen-cathedral') || landmarkSpec(id)?.authoredUV;
+const authoredMaps = id => id.startsWith('da-phuoc') || id === 'canal-access/moored-blue-sampan' || id.startsWith('bung-raft-') || id.startsWith('bung-stake') || id.startsWith('long-xuyen-cathedral') || landmarkSpec(id)?.authoredUV;
 const BOAT = {   // length, beam, speed (m/s)
   'open-cargo-boat': { L: 17, B: 4.8, v: 3.2 },
   'covered-cargo-boat': { L: 21, B: 5.6, v: 3.0 },
@@ -75,8 +76,9 @@ class Library {
         byMat.get(mat.uuid).geos.push(g);
       });
       entry.parts = [...byMat.values()].map(({ mat, geos }) => {
+        const daPhuocSheets = id.startsWith('da-phuoc') && mat.side === THREE.DoubleSide;
         const xvaySheets = id.replace(/-(lod|mid)$/, '') === 'xvay-ton' && mat.side === THREE.DoubleSide;
-        mat.side = mat.alphaTest > 0 || xvaySheets ? THREE.DoubleSide : THREE.FrontSide;
+        mat.side = mat.alphaTest > 0 || xvaySheets || daPhuocSheets ? THREE.DoubleSide : THREE.FrontSide;
         // Full and far authored exports use identical baked maps: upload each only once.
         if (authoredMaps(id)) {
           const discarded = new Set();
@@ -209,6 +211,10 @@ export class PropsLayer {
   setLandmarks(list) {
     const ex = this.meta.vert_exag;
     for (const L of list) {
+      if (L.asset?.chamVillage) {
+        this.placeLayers.push(new ChamVillage(this.group, this.lib, Instanced, this.meta, L.asset.chamVillage));
+        continue; // Exact house masks belong to the Ehsan hero; no regional clearing.
+      }
       if (L.asset?.lakeLife) {
         this.placeLayers.push(new BungLakeLife(this.group, this.lib, Instanced, this.terrain, L.asset.lakeLife));
         continue; // Distributed static instances; no anchor mesh or house clearing.

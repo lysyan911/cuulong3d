@@ -20,6 +20,10 @@ const BRIDGE = 1, TOWN = 2, DYKE = 4, ONEWAY = 8, PALMS = 16;
 const PART = { road: 0, shoulder: 1, slope: 2, rail: 3, pier: 4, walk: 5, kerb: 6, mark: 7, median: 8 };
 const MEDIAN_H = 0.22;                 // median kerb height above the road
 const KERB = 0.18;                     // town sidewalks stand this much above the street
+// streets that have no paint in reality: no lane lines, zebra crossings, stop lines or traffic lights within r m of
+// [east, north] (Đa Phước's Cham craft street: an unmarked village lane, Codex's round-2 review)
+const QUIET_STREETS = [[-5540, 17115, 150]];
+const quietAt = (x, y) => QUIET_STREETS.some(([qx, qy, r]) => (x - qx) ** 2 + (y - qy) ** 2 < r * r);
 
 /** Embankment height (m) above the fields by class (0 motorway .. 8 path) and flags. */
 function embankment(cls, flags) {
@@ -315,7 +319,8 @@ export class Road3DLayer {
       for (let i = 0; i < np; i++) {
         const [x, y] = P[i], [nx, ny] = N[i];
         const yTop = bridge ? top[i] : ground[i];
-        const rowLanes = lanes && onOther(x, y, c, -0.5) ? 0 : lanes;
+        const quiet = lanes && quietAt(x, y);
+        const rowLanes = quiet || (lanes && onOther(x, y, c, -0.5)) ? 0 : lanes;
         const row = [];
         ks = [];
         for (let k = 0; k < 5; k++) {                // 5 strips, own vertices each so every part keeps its colour
@@ -327,7 +332,7 @@ export class Road3DLayer {
             // town: street just above the ground, sidewalks a kerb higher, outer edge back down to the ground
             const yy = bridge ? yTop : !street ? yTop + rise[j] + (isRoad ? roadLift : 0)
                      : isRoad ? yTop + 0.06 + roadLift : (j === 0 || j === 5) ? yTop : yTop + 0.06 + KERB;
-            row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, isRoad ? rowLanes : lanes, parts[k]));
+            row.push(vert(x + nx * offs[j], yy, y + ny * offs[j], S[i], offs[j], hw, surf, isRoad || quiet ? rowLanes : lanes, parts[k]));
           }
         }
         if (prev) for (let n = 0; n < row.length; n += 2) {
@@ -365,7 +370,7 @@ export class Road3DLayer {
           const r0 = oHw + 0.6;
           jS.push([S[i], r0 + 6]);
           const marked = surf === ASPHALT && hw >= 2.4 && major >= 1 && mid >= 2, signal = marked && major >= 2;
-          if (!marked) continue;
+          if (!marked || quietAt(P[i][0], P[i][1])) continue;
           for (const k of [i + 1, i - 1]) {
             if (k < 0 || k >= np) continue;
             const segL = Math.abs(S[k] - S[i]);

@@ -19498,6 +19498,4150 @@
    ],
    "basis": "Measured vegetated bank pixels, no copied texture pixels. Individual roof polygons buffered2.5m, mapped roads buffered3–5m, roots only5–32m landward of cached water outline. Mixed kit forms/height estimates; no surveyed species inventory. Final integration retains one measured candidate root per11m cell for the source tree budget; no root moved, no existing trees removed.",
    "treeExclusions": []
+  },
+  {
+   "id": "co-to",
+   "renderGroup": "co-to",
+   "trees": [
+    {
+     "x": -19546.787,
+     "y": -20049.507,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 215.459,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19680.762,
+     "y": -19715.543,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 78.35,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19609.842,
+     "y": -19948.758,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 219.613,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19492.468,
+     "y": -19892.971,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 162.451,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19484.653,
+     "y": -19987.533,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 167.306,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19555.192,
+     "y": -19967.748,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 199.825,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19465.904,
+     "y": -19780.327,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 74.232,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19568.664,
+     "y": -19762.828,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 99.225,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19566.015,
+     "y": -19989.782,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 205.08,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19621.838,
+     "y": -19991.041,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 230.578,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19709.376,
+     "y": -19839.553,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 172.916,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19442.337,
+     "y": -19904.385,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 135.547,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19457.387,
+     "y": -19904.402,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 143.214,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19565.118,
+     "y": -19710.828,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 71.913,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19596.905,
+     "y": -19710.443,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 76.985,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19676.197,
+     "y": -19747.964,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 98.367,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19390.512,
+     "y": -19902.056,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 112.407,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19713.671,
+     "y": -19715.532,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 83.464,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19639.669,
+     "y": -20047.857,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 245.872,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19494.711,
+     "y": -19777.879,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 85.627,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19441.447,
+     "y": -19861.696,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 120.786,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19632.913,
+     "y": -19980.045,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 231.667,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19641.356,
+     "y": -19711.281,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 76.052,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19622.652,
+     "y": -20020.357,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 235.462,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19649.243,
+     "y": -19918.696,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 218.181,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19405.895,
+     "y": -19904.325,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 118.134,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19433.906,
+     "y": -19821.931,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 91.655,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19451.564,
+     "y": -19738.214,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 52.275,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19598.117,
+     "y": -19968.409,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 218.142,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19649.015,
+     "y": -19727.791,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 85.956,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19726.27,
+     "y": -19984.148,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 243.431,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19515.294,
+     "y": -20007.854,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 184.9,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19714.216,
+     "y": -19959.701,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 231.464,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19731.947,
+     "y": -19710.381,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 86.839,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19660.132,
+     "y": -19989.03,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 240.497,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19637.553,
+     "y": -19891.91,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 211.265,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19420.392,
+     "y": -19736.131,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 47.107,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19721.815,
+     "y": -19741.512,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 96.595,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19519.906,
+     "y": -19715.891,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 64.587,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19535.714,
+     "y": -19765.555,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 91.577,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19520.201,
+     "y": -19934.074,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 183.373,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19461.65,
+     "y": -19829.372,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 110.332,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19511.073,
+     "y": -19988.738,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 177.86,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19412.055,
+     "y": -19790.352,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 66.503,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19738.299,
+     "y": -19772.99,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 117.791,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19507.094,
+     "y": -20037.288,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 196.527,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19722.633,
+     "y": -19775.435,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 117.805,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19675.904,
+     "y": -20030.553,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 254.186,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19611.584,
+     "y": -19719.874,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 82.968,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19608.578,
+     "y": -19993.341,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 225.9,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19748.317,
+     "y": -19951.812,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 228.387,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19723.393,
+     "y": -20041.642,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 259.744,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19392.076,
+     "y": -19741.848,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 42.878,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19492.529,
+     "y": -19720.743,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 58.387,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19722.414,
+     "y": -19887.626,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 199.214,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19687.097,
+     "y": -20013.255,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 252.886,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19638.746,
+     "y": -19969.321,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 230.071,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19394.201,
+     "y": -20043.399,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 174.284,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19454.931,
+     "y": -19949.669,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 146.969,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19669.44,
+     "y": -20044.53,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 254.016,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19494.252,
+     "y": -19953.088,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 168.055,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19623.227,
+     "y": -19954.986,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 223.515,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19534.728,
+     "y": -20010.01,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 192.977,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19729.911,
+     "y": -19900.794,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 203.08,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19508.57,
+     "y": -19918.906,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 176.423,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19652.87,
+     "y": -19876.709,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 207.867,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19431.447,
+     "y": -19878.221,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 122.472,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19573.953,
+     "y": -20016.595,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 212.37,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19566.008,
+     "y": -19738.919,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 83.986,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19654.641,
+     "y": -20053.584,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 250.742,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19714.672,
+     "y": -19997.293,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 249.337,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19439.592,
+     "y": -19756.895,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 55.825,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19586.219,
+     "y": -20012.247,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 217.415,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19732.94,
+     "y": -19841.807,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 166.296,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19600.621,
+     "y": -20011.212,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 224.806,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19510.309,
+     "y": -19949.449,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 177.417,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19647.947,
+     "y": -19986.151,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 237.127,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19407.072,
+     "y": -19867.809,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 107.268,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19539.552,
+     "y": -19723.348,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 71.841,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19680.89,
+     "y": -19892.823,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 210.343,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19656.48,
+     "y": -20005.084,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 243.81,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19555.879,
+     "y": -20028.833,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 209.265,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19663.248,
+     "y": -19881.376,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 208.524,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19477.971,
+     "y": -19831.045,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 124.951,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19500.375,
+     "y": -19808.734,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 121.705,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19506.972,
+     "y": -19762.816,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 79.803,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19545.523,
+     "y": -19979.456,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 194.54,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19726.11,
+     "y": -19932.307,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 217.115,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19391.494,
+     "y": -19973.299,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 155.356,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19505.582,
+     "y": -19749.134,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 72.529,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19415.243,
+     "y": -19800.968,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 73.541,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19620.979,
+     "y": -20048.112,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 238.826,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19686.35,
+     "y": -19943.364,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 226.267,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19461.954,
+     "y": -19749.587,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 58.858,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19710.998,
+     "y": -19731.084,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 89.254,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19632.634,
+     "y": -19724.858,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 85.29,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19538.919,
+     "y": -19780.102,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 107.862,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19697.3,
+     "y": -19925.08,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 219.433,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19539.218,
+     "y": -19753.095,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 84.939,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19576.297,
+     "y": -19749.165,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 91.468,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19594.708,
+     "y": -19763.728,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 105.505,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19729.348,
+     "y": -19800.759,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 134.515,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19525.458,
+     "y": -19747.686,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 78.579,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19463.384,
+     "y": -19883.482,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 141.916,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19741.776,
+     "y": -19967.321,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 235.914,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19699.194,
+     "y": -19855.765,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 191.656,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19481.8,
+     "y": -19922.456,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 159.404,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19470.126,
+     "y": -19765.27,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 67.738,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19410.209,
+     "y": -19941.323,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 135.334,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19583.315,
+     "y": -19987.663,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 214.099,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19676.511,
+     "y": -19920.06,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 219.62,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19746.383,
+     "y": -19838.664,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 160.102,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19748.374,
+     "y": -19741.759,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 102.521,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19441.05,
+     "y": -19722.16,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 47.578,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19666.61,
+     "y": -19938.709,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 225.087,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19689.92,
+     "y": -19741.547,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 93.577,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19519.427,
+     "y": -19777.656,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 97.211,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19744.013,
+     "y": -19804.075,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 136.645,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19699.736,
+     "y": -19748.092,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 97.821,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19697.648,
+     "y": -19944.602,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 226.76,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19522.638,
+     "y": -19969.56,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 183.129,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19624.5,
+     "y": -19733.352,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 90.698,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19408.971,
+     "y": -19724.869,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 43.129,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19577.055,
+     "y": -19729.971,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 81.663,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19589.171,
+     "y": -19749.887,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 94.811,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19567.615,
+     "y": -20028.995,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 213.521,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19691.493,
+     "y": -20048.215,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 258.328,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19668.896,
+     "y": -20005.093,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 247.778,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19473.201,
+     "y": -19727.651,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 55.407,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19744.908,
+     "y": -19820.29,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 147.037,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19690.111,
+     "y": -19973.484,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 239.044,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19477.51,
+     "y": -19873.582,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 148.496,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19418.888,
+     "y": -19769.944,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 57.705,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19422.645,
+     "y": -19837.596,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 97.314,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19654.0,
+     "y": -19768.67,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 114.364,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19608.243,
+     "y": -19745.566,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 96.259,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19702.976,
+     "y": -19719.114,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 83.076,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19619.87,
+     "y": -19752.26,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 102.114,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19606.663,
+     "y": -20032.496,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 230.21,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19416.308,
+     "y": -19909.746,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 123.346,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19488.373,
+     "y": -20000.215,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 173.014,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19678.117,
+     "y": -19995.004,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 245.958,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19638.779,
+     "y": -19747.352,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 100.527,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19417.68,
+     "y": -19856.973,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 106.655,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19437.864,
+     "y": -19794.452,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 74.26,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19559.123,
+     "y": -20047.577,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 218.062,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19726.582,
+     "y": -19967.293,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 234.856,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19418.429,
+     "y": -19883.155,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 117.634,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19725.369,
+     "y": -19813.394,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 144.736,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19436.414,
+     "y": -19846.088,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 108.323,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19466.376,
+     "y": -19932.372,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 150.588,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19573.555,
+     "y": -20054.726,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 224.856,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19699.537,
+     "y": -20011.843,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 253.989,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19476.776,
+     "y": -19961.788,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 158.753,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19550.512,
+     "y": -19991.047,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 197.153,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19521.368,
+     "y": -19726.856,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 68.775,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19716.894,
+     "y": -20009.491,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 253.852,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19392.729,
+     "y": -19995.355,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 164.38,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19422.814,
+     "y": -19954.246,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 142.842,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19399.964,
+     "y": -19775.181,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 54.956,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19662.85,
+     "y": -19909.598,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 216.428,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19398.881,
+     "y": -19941.125,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 133.471,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19480.324,
+     "y": -19759.872,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 68.606,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19695.694,
+     "y": -20024.286,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 256.114,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19655.831,
+     "y": -19945.315,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 226.279,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19497.731,
+     "y": -19734.169,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 63.743,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19406.707,
+     "y": -19919.867,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 123.185,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19494.683,
+     "y": -19755.307,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 70.882,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19390.139,
+     "y": -19820.444,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 79.071,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19661.9,
+     "y": -19740.4,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 94.421,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19485.22,
+     "y": -19970.017,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 163.853,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19424.13,
+     "y": -19895.495,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 124.127,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19447.152,
+     "y": -19881.852,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 132.469,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19425.754,
+     "y": -19941.547,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 137.199,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19413.393,
+     "y": -19820.15,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 85.093,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19680.699,
+     "y": -19873.271,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 204.054,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19662.485,
+     "y": -19970.764,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 235.018,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19530.96,
+     "y": -20031.406,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 201.425,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19628.431,
+     "y": -20033.864,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 239.203,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19587.569,
+     "y": -19999.216,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 216.693,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19678.454,
+     "y": -19906.259,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 214.969,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19488.678,
+     "y": -19796.772,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 100.501,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19735.933,
+     "y": -20046.145,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 260.767,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19621.581,
+     "y": -20009.298,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 233.351,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19660.78,
+     "y": -19752.363,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 102.139,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19466.393,
+     "y": -19949.947,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 151.81,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19528.112,
+     "y": -19945.773,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 187.656,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19647.93,
+     "y": -19896.15,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 212.891,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19445.215,
+     "y": -19776.553,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 66.096,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19555.526,
+     "y": -19757.57,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 92.612,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19450.078,
+     "y": -19794.345,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 77.294,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19739.076,
+     "y": -19852.854,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 172.98,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19461.76,
+     "y": -19848.004,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 124.44,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19750.085,
+     "y": -19935.643,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 217.726,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19640.712,
+     "y": -20001.018,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 238.71,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19601.505,
+     "y": -19786.267,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 131.089,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19397.807,
+     "y": -19732.163,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 42.415,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19394.183,
+     "y": -20016.886,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 170.768,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19636.977,
+     "y": -20011.877,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 239.102,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19391.894,
+     "y": -19924.196,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 121.387,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19691.986,
+     "y": -19903.468,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 212.949,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19402.468,
+     "y": -19712.051,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 40.565,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19519.725,
+     "y": -19956.397,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 183.145,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19499.89,
+     "y": -19909.894,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 169.844,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19735.053,
+     "y": -19879.75,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 191.041,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19540.376,
+     "y": -19966.451,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 193.086,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19506.702,
+     "y": -19790.785,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 106.794,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19425.139,
+     "y": -19789.804,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 69.069,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19706.765,
+     "y": -19912.163,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 212.73,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19607.228,
+     "y": -20044.78,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 232.245,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19449.526,
+     "y": -19839.023,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 109.993,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19480.405,
+     "y": -19784.82,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 84.425,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19561.929,
+     "y": -20000.87,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 203.301,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19396.883,
+     "y": -19831.05,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 86.472,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19734.894,
+     "y": -20005.441,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 253.516,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19737.993,
+     "y": -19935.257,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 218.033,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19714.337,
+     "y": -19879.336,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 197.968,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19673.664,
+     "y": -19973.733,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 237.725,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19674.162,
+     "y": -19959.611,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 232.464,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19742.612,
+     "y": -19785.512,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 125.398,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19482.676,
+     "y": -19848.879,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 141.447,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19442.616,
+     "y": -19928.039,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 138.831,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19427.916,
+     "y": -19807.886,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 79.75,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19589.586,
+     "y": -19722.943,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 81.902,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19682.933,
+     "y": -19728.165,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 85.524,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19514.335,
+     "y": -19742.374,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 72.842,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19432.585,
+     "y": -19733.277,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 48.368,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19528.781,
+     "y": -19736.024,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 74.393,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19420.649,
+     "y": -19870.794,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 113.939,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19715.871,
+     "y": -19751.274,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 101.951,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19649.166,
+     "y": -20033.959,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 247.185,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19682.836,
+     "y": -19757.289,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 104.139,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19404.127,
+     "y": -20031.938,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 174.779,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19600.508,
+     "y": -19956.334,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 217.746,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19523.225,
+     "y": -20021.585,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 193.418,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19487.972,
+     "y": -19912.486,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 161.958,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19662.556,
+     "y": -20026.103,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 250.212,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19390.167,
+     "y": -19721.521,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 39.96,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19725.835,
+     "y": -19760.636,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 109.497,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19457.347,
+     "y": -19713.356,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 48.952,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19499.439,
+     "y": -20022.769,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 186.659,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19470.268,
+     "y": -19790.649,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 83.608,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19493.507,
+     "y": -20011.283,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 179.152,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19473.752,
+     "y": -19710.438,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 51.455,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19477.891,
+     "y": -19894.108,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 152.989,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19543.007,
+     "y": -20019.547,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 200.131,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19470.664,
+     "y": -19807.928,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 98.459,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19671.492,
+     "y": -20018.069,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 250.749,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19744.532,
+     "y": -19907.167,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 202.849,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19428.219,
+     "y": -19762.938,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 57.116,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19722.091,
+     "y": -20024.87,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 257.234,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19702.791,
+     "y": -19884.251,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 203.807,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19584.286,
+     "y": -19710.331,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 74.835,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19449.219,
+     "y": -19825.406,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 100.313,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19748.339,
+     "y": -19918.175,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 208.111,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19665.666,
+     "y": -19717.823,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 78.669,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19722.752,
+     "y": -19861.881,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 184.803,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19707.395,
+     "y": -19779.982,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 119.526,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19590.253,
+     "y": -20034.412,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 223.964,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19668.938,
+     "y": -19869.246,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 204.134,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19738.213,
+     "y": -20033.162,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 260.291,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19587.07,
+     "y": -19775.184,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 114.726,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19523.06,
+     "y": -19987.086,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 183.771,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19499.796,
+     "y": -19926.598,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 170.814,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19443.713,
+     "y": -19806.225,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 82.438,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19745.728,
+     "y": -20015.837,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 258.521,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19614.325,
+     "y": -19777.447,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 121.818,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19635.072,
+     "y": -19947.562,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 223.832,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19651.881,
+     "y": -19964.829,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 231.371,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19605.134,
+     "y": -19732.84,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 89.209,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19482.256,
+     "y": -19737.047,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 60.219,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19704.065,
+     "y": -19968.502,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 236.648,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19528.61,
+     "y": -20049.617,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 210.268,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19447.256,
+     "y": -19962.538,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 149.115,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19397.7,
+     "y": -19845.03,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 93.598,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19470.415,
+     "y": -19820.889,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 109.794,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19500.66,
+     "y": -19994.636,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 175.194,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19689.354,
+     "y": -19885.229,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 206.71,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19533.04,
+     "y": -19955.729,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 190.052,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19692.069,
+     "y": -20001.549,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 250.126,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19693.719,
+     "y": -19871.4,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 201.232,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19632.482,
+     "y": -19765.585,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 112.981,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19472.058,
+     "y": -19859.701,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 138.805,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19390.151,
+     "y": -19868.613,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 101.554,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19683.777,
+     "y": -20038.925,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 256.557,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19500.126,
+     "y": -20057.972,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 205.199,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19415.566,
+     "y": -19930.438,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 130.711,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19717.406,
+     "y": -20055.078,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 260.128,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19509.442,
+     "y": -19967.219,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 176.274,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19731.986,
+     "y": -19915.326,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 208.422,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19599.28,
+     "y": -19980.973,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 220.567,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19603.632,
+     "y": -19756.66,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 102.43,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19428.71,
+     "y": -19717.982,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 45.402,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19572.829,
+     "y": -19975.142,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 208.185,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19632.578,
+     "y": -20057.017,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 244.965,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19688.197,
+     "y": -19987.577,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 244.586,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19559.541,
+     "y": -20059.094,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 223.364,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19597.344,
+     "y": -20054.242,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 231.133,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19403.938,
+     "y": -19884.376,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 111.925,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19701.028,
+     "y": -20056.42,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 259.493,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19587.595,
+     "y": -19975.693,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 214.71,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19737.944,
+     "y": -19865.899,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 181.938,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19404.71,
+     "y": -19743.354,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 45.283,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19749.976,
+     "y": -20055.342,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 264.939,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19490.362,
+     "y": -19865.744,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 154.406,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19486.509,
+     "y": -19711.294,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 54.36,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19722.092,
+     "y": -19835.693,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 164.202,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19669.096,
+     "y": -19896.746,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 212.804,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19495.624,
+     "y": -19820.593,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 130.085,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19664.154,
+     "y": -19952.882,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 229.085,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19711.154,
+     "y": -20021.707,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 256.342,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19745.121,
+     "y": -19978.692,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 242.156,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19440.627,
+     "y": -19916.128,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 135.732,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19449.676,
+     "y": -19749.765,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 55.118,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19527.397,
+     "y": -19999.417,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 187.26,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19415.832,
+     "y": -19712.99,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 42.658,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19461.911,
+     "y": -19917.738,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 146.311,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19437.214,
+     "y": -19940.89,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 139.689,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19588.928,
+     "y": -20045.509,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 225.723,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19571.001,
+     "y": -19720.776,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 76.996,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19455.779,
+     "y": -19812.456,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 92.874,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19715.185,
+     "y": -19801.606,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 135.725,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19399.282,
+     "y": -19753.639,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 47.102,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19723.355,
+     "y": -19953.021,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 227.533,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19687.963,
+     "y": -20059.218,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 258.064,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19453.724,
+     "y": -19862.811,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 128.315,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19740.594,
+     "y": -19894.987,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 197.492,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19396.843,
+     "y": -19962.669,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 148.447,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19408.235,
+     "y": -19961.112,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 146.863,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19548.398,
+     "y": -19715.473,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 70.359,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19706.147,
+     "y": -20043.567,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 259.238,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19399.02,
+     "y": -20057.63,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 176.41,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19548.7,
+     "y": -19747.432,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 85.222,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19543.334,
+     "y": -19949.27,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 194.726,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19729.405,
+     "y": -19732.316,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 92.809,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19623.296,
+     "y": -19710.714,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 77.142,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19672.278,
+     "y": -19762.48,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 107.982,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19454.511,
+     "y": -19935.043,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 145.011,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19686.163,
+     "y": -19930.819,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 222.052,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19620.446,
+     "y": -19979.825,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 228.307,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19435.797,
+     "y": -19955.579,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 144.459,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19692.495,
+     "y": -19914.96,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 216.72,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19701.221,
+     "y": -19993.636,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 248.114,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19536.326,
+     "y": -19992.156,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 190.067,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19424.187,
+     "y": -19747.484,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 50.551,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19717.677,
+     "y": -19788.823,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 126.576,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19741.614,
+     "y": -19761.945,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 112.859,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19481.644,
+     "y": -19942.642,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 159.359,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19572.009,
+     "y": -20040.957,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 219.275,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19518.435,
+     "y": -19757.202,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 80.879,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19654.73,
+     "y": -19711.286,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 74.528,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19460.397,
+     "y": -19728.667,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 52.54,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19561.391,
+     "y": -19979.713,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 202.79,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19435.236,
+     "y": -19781.555,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 66.487,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19708.538,
+     "y": -19939.041,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 222.614,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19485.55,
+     "y": -19811.099,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 112.233,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19737.338,
+     "y": -19828.822,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 154.548,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19553.906,
+     "y": -19769.498,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 101.095,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19640.603,
+     "y": -19905.703,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 214.532,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19559.186,
+     "y": -19726.626,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 77.411,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19704.463,
+     "y": -19898.948,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 209.134,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19611.759,
+     "y": -19765.476,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 110.149,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19648.564,
+     "y": -20015.658,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 243.537,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19739.772,
+     "y": -19992.19,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 248.051,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19551.166,
+     "y": -20003.21,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 198.36,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19718.216,
+     "y": -19821.94,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 154.349,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19530.031,
+     "y": -19978.479,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 186.788,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19515.256,
+     "y": -20054.342,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 208.366,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19701.924,
+     "y": -19981.14,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 242.66,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19392.004,
+     "y": -19880.59,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 106.141,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19715.645,
+     "y": -19851.477,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 179.948,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19503.211,
+     "y": -19713.689,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 59.843,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19717.439,
+     "y": -19918.077,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 211.552,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19595.474,
+     "y": -20024.382,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 224.158,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19453.834,
+     "y": -19760.188,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 60.155,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19641.173,
+     "y": -19934.822,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 221.361,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19734.825,
+     "y": -19947.711,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 224.681,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19415.028,
+     "y": -19756.914,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 51.582,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19617.848,
+     "y": -19966.672,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 225.098,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19679.994,
+     "y": -20051.072,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 256.553,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19701.121,
+     "y": -19759.821,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 105.935,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19745.905,
+     "y": -19712.453,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 91.187,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19494.973,
+     "y": -20041.601,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 196.154,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19539.413,
+     "y": -20059.793,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 218.393,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19398.59,
+     "y": -19796.02,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 67.582,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19579.372,
+     "y": -20032.649,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 219.299,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19442.358,
+     "y": -19892.828,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 133.189,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19609.782,
+     "y": -19975.444,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 223.917,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19396.76,
+     "y": -19913.47,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 118.083,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19738.296,
+     "y": -20057.212,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 262.248,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19554.41,
+     "y": -20014.318,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 202.598,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19396.33,
+     "y": -19808.262,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 73.587,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19409.957,
+     "y": -19833.629,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 91.563,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19647.486,
+     "y": -19954.381,
+     "height_m": 12,
+     "species": "forest",
+     "ground_m": 227.703,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19401.622,
+     "y": -19984.904,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 160.528,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19391.194,
+     "y": -20031.329,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 171.922,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19746.172,
+     "y": -19880.583,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 187.8,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19748.028,
+     "y": -19729.595,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 96.991,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19465.598,
+     "y": -19871.816,
+     "height_m": 14,
+     "species": "forest",
+     "ground_m": 139.982,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19489.771,
+     "y": -19832.348,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 135.816,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19495.301,
+     "y": -19980.557,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 169.491,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19714.159,
+     "y": -19979.946,
+     "height_m": 9,
+     "species": "forest",
+     "ground_m": 241.735,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19425.831,
+     "y": -19922.192,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 130.73,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19445.567,
+     "y": -19711.318,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 46.648,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19584.441,
+     "y": -20057.383,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 228.698,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19613.565,
+     "y": -20056.481,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 237.4,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19686.884,
+     "y": -19955.073,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 230.813,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19470.242,
+     "y": -19740.136,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 58.215,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19448.893,
+     "y": -19851.975,
+     "height_m": 15,
+     "species": "forest",
+     "ground_m": 119.114,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19473.843,
+     "y": -19909.862,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 152.785,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    },
+    {
+     "x": -19733.707,
+     "y": -19747.309,
+     "height_m": 11,
+     "species": "forest",
+     "ground_m": 101.986,
+     "basis": "Representative broadleaf canopy around mapped exposed rock; no individually surveyed trees/species"
+    }
+   ],
+   "source": "Owner/drone canopy morphology, cached broadleaved woodlandOSM; representative positions and native existing hill tree kit, not surveyed species",
+   "round2_note": "Filtered 19 prior authored roots against all six mineral/crown-clearance polygons; no individually surveyed trees.",
+   "treeExclusions": [
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -19594.356,
+       -19781.287
+      ],
+      [
+       -19591.633,
+       -19777.886
+      ],
+      [
+       -19587.723,
+       -19775.966
+      ],
+      [
+       -19583.368,
+       -19775.891
+      ],
+      [
+       -19509.381,
+       -19791.06
+      ],
+      [
+       -19503.864,
+       -19794.27
+      ],
+      [
+       -19501.413,
+       -19800.164
+      ],
+      [
+       -19496.716,
+       -19867.838
+      ],
+      [
+       -19497.091,
+       -19871.327
+      ],
+      [
+       -19510.01,
+       -19915.665
+      ],
+      [
+       -19513.666,
+       -19920.909
+      ],
+      [
+       -19564.166,
+       -19958.246
+      ],
+      [
+       -19568.602,
+       -19960.09
+      ],
+      [
+       -19573.386,
+       -19959.654
+      ],
+      [
+       -19623.885,
+       -19942.151
+      ],
+      [
+       -19628.332,
+       -19939.056
+      ],
+      [
+       -19630.512,
+       -19934.097
+      ],
+      [
+       -19638.732,
+       -19875.757
+      ],
+      [
+       -19637.81,
+       -19869.962
+      ]
+     ],
+     "reason": "sign-dome exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -19698.487,
+       -19778.86
+      ],
+      [
+       -19696.636,
+       -19774.903
+      ],
+      [
+       -19693.274,
+       -19772.113
+      ],
+      [
+       -19689.043,
+       -19771.023
+      ],
+      [
+       -19652.637,
+       -19769.857
+      ],
+      [
+       -19646.951,
+       -19771.413
+      ],
+      [
+       -19617.591,
+       -19790.082
+      ],
+      [
+       -19614.024,
+       -19794.026
+      ],
+      [
+       -19599.932,
+       -19822.029
+      ],
+      [
+       -19598.934,
+       -19827.699
+      ],
+      [
+       -19601.229,
+       -19832.98
+      ],
+      [
+       -19625.892,
+       -19862.15
+      ],
+      [
+       -19629.987,
+       -19865.046
+      ],
+      [
+       -19634.974,
+       -19865.589
+      ],
+      [
+       -19674.903,
+       -19859.754
+      ],
+      [
+       -19679.765,
+       -19857.619
+      ],
+      [
+       -19705.602,
+       -19836.616
+      ],
+      [
+       -19708.737,
+       -19832.147
+      ],
+      [
+       -19709.058,
+       -19826.698
+      ]
+     ],
+     "reason": "joined-west exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -20706.825,
+       -19433.131
+      ],
+      [
+       -20703.588,
+       -19428.841
+      ],
+      [
+       -20698.598,
+       -19426.846
+      ],
+      [
+       -20693.296,
+       -19427.721
+      ],
+      [
+       -20689.213,
+       -19431.215
+      ],
+      [
+       -20663.378,
+       -19469.72
+      ],
+      [
+       -20662.217,
+       -19472.066
+      ],
+      [
+       -20637.558,
+       -19544.408
+      ],
+      [
+       -20637.028,
+       -19547.315
+      ],
+      [
+       -20634.682,
+       -19620.822
+      ],
+      [
+       -20635.163,
+       -19624.22
+      ],
+      [
+       -20656.305,
+       -19689.559
+      ],
+      [
+       -20659.547,
+       -19694.269
+      ],
+      [
+       -20664.84,
+       -19696.432
+      ],
+      [
+       -20670.453,
+       -19695.342
+      ],
+      [
+       -20692.766,
+       -19683.674
+      ],
+      [
+       -20695.827,
+       -19681.198
+      ],
+      [
+       -20697.696,
+       -19677.734
+      ],
+      [
+       -20717.658,
+       -19612.393
+      ],
+      [
+       -20717.828,
+       -19611.763
+      ],
+      [
+       -20730.743,
+       -19556.923
+      ],
+      [
+       -20730.987,
+       -19553.961
+      ],
+      [
+       -20726.287,
+       -19483.954
+      ],
+      [
+       -20725.617,
+       -19480.968
+      ]
+     ],
+     "reason": "upper-flank exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -20857.501,
+       -19296.551
+      ],
+      [
+       -20855.229,
+       -19292.373
+      ],
+      [
+       -20851.285,
+       -19289.716
+      ],
+      [
+       -20846.559,
+       -19289.182
+      ],
+      [
+       -20842.121,
+       -19290.892
+      ],
+      [
+       -20818.635,
+       -19307.228
+      ],
+      [
+       -20815.276,
+       -19311.224
+      ],
+      [
+       -20801.184,
+       -19341.561
+      ],
+      [
+       -20800.47,
+       -19347.848
+      ],
+      [
+       -20805.169,
+       -19370.016
+      ],
+      [
+       -20807.048,
+       -19374.068
+      ],
+      [
+       -20810.504,
+       -19376.898
+      ],
+      [
+       -20838.69,
+       -19390.898
+      ],
+      [
+       -20843.7,
+       -19391.926
+      ],
+      [
+       -20848.564,
+       -19390.342
+      ],
+      [
+       -20852.008,
+       -19386.559
+      ],
+      [
+       -20869.622,
+       -19352.722
+      ],
+      [
+       -20870.422,
+       -19345.555
+      ]
+     ],
+     "reason": "upper-slab exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -19466.616,
+       -20019.907
+      ],
+      [
+       -19461.244,
+       -20014.495
+      ],
+      [
+       -19430.709,
+       -20001.661
+      ],
+      [
+       -19425.303,
+       -20000.998
+      ],
+      [
+       -19420.352,
+       -20003.266
+      ],
+      [
+       -19417.323,
+       -20007.792
+      ],
+      [
+       -19405.579,
+       -20043.962
+      ],
+      [
+       -19405.17,
+       -20048.314
+      ],
+      [
+       -19406.658,
+       -20052.425
+      ],
+      [
+       -19428.972,
+       -20087.429
+      ],
+      [
+       -19432.346,
+       -20090.681
+      ],
+      [
+       -19436.832,
+       -20092.038
+      ],
+      [
+       -19441.443,
+       -20091.202
+      ],
+      [
+       -19462.583,
+       -20081.868
+      ],
+      [
+       -19467.82,
+       -20076.455
+      ],
+      [
+       -19477.215,
+       -20053.119
+      ],
+      [
+       -19477.186,
+       -20045.577
+      ]
+     ],
+     "reason": "east-low exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -19961.778,
+       -19945.468
+      ],
+      [
+       -19958.493,
+       -19941.864
+      ],
+      [
+       -19953.894,
+       -19940.241
+      ],
+      [
+       -19916.313,
+       -19936.742
+      ],
+      [
+       -19911.564,
+       -19937.458
+      ],
+      [
+       -19907.697,
+       -19940.306
+      ],
+      [
+       -19885.384,
+       -19967.143
+      ],
+      [
+       -19883.46,
+       -19970.78
+      ],
+      [
+       -19883.164,
+       -19974.884
+      ],
+      [
+       -19889.036,
+       -20018.055
+      ],
+      [
+       -19890.668,
+       -20022.319
+      ],
+      [
+       -19894.026,
+       -20025.413
+      ],
+      [
+       -19898.409,
+       -20026.693
+      ],
+      [
+       -19941.863,
+       -20029.026
+      ],
+      [
+       -19948.851,
+       -20026.68
+      ],
+      [
+       -19972.338,
+       -20006.844
+      ],
+      [
+       -19975.176,
+       -20002.904
+      ],
+      [
+       -19975.824,
+       -19998.092
+      ],
+      [
+       -19972.3,
+       -19966.588
+      ],
+      [
+       -19971.173,
+       -19962.97
+      ]
+     ],
+     "reason": "west-lower exact mineral footprint plus 10m crown clearance",
+     "source": "blender/places/co-to/round2/spatial.json; private2018 mineral trace",
+     "confidence": "Photo/imagery estimate, bounded local canopy clearance"
+    }
+   ]
+  },
+  {
+   "id": "da-phuoc",
+   "renderGroup": "da-phuoc",
+   "trees": [
+    {
+     "x": -5538.030799287501,
+     "y": 17132.256204310306,
+     "species": "mango",
+     "height_m": 9,
+     "basis": "Photographic local species vocabulary; individually estimated root outside mapped roofs, not botanical survey"
+    },
+    {
+     "x": -5517.35127587454,
+     "y": 17076.093246339027,
+     "species": "coconut",
+     "height_m": 11,
+     "basis": "Photographic local species vocabulary; individually estimated root outside mapped roofs, not botanical survey"
+    },
+    {
+     "x": -5607.211938330684,
+     "y": 17008.62348659635,
+     "species": "bamboo",
+     "height_m": 7,
+     "basis": "Photographic local species vocabulary; individually estimated root outside mapped roofs, not botanical survey"
+    }
+   ],
+   "scope": "Three bounded house/garden accents; broad riverbank native trees preserved",
+   "treeExclusions": [
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5564.044396743935,
+       17134.533058733214
+      ],
+      [
+       -5539.460406606959,
+       17126.040275735315
+      ],
+      [
+       -5537.778452758212,
+       17130.839641577564
+      ],
+      [
+       -5562.373374246468,
+       17139.33241891209
+      ],
+      [
+       -5564.044396743935,
+       17134.533058733214
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5575.660465522669,
+       17116.70467773336
+      ],
+      [
+       -5577.572343083622,
+       17112.634974762565
+      ],
+      [
+       -5553.479314901924,
+       17101.488332913956
+      ],
+      [
+       -5551.567439589358,
+       17105.5580372524
+      ],
+      [
+       -5575.660465522669,
+       17116.70467773336
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5518.392959662888,
+       17079.952705402393
+      ],
+      [
+       -5514.379518920381,
+       17078.704907716718
+      ],
+      [
+       -5512.020750001771,
+       17086.25771158142
+      ],
+      [
+       -5524.585979398573,
+       17090.14463162911
+      ],
+      [
+       -5536.877813998784,
+       17093.95426903013
+      ],
+      [
+       -5538.548624585848,
+       17088.635234627174
+      ],
+      [
+       -5526.147435057617,
+       17084.80352721736
+      ],
+      [
+       -5526.562404864759,
+       17083.47653380409
+      ],
+      [
+       -5518.109032665496,
+       17080.85948445066
+      ],
+      [
+       -5518.392959662888,
+       17079.952705402393
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5544.253441128938,
+       17027.366776332725
+      ],
+      [
+       -5556.326656692254,
+       17031.2981351309
+      ],
+      [
+       -5557.975734455278,
+       17026.299760134192
+      ],
+      [
+       -5545.8915828628815,
+       17022.368405166315
+      ],
+      [
+       -5544.253441128938,
+       17027.366776332725
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5567.918340132106,
+       17007.167344011366
+      ],
+      [
+       -5555.6817182271625,
+       17004.761895917356
+      ],
+      [
+       -5554.5031789614,
+       17010.644630486146
+      ],
+      [
+       -5566.739803294418,
+       17013.061135009862
+      ],
+      [
+       -5567.918340132106,
+       17007.167344011366
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5572.9406141574145,
+       16988.43496729969
+      ],
+      [
+       -5558.2980211702525,
+       16985.079599638702
+      ],
+      [
+       -5557.07548784127,
+       16990.33210996911
+      ],
+      [
+       -5571.718078679987,
+       16993.687477084575
+      ],
+      [
+       -5572.9406141574145,
+       16988.43496729969
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5586.757008148066,
+       17003.732099781744
+      ],
+      [
+       -5610.86925346608,
+       17008.15617784718
+      ],
+      [
+       -5611.807570139354,
+       17003.080694066826
+      ],
+      [
+       -5587.706255773897,
+       16998.65661088773
+      ],
+      [
+       -5586.757008148066,
+       17003.732099781744
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5582.899756364466,
+       17010.190872656647
+      ],
+      [
+       -5582.167988218018,
+       17012.269860756584
+      ],
+      [
+       -5587.38445536379,
+       17014.092138208915
+      ],
+      [
+       -5585.647865828185,
+       17019.01314889104
+      ],
+      [
+       -5604.709284680139,
+       17025.661694604903
+      ],
+      [
+       -5607.177646083059,
+       17018.661697347416
+      ],
+      [
+       -5582.899756364466,
+       17010.190872656647
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5579.181942640426,
+       17074.152670401018
+      ],
+      [
+       -5572.444625188974,
+       17091.703982419167
+      ],
+      [
+       -5595.410703680805,
+       17100.51983397798
+      ],
+      [
+       -5602.148021132258,
+       17082.968521959832
+      ]
+     ],
+     "reason": "Authored mapped house/mosque roof: prevent native trunks through wall or working loom",
+     "source": "Source roof correlation, original geometry; adjacent garden trees preserved",
+     "confidence": "Exact roof geometry; household representative"
+    },
+    {
+     "type": "polygon",
+     "polygon_scene_EN": [
+      [
+       -5569.544379794765,
+       17070.238927640446
+      ],
+      [
+       -5562.663715163495,
+       17088.163671829196
+      ],
+      [
+       -5572.372951599065,
+       17091.890698504467
+      ],
+      [
+       -5579.253616230335,
+       17073.965954315718
+      ]
+     ],
+     "reason": "Photographed open mosque paving",
+     "source": "Owner gate/2020 front/cached plan",
+     "confidence": "Photo estimate +/-5m"
+    }
+   ]
   }
  ]
 }

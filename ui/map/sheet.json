@@ -1,0 +1,15 @@
+{
+ "sheet": [
+  -150000,
+  -150000,
+  300000,
+  300000
+ ],
+ "province": [
+  -52050.0,
+  -49815.0,
+  104100.0,
+  99630.0
+ ],
+ "source": "scripts/offmap.py; OpenStreetMap contributors (ODbL); plates: web/ui/loading/CREDITS.md"
+}

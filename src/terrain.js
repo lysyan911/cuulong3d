@@ -6,6 +6,7 @@
 // are loaded on demand and the least recently used ones are released (GPU memory on integrated graphics).
 import * as THREE from 'three';
 import { patchTerrainMaterial } from './shaders.js';
+import { MapTable } from './render/maptable.js';
 import { splitShoreSteps } from './shore.js';
 import { REFLECT_ALWAYS } from './render/reflection.js';
 
@@ -87,6 +88,10 @@ export class Terrain {
     }
     this.group = new THREE.Group();
     this.group.name = 'terrain';
+    // the antique map the 3D map lies on (render/maptable.js); its uniforms reach every terrain material
+    this.mapTable = new MapTable({ anisotropy });
+    shared.mapTable = this.mapTable.uniforms;
+    this.group.add(this.mapTable.mesh);
     this.bankMaterial = new THREE.MeshStandardMaterial({ color: 0x786b49, roughness: 1, flatShading: true, side: THREE.DoubleSide });
 
     // one material per texture group (same shader program, different textures)
@@ -565,6 +570,7 @@ export class Terrain {
 
   update(camera) {
     this.frame++;
+    this.mapTable.update(camera);
     let rebuilt = 0;
     const frameStart = performance.now();
     const tileWorld = this.T * this.res;

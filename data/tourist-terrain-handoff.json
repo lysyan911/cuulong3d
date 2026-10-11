@@ -2364,6 +2364,423 @@
    },
    "source": "blender/places/bung-binh-thien/research.md; spatial.json; terrain-compatibility-plan.json; blockout-geometry-proof.json",
    "implementation": "Applied by Claude (terrain.js setPatches): the 55-point outline drawn into the CPU and GPU water masks at level_m 0 (waterHeight override within 20 m), clear blue-green tint (mask blue 0.7, shaders.js), trees on old dry patches inside the outline dropped (terrain.inLake); the three requests applied as patches (flat-court at target - 0.1 m, margin 2, feather 4; the two linear ramps as handed over). Checked live from the three postcard views and an oblique."
+  },
+  {
+   "id": "co-to",
+   "patches": [
+    {
+     "id": "hero-boulder-hidden-support",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -19587.703,
+       -19862.27
+      ],
+      [
+       -19590.964,
+       -19867.641
+      ],
+      [
+       -19592.542,
+       -19873.873
+      ],
+      [
+       -19592.329,
+       -19880.541
+      ],
+      [
+       -19590.338,
+       -19887.191
+      ],
+      [
+       -19586.706,
+       -19893.368
+      ],
+      [
+       -19581.68,
+       -19898.653
+      ],
+      [
+       -19575.603,
+       -19902.685
+      ],
+      [
+       -19568.889,
+       -19905.189
+      ],
+      [
+       -19561.995,
+       -19905.994
+      ],
+      [
+       -19555.391,
+       -19905.047
+      ],
+      [
+       -19549.528,
+       -19902.411
+      ],
+      [
+       -19544.804,
+       -19898.266
+      ],
+      [
+       -19541.542,
+       -19892.894
+      ],
+      [
+       -19539.964,
+       -19886.662
+      ],
+      [
+       -19540.178,
+       -19879.994
+      ],
+      [
+       -19542.169,
+       -19873.345
+      ],
+      [
+       -19545.801,
+       -19867.167
+      ],
+      [
+       -19550.826,
+       -19861.883
+      ],
+      [
+       -19556.904,
+       -19857.851
+      ],
+      [
+       -19563.618,
+       -19855.347
+      ],
+      [
+       -19570.512,
+       -19854.541
+      ],
+      [
+       -19577.115,
+       -19855.488
+      ],
+      [
+       -19582.979,
+       -19858.125
+      ]
+     ],
+     "height_m": 170.846,
+     "blend_outside_m": 1.5,
+     "estimated": true,
+     "source": "Hidden subsurface inside authored dome.40deg northeast facing inferred from down-slope axis/SoaiSo relationship; not surveyed."
+    }
+   ],
+   "masks": [],
+   "ownership": "Claude terrain/water/rendering; Codex original geometry/data only",
+   "note": "Live crosscheck rejected initialNW facing into uphill ridge.40degNE direction follows low plain and mapped right-dome axis; +/-20deg. Hidden support only; platform supported in geometry. Exact point/elevation/facing and finer terrain masking still review estimates. Live front-slope fit raised whole hero16m; platform~219m with >=20m uncertainty, auxiliary mapped rocks retain absolute elevations.",
+   "lake_note": {
+    "existing_water_only": true,
+    "SoaiSo_osm": 170057751,
+    "SoaiChek_osm": 934549637,
+    "surveyed_level_m": null,
+    "action": "Retain existing water; distinct lake identities; no invented level or new water mesh"
+   },
+   "reflection_prop_names": [
+    "co-to-sign-and-granite"
+   ],
+   "reflection_note": "Sign area not directly above lake; reflection inclusion is a Claude decision",
+   "applied": true,
+   "platform_geometry": {
+    "floor_height_m": 218.89600000000002,
+    "width_m": 39,
+    "depth_m": 8.7,
+    "support": "Original convex connected dome supports unchanged slab; no new DEM plateau."
+   },
+   "bare_rock_polygons_scene_EN": [
+    {
+     "id": "upper-flank",
+     "polygon_scene_EN": [
+      [
+       -20697.517,
+       -19436.787
+      ],
+      [
+       -20671.682,
+       -19475.292
+      ],
+      [
+       -20647.023,
+       -19547.634
+      ],
+      [
+       -20644.677,
+       -19621.141
+      ],
+      [
+       -20665.819,
+       -19686.48
+      ],
+      [
+       -20688.132,
+       -19674.812
+      ],
+      [
+       -20708.094,
+       -19609.471
+      ],
+      [
+       -20721.009,
+       -19554.631
+      ],
+      [
+       -20716.309,
+       -19484.624
+      ]
+     ],
+     "reason": "Large sloping mineral slab; optional terrain mineral shading by Claude; low original mesh and crown exclusion supplied",
+     "estimated": true,
+     "shading_pending": true
+    },
+    {
+     "id": "upper-slab",
+     "polygon_scene_EN": [
+      [
+       -20847.831,
+       -19299.101
+      ],
+      [
+       -20824.345,
+       -19315.437
+      ],
+      [
+       -20810.253,
+       -19345.774
+      ],
+      [
+       -20814.952,
+       -19367.942
+      ],
+      [
+       -20843.138,
+       -19381.942
+      ],
+      [
+       -20860.752,
+       -19348.105
+      ]
+     ],
+     "reason": "Large sloping mineral slab; optional terrain mineral shading by Claude; low original mesh and crown exclusion supplied",
+     "estimated": true,
+     "shading_pending": true
+    }
+   ],
+   "round2_note": "Hidden support patch retained unchanged. New meshes sample DEM individually and have buried edges. Bare-rock shading is optional/pending; no terrain renderer or shader changes.",
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
+  },
+  {
+   "id": "da-phuoc",
+   "ownership": "Claude terrain/reflections; Codex original assets/source data",
+   "patches": [
+    {
+     "id": "ehsan-open-court",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5569.544379794765,
+       17070.238927640446
+      ],
+      [
+       -5562.663715163495,
+       17088.163671829196
+      ],
+      [
+       -5572.372951599065,
+       17091.890698504467
+      ],
+      [
+       -5579.253616230335,
+       17073.965954315718
+      ]
+     ],
+     "height_m": 2.263828620904497,
+     "blend_outside_m": 1.1,
+     "estimated": true,
+     "source": "Private2020 front and owner gate; ground support under original paving, not whole compound"
+    },
+    {
+     "id": "craft-workspace-1",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5539.090299484884,
+       17126.43297845759
+      ],
+      [
+       -5537.751547879068,
+       17130.308251885093
+      ],
+      [
+       -5540.776151529803,
+       17131.353131187192
+      ],
+      [
+       -5542.114903135619,
+       17127.477857759688
+      ]
+     ],
+     "height_m": 2.24666753222734,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    },
+    {
+     "id": "craft-workspace-2",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5553.190681136098,
+       17101.573147007126
+      ],
+      [
+       -5551.469133269365,
+       17105.294205047867
+      ],
+      [
+       -5554.373373691405,
+       17106.637852163367
+      ],
+      [
+       -5556.094921558138,
+       17102.916794122626
+      ]
+     ],
+     "height_m": 2.254290745623294,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    },
+    {
+     "id": "craft-workspace-4",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5556.714370536226,
+       17030.8131655975
+      ],
+      [
+       -5557.983832279263,
+       17026.914644482647
+      ],
+      [
+       -5554.94108409206,
+       17025.923845073445
+      ],
+      [
+       -5553.671622349023,
+       17029.8223661883
+      ]
+     ],
+     "height_m": 2.171687479169233,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    },
+    {
+     "id": "craft-workspace-5",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5567.136978805967,
+       17012.168748275064
+      ],
+      [
+       -5567.931311256991,
+       17008.146431037792
+      ],
+      [
+       -5564.79194170595,
+       17007.52646424675
+      ],
+      [
+       -5563.997609254927,
+       17011.54878148402
+      ]
+     ],
+     "height_m": 2.2168006157547127,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    },
+    {
+     "id": "craft-workspace-6",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5572.075387674553,
+       16993.10616161151
+      ],
+      [
+       -5572.9911711636505,
+       16989.109745642032
+      ],
+      [
+       -5569.872017236253,
+       16988.39498779688
+      ],
+      [
+       -5568.956233747155,
+       16992.39140376636
+      ]
+     ],
+     "height_m": 2.2437263093412945,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    },
+    {
+     "id": "craft-workspace-8",
+     "kind": "terrace",
+     "polygon_scene_EN": [
+      [
+       -5583.910069779817,
+       17012.095574507806
+      ],
+      [
+       -5582.559389006061,
+       17015.96670631225
+      ],
+      [
+       -5585.580760170508,
+       17017.020896184447
+      ],
+      [
+       -5586.931440944264,
+       17013.149764380003
+      ]
+     ],
+     "height_m": 2.2957224146254784,
+     "blend_outside_m": 0.4,
+     "estimated": true,
+     "source": "Narrow representative undercroft tool footprint; no stilt-floor terrain fill"
+    }
+   ],
+   "masks": [],
+   "reflections": {
+    "prop_names": [
+     "da-phuoc-stilt-houses"
+    ],
+    "boat_prop_names": [],
+    "status": "suggested houses if visible from existing river; no boat authored"
+   },
+   "landing": {
+    "status": "deferred",
+    "patches": [],
+    "reason": "No verified dated landing coordinate; bounded stopping point in brief"
+   },
+   "house_platforms": "Stilt floors are geometry3.2m above soil, not earth terraces; only ground tool pads requested",
+   "water_mesh_created": false,
+   "applied": true,
+   "implementation": "terrain.setPatches: courts, terraces, ramps and mapped lake banks; lake water stays surface.js"
   }
  ]
 }

@@ -7,7 +7,7 @@
 <meta name="description" content="Dự án Cửu Long: bản đồ 3D Bảy Núi – An Giang (trước 2025), dự án cá nhân phi thương mại.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="src/style.css">
 <script type="importmap">
 {
@@ -90,11 +90,40 @@
   <div id="hint" class="hint" data-i18n="hint">Kéo để di chuyển · Chuột phải / hai ngón để xoay · Cuộn để phóng to · Bấm vào địa điểm để đọc</div>
 
   <div id="loading" class="loading" role="status" aria-live="polite" aria-busy="true">
-    <div class="loading-card">
-      <div class="loading-title">Dự án Cửu Long</div>
-      <div id="loadingText" class="loading-text">Đang tải bản đồ…</div>
-      <div class="bar" id="loadingProgress" role="progressbar" aria-label="Loading map" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="loadingBar"></div></div>
-      <div id="loadingPercent" class="loading-text">0%</div>
+    <div class="lp-page">
+      <img class="lp-item lp-flutter" src="ui/loading/lime.webp" alt="Bướm phượng chanh" style="--x:34;--y:10;--w:18;--mx:22;--my:9;--mw:30;--r:-8deg;--d:0.00s" decoding="async">
+      <img class="lp-item lp-flutter" src="ui/loading/dragonfly.webp" alt="Chuồn chuồn" style="--x:65;--y:11;--w:19;--mx:80;--my:6;--mw:30;--r:6deg;--d:0.07s" decoding="async">
+      <img class="lp-item lp-flutter" src="ui/loading/birdwing.webp" alt="Bướm phượng cánh vàng" style="--x:91;--y:17;--w:16;--mx:90;--my:24;--mw:22;--r:12deg;--d:0.14s" decoding="async">
+      <img class="lp-item" src="ui/loading/kingfisher.webp" alt="Bói cá họng trắng" style="--x:9;--y:19;--w:21;--mx:9;--my:21;--mw:22;--r:-2deg;--d:0.21s" decoding="async">
+      <img class="lp-item" src="ui/loading/stilts.webp" alt="Nhà sàn và ghe bên sông Mê Kông (Delaporte, 1873)" style="--x:23;--y:33;--w:30;--mx:50;--my:19;--mw:50;--r:0deg;--d:0.28s" decoding="async">
+      <img class="lp-item" src="ui/loading/stupa.webp" alt="Tháp chùa Khmer (Delaporte, 1873)" style="--x:77;--y:37;--w:16;--mx:86;--my:42;--mw:19;--r:0deg;--d:0.35s" decoding="async">
+      <img class="lp-item" src="ui/loading/crane.webp" alt="Sếu đầu đỏ" style="--x:7;--y:55;--w:31;--mx:16;--my:39;--mw:36;--r:0deg;--d:0.42s" decoding="async">
+      <img class="lp-item lp-desk" src="ui/loading/diendien.webp" alt="Điên điển" style="--x:21;--y:58;--w:16;--mx:0;--my:0;--mw:0;--r:-6deg;--d:0.49s" decoding="async">
+      <img class="lp-item" src="ui/loading/openbill.webp" alt="Cò ốc" style="--x:92;--y:59;--w:28;--mx:54;--my:43;--mw:34;--r:0deg;--d:0.56s" decoding="async">
+      <img class="lp-item" src="ui/loading/banana.webp" alt="Chuối" style="--x:4;--y:87;--w:27;--mx:5;--my:92;--mw:30;--r:0deg;--d:0.63s" decoding="async">
+      <img class="lp-item lp-desk" src="ui/loading/buffalo.webp" alt="Trâu" style="--x:23;--y:80;--w:28;--mx:0;--my:0;--mw:0;--r:0deg;--d:0.70s" decoding="async">
+      <img class="lp-item" src="ui/loading/rice.webp" alt="Lúa" style="--x:37;--y:92;--w:18;--mx:28;--my:94;--mw:22;--r:0deg;--d:0.77s" decoding="async">
+      <img class="lp-item lp-desk" src="ui/loading/floodboat.webp" alt="Xuồng trong rừng ngập (Delaporte, 1873)" style="--x:52;--y:82;--w:44;--mx:0;--my:0;--mw:0;--r:0deg;--d:0.84s" decoding="async">
+      <img class="lp-item lp-swim" src="ui/loading/snakehead.webp" alt="Cá lóc" style="--x:51;--y:96;--w:26;--mx:56;--my:96;--mw:38;--r:-3deg;--d:0.91s" decoding="async">
+      <img class="lp-item lp-desk" src="ui/loading/raumuong.webp" alt="Rau muống" style="--x:65;--y:91;--w:16;--mx:0;--my:0;--mw:0;--r:6deg;--d:0.98s" decoding="async">
+      <img class="lp-item" src="ui/loading/lotus.webp" alt="Hoa sen" style="--x:77;--y:85;--w:24;--mx:78;--my:92;--mw:28;--r:0deg;--d:1.05s" decoding="async">
+      <img class="lp-item" src="ui/loading/coconut.webp" alt="Dừa" style="--x:96;--y:86;--w:27;--mx:98;--my:90;--mw:30;--r:0deg;--d:1.12s" decoding="async">
+      <div class="lp-card">
+        <img class="lp-palms" src="ui/loading/palmvillage.webp" alt="Làng ven sông với thốt nốt và dừa (Delaporte, 1873)" decoding="async">
+        <svg class="lp-brocade" viewBox="0 0 240 14" preserveAspectRatio="none" aria-hidden="true">
+          <defs><pattern id="lpBro" width="24" height="14" patternUnits="userSpaceOnUse">
+            <rect width="24" height="14" fill="#7d2a22"/><rect y="0" width="24" height="2" fill="#2f2a3a"/><rect y="12" width="24" height="2" fill="#2f2a3a"/>
+            <path d="M0 7 L6 3 L12 7 L6 11 Z M12 7 L18 3 L24 7 L18 11 Z" fill="#d9a441"/>
+            <path d="M3 7 L6 5 L9 7 L6 9 Z M15 7 L18 5 L21 7 L18 9 Z" fill="#2f2a3a"/>
+            <path d="M5.4 7 L6 6.6 L6.6 7 L6 7.4 Z M17.4 7 L18 6.6 L18.6 7 L18 7.4 Z" fill="#e9e2cf"/>
+          </pattern></defs><rect width="240" height="14" fill="url(#lpBro)"/></svg>
+        <h1 class="loading-title">Dự án Cửu Long</h1>
+        <div class="bar" id="loadingProgress" role="progressbar" aria-label="Loading map" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="loadingBar"></div></div>
+        <div class="lp-status"><span id="loadingText" class="loading-text">Đang tải bản đồ…</span><span id="loadingPercent" class="loading-text">0%</span></div>
+        <p class="lp-credit">Tranh minh hoạ thế kỷ 19, phạm vi công cộng · 19th-century public-domain plates: M. Blanco, <i>Flora de Filipinas</i>;
+          J. Gould, <i>Birds of Asia</i>; <i>Iconographia Zoologica</i> (University of Amsterdam); P. Bleeker; F. Moore; D. Drury;
+          L. Delaporte, <i>Voyage d’exploration en Indo-Chine</i> (1873). Wikimedia Commons.</p>
+      </div>
     </div>
   </div>
 
